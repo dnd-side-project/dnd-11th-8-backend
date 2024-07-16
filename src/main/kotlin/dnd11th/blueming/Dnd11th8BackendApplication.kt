@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class Dnd11th8BackendApplication
 
 fun main(args: Array<String>) {
-	runApplication<Dnd11th8BackendApplication>(*args)
+    runApplication<Dnd11th8BackendApplication>(*args)
 }
