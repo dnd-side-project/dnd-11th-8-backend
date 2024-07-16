@@ -32,6 +32,9 @@ dependencies {
 	testImplementation("io.kotest:kotest-property:5.9.1")
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
 
+	// Mockk
+	testImplementation("com.ninja-squad:springmockk:4.0.2")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
