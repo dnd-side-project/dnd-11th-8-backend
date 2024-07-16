@@ -4,6 +4,9 @@ plugins {
 	kotlin("plugin.jpa") version "1.9.24"
 	kotlin("jvm") version "1.9.24"
 	kotlin("plugin.spring") version "1.9.24"
+
+    // Ktlint
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
 group = "dnd-11th"
