@@ -1,7 +1,7 @@
 ---
 name: Question
 about: Ask a question about the project
-title: "[QUESTION] "
+title: "[question] "
 labels: question
 assignees: ''
 

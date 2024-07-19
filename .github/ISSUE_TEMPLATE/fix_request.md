@@ -1,7 +1,7 @@
 ---
 name: Fix request
 about: Request a fix for an existing feature
-title: "[FIX] "
+title: "[fix] "
 labels: fix
 assignees: ''
 

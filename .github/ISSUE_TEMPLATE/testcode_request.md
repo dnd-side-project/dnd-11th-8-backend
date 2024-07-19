@@ -1,7 +1,7 @@
 ---
 name: Test code request
 about: Request for writing or improving test cases
-title: "[TEST] "
+title: "[test] "
 labels: test
 assignees: ''
 

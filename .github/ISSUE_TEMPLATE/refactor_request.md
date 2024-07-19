@@ -1,7 +1,7 @@
 ---
 name: Refactor request
 about: Suggest code improvements or refactoring
-title: "[REFACTOR] "
+title: "[refactor] "
 labels: refactor
 assignees: ''
 
