@@ -3,6 +3,7 @@ package dnd11th.blooming.service
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.service.PlantService
 import dnd11th.blooming.common.exception.ExceptionCode
+import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.PlantNotFoundException
 import dnd11th.blooming.domain.entity.Plant
 import dnd11th.blooming.domain.repository.PlantRepository
@@ -44,6 +45,52 @@ class PlantServiceTest : BehaviorSpec(
                     val response = plantService.savePlant(request)
                     Then("정상적으로 저장되어야 한다.") {
                         response.id shouldBe 0
+                    }
+                }
+            }
+            Given("시작날짜가 과거인 요청으로") {
+                val request =
+                    PlantSaveRequest(
+                        scientificName = SCIENTIFIC_NAME,
+                        name = NAME,
+                        startDate = FUTURE_DATE,
+                        lastWateredDate = LAST_WATERED_DATE,
+                        waterAlarm = true,
+                        nutrientsAlarm = false,
+                    )
+                When("식물을 저장하면") {
+                    Then("InvalidDateException 예외가 발생해야 한다.") {
+                        val exception =
+                            shouldThrow<InvalidDateException> {
+                                plantService.savePlant(request)
+                            }
+                        exception.message shouldBe "올바르지 않은 날짜입니다."
+                        exception.code shouldBe ExceptionCode.INVALID_DATE
+                        exception.status shouldBe HttpStatus.BAD_REQUEST
+                        exception.field shouldBe null
+                    }
+                }
+            }
+            Given("마지막으로 물 준 날짜가 과거인 요청으로") {
+                val request =
+                    PlantSaveRequest(
+                        scientificName = SCIENTIFIC_NAME,
+                        name = NAME,
+                        startDate = START_DATE,
+                        lastWateredDate = FUTURE_DATE,
+                        waterAlarm = true,
+                        nutrientsAlarm = false,
+                    )
+                When("식물을 저장하면") {
+                    Then("InvalidDateException 예외가 발생해야 한다.") {
+                        val exception =
+                            shouldThrow<InvalidDateException> {
+                                plantService.savePlant(request)
+                            }
+                        exception.message shouldBe "올바르지 않은 날짜입니다."
+                        exception.code shouldBe ExceptionCode.INVALID_DATE
+                        exception.status shouldBe HttpStatus.BAD_REQUEST
+                        exception.field shouldBe null
                     }
                 }
             }
@@ -98,7 +145,7 @@ class PlantServiceTest : BehaviorSpec(
             Given("존재하는 ID로") {
                 When("상세 조회하면") {
                     val response = plantService.findPlantDetail(ID)
-                    Then("정상적으로 반환된다.") {
+                    Then("상세 정보가 조회되어야 한다.") {
                         response.name shouldBe NAME
                         response.scientificName shouldBe SCIENTIFIC_NAME
                         response.startDate shouldBe START_DATE
@@ -108,7 +155,7 @@ class PlantServiceTest : BehaviorSpec(
             }
             Given("존재하지 않는 ID로") {
                 When("상세 조회하면") {
-                    Then("예외가 발생한다.") {
+                    Then("PlantNotFoundException 예외가 발생해야 한다.") {
                         val exception =
                             shouldThrow<PlantNotFoundException> {
                                 plantService.findPlantDetail(ID2)
@@ -135,5 +182,7 @@ class PlantServiceTest : BehaviorSpec(
         const val NAME2 = "빵빵이"
         val START_DATE2: LocalDate = LocalDate.of(2024, 3, 20)
         val LAST_WATERED_DATE2: LocalDate = LocalDate.of(2024, 7, 20)
+
+        val FUTURE_DATE: LocalDate = LocalDate.of(5000, 5, 17)
     }
 }
