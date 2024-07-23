@@ -2,6 +2,7 @@ package dnd11th.blooming.service
 
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
+import dnd11th.blooming.api.service.PlantService
 import dnd11th.blooming.service.implement.PlantWriter
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

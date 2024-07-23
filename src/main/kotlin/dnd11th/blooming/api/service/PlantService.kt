@@ -1,4 +1,4 @@
-package dnd11th.blooming.service
+package dnd11th.blooming.api.service
 
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse

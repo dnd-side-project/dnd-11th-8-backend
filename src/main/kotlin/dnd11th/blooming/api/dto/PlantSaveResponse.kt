@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.dto
 
-import dnd11th.blooming.domain.Plant
+import dnd11th.blooming.domain.entity.Plant
 
 class PlantSaveResponse(
     val id: Long,

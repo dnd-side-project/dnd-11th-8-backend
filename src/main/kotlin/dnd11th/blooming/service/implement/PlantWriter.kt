@@ -2,8 +2,8 @@ package dnd11th.blooming.service.implement
 
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
-import dnd11th.blooming.domain.Plant
-import dnd11th.blooming.service.PlantRepository
+import dnd11th.blooming.domain.entity.Plant
+import dnd11th.blooming.domain.repository.PlantRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 

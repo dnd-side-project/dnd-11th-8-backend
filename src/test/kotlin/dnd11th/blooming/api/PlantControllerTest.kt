@@ -2,9 +2,10 @@ package dnd11th.blooming.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
+import dnd11th.blooming.api.controller.PlantController
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
-import dnd11th.blooming.service.PlantService
+import dnd11th.blooming.api.service.PlantService
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
 import org.springframework.beans.factory.annotation.Autowired

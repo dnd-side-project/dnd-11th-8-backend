@@ -1,4 +1,4 @@
-package dnd11th.blooming.domain
+package dnd11th.blooming.domain.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
