@@ -2,6 +2,8 @@ package dnd11th.blooming.service
 
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.service.PlantService
+import dnd11th.blooming.common.exception.PlantNotFoundException
+import dnd11th.blooming.common.util.ExceptionCode
 import dnd11th.blooming.domain.entity.Plant
 import dnd11th.blooming.domain.repository.PlantRepository
 import io.kotest.assertions.throwables.shouldThrow
@@ -10,6 +12,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
 import java.time.LocalDate
 
 class PlantServiceTest : BehaviorSpec(
@@ -107,10 +110,13 @@ class PlantServiceTest : BehaviorSpec(
                 When("상세 조회하면") {
                     Then("예외가 발생한다.") {
                         val exception =
-                            shouldThrow<IllegalArgumentException> {
+                            shouldThrow<PlantNotFoundException> {
                                 plantService.findPlantDetail(ID2)
                             }
                         exception.message shouldBe "존재하지 않는 식물입니다."
+                        exception.code shouldBe ExceptionCode.NOT_FOUND_PLANT_ID
+                        exception.status shouldBe HttpStatus.NOT_FOUND
+                        exception.field shouldBe null
                     }
                 }
             }

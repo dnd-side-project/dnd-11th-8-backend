@@ -4,6 +4,7 @@ import dnd11th.blooming.api.dto.PlantDetailResponse
 import dnd11th.blooming.api.dto.PlantResponse
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
+import dnd11th.blooming.common.exception.PlantNotFoundException
 import dnd11th.blooming.domain.entity.Plant
 import dnd11th.blooming.domain.repository.PlantRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -39,8 +40,7 @@ class PlantService(
     fun findPlantDetail(id: Long): PlantDetailResponse {
         val plant =
             plantRepository.findByIdOrNull(id)
-                ?: throw IllegalArgumentException("존재하지 않는 식물입니다.")
-        // TODO: 커스텀 예외 추가 필요
+                ?: throw PlantNotFoundException()
 
         return PlantDetailResponse.from(plant)
     }

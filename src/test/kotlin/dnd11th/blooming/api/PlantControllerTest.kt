@@ -8,10 +8,10 @@ import dnd11th.blooming.api.dto.PlantResponse
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
 import dnd11th.blooming.api.service.PlantService
-import io.kotest.assertions.throwables.shouldThrow
+import dnd11th.blooming.common.exception.PlantNotFoundException
+import dnd11th.blooming.common.util.ExceptionCode
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
-import jakarta.servlet.ServletException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
@@ -90,15 +90,18 @@ class PlantControllerTest : ExpectSpec() {
         }
 
         context("식물 상세 조회") {
-            every { plantService.findPlantDetail(ID) } returns
-                PlantDetailResponse(
-                    name = NAME,
-                    scientificName = SCIENTIFIC_NAME,
-                    startDate = START_DATE,
-                    lastWatedDate = LAST_WATERED_DATE,
-                )
-            every { plantService.findPlantDetail(not(eq(ID))) } throws
-                IllegalArgumentException("존재하지 않는 식물입니다.")
+            beforeTest {
+                every { plantService.findPlantDetail(ID) } returns
+                    PlantDetailResponse(
+                        name = NAME,
+                        scientificName = SCIENTIFIC_NAME,
+                        startDate = START_DATE,
+                        lastWatedDate = LAST_WATERED_DATE,
+                    )
+                every { plantService.findPlantDetail(ID2) } throws
+                    PlantNotFoundException()
+            }
+
             expect("존재하는 id로 조회하면 식물이 조회되어야 한다.") {
                 mockMvc.get("/plant/$ID")
                     .andExpectAll {
@@ -110,9 +113,12 @@ class PlantControllerTest : ExpectSpec() {
                     }.andDo { print() }
             }
             expect("존재하지 않는 id로 조회하면 예외가 발생해야 한다.") {
-                shouldThrow<ServletException> {
-                    mockMvc.get("/plant/$ID2")
-                }
+                mockMvc.get("/plant/$ID2")
+                    .andExpectAll {
+                        status { isNotFound() }
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 식물입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ExceptionCode.NOT_FOUND_PLANT_ID)
+                    }.andDo { print() }
             }
         }
     }
