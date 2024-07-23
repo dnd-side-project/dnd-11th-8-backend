@@ -1,6 +1,5 @@
 package dnd11th.blooming.common.exception
 
-import dnd11th.blooming.common.util.ExceptionCode
 import org.springframework.http.HttpStatus
 
 class PlantNotFoundException(

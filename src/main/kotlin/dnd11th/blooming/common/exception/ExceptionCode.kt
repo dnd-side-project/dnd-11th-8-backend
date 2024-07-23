@@ -1,4 +1,4 @@
-package dnd11th.blooming.common.util
+package dnd11th.blooming.common.exception
 
 enum class ExceptionCode {
     INVALID_REQUEST,

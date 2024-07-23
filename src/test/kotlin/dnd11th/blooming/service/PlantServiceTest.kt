@@ -2,8 +2,8 @@ package dnd11th.blooming.service
 
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.service.PlantService
+import dnd11th.blooming.common.exception.ExceptionCode
 import dnd11th.blooming.common.exception.PlantNotFoundException
-import dnd11th.blooming.common.util.ExceptionCode
 import dnd11th.blooming.domain.entity.Plant
 import dnd11th.blooming.domain.repository.PlantRepository
 import io.kotest.assertions.throwables.shouldThrow

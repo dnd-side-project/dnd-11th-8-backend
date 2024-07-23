@@ -1,7 +1,6 @@
 package dnd11th.blooming.common.exception
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import dnd11th.blooming.common.util.ExceptionCode
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ErrorResponse(

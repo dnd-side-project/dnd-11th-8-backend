@@ -8,8 +8,8 @@ import dnd11th.blooming.api.dto.PlantResponse
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
 import dnd11th.blooming.api.service.PlantService
+import dnd11th.blooming.common.exception.ExceptionCode
 import dnd11th.blooming.common.exception.PlantNotFoundException
-import dnd11th.blooming.common.util.ExceptionCode
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
 import org.springframework.beans.factory.annotation.Autowired
