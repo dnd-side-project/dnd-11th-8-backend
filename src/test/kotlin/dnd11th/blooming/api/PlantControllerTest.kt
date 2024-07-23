@@ -31,12 +31,10 @@ class PlantControllerTest : ExpectSpec() {
 
     init {
         context("식물 저장") {
-            beforeTest {
-                every { plantService.savePlant(any()) } returns
-                    PlantSaveResponse(
-                        id = ID,
-                    )
-            }
+            every { plantService.savePlant(any()) } returns
+                PlantSaveResponse(
+                    id = ID,
+                )
             expect("식물이 정상적으로 저장되어야 한다.") {
                 val json =
                     objectMapper.writeValueAsString(
@@ -60,21 +58,19 @@ class PlantControllerTest : ExpectSpec() {
         }
 
         context("식물 전체 조회") {
-            beforeTest {
-                every { plantService.findAllPlant() } returns
-                    listOf(
-                        PlantResponse(
-                            id = ID,
-                            name = NAME,
-                            scientificName = SCIENTIFIC_NAME,
-                        ),
-                        PlantResponse(
-                            id = ID2,
-                            name = NAME2,
-                            scientificName = SCIENTIFIC_NAME2,
-                        ),
-                    )
-            }
+            every { plantService.findAllPlant() } returns
+                listOf(
+                    PlantResponse(
+                        id = ID,
+                        name = NAME,
+                        scientificName = SCIENTIFIC_NAME,
+                    ),
+                    PlantResponse(
+                        id = ID2,
+                        name = NAME2,
+                        scientificName = SCIENTIFIC_NAME2,
+                    ),
+                )
             expect("모든 식물이 조회되어야 한다.") {
                 mockMvc.get("/plants")
                     .andExpectAll {

@@ -16,17 +16,15 @@ class PlantServiceTest : BehaviorSpec(
         val plantService = PlantService(plantRepsitory)
 
         Context("식물 저장") {
-            beforeTest {
-                every { plantRepsitory.save(any()) } returns
-                    Plant(
-                        scientificName = SCIENTIFIC_NAME,
-                        name = NAME,
-                        startDate = START_DATE,
-                        lastWateredDate = LAST_WATERED_DATE,
-                        waterAlarm = true,
-                        nutrientsAlarm = false,
-                    )
-            }
+            every { plantRepsitory.save(any()) } returns
+                Plant(
+                    scientificName = SCIENTIFIC_NAME,
+                    name = NAME,
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    waterAlarm = true,
+                    nutrientsAlarm = false,
+                )
             Given("정상 요청이 왔을 때") {
                 val request =
                     PlantSaveRequest(
@@ -47,27 +45,25 @@ class PlantServiceTest : BehaviorSpec(
         }
 
         Context("식물 전체 조회") {
-            beforeTest {
-                every { plantRepsitory.findAll() } returns
-                    listOf(
-                        Plant(
-                            scientificName = SCIENTIFIC_NAME,
-                            name = NAME,
-                            startDate = START_DATE,
-                            lastWateredDate = LAST_WATERED_DATE,
-                            waterAlarm = true,
-                            nutrientsAlarm = false,
-                        ),
-                        Plant(
-                            scientificName = SCIENTIFIC_NAME2,
-                            name = NAME2,
-                            startDate = START_DATE2,
-                            lastWateredDate = LAST_WATERED_DATE2,
-                            waterAlarm = true,
-                            nutrientsAlarm = false,
-                        ),
-                    )
-            }
+            every { plantRepsitory.findAll() } returns
+                listOf(
+                    Plant(
+                        scientificName = SCIENTIFIC_NAME,
+                        name = NAME,
+                        startDate = START_DATE,
+                        lastWateredDate = LAST_WATERED_DATE,
+                        waterAlarm = true,
+                        nutrientsAlarm = false,
+                    ),
+                    Plant(
+                        scientificName = SCIENTIFIC_NAME2,
+                        name = NAME2,
+                        startDate = START_DATE2,
+                        lastWateredDate = LAST_WATERED_DATE2,
+                        waterAlarm = true,
+                        nutrientsAlarm = false,
+                    ),
+                )
             Given("식물을 전체 조회할 때") {
                 When("식물을 조회하면") {
                     val response = plantService.findAllPlant()
