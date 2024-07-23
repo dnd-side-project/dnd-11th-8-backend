@@ -4,10 +4,12 @@ import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.service.PlantService
 import dnd11th.blooming.domain.entity.Plant
 import dnd11th.blooming.domain.repository.PlantRepository
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDate
 
 class PlantServiceTest : BehaviorSpec(
@@ -77,14 +79,52 @@ class PlantServiceTest : BehaviorSpec(
                 }
             }
         }
+
+        Context("식물 상세 조회") {
+            every { plantRepsitory.findByIdOrNull(ID) } returns
+                Plant(
+                    scientificName = SCIENTIFIC_NAME,
+                    name = NAME,
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    waterAlarm = true,
+                    nutrientsAlarm = false,
+                )
+            every { plantRepsitory.findByIdOrNull(not(eq(ID))) } returns
+                null
+            Given("존재하는 ID로") {
+                When("상세 조회하면") {
+                    val response = plantService.findPlantDetail(ID)
+                    Then("정상적으로 반환된다.") {
+                        response.name shouldBe NAME
+                        response.scientificName shouldBe SCIENTIFIC_NAME
+                        response.startDate shouldBe START_DATE
+                        response.lastWatedDate shouldBe LAST_WATERED_DATE
+                    }
+                }
+            }
+            Given("존재하지 않는 ID로") {
+                When("상세 조회하면") {
+                    Then("예외가 발생한다.") {
+                        val exception =
+                            shouldThrow<IllegalArgumentException> {
+                                plantService.findPlantDetail(ID2)
+                            }
+                        exception.message shouldBe "존재하지 않는 식물입니다."
+                    }
+                }
+            }
+        }
     },
 ) {
     companion object {
+        const val ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
         const val NAME = "뿡뿡이"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
 
+        const val ID2 = 2L
         const val SCIENTIFIC_NAME2 = "병아리 눈물"
         const val NAME2 = "빵빵이"
         val START_DATE2: LocalDate = LocalDate.of(2024, 3, 20)

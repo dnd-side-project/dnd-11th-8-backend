@@ -3,12 +3,15 @@ package dnd11th.blooming.api
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.controller.PlantController
+import dnd11th.blooming.api.dto.PlantDetailResponse
 import dnd11th.blooming.api.dto.PlantResponse
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
 import dnd11th.blooming.api.service.PlantService
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
+import jakarta.servlet.ServletException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
@@ -83,6 +86,33 @@ class PlantControllerTest : ExpectSpec() {
                         MockMvcResultMatchers.jsonPath("$[1].name").value(NAME2)
                         MockMvcResultMatchers.jsonPath("$[1].scientificName").value(SCIENTIFIC_NAME2)
                     }.andDo { print() }
+            }
+        }
+
+        context("식물 상세 조회") {
+            every { plantService.findPlantDetail(ID) } returns
+                PlantDetailResponse(
+                    name = NAME,
+                    scientificName = SCIENTIFIC_NAME,
+                    startDate = START_DATE,
+                    lastWatedDate = LAST_WATERED_DATE,
+                )
+            every { plantService.findPlantDetail(not(eq(ID))) } throws
+                IllegalArgumentException("존재하지 않는 식물입니다.")
+            expect("존재하는 id로 조회하면 식물이 조회되어야 한다.") {
+                mockMvc.get("/plant/$ID")
+                    .andExpectAll {
+                        status { isOk() }
+                        MockMvcResultMatchers.jsonPath("$.name").value(NAME)
+                        MockMvcResultMatchers.jsonPath("$.scientificName").value(SCIENTIFIC_NAME)
+                        MockMvcResultMatchers.jsonPath("$.startDate").value(START_DATE)
+                        MockMvcResultMatchers.jsonPath("$.lastWatedDate").value(LAST_WATERED_DATE)
+                    }.andDo { print() }
+            }
+            expect("존재하지 않는 id로 조회하면 예외가 발생해야 한다.") {
+                shouldThrow<ServletException> {
+                    mockMvc.get("/plant/$ID2")
+                }
             }
         }
     }
