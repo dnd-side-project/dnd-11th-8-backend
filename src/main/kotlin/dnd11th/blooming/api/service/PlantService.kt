@@ -1,5 +1,6 @@
 package dnd11th.blooming.api.service
 
+import dnd11th.blooming.api.dto.PlantResponse
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
 import dnd11th.blooming.domain.entity.Plant
@@ -23,5 +24,13 @@ class PlantService(
                 nutrientsAlarm = request.nutrientsAlarm,
             )
         return PlantSaveResponse.from(plantRepository.save(plant))
+    }
+
+    fun findAllPlant(): List<PlantResponse> {
+        val plantList = plantRepository.findAll()
+
+        return plantList.stream().map { plant ->
+            PlantResponse.from(plant)
+        }.toList()
     }
 }
