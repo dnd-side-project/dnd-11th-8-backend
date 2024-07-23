@@ -3,7 +3,7 @@ spring:
     name: dnd-11th-8-backend
 
   datasource:
-    url: jdbc:mysql://localhost:3306/blueming
+    url: jdbc:mysql://localhost:3306/blooming
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
