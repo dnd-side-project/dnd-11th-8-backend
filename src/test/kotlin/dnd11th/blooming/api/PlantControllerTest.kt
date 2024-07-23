@@ -3,6 +3,7 @@ package dnd11th.blooming.api
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.controller.PlantController
+import dnd11th.blooming.api.dto.PlantResponse
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
 import dnd11th.blooming.api.service.PlantService
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
@@ -56,6 +58,37 @@ class PlantControllerTest : ExpectSpec() {
                 }.andDo { print() }
             }
         }
+
+        context("식물 전체 조회") {
+            beforeTest {
+                every { plantService.findAllPlant() } returns
+                    listOf(
+                        PlantResponse(
+                            id = ID,
+                            name = NAME,
+                            scientificName = SCIENTIFIC_NAME,
+                        ),
+                        PlantResponse(
+                            id = ID2,
+                            name = NAME2,
+                            scientificName = SCIENTIFIC_NAME2,
+                        ),
+                    )
+            }
+            expect("모든 식물이 조회되어야 한다.") {
+                mockMvc.get("/plants")
+                    .andExpectAll {
+                        status { isOk() }
+                        MockMvcResultMatchers.jsonPath("$.size()").value(2)
+                        MockMvcResultMatchers.jsonPath("$[0].id").value(ID)
+                        MockMvcResultMatchers.jsonPath("$[0].name").value(NAME)
+                        MockMvcResultMatchers.jsonPath("$[0].scientificName").value(SCIENTIFIC_NAME)
+                        MockMvcResultMatchers.jsonPath("$[1].id").value(ID2)
+                        MockMvcResultMatchers.jsonPath("$[1].name").value(NAME2)
+                        MockMvcResultMatchers.jsonPath("$[1].scientificName").value(SCIENTIFIC_NAME2)
+                    }.andDo { print() }
+            }
+        }
     }
 
     companion object {
@@ -64,5 +97,11 @@ class PlantControllerTest : ExpectSpec() {
         const val NAME = "뿡뿡이"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
+
+        const val ID2 = 2L
+        const val SCIENTIFIC_NAME2 = "병아리 눈물"
+        const val NAME2 = "빵빵이"
+        val START_DATE2: LocalDate = LocalDate.of(2024, 3, 20)
+        val LAST_WATERED_DATE2: LocalDate = LocalDate.of(2024, 7, 20)
     }
 }
