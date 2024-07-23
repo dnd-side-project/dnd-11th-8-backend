@@ -1,4 +1,4 @@
-package dnd11th.blueming
+package dnd11th.blooming
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

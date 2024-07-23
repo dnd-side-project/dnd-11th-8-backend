@@ -1,4 +1,4 @@
-package dnd11th.blueming
+package dnd11th.blooming
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
