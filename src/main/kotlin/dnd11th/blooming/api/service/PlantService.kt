@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
-@Transactional
 class PlantService(
     private val plantRepository: PlantRepository,
 ) {
+    @Transactional
     fun savePlant(request: PlantSaveRequest): PlantSaveResponse {
         if (request.lastWateredDate.isAfter(LocalDate.now()) || request.startDate.isAfter(LocalDate.now())) {
             throw InvalidDateException()
@@ -35,6 +35,7 @@ class PlantService(
         return PlantSaveResponse.from(plantRepository.save(plant))
     }
 
+    @Transactional(readOnly = true)
     fun findAllPlant(): List<PlantResponse> {
         val plantList = plantRepository.findAll()
 
@@ -43,6 +44,7 @@ class PlantService(
         }.toList()
     }
 
+    @Transactional(readOnly = true)
     fun findPlantDetail(id: Long): PlantDetailResponse {
         val plant =
             plantRepository.findByIdOrNull(id)
