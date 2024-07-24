@@ -9,11 +9,14 @@ data class ErrorResponse private constructor(
     val field: List<String>?,
 ) {
     companion object {
-        fun from(errorType: ErrorType, field: List<String>? = null): ErrorResponse =
+        fun from(
+            errorType: ErrorType,
+            field: List<String>? = null,
+        ): ErrorResponse =
             ErrorResponse(
                 code = errorType,
                 message = errorType.message,
-                field = field
+                field = field,
             )
     }
 }
