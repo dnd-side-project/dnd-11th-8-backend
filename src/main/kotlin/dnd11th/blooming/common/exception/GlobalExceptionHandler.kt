@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class GlobalExceptionHandler {
     @ExceptionHandler(MyException::class)
     fun handleMyException(exception: MyException): ResponseEntity<ErrorResponse> {
+        val errorType = exception.errorType
         return ResponseEntity
-            .status(exception.status)
-            .body(ErrorResponse.from(exception))
+            .status(errorType.status)
+            .body(ErrorResponse.from(errorType))
     }
 }
