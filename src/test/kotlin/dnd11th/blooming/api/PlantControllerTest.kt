@@ -8,9 +8,9 @@ import dnd11th.blooming.api.dto.PlantResponse
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
 import dnd11th.blooming.api.service.PlantService
-import dnd11th.blooming.common.exception.ExceptionCode
+import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
-import dnd11th.blooming.common.exception.PlantNotFoundException
+import dnd11th.blooming.common.exception.NotFoundException
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,7 +47,7 @@ class PlantControllerTest : ExpectSpec() {
                         },
                     )
                 } throws
-                    InvalidDateException()
+                    InvalidDateException(ErrorType.INVALID_DATE)
             }
             expect("식물이 정상적으로 저장되어야 한다.") {
                 val json =
@@ -87,7 +87,7 @@ class PlantControllerTest : ExpectSpec() {
                 }.andExpectAll {
                     status { isBadRequest() }
                     MockMvcResultMatchers.jsonPath("$.message").value("올바르지 않은 날짜입니다.")
-                    MockMvcResultMatchers.jsonPath("$.code").value(ExceptionCode.INVALID_DATE)
+                    MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
                 }.andDo { print() }
             }
             expect("마지막으로 물 준 날짜가 과거라면 예외응답이 반환되어야 한다.") {
@@ -108,7 +108,7 @@ class PlantControllerTest : ExpectSpec() {
                 }.andExpectAll {
                     status { isBadRequest() }
                     MockMvcResultMatchers.jsonPath("$.message").value("올바르지 않은 날짜입니다.")
-                    MockMvcResultMatchers.jsonPath("$.code").value(ExceptionCode.INVALID_DATE)
+                    MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
                 }.andDo { print() }
             }
         }
@@ -152,7 +152,7 @@ class PlantControllerTest : ExpectSpec() {
                         lastWatedDate = LAST_WATERED_DATE,
                     )
                 every { plantService.findPlantDetail(ID2) } throws
-                    PlantNotFoundException()
+                    NotFoundException(ErrorType.NOT_FOUND_PLANT_ID)
             }
 
             expect("존재하는 id로 조회하면 식물이 조회되어야 한다.") {
@@ -170,7 +170,7 @@ class PlantControllerTest : ExpectSpec() {
                     .andExpectAll {
                         status { isNotFound() }
                         MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 식물입니다.")
-                        MockMvcResultMatchers.jsonPath("$.code").value(ExceptionCode.NOT_FOUND_PLANT_ID)
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_PLANT_ID)
                     }.andDo { print() }
             }
         }

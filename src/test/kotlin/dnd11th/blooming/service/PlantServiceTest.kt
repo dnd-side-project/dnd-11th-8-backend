@@ -2,9 +2,9 @@ package dnd11th.blooming.service
 
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.service.PlantService
-import dnd11th.blooming.common.exception.ExceptionCode
+import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
-import dnd11th.blooming.common.exception.PlantNotFoundException
+import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Plant
 import dnd11th.blooming.domain.repository.PlantRepository
 import io.kotest.assertions.throwables.shouldThrow
@@ -13,7 +13,6 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.HttpStatus
 import java.time.LocalDate
 
 class PlantServiceTest : BehaviorSpec(
@@ -65,9 +64,7 @@ class PlantServiceTest : BehaviorSpec(
                                 plantService.savePlant(request)
                             }
                         exception.message shouldBe "올바르지 않은 날짜입니다."
-                        exception.code shouldBe ExceptionCode.INVALID_DATE
-                        exception.status shouldBe HttpStatus.BAD_REQUEST
-                        exception.field shouldBe null
+                        exception.errorType shouldBe ErrorType.INVALID_DATE
                     }
                 }
             }
@@ -88,9 +85,7 @@ class PlantServiceTest : BehaviorSpec(
                                 plantService.savePlant(request)
                             }
                         exception.message shouldBe "올바르지 않은 날짜입니다."
-                        exception.code shouldBe ExceptionCode.INVALID_DATE
-                        exception.status shouldBe HttpStatus.BAD_REQUEST
-                        exception.field shouldBe null
+                        exception.errorType shouldBe ErrorType.INVALID_DATE
                     }
                 }
             }
@@ -157,13 +152,11 @@ class PlantServiceTest : BehaviorSpec(
                 When("상세 조회하면") {
                     Then("PlantNotFoundException 예외가 발생해야 한다.") {
                         val exception =
-                            shouldThrow<PlantNotFoundException> {
+                            shouldThrow<NotFoundException> {
                                 plantService.findPlantDetail(ID2)
                             }
                         exception.message shouldBe "존재하지 않는 식물입니다."
-                        exception.code shouldBe ExceptionCode.NOT_FOUND_PLANT_ID
-                        exception.status shouldBe HttpStatus.NOT_FOUND
-                        exception.field shouldBe null
+                        exception.errorType shouldBe ErrorType.NOT_FOUND_PLANT_ID
                     }
                 }
             }
