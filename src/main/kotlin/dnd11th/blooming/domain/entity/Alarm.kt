@@ -29,11 +29,11 @@ class Alarm(
     companion object {
         fun from(request: PlantSaveRequest): Alarm =
             Alarm(
-                waterAlarm = request.waterAlarm,
+                waterAlarm = request.waterAlarm ?: false,
                 waterPeriod = request.waterPeriod ?: 3,
-                nutrientsAlarm = request.nutrientsAlarm,
+                nutrientsAlarm = request.nutrientsAlarm ?: false,
                 nutrientsPeriod = request.nutrientsPeriod ?: 30,
-                repotAlarm = request.repotAlarm,
+                repotAlarm = request.repotAlarm ?: false,
                 repotPeriod = request.repotPeriod ?: 60,
             )
     }

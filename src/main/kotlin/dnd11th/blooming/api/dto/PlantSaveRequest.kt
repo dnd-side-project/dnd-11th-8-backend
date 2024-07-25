@@ -7,10 +7,10 @@ data class PlantSaveRequest(
     val name: String,
     val startDate: LocalDate,
     val lastWateredDate: LocalDate,
-    val waterAlarm: Boolean,
+    val waterAlarm: Boolean?,
     val waterPeriod: Int?,
-    val nutrientsAlarm: Boolean,
+    val nutrientsAlarm: Boolean?,
     val nutrientsPeriod: Int?,
-    val repotAlarm: Boolean,
+    val repotAlarm: Boolean?,
     val repotPeriod: Int?,
 )
