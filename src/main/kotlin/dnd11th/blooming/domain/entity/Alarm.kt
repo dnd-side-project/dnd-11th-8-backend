@@ -36,5 +36,15 @@ class Alarm(
                 repotAlarm = request.repotAlarm ?: false,
                 repotPeriod = request.repotPeriod ?: 60,
             )
+
+        fun defaultAlarm(): Alarm =
+            Alarm(
+                waterAlarm = false,
+                waterPeriod = 3,
+                nutrientsAlarm = false,
+                nutrientsPeriod = 30,
+                repotAlarm = false,
+                repotPeriod = 60,
+            )
     }
 }

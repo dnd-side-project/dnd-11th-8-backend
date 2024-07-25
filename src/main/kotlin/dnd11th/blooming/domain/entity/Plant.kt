@@ -26,24 +26,22 @@ class Plant(
     var id: Long = 0
 
     @OneToOne(fetch = FetchType.LAZY)
-    private var alarm: Alarm? = null
+    var alarm: Alarm? = null
 
-    fun setAlarm(alarm: Alarm?) {
+    fun setAlarmMapping(alarm: Alarm) {
         this.alarm = alarm
     }
-
-    fun getAlarm(): Alarm? = alarm
 
     companion object {
         fun from(
             request: PlantSaveRequest,
-            alarm: Alarm? = null,
+            alarm: Alarm = Alarm.defaultAlarm(),
         ): Plant =
             Plant(
                 scientificName = request.scientificName,
                 name = request.name,
                 startDate = request.startDate,
                 lastWateredDate = request.lastWateredDate,
-            ).apply { setAlarm(alarm) }
+            ).apply { setAlarmMapping(alarm) }
     }
 }
