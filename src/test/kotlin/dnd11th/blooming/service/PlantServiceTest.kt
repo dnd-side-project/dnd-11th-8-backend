@@ -5,7 +5,9 @@ import dnd11th.blooming.api.service.PlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.domain.entity.Alarm
 import dnd11th.blooming.domain.entity.Plant
+import dnd11th.blooming.domain.repository.AlarmRepository
 import dnd11th.blooming.domain.repository.PlantRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -18,7 +20,8 @@ import java.time.LocalDate
 class PlantServiceTest : BehaviorSpec(
     {
         val plantRepsitory = mockk<PlantRepository>()
-        val plantService = PlantService(plantRepsitory)
+        val alarmRepository = mockk<AlarmRepository>()
+        val plantService = PlantService(plantRepsitory, alarmRepository)
 
         Context("식물 저장") {
             every { plantRepsitory.save(any()) } returns
@@ -27,10 +30,10 @@ class PlantServiceTest : BehaviorSpec(
                     name = NAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
-                    waterAlarm = true,
-                    nutrientsAlarm = false,
                 )
-            Given("정상 요청이 왔을 때") {
+            every { alarmRepository.save(any()) } returns
+                Alarm.defaultAlarm()
+            Given("정상 요청으로") {
                 val request =
                     PlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
@@ -38,7 +41,11 @@ class PlantServiceTest : BehaviorSpec(
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         waterAlarm = true,
-                        nutrientsAlarm = false,
+                        waterPeriod = 60,
+                        nutrientsAlarm = null,
+                        nutrientsPeriod = null,
+                        repotAlarm = true,
+                        repotPeriod = null,
                     )
                 When("식물을 저장하면") {
                     val response = plantService.savePlant(request)
@@ -47,7 +54,7 @@ class PlantServiceTest : BehaviorSpec(
                     }
                 }
             }
-            Given("시작날짜가 과거인 요청으로") {
+            Given("시작날짜가 미래인 요청으로") {
                 val request =
                     PlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
@@ -55,7 +62,11 @@ class PlantServiceTest : BehaviorSpec(
                         startDate = FUTURE_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         waterAlarm = true,
-                        nutrientsAlarm = false,
+                        waterPeriod = 60,
+                        nutrientsAlarm = null,
+                        nutrientsPeriod = null,
+                        repotAlarm = true,
+                        repotPeriod = null,
                     )
                 When("식물을 저장하면") {
                     Then("InvalidDateException 예외가 발생해야 한다.") {
@@ -68,7 +79,7 @@ class PlantServiceTest : BehaviorSpec(
                     }
                 }
             }
-            Given("마지막으로 물 준 날짜가 과거인 요청으로") {
+            Given("마지막으로 물 준 날짜가 미래인 요청으로") {
                 val request =
                     PlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
@@ -76,7 +87,11 @@ class PlantServiceTest : BehaviorSpec(
                         startDate = START_DATE,
                         lastWateredDate = FUTURE_DATE,
                         waterAlarm = true,
-                        nutrientsAlarm = false,
+                        waterPeriod = 60,
+                        nutrientsAlarm = null,
+                        nutrientsPeriod = null,
+                        repotAlarm = true,
+                        repotPeriod = null,
                     )
                 When("식물을 저장하면") {
                     Then("InvalidDateException 예외가 발생해야 한다.") {
@@ -99,16 +114,12 @@ class PlantServiceTest : BehaviorSpec(
                         name = NAME,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
-                        waterAlarm = true,
-                        nutrientsAlarm = false,
                     ),
                     Plant(
                         scientificName = SCIENTIFIC_NAME2,
                         name = NAME2,
                         startDate = START_DATE2,
                         lastWateredDate = LAST_WATERED_DATE2,
-                        waterAlarm = true,
-                        nutrientsAlarm = false,
                     ),
                 )
             Given("식물을 전체 조회할 때") {
@@ -132,8 +143,6 @@ class PlantServiceTest : BehaviorSpec(
                     name = NAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
-                    waterAlarm = true,
-                    nutrientsAlarm = false,
                 )
             every { plantRepsitory.findByIdOrNull(not(eq(ID))) } returns
                 null

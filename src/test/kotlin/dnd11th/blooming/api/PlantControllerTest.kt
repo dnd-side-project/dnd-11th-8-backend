@@ -58,7 +58,11 @@ class PlantControllerTest : ExpectSpec() {
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
-                            nutrientsAlarm = false,
+                            waterPeriod = 60,
+                            nutrientsAlarm = null,
+                            nutrientsPeriod = null,
+                            repotAlarm = true,
+                            repotPeriod = null,
                         ),
                     )
                 mockMvc.post("/plant") {
@@ -69,7 +73,7 @@ class PlantControllerTest : ExpectSpec() {
                     MockMvcResultMatchers.jsonPath("$.id").value(ID)
                 }.andDo { print() }
             }
-            expect("시작날짜가 과거라면 예외응답이 반환되어야 한다.") {
+            expect("시작날짜가 미래라면 예외응답이 반환되어야 한다.") {
                 val json =
                     objectMapper.writeValueAsString(
                         PlantSaveRequest(
@@ -78,7 +82,11 @@ class PlantControllerTest : ExpectSpec() {
                             startDate = FUTURE_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
-                            nutrientsAlarm = false,
+                            waterPeriod = 60,
+                            nutrientsAlarm = null,
+                            nutrientsPeriod = null,
+                            repotAlarm = true,
+                            repotPeriod = null,
                         ),
                     )
                 mockMvc.post("/plant") {
@@ -90,7 +98,7 @@ class PlantControllerTest : ExpectSpec() {
                     MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
                 }.andDo { print() }
             }
-            expect("마지막으로 물 준 날짜가 과거라면 예외응답이 반환되어야 한다.") {
+            expect("마지막으로 물 준 날짜가 미래라면 예외응답이 반환되어야 한다.") {
                 val json =
                     objectMapper.writeValueAsString(
                         PlantSaveRequest(
@@ -99,7 +107,11 @@ class PlantControllerTest : ExpectSpec() {
                             startDate = START_DATE,
                             lastWateredDate = FUTURE_DATE,
                             waterAlarm = true,
-                            nutrientsAlarm = false,
+                            waterPeriod = 60,
+                            nutrientsAlarm = null,
+                            nutrientsPeriod = null,
+                            repotAlarm = true,
+                            repotPeriod = null,
                         ),
                     )
                 mockMvc.post("/plant") {
