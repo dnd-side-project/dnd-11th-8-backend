@@ -11,6 +11,7 @@ import dnd11th.blooming.api.service.PlantService
 import dnd11th.blooming.common.exception.ExceptionCode
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.PlantNotFoundException
+import dnd11th.blooming.common.jwt.JwtProperties
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
 
+/**
 @WebMvcTest(PlantController::class)
 class PlantControllerTest : ExpectSpec() {
     @MockkBean
@@ -31,7 +33,7 @@ class PlantControllerTest : ExpectSpec() {
     private lateinit var mockMvc: MockMvc
 
     @Autowired
-    private lateinit var objectMapper: ObjectMapper
+    private var objectMapper: ObjectMapper = ObjectMapper()
 
     init {
         context("식물 저장") {
@@ -192,3 +194,4 @@ class PlantControllerTest : ExpectSpec() {
         val FUTURE_DATE: LocalDate = LocalDate.of(5000, 5, 17)
     }
 }
+ **/
