@@ -2,12 +2,12 @@ package dnd11th.blooming.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import dnd11th.blooming.api.controller.PlantController
-import dnd11th.blooming.api.dto.PlantDetailResponse
-import dnd11th.blooming.api.dto.PlantResponse
-import dnd11th.blooming.api.dto.PlantSaveRequest
-import dnd11th.blooming.api.dto.PlantSaveResponse
-import dnd11th.blooming.api.service.PlantService
+import dnd11th.blooming.api.controller.MyPlantController
+import dnd11th.blooming.api.dto.MyPlantDetailResponse
+import dnd11th.blooming.api.dto.MyPlantResponse
+import dnd11th.blooming.api.dto.MyPlantSaveRequest
+import dnd11th.blooming.api.dto.MyPlantSaveResponse
+import dnd11th.blooming.api.service.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
@@ -22,10 +22,10 @@ import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
 
-@WebMvcTest(PlantController::class)
+@WebMvcTest(MyPlantController::class)
 class PlantControllerTest : ExpectSpec() {
     @MockkBean
-    private lateinit var plantService: PlantService
+    private lateinit var myPlantService: MyPlantService
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -34,14 +34,14 @@ class PlantControllerTest : ExpectSpec() {
     private lateinit var objectMapper: ObjectMapper
 
     init {
-        context("식물 저장") {
+        context("내 식물 저장") {
             beforeTest {
-                every { plantService.savePlant(any()) } returns
-                    PlantSaveResponse(
+                every { myPlantService.savePlant(any()) } returns
+                    MyPlantSaveResponse(
                         id = ID,
                     )
                 every {
-                    plantService.savePlant(
+                    myPlantService.savePlant(
                         match {
                             it.startDate == FUTURE_DATE || it.lastWateredDate == FUTURE_DATE
                         },
@@ -49,10 +49,10 @@ class PlantControllerTest : ExpectSpec() {
                 } throws
                     InvalidDateException(ErrorType.INVALID_DATE)
             }
-            expect("식물이 정상적으로 저장되어야 한다.") {
+            expect("내 식물이 정상적으로 저장되어야 한다.") {
                 val json =
                     objectMapper.writeValueAsString(
-                        PlantSaveRequest(
+                        MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
                             startDate = START_DATE,
@@ -76,7 +76,7 @@ class PlantControllerTest : ExpectSpec() {
             expect("시작날짜가 미래라면 예외응답이 반환되어야 한다.") {
                 val json =
                     objectMapper.writeValueAsString(
-                        PlantSaveRequest(
+                        MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
                             startDate = FUTURE_DATE,
@@ -101,7 +101,7 @@ class PlantControllerTest : ExpectSpec() {
             expect("마지막으로 물 준 날짜가 미래라면 예외응답이 반환되어야 한다.") {
                 val json =
                     objectMapper.writeValueAsString(
-                        PlantSaveRequest(
+                        MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
                             startDate = START_DATE,
@@ -125,21 +125,21 @@ class PlantControllerTest : ExpectSpec() {
             }
         }
 
-        context("식물 전체 조회") {
-            every { plantService.findAllPlant() } returns
+        context("내 식물 전체 조회") {
+            every { myPlantService.findAllPlant() } returns
                 listOf(
-                    PlantResponse(
+                    MyPlantResponse(
                         id = ID,
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
                     ),
-                    PlantResponse(
+                    MyPlantResponse(
                         id = ID2,
                         nickname = NICKNAME2,
                         scientificName = SCIENTIFIC_NAME2,
                     ),
                 )
-            expect("모든 식물이 조회되어야 한다.") {
+            expect("내 모든 식물이 조회되어야 한다.") {
                 mockMvc.get("/plants")
                     .andExpectAll {
                         status { isOk() }
@@ -154,20 +154,20 @@ class PlantControllerTest : ExpectSpec() {
             }
         }
 
-        context("식물 상세 조회") {
+        context("내 식물 상세 조회") {
             beforeTest {
-                every { plantService.findPlantDetail(ID) } returns
-                    PlantDetailResponse(
+                every { myPlantService.findPlantDetail(ID) } returns
+                    MyPlantDetailResponse(
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
                         startDate = START_DATE,
                         lastWatedDate = LAST_WATERED_DATE,
                     )
-                every { plantService.findPlantDetail(ID2) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_PLANT_ID)
+                every { myPlantService.findPlantDetail(ID2) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
             }
 
-            expect("존재하는 id로 조회하면 식물이 조회되어야 한다.") {
+            expect("존재하는 id로 조회하면 내 식물이 조회되어야 한다.") {
                 mockMvc.get("/plant/$ID")
                     .andExpectAll {
                         status { isOk() }
@@ -181,8 +181,8 @@ class PlantControllerTest : ExpectSpec() {
                 mockMvc.get("/plant/$ID2")
                     .andExpectAll {
                         status { isNotFound() }
-                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 식물입니다.")
-                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_PLANT_ID)
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
                     }.andDo { print() }
             }
         }

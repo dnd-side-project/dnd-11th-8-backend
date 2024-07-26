@@ -1,32 +1,32 @@
 package dnd11th.blooming.api.service
 
-import dnd11th.blooming.api.dto.PlantDetailResponse
-import dnd11th.blooming.api.dto.PlantResponse
-import dnd11th.blooming.api.dto.PlantSaveRequest
-import dnd11th.blooming.api.dto.PlantSaveResponse
+import dnd11th.blooming.api.dto.MyPlantDetailResponse
+import dnd11th.blooming.api.dto.MyPlantResponse
+import dnd11th.blooming.api.dto.MyPlantSaveRequest
+import dnd11th.blooming.api.dto.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Alarm
-import dnd11th.blooming.domain.entity.Plant
-import dnd11th.blooming.domain.repository.PlantRepository
+import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.repository.MyPlantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
-class PlantService(
-    private val plantRepository: PlantRepository,
+class MyPlantService(
+    private val myPlantRepository: MyPlantRepository,
 ) {
     @Transactional
-    fun savePlant(request: PlantSaveRequest): PlantSaveResponse {
+    fun savePlant(request: MyPlantSaveRequest): MyPlantSaveResponse {
         if (request.lastWateredDate.isAfter(LocalDate.now()) || request.startDate.isAfter(LocalDate.now())) {
             throw InvalidDateException(ErrorType.INVALID_DATE)
         }
 
-        val plant =
-            Plant(
+        val myPlant =
+            MyPlant(
                 scientificName = request.scientificName,
                 nickname = request.nickname,
                 startDate = request.startDate,
@@ -42,24 +42,24 @@ class PlantService(
                     ),
             )
 
-        return PlantSaveResponse.from(plantRepository.save(plant))
+        return MyPlantSaveResponse.from(myPlantRepository.save(myPlant))
     }
 
     @Transactional(readOnly = true)
-    fun findAllPlant(): List<PlantResponse> {
-        val plantList = plantRepository.findAll()
+    fun findAllPlant(): List<MyPlantResponse> {
+        val plantList = myPlantRepository.findAll()
 
         return plantList.stream().map { plant ->
-            PlantResponse.from(plant)
+            MyPlantResponse.from(plant)
         }.toList()
     }
 
     @Transactional(readOnly = true)
-    fun findPlantDetail(id: Long): PlantDetailResponse {
+    fun findPlantDetail(id: Long): MyPlantDetailResponse {
         val plant =
-            plantRepository.findByIdOrNull(id)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_PLANT_ID)
+            myPlantRepository.findByIdOrNull(id)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
 
-        return PlantDetailResponse.from(plant)
+        return MyPlantDetailResponse.from(plant)
     }
 }

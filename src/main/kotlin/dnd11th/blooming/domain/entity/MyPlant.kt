@@ -9,7 +9,7 @@ import jakarta.persistence.Id
 import java.time.LocalDate
 
 @Entity
-class Plant(
+class MyPlant(
     @Column(nullable = false)
     var scientificName: String,
     @Column

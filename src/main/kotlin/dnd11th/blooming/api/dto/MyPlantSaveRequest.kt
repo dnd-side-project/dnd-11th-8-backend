@@ -2,7 +2,7 @@ package dnd11th.blooming.api.dto
 
 import java.time.LocalDate
 
-data class PlantSaveRequest(
+data class MyPlantSaveRequest(
     val scientificName: String,
     val nickname: String,
     val startDate: LocalDate,
