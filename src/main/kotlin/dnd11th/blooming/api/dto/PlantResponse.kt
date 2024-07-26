@@ -4,14 +4,14 @@ import dnd11th.blooming.domain.entity.Plant
 
 data class PlantResponse(
     val id: Long,
-    val name: String,
+    val nickname: String,
     val scientificName: String,
 ) {
     companion object {
         fun from(plant: Plant): PlantResponse =
             PlantResponse(
                 id = plant.id,
-                name = plant.name,
+                nickname = plant.nickname,
                 scientificName = plant.scientificName,
             )
     }

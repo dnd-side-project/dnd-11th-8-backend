@@ -4,7 +4,7 @@ import dnd11th.blooming.domain.entity.Plant
 import java.time.LocalDate
 
 data class PlantDetailResponse(
-    val name: String,
+    val nickname: String,
     val scientificName: String,
     val startDate: LocalDate,
     val lastWatedDate: LocalDate,
@@ -13,7 +13,7 @@ data class PlantDetailResponse(
     companion object {
         fun from(plant: Plant): PlantDetailResponse =
             PlantDetailResponse(
-                name = plant.name,
+                nickname = plant.nickname,
                 scientificName = plant.scientificName,
                 startDate = plant.startDate,
                 lastWatedDate = plant.lastWateredDate,

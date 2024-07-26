@@ -28,7 +28,7 @@ class PlantService(
         val plant =
             Plant(
                 scientificName = request.scientificName,
-                name = request.name,
+                nickname = request.nickname,
                 startDate = request.startDate,
                 lastWateredDate = request.lastWateredDate,
                 alarm =

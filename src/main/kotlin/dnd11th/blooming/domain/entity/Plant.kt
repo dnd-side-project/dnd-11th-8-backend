@@ -13,7 +13,7 @@ class Plant(
     @Column(nullable = false)
     var scientificName: String,
     @Column
-    var name: String,
+    var nickname: String,
     @Column
     var startDate: LocalDate = LocalDate.now(),
     @Column

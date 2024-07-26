@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 data class PlantSaveRequest(
     val scientificName: String,
-    val name: String,
+    val nickname: String,
     val startDate: LocalDate,
     val lastWateredDate: LocalDate,
     val waterAlarm: Boolean?,
