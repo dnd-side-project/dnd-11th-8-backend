@@ -7,7 +7,6 @@ import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Alarm
 import dnd11th.blooming.domain.entity.Plant
-import dnd11th.blooming.domain.repository.AlarmRepository
 import dnd11th.blooming.domain.repository.PlantRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -20,24 +19,29 @@ import java.time.LocalDate
 class PlantServiceTest : BehaviorSpec(
     {
         val plantRepsitory = mockk<PlantRepository>()
-        val alarmRepository = mockk<AlarmRepository>()
-        val plantService = PlantService(plantRepsitory, alarmRepository)
+        val plantService = PlantService(plantRepsitory)
 
         Context("식물 저장") {
             every { plantRepsitory.save(any()) } returns
                 Plant(
                     scientificName = SCIENTIFIC_NAME,
-                    name = NAME,
+                    nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    Alarm(
+                        waterAlarm = true,
+                        waterPeriod = 5,
+                        nutrientsAlarm = false,
+                        nutrientsPeriod = 30,
+                        repotAlarm = true,
+                        repotPeriod = 60,
+                    ),
                 )
-            every { alarmRepository.save(any()) } returns
-                Alarm.defaultAlarm()
             Given("정상 요청으로") {
                 val request =
                     PlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
-                        name = NAME,
+                        nickname = NICKNAME,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         waterAlarm = true,
@@ -58,7 +62,7 @@ class PlantServiceTest : BehaviorSpec(
                 val request =
                     PlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
-                        name = NAME,
+                        nickname = NICKNAME,
                         startDate = FUTURE_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         waterAlarm = true,
@@ -83,7 +87,7 @@ class PlantServiceTest : BehaviorSpec(
                 val request =
                     PlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
-                        name = NAME,
+                        nickname = NICKNAME,
                         startDate = START_DATE,
                         lastWateredDate = FUTURE_DATE,
                         waterAlarm = true,
@@ -111,15 +115,31 @@ class PlantServiceTest : BehaviorSpec(
                 listOf(
                     Plant(
                         scientificName = SCIENTIFIC_NAME,
-                        name = NAME,
+                        nickname = NICKNAME,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
+                        Alarm(
+                            waterAlarm = true,
+                            waterPeriod = 5,
+                            nutrientsAlarm = false,
+                            nutrientsPeriod = 30,
+                            repotAlarm = true,
+                            repotPeriod = 60,
+                        ),
                     ),
                     Plant(
                         scientificName = SCIENTIFIC_NAME2,
-                        name = NAME2,
+                        nickname = NICKNAME2,
                         startDate = START_DATE2,
                         lastWateredDate = LAST_WATERED_DATE2,
+                        Alarm(
+                            waterAlarm = true,
+                            waterPeriod = 5,
+                            nutrientsAlarm = false,
+                            nutrientsPeriod = 30,
+                            repotAlarm = true,
+                            repotPeriod = 60,
+                        ),
                     ),
                 )
             Given("식물을 전체 조회할 때") {
@@ -127,9 +147,9 @@ class PlantServiceTest : BehaviorSpec(
                     val response = plantService.findAllPlant()
                     Then("식물 리스트가 조회되어야 한다.") {
                         response.size shouldBe 2
-                        response[0].name shouldBe NAME
+                        response[0].nickname shouldBe NICKNAME
                         response[0].scientificName shouldBe SCIENTIFIC_NAME
-                        response[1].name shouldBe NAME2
+                        response[1].nickname shouldBe NICKNAME2
                         response[1].scientificName shouldBe SCIENTIFIC_NAME2
                     }
                 }
@@ -140,9 +160,17 @@ class PlantServiceTest : BehaviorSpec(
             every { plantRepsitory.findByIdOrNull(ID) } returns
                 Plant(
                     scientificName = SCIENTIFIC_NAME,
-                    name = NAME,
+                    nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    Alarm(
+                        waterAlarm = true,
+                        waterPeriod = 5,
+                        nutrientsAlarm = false,
+                        nutrientsPeriod = 30,
+                        repotAlarm = true,
+                        repotPeriod = 60,
+                    ),
                 )
             every { plantRepsitory.findByIdOrNull(not(eq(ID))) } returns
                 null
@@ -150,7 +178,7 @@ class PlantServiceTest : BehaviorSpec(
                 When("상세 조회하면") {
                     val response = plantService.findPlantDetail(ID)
                     Then("상세 정보가 조회되어야 한다.") {
-                        response.name shouldBe NAME
+                        response.nickname shouldBe NICKNAME
                         response.scientificName shouldBe SCIENTIFIC_NAME
                         response.startDate shouldBe START_DATE
                         response.lastWatedDate shouldBe LAST_WATERED_DATE
@@ -175,13 +203,13 @@ class PlantServiceTest : BehaviorSpec(
     companion object {
         const val ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
-        const val NAME = "뿡뿡이"
+        const val NICKNAME = "뿡뿡이"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
 
         const val ID2 = 2L
         const val SCIENTIFIC_NAME2 = "병아리 눈물"
-        const val NAME2 = "빵빵이"
+        const val NICKNAME2 = "빵빵이"
         val START_DATE2: LocalDate = LocalDate.of(2024, 3, 20)
         val LAST_WATERED_DATE2: LocalDate = LocalDate.of(2024, 7, 20)
 

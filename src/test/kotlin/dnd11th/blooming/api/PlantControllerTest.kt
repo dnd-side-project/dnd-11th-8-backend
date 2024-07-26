@@ -54,7 +54,7 @@ class PlantControllerTest : ExpectSpec() {
                     objectMapper.writeValueAsString(
                         PlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
-                            name = NAME,
+                            nickname = NICKNAME,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
@@ -78,7 +78,7 @@ class PlantControllerTest : ExpectSpec() {
                     objectMapper.writeValueAsString(
                         PlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
-                            name = NAME,
+                            nickname = NICKNAME,
                             startDate = FUTURE_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
@@ -103,7 +103,7 @@ class PlantControllerTest : ExpectSpec() {
                     objectMapper.writeValueAsString(
                         PlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
-                            name = NAME,
+                            nickname = NICKNAME,
                             startDate = START_DATE,
                             lastWateredDate = FUTURE_DATE,
                             waterAlarm = true,
@@ -130,12 +130,12 @@ class PlantControllerTest : ExpectSpec() {
                 listOf(
                     PlantResponse(
                         id = ID,
-                        name = NAME,
+                        nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
                     ),
                     PlantResponse(
                         id = ID2,
-                        name = NAME2,
+                        nickname = NICKNAME2,
                         scientificName = SCIENTIFIC_NAME2,
                     ),
                 )
@@ -145,10 +145,10 @@ class PlantControllerTest : ExpectSpec() {
                         status { isOk() }
                         MockMvcResultMatchers.jsonPath("$.size()").value(2)
                         MockMvcResultMatchers.jsonPath("$[0].id").value(ID)
-                        MockMvcResultMatchers.jsonPath("$[0].name").value(NAME)
+                        MockMvcResultMatchers.jsonPath("$[0].name").value(NICKNAME)
                         MockMvcResultMatchers.jsonPath("$[0].scientificName").value(SCIENTIFIC_NAME)
                         MockMvcResultMatchers.jsonPath("$[1].id").value(ID2)
-                        MockMvcResultMatchers.jsonPath("$[1].name").value(NAME2)
+                        MockMvcResultMatchers.jsonPath("$[1].name").value(NICKNAME2)
                         MockMvcResultMatchers.jsonPath("$[1].scientificName").value(SCIENTIFIC_NAME2)
                     }.andDo { print() }
             }
@@ -158,7 +158,7 @@ class PlantControllerTest : ExpectSpec() {
             beforeTest {
                 every { plantService.findPlantDetail(ID) } returns
                     PlantDetailResponse(
-                        name = NAME,
+                        nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
                         startDate = START_DATE,
                         lastWatedDate = LAST_WATERED_DATE,
@@ -171,7 +171,7 @@ class PlantControllerTest : ExpectSpec() {
                 mockMvc.get("/plant/$ID")
                     .andExpectAll {
                         status { isOk() }
-                        MockMvcResultMatchers.jsonPath("$.name").value(NAME)
+                        MockMvcResultMatchers.jsonPath("$.name").value(NICKNAME)
                         MockMvcResultMatchers.jsonPath("$.scientificName").value(SCIENTIFIC_NAME)
                         MockMvcResultMatchers.jsonPath("$.startDate").value(START_DATE)
                         MockMvcResultMatchers.jsonPath("$.lastWatedDate").value(LAST_WATERED_DATE)
@@ -191,13 +191,13 @@ class PlantControllerTest : ExpectSpec() {
     companion object {
         const val ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
-        const val NAME = "뿡뿡이"
+        const val NICKNAME = "뿡뿡이"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
 
         const val ID2 = 2L
         const val SCIENTIFIC_NAME2 = "병아리 눈물"
-        const val NAME2 = "빵빵이"
+        const val NICKNAME2 = "빵빵이"
         val START_DATE2: LocalDate = LocalDate.of(2024, 3, 20)
         val LAST_WATERED_DATE2: LocalDate = LocalDate.of(2024, 7, 20)
 
