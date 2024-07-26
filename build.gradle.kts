@@ -29,8 +29,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("com.mysql:mysql-connector-j")
 
-    //Security
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    // Configuration
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    // Jwt
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
     implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
