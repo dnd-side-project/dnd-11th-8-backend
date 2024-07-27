@@ -9,8 +9,6 @@ import dnd11th.blooming.api.dto.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.domain.entity.Alarm
-import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.repository.MyPlantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -27,24 +25,7 @@ class MyPlantService(
             throw InvalidDateException(ErrorType.INVALID_DATE)
         }
 
-        val myPlant =
-            MyPlant(
-                scientificName = request.scientificName,
-                nickname = request.nickname,
-                startDate = request.startDate,
-                lastWateredDate = request.lastWateredDate,
-                alarm =
-                    Alarm(
-                        waterAlarm = request.waterAlarm ?: false,
-                        waterPeriod = request.waterPeriod ?: 3,
-                        nutrientsAlarm = request.nutrientsAlarm ?: false,
-                        nutrientsPeriod = request.nutrientsPeriod ?: 30,
-                        repotAlarm = request.repotAlarm ?: false,
-                        repotPeriod = request.repotPeriod ?: 60,
-                    ),
-            )
-
-        return MyPlantSaveResponse.from(myPlantRepository.save(myPlant))
+        return MyPlantSaveResponse.from(myPlantRepository.save(request.toMyPlant()))
     }
 
     @Transactional(readOnly = true)
