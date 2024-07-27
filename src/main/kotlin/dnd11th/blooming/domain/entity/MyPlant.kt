@@ -1,6 +1,7 @@
 package dnd11th.blooming.domain.entity
 
 import jakarta.persistence.Column
+import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -8,19 +9,17 @@ import jakarta.persistence.Id
 import java.time.LocalDate
 
 @Entity
-class Plant(
+class MyPlant(
     @Column(nullable = false)
     var scientificName: String,
     @Column
-    var name: String,
+    var nickname: String,
     @Column
     var startDate: LocalDate = LocalDate.now(),
     @Column
     var lastWateredDate: LocalDate = LocalDate.now(),
-    @Column
-    var waterAlarm: Boolean = true,
-    @Column
-    var nutrientsAlarm: Boolean = true,
+    @Embedded
+    var alarm: Alarm,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
