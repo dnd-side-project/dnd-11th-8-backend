@@ -4,23 +4,22 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.Date
 import javax.crypto.SecretKey
 
 @Component
 class JwtProvider(
-    private val jwtProperties: JwtProperties,
+    @Value("\${auth.jwt.expiration}") private val expiration: Long,
+    private val secretKey: SecretKey,
 ) {
-    private val secretKey: SecretKey = Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray())
-
     fun generateAccessToken(
         userId: Long,
         email: String,
     ): String {
         val now = Date()
-        val expiry = Date(now.time + jwtProperties.expiration)
+        val expiry = Date(now.time + expiration)
         return Jwts.builder()
             .expiration(expiry)
             .claim("id", userId)

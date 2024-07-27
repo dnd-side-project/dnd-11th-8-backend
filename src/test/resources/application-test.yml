@@ -1,0 +1,23 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:blooming_test;MODE=MYSQL;
+    username: sa
+    password:
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate.format_sql: true
+      dialect: org.hibernate.dialect.H2Dialect
+
+auth:
+  jwt:
+    secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+    expiration: 100000000
