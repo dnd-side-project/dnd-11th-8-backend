@@ -57,18 +57,18 @@ class MyPlantService(
     }
 
     @Transactional(readOnly = true)
-    fun findPlantDetail(id: Long): MyPlantDetailResponse {
+    fun findPlantDetail(myPlantId: Long): MyPlantDetailResponse {
         val plant =
-            myPlantRepository.findByIdOrNull(id)
+            myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
 
         return MyPlantDetailResponse.from(plant)
     }
 
     @Transactional(readOnly = true)
-    fun findPlantAlarm(id: Long): AlarmResponse {
+    fun findPlantAlarm(myPlantId: Long): AlarmResponse {
         val plant =
-            myPlantRepository.findByIdOrNull(id)
+            myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
 
         val alarm = plant.alarm
@@ -78,11 +78,11 @@ class MyPlantService(
 
     @Transactional
     fun editPlantAlarm(
-        id: Long,
+        myPlantId: Long,
         request: AlarmEditRequest,
     ) {
         val plant =
-            myPlantRepository.findByIdOrNull(id)
+            myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
 
         val alarm = plant.alarm

@@ -48,7 +48,7 @@ class PlantServiceTest : BehaviorSpec(
                 When("내 식물을 저장하면") {
                     val response = myPlantService.savePlant(request)
                     Then("정상적으로 저장되어야 한다.") {
-                        response.id shouldBe 0
+                        response.myPlantId shouldBe 0
                     }
                 }
             }

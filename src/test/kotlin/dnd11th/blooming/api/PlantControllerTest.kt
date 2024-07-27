@@ -47,7 +47,7 @@ class PlantControllerTest : ExpectSpec() {
             beforeTest {
                 every { myPlantService.savePlant(any()) } returns
                     MyPlantSaveResponse(
-                        id = ID,
+                        myPlantId = ID,
                     )
                 every {
                     myPlantService.savePlant(
@@ -79,7 +79,7 @@ class PlantControllerTest : ExpectSpec() {
                     content = json
                 }.andExpectAll {
                     status { isOk() }
-                    MockMvcResultMatchers.jsonPath("$.id").value(ID)
+                    MockMvcResultMatchers.jsonPath("$.myPlantId").value(ID)
                 }.andDo { print() }
             }
             expect("시작날짜가 미래라면 예외응답이 반환되어야 한다.") {
@@ -138,12 +138,12 @@ class PlantControllerTest : ExpectSpec() {
             every { myPlantService.findAllPlant() } returns
                 listOf(
                     MyPlantResponse(
-                        id = ID,
+                        myPlantId = ID,
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
                     ),
                     MyPlantResponse(
-                        id = ID2,
+                        myPlantId = ID2,
                         nickname = NICKNAME2,
                         scientificName = SCIENTIFIC_NAME2,
                     ),
@@ -153,10 +153,10 @@ class PlantControllerTest : ExpectSpec() {
                     .andExpectAll {
                         status { isOk() }
                         MockMvcResultMatchers.jsonPath("$.size()").value(2)
-                        MockMvcResultMatchers.jsonPath("$[0].id").value(ID)
+                        MockMvcResultMatchers.jsonPath("$[0].myPlantId").value(ID)
                         MockMvcResultMatchers.jsonPath("$[0].name").value(NICKNAME)
                         MockMvcResultMatchers.jsonPath("$[0].scientificName").value(SCIENTIFIC_NAME)
-                        MockMvcResultMatchers.jsonPath("$[1].id").value(ID2)
+                        MockMvcResultMatchers.jsonPath("$[1].myPlantId").value(ID2)
                         MockMvcResultMatchers.jsonPath("$[1].name").value(NICKNAME2)
                         MockMvcResultMatchers.jsonPath("$[1].scientificName").value(SCIENTIFIC_NAME2)
                     }.andDo { print() }

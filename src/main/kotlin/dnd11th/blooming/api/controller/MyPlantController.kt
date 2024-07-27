@@ -28,19 +28,19 @@ class MyPlantController(
     @GetMapping
     fun getAllPlant(): List<MyPlantResponse> = myPlantService.findAllPlant()
 
-    @GetMapping("/{id}")
+    @GetMapping("/{myPlantId}")
     fun getPlantDetail(
-        @PathVariable id: Long,
-    ): MyPlantDetailResponse = myPlantService.findPlantDetail(id)
+        @PathVariable myPlantId: Long,
+    ): MyPlantDetailResponse = myPlantService.findPlantDetail(myPlantId)
 
-    @GetMapping("/{id}/alarm")
+    @GetMapping("/{myPlantId}/alarm")
     fun getPlantAlarm(
-        @PathVariable id: Long,
-    ): AlarmResponse = myPlantService.findPlantAlarm(id)
+        @PathVariable myPlantId: Long,
+    ): AlarmResponse = myPlantService.findPlantAlarm(myPlantId)
 
-    @PutMapping("/{id}/alarm")
+    @PutMapping("/{myPlantId}/alarm")
     fun putPlantAlarm(
-        @PathVariable id: Long,
+        @PathVariable myPlantId: Long,
         @RequestBody request: AlarmEditRequest,
-    ) = myPlantService.editPlantAlarm(id, request)
+    ) = myPlantService.editPlantAlarm(myPlantId, request)
 }
