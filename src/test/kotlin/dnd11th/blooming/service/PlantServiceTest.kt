@@ -1,6 +1,6 @@
 package dnd11th.blooming.service
 
-import dnd11th.blooming.api.dto.AlarmEditRequest
+import dnd11th.blooming.api.dto.AlarmModifyRequest
 import dnd11th.blooming.api.dto.MyPlantSaveRequest
 import dnd11th.blooming.api.service.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
@@ -223,7 +223,7 @@ class PlantServiceTest : BehaviorSpec(
                 null
             Given("존재하는 ID와 요청으로") {
                 val request =
-                    AlarmEditRequest(
+                    AlarmModifyRequest(
                         waterAlarm = NEW_WATER_ALARM,
                         waterPeriod = NEW_WATER_PERIOD,
                         nutrientsAlarm = NEW_NUTRIENTS_ALARM,
@@ -239,7 +239,7 @@ class PlantServiceTest : BehaviorSpec(
             }
             Given("존재하지 않는 ID와 요청으로") {
                 val request =
-                    AlarmEditRequest(
+                    AlarmModifyRequest(
                         waterAlarm = NEW_WATER_ALARM,
                         waterPeriod = NEW_WATER_PERIOD,
                         nutrientsAlarm = NEW_NUTRIENTS_ALARM,

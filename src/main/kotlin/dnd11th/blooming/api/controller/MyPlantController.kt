@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.controller
 
-import dnd11th.blooming.api.dto.AlarmEditRequest
+import dnd11th.blooming.api.dto.AlarmModifyRequest
 import dnd11th.blooming.api.dto.AlarmResponse
 import dnd11th.blooming.api.dto.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.MyPlantResponse
@@ -41,6 +41,6 @@ class MyPlantController(
     @PatchMapping("/{myPlantId}/alarm")
     fun modifyPlantAlarm(
         @PathVariable myPlantId: Long,
-        @RequestBody request: AlarmEditRequest,
+        @RequestBody request: AlarmModifyRequest,
     ) = myPlantService.modifyPlantAlarm(myPlantId, request)
 }

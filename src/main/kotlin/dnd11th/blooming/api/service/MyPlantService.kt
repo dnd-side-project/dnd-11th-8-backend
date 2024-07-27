@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.service
 
-import dnd11th.blooming.api.dto.AlarmEditRequest
+import dnd11th.blooming.api.dto.AlarmModifyRequest
 import dnd11th.blooming.api.dto.AlarmResponse
 import dnd11th.blooming.api.dto.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.MyPlantResponse
@@ -60,19 +60,12 @@ class MyPlantService(
     @Transactional
     fun modifyPlantAlarm(
         myPlantId: Long,
-        request: AlarmEditRequest,
+        request: AlarmModifyRequest,
     ) {
         val plant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
 
-        val alarm = plant.alarm
-
-        request.waterAlarm?.let { alarm.waterAlarm = it }
-        request.waterPeriod?.let { alarm.waterPeriod = it }
-        request.nutrientsAlarm?.let { alarm.nutrientsAlarm = it }
-        request.nutrientsPeriod?.let { alarm.nutrientsPeriod = it }
-        request.repotAlarm?.let { alarm.repotAlarm = it }
-        request.repotPeriod?.let { alarm.repotPeriod = it }
+        plant.alarm = request.toAlarm()
     }
 }

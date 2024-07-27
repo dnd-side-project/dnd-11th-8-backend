@@ -3,7 +3,7 @@ package dnd11th.blooming.api
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.controller.MyPlantController
-import dnd11th.blooming.api.dto.AlarmEditRequest
+import dnd11th.blooming.api.dto.AlarmModifyRequest
 import dnd11th.blooming.api.dto.AlarmResponse
 import dnd11th.blooming.api.dto.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.MyPlantResponse
@@ -241,7 +241,7 @@ class PlantControllerTest : ExpectSpec() {
             expect("존재하는 id로 수정하면 정상응답이 반환되어야 한다.") {
                 val json =
                     objectMapper.writeValueAsString(
-                        AlarmEditRequest(
+                        AlarmModifyRequest(
                             waterAlarm = NEW_WATER_ALARM,
                             waterPeriod = NEW_WATER_PERIOD,
                             nutrientsAlarm = NEW_NUTRIENTS_ALARM,
@@ -261,7 +261,7 @@ class PlantControllerTest : ExpectSpec() {
             expect("존재하지 않는 id로 수정하면 예외응답이 반환되어야 한다.") {
                 val json =
                     objectMapper.writeValueAsString(
-                        AlarmEditRequest(
+                        AlarmModifyRequest(
                             waterAlarm = NEW_WATER_ALARM,
                             waterPeriod = NEW_WATER_PERIOD,
                             nutrientsAlarm = NEW_NUTRIENTS_ALARM,
