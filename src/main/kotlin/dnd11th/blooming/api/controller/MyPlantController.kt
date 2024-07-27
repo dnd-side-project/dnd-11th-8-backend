@@ -21,26 +21,26 @@ class MyPlantController(
     private val myPlantService: MyPlantService,
 ) {
     @PostMapping
-    fun createPlant(
+    fun savePlant(
         @RequestBody request: MyPlantSaveRequest,
     ): MyPlantSaveResponse = myPlantService.savePlant(request)
 
     @GetMapping
-    fun getAllPlant(): List<MyPlantResponse> = myPlantService.findAllPlant()
+    fun findAllPlant(): List<MyPlantResponse> = myPlantService.findAllPlant()
 
     @GetMapping("/{myPlantId}")
-    fun getPlantDetail(
+    fun findPlantDetail(
         @PathVariable myPlantId: Long,
     ): MyPlantDetailResponse = myPlantService.findPlantDetail(myPlantId)
 
     @GetMapping("/{myPlantId}/alarm")
-    fun getPlantAlarm(
+    fun findPlantAlarm(
         @PathVariable myPlantId: Long,
     ): AlarmResponse = myPlantService.findPlantAlarm(myPlantId)
 
     @PatchMapping("/{myPlantId}/alarm")
-    fun putPlantAlarm(
+    fun modifyPlantAlarm(
         @PathVariable myPlantId: Long,
         @RequestBody request: AlarmEditRequest,
-    ) = myPlantService.editPlantAlarm(myPlantId, request)
+    ) = myPlantService.modifyPlantAlarm(myPlantId, request)
 }

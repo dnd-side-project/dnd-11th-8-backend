@@ -232,7 +232,7 @@ class PlantServiceTest : BehaviorSpec(
                         repotPeriod = NEW_REPOT_PERIDO,
                     )
                 When("알림 변경 요청을 하면") {
-                    myPlantService.editPlantAlarm(ID, request)
+                    myPlantService.modifyPlantAlarm(ID, request)
                     Then("내 식물의 알림 정보가 변경되어야 한다.") {
                     }
                 }
@@ -251,7 +251,7 @@ class PlantServiceTest : BehaviorSpec(
                     Then("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                         val exception =
                             shouldThrow<NotFoundException> {
-                                myPlantService.editPlantAlarm(ID2, request)
+                                myPlantService.modifyPlantAlarm(ID2, request)
                             }
                         exception.message shouldBe "존재하지 않는 내 식물입니다."
                         exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID

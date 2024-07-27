@@ -77,7 +77,7 @@ class MyPlantService(
     }
 
     @Transactional
-    fun editPlantAlarm(
+    fun modifyPlantAlarm(
         myPlantId: Long,
         request: AlarmEditRequest,
     ) {

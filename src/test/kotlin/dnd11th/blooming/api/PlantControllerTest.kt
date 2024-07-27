@@ -234,8 +234,8 @@ class PlantControllerTest : ExpectSpec() {
 
         context("내 식물의 알림 수정") {
             beforeTest {
-                every { myPlantService.editPlantAlarm(ID, any()) } just runs
-                every { myPlantService.editPlantAlarm(not(eq(ID)), any()) } throws
+                every { myPlantService.modifyPlantAlarm(ID, any()) } just runs
+                every { myPlantService.modifyPlantAlarm(not(eq(ID)), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
             }
             expect("존재하는 id로 수정하면 정상응답이 반환되어야 한다.") {
