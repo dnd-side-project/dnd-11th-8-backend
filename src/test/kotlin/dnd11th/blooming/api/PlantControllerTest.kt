@@ -3,6 +3,8 @@ package dnd11th.blooming.api
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.controller.MyPlantController
+import dnd11th.blooming.api.dto.AlarmEditRequest
+import dnd11th.blooming.api.dto.AlarmResponse
 import dnd11th.blooming.api.dto.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.MyPlantResponse
 import dnd11th.blooming.api.dto.MyPlantSaveRequest
@@ -14,12 +16,15 @@ import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.jwt.JwtProvider
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
 
@@ -190,6 +195,92 @@ class PlantControllerTest : ExpectSpec() {
                     }.andDo { print() }
             }
         }
+
+        context("내 식물의 알림 조회") {
+            beforeTest {
+                every { myPlantService.findPlantAlarm(ID) } returns
+                    AlarmResponse(
+                        waterAlarm = WATER_ALARM,
+                        waterPeriod = WATER_PERIOD,
+                        nutrientsAlarm = NUTRIENTS_ALARM,
+                        nutrientsPeriod = NUTRIENTS_PERIOD,
+                        repotAlarm = REPOT_ALARM,
+                        repotPeriod = REPOT_PERIDO,
+                    )
+                every { myPlantService.findPlantAlarm(not(eq(ID))) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+            }
+            expect("존재하는 id로 조회하면 내 알림이 조회되어야 한다.") {
+                mockMvc.get("/api/v1/plants/$ID/alarm")
+                    .andExpectAll {
+                        status { isOk() }
+                        MockMvcResultMatchers.jsonPath("$.waterAlarm").value(WATER_ALARM)
+                        MockMvcResultMatchers.jsonPath("$.waterPeriod").value(WATER_PERIOD)
+                        MockMvcResultMatchers.jsonPath("$.nutrientsAlarm").value(NUTRIENTS_ALARM)
+                        MockMvcResultMatchers.jsonPath("$.nutrientsPeriod").value(NUTRIENTS_PERIOD)
+                        MockMvcResultMatchers.jsonPath("$.repotAlarm").value(REPOT_ALARM)
+                        MockMvcResultMatchers.jsonPath("$.repotPeriod").value(REPOT_PERIDO)
+                    }.andDo { print() }
+            }
+            expect("존재하지 않는 id로 조회하면 예외응답이 반환되어야 한다.") {
+                mockMvc.get("/api/v1/plants/$ID2/alarm")
+                    .andExpectAll {
+                        status { isNotFound() }
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    }.andDo { print() }
+            }
+        }
+
+        context("내 식물의 알림 수정") {
+            beforeTest {
+                every { myPlantService.editPlantAlarm(ID, any()) } just runs
+                every { myPlantService.editPlantAlarm(not(eq(ID)), any()) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+            }
+            expect("존재하는 id로 수정하면 정상응답이 반환되어야 한다.") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        AlarmEditRequest(
+                            waterAlarm = NEW_WATER_ALARM,
+                            waterPeriod = NEW_WATER_PERIOD,
+                            nutrientsAlarm = NEW_NUTRIENTS_ALARM,
+                            nutrientsPeriod = NEW_NUTRIENTS_PERIOD,
+                            repotAlarm = NEW_REPOT_ALARM,
+                            repotPeriod = NEW_REPOT_PERIDO,
+                        ),
+                    )
+                mockMvc.put("/api/v1/plants/$ID/alarm") {
+                    contentType = MediaType.APPLICATION_JSON
+                    content = json
+                }
+                    .andExpectAll {
+                        status { isOk() }
+                    }.andDo { print() }
+            }
+            expect("존재하지 않는 id로 수정하면 예외응답이 반환되어야 한다.") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        AlarmEditRequest(
+                            waterAlarm = NEW_WATER_ALARM,
+                            waterPeriod = NEW_WATER_PERIOD,
+                            nutrientsAlarm = NEW_NUTRIENTS_ALARM,
+                            nutrientsPeriod = NEW_NUTRIENTS_PERIOD,
+                            repotAlarm = NEW_REPOT_ALARM,
+                            repotPeriod = NEW_REPOT_PERIDO,
+                        ),
+                    )
+                mockMvc.put("/api/v1/plants/$ID2/alarm") {
+                    contentType = MediaType.APPLICATION_JSON
+                    content = json
+                }
+                    .andExpectAll {
+                        status { isNotFound() }
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    }.andDo { print() }
+            }
+        }
     }
 
     companion object {
@@ -206,5 +297,18 @@ class PlantControllerTest : ExpectSpec() {
         val LAST_WATERED_DATE2: LocalDate = LocalDate.of(2024, 7, 20)
 
         val FUTURE_DATE: LocalDate = LocalDate.of(5000, 5, 17)
+
+        const val WATER_ALARM = true
+        const val WATER_PERIOD = 3
+        const val NUTRIENTS_ALARM = true
+        const val NUTRIENTS_PERIOD = 30
+        const val REPOT_ALARM = true
+        const val REPOT_PERIDO = 60
+        const val NEW_WATER_ALARM = false
+        const val NEW_WATER_PERIOD = 5
+        const val NEW_NUTRIENTS_ALARM = false
+        const val NEW_NUTRIENTS_PERIOD = 45
+        const val NEW_REPOT_ALARM = false
+        const val NEW_REPOT_PERIDO = 70
     }
 }
