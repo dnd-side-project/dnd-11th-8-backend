@@ -65,7 +65,7 @@ class PlantControllerTest : ExpectSpec() {
                             repotPeriod = null,
                         ),
                     )
-                mockMvc.post("/plant") {
+                mockMvc.post("/api/v1/plants") {
                     contentType = MediaType.APPLICATION_JSON
                     content = json
                 }.andExpectAll {
@@ -89,7 +89,7 @@ class PlantControllerTest : ExpectSpec() {
                             repotPeriod = null,
                         ),
                     )
-                mockMvc.post("/plant") {
+                mockMvc.post("/api/v1/plants") {
                     contentType = MediaType.APPLICATION_JSON
                     content = json
                 }.andExpectAll {
@@ -114,7 +114,7 @@ class PlantControllerTest : ExpectSpec() {
                             repotPeriod = null,
                         ),
                     )
-                mockMvc.post("/plant") {
+                mockMvc.post("/api/v1/plants") {
                     contentType = MediaType.APPLICATION_JSON
                     content = json
                 }.andExpectAll {
@@ -140,7 +140,7 @@ class PlantControllerTest : ExpectSpec() {
                     ),
                 )
             expect("내 모든 식물이 조회되어야 한다.") {
-                mockMvc.get("/plants")
+                mockMvc.get("/api/v1/plants")
                     .andExpectAll {
                         status { isOk() }
                         MockMvcResultMatchers.jsonPath("$.size()").value(2)
@@ -168,7 +168,7 @@ class PlantControllerTest : ExpectSpec() {
             }
 
             expect("존재하는 id로 조회하면 내 식물이 조회되어야 한다.") {
-                mockMvc.get("/plant/$ID")
+                mockMvc.get("/api/v1/plants/$ID")
                     .andExpectAll {
                         status { isOk() }
                         MockMvcResultMatchers.jsonPath("$.name").value(NICKNAME)
@@ -178,7 +178,7 @@ class PlantControllerTest : ExpectSpec() {
                     }.andDo { print() }
             }
             expect("존재하지 않는 id로 조회하면 예외응답이 반한되어야 한다.") {
-                mockMvc.get("/plant/$ID2")
+                mockMvc.get("/api/v1/plants/$ID2")
                     .andExpectAll {
                         status { isNotFound() }
                         MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
