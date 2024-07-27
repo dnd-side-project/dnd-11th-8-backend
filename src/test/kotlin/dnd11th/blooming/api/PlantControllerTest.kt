@@ -23,8 +23,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
 
@@ -250,7 +250,7 @@ class PlantControllerTest : ExpectSpec() {
                             repotPeriod = NEW_REPOT_PERIDO,
                         ),
                     )
-                mockMvc.put("/api/v1/plants/$ID/alarm") {
+                mockMvc.patch("/api/v1/plants/$ID/alarm") {
                     contentType = MediaType.APPLICATION_JSON
                     content = json
                 }
@@ -270,7 +270,7 @@ class PlantControllerTest : ExpectSpec() {
                             repotPeriod = NEW_REPOT_PERIDO,
                         ),
                     )
-                mockMvc.put("/api/v1/plants/$ID2/alarm") {
+                mockMvc.patch("/api/v1/plants/$ID2/alarm") {
                     contentType = MediaType.APPLICATION_JSON
                     content = json
                 }
