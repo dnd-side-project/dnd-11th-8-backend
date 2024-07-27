@@ -10,9 +10,8 @@ import dnd11th.blooming.api.dto.PlantSaveResponse
 import dnd11th.blooming.api.service.PlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
-import dnd11th.blooming.common.exception.PlantNotFoundException
-import dnd11th.blooming.common.jwt.JwtProvider
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.common.jwt.JwtProvider
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
 import org.springframework.beans.factory.annotation.Autowired
