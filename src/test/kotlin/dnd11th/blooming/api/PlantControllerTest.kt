@@ -68,7 +68,7 @@ class PlantControllerTest : ExpectSpec() {
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
                             waterPeriod = 60,
-                            nutrientsAlarm = null,
+                            nutrientsAlarm = false,
                             nutrientsPeriod = null,
                             repotAlarm = true,
                             repotPeriod = null,
@@ -92,7 +92,7 @@ class PlantControllerTest : ExpectSpec() {
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
                             waterPeriod = 60,
-                            nutrientsAlarm = null,
+                            nutrientsAlarm = false,
                             nutrientsPeriod = null,
                             repotAlarm = true,
                             repotPeriod = null,
@@ -117,7 +117,7 @@ class PlantControllerTest : ExpectSpec() {
                             lastWateredDate = FUTURE_DATE,
                             waterAlarm = true,
                             waterPeriod = 60,
-                            nutrientsAlarm = null,
+                            nutrientsAlarm = false,
                             nutrientsPeriod = null,
                             repotAlarm = true,
                             repotPeriod = null,
@@ -300,7 +300,7 @@ class PlantControllerTest : ExpectSpec() {
 
         const val WATER_ALARM = true
         const val WATER_PERIOD = 3
-        const val NUTRIENTS_ALARM = true
+        const val NUTRIENTS_ALARM = false
         const val NUTRIENTS_PERIOD = 30
         const val REPOT_ALARM = true
         const val REPOT_PERIDO = 60

@@ -4,11 +4,11 @@ import dnd11th.blooming.domain.entity.Alarm
 
 data class AlarmResponse(
     val waterAlarm: Boolean,
-    val waterPeriod: Int,
+    val waterPeriod: Int?,
     val nutrientsAlarm: Boolean,
-    val nutrientsPeriod: Int,
+    val nutrientsPeriod: Int?,
     val repotAlarm: Boolean,
-    val repotPeriod: Int,
+    val repotPeriod: Int?,
 ) {
     companion object {
         fun from(alarm: Alarm): AlarmResponse =
