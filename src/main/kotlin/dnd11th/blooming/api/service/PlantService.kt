@@ -4,8 +4,9 @@ import dnd11th.blooming.api.dto.PlantDetailResponse
 import dnd11th.blooming.api.dto.PlantResponse
 import dnd11th.blooming.api.dto.PlantSaveRequest
 import dnd11th.blooming.api.dto.PlantSaveResponse
+import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
-import dnd11th.blooming.common.exception.PlantNotFoundException
+import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Plant
 import dnd11th.blooming.domain.repository.PlantRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -20,7 +21,7 @@ class PlantService(
     @Transactional
     fun savePlant(request: PlantSaveRequest): PlantSaveResponse {
         if (request.lastWateredDate.isAfter(LocalDate.now()) || request.startDate.isAfter(LocalDate.now())) {
-            throw InvalidDateException()
+            throw InvalidDateException(ErrorType.INVALID_DATE)
         }
 
         val plant =
@@ -48,7 +49,7 @@ class PlantService(
     fun findPlantDetail(id: Long): PlantDetailResponse {
         val plant =
             plantRepository.findByIdOrNull(id)
-                ?: throw PlantNotFoundException()
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_PLANT_ID)
 
         return PlantDetailResponse.from(plant)
     }
