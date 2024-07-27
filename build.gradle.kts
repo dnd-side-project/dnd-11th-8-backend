@@ -28,6 +28,15 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("com.h2database:h2")
+
+    // Configuration
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    // Jwt
+    implementation("io.jsonwebtoken:jjwt-api:0.12.3")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
 
     // Kotest
     testImplementation("io.kotest:kotest-runner-junit5:5.9.1")

@@ -11,6 +11,7 @@ import dnd11th.blooming.api.service.PlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.common.jwt.JwtProvider
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +27,9 @@ import java.time.LocalDate
 class PlantControllerTest : ExpectSpec() {
     @MockkBean
     private lateinit var plantService: PlantService
+
+    @MockkBean
+    private lateinit var jwtProvider: JwtProvider
 
     @Autowired
     private lateinit var mockMvc: MockMvc
