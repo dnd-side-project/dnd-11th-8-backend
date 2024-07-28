@@ -1,5 +1,6 @@
 package dnd11th.blooming.common.jwt
 
+import dnd11th.blooming.domain.entity.UserClaims
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
@@ -17,6 +18,7 @@ class JwtProvider(
     fun generateAccessToken(
         userId: Long,
         email: String,
+        nickname: String
     ): String {
         val now = Date()
         val expiry = Date(now.time + expiration)
@@ -24,6 +26,7 @@ class JwtProvider(
             .expiration(expiry)
             .claim("id", userId)
             .claim("email", email)
+            .claim("nickname", nickname)
             .signWith(secretKey)
             .compact()
     }
