@@ -18,7 +18,7 @@ class JwtProvider(
     fun generateAccessToken(
         userId: Long,
         email: String,
-        nickname: String
+        nickname: String,
     ): String {
         val now = Date()
         val expiry = Date(now.time + expiration)

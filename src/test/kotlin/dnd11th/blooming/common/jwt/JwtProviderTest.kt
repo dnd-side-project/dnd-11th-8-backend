@@ -45,7 +45,7 @@ class JwtProviderTest : DescribeSpec({
             val jwtProvider = JwtProvider(expiration, secretKey)
             val token = jwtProvider.generateAccessToken(userId, email, nickname)
             it("토큰을 생성한다") {
-                val userClaims : UserClaims = jwtProvider.resolveAccessToken(token)
+                val userClaims: UserClaims = jwtProvider.resolveAccessToken(token)
                 val claimId = userClaims.id
                 val claimEmail = userClaims.email
                 val claimNickname = userClaims.nickname
