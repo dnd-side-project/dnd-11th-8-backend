@@ -15,6 +15,7 @@ class AuthInterceptor(
     companion object {
         private const val HEADER_AUTHORIZATION = "Authorization"
         private const val TOKEN_PREFIX = "Bearer "
+        private const val ATTRIBUTE_KEY = "claims"
     }
 
     override fun preHandle(
@@ -37,7 +38,7 @@ class AuthInterceptor(
     private fun processAuthenticate(request: HttpServletRequest) {
         val token = extractToken(request)
         val userClaims = jwtProvider.resolveAccessToken(token)
-        request.setAttribute("claims", userClaims)
+        request.setAttribute(ATTRIBUTE_KEY, userClaims)
     }
 
     private fun extractToken(request: HttpServletRequest): String? {

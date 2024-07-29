@@ -1,4 +1,4 @@
-package dnd11th.blooming.common.jwt
+package dnd11th.blooming.domain.entity
 
 data class UserClaims(
     val id: Long,
