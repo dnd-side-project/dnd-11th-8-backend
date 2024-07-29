@@ -45,7 +45,7 @@ class PlantControllerTest : ExpectSpec() {
     init {
         context("내 식물 저장") {
             beforeTest {
-                every { myPlantService.savePlant(any(), CUR_DATE) } returns
+                every { myPlantService.savePlant(any(), CURRENT_DAY) } returns
                     MyPlantSaveResponse(
                         myPlantId = ID,
                     )
@@ -54,7 +54,7 @@ class PlantControllerTest : ExpectSpec() {
                         match {
                             it.startDate == FUTURE_DATE || it.lastWateredDate == FUTURE_DATE
                         },
-                        CUR_DATE,
+                        CURRENT_DAY,
                     )
                 } throws
                     InvalidDateException(ErrorType.INVALID_DATE)
@@ -285,7 +285,7 @@ class PlantControllerTest : ExpectSpec() {
     }
 
     companion object {
-        val CUR_DATE: LocalDate = LocalDate.now()
+        val CURRENT_DAY: LocalDate = LocalDate.now()
 
         const val ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"

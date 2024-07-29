@@ -46,7 +46,7 @@ class PlantServiceTest : BehaviorSpec(
                         repotPeriod = REPOT_PERIDO,
                     )
                 When("내 식물을 저장하면") {
-                    val response = myPlantService.savePlant(request, CUR_DATE)
+                    val response = myPlantService.savePlant(request, CURRENT_DAY)
                     Then("정상적으로 저장되어야 한다.") {
                         response.myPlantId shouldBe 0
                     }
@@ -70,7 +70,7 @@ class PlantServiceTest : BehaviorSpec(
                     Then("InvalidDateException 예외가 발생해야 한다.") {
                         val exception =
                             shouldThrow<InvalidDateException> {
-                                myPlantService.savePlant(request, CUR_DATE)
+                                myPlantService.savePlant(request, CURRENT_DAY)
                             }
                         exception.message shouldBe "올바르지 않은 날짜입니다."
                         exception.errorType shouldBe ErrorType.INVALID_DATE
@@ -95,7 +95,7 @@ class PlantServiceTest : BehaviorSpec(
                     Then("InvalidDateException 예외가 발생해야 한다.") {
                         val exception =
                             shouldThrow<InvalidDateException> {
-                                myPlantService.savePlant(request, CUR_DATE)
+                                myPlantService.savePlant(request, CURRENT_DAY)
                             }
                         exception.message shouldBe "올바르지 않은 날짜입니다."
                         exception.errorType shouldBe ErrorType.INVALID_DATE
@@ -262,20 +262,20 @@ class PlantServiceTest : BehaviorSpec(
     },
 ) {
     companion object {
-        val CUR_DATE: LocalDate = LocalDate.now()
-        val FUTURE_DATE: LocalDate = CUR_DATE.plusDays(1)
+        val CURRENT_DAY: LocalDate = LocalDate.now()
+        val FUTURE_DATE: LocalDate = CURRENT_DAY.plusDays(1)
 
         const val ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
         const val NICKNAME = "뿡뿡이"
-        val START_DATE: LocalDate = CUR_DATE.minusDays(1)
-        val LAST_WATERED_DATE: LocalDate = CUR_DATE.minusDays(1)
+        val START_DATE: LocalDate = CURRENT_DAY.minusDays(1)
+        val LAST_WATERED_DATE: LocalDate = CURRENT_DAY.minusDays(1)
 
         const val ID2 = 2L
         const val SCIENTIFIC_NAME2 = "병아리 눈물"
         const val NICKNAME2 = "빵빵이"
-        val START_DATE2: LocalDate = CUR_DATE.minusDays(1)
-        val LAST_WATERED_DATE2: LocalDate = CUR_DATE.minusDays(1)
+        val START_DATE2: LocalDate = CURRENT_DAY.minusDays(1)
+        val LAST_WATERED_DATE2: LocalDate = CURRENT_DAY.minusDays(1)
 
         const val WATER_ALARM = true
         const val WATER_PERIOD = 3
