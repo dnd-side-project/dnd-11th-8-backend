@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/api/v1/plants")
@@ -23,7 +24,7 @@ class MyPlantController(
     @PostMapping
     fun savePlant(
         @RequestBody request: MyPlantSaveRequest,
-    ): MyPlantSaveResponse = myPlantService.savePlant(request)
+    ): MyPlantSaveResponse = myPlantService.savePlant(request, LocalDate.now())
 
     @GetMapping
     fun findAllPlant(): List<MyPlantResponse> = myPlantService.findAllPlant()

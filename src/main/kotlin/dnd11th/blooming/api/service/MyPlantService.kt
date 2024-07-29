@@ -20,12 +20,23 @@ class MyPlantService(
     private val myPlantRepository: MyPlantRepository,
 ) {
     @Transactional
-    fun savePlant(request: MyPlantSaveRequest): MyPlantSaveResponse {
-        if (request.lastWateredDate.isAfter(LocalDate.now()) || request.startDate.isAfter(LocalDate.now())) {
-            throw InvalidDateException(ErrorType.INVALID_DATE)
-        }
+    fun savePlant(
+        request: MyPlantSaveRequest,
+        now: LocalDate,
+    ): MyPlantSaveResponse {
+        verifyDate(request.lastWateredDate, now)
+        verifyDate(request.startDate, now)
 
         return MyPlantSaveResponse.from(myPlantRepository.save(request.toMyPlant()))
+    }
+
+    private fun verifyDate(
+        time: LocalDate,
+        now: LocalDate,
+    ) {
+        if (time.isAfter(now)) {
+            throw InvalidDateException(ErrorType.INVALID_DATE)
+        }
     }
 
     @Transactional(readOnly = true)
