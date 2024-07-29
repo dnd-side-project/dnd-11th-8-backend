@@ -38,7 +38,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
     implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
 
-    //Client
+    // Client
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0")
 
     // Kotest
