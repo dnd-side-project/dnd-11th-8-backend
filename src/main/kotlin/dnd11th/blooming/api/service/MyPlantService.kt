@@ -24,17 +24,19 @@ class MyPlantService(
         request: MyPlantSaveRequest,
         now: LocalDate,
     ): MyPlantSaveResponse {
-        verifyDate(request.lastWateredDate, now)
-        verifyDate(request.startDate, now)
+        validateDateNotInFuture(request.lastWateredDate, now)
+        validateDateNotInFuture(request.startDate, now)
 
-        return MyPlantSaveResponse.from(myPlantRepository.save(request.toMyPlant()))
+        val myPlant = request.toMyPlant()
+
+        return MyPlantSaveResponse.from(myPlantRepository.save(myPlant))
     }
 
-    private fun verifyDate(
-        time: LocalDate,
-        now: LocalDate,
+    private fun validateDateNotInFuture(
+        targetDate: LocalDate,
+        currentDate: LocalDate,
     ) {
-        if (time.isAfter(now)) {
+        if (targetDate.isAfter(currentDate)) {
             throw InvalidDateException(ErrorType.INVALID_DATE)
         }
     }
