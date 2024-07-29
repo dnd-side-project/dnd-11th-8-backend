@@ -3,6 +3,8 @@ package dnd11th.blooming.api
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.controller.MyPlantController
+import dnd11th.blooming.api.dto.AlarmModifyRequest
+import dnd11th.blooming.api.dto.AlarmResponse
 import dnd11th.blooming.api.dto.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.MyPlantResponse
 import dnd11th.blooming.api.dto.MyPlantSaveRequest
@@ -14,11 +16,14 @@ import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.jwt.JwtProvider
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
@@ -40,15 +45,16 @@ class PlantControllerTest : ExpectSpec() {
     init {
         context("내 식물 저장") {
             beforeTest {
-                every { myPlantService.savePlant(any()) } returns
+                every { myPlantService.savePlant(any(), CURRENT_DAY) } returns
                     MyPlantSaveResponse(
-                        id = ID,
+                        myPlantId = ID,
                     )
                 every {
                     myPlantService.savePlant(
                         match {
                             it.startDate == FUTURE_DATE || it.lastWateredDate == FUTURE_DATE
                         },
+                        CURRENT_DAY,
                     )
                 } throws
                     InvalidDateException(ErrorType.INVALID_DATE)
@@ -63,7 +69,7 @@ class PlantControllerTest : ExpectSpec() {
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
                             waterPeriod = 60,
-                            nutrientsAlarm = null,
+                            nutrientsAlarm = false,
                             nutrientsPeriod = null,
                             repotAlarm = true,
                             repotPeriod = null,
@@ -74,7 +80,7 @@ class PlantControllerTest : ExpectSpec() {
                     content = json
                 }.andExpectAll {
                     status { isOk() }
-                    MockMvcResultMatchers.jsonPath("$.id").value(ID)
+                    MockMvcResultMatchers.jsonPath("$.myPlantId").value(ID)
                 }.andDo { print() }
             }
             expect("시작날짜가 미래라면 예외응답이 반환되어야 한다.") {
@@ -87,7 +93,7 @@ class PlantControllerTest : ExpectSpec() {
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
                             waterPeriod = 60,
-                            nutrientsAlarm = null,
+                            nutrientsAlarm = false,
                             nutrientsPeriod = null,
                             repotAlarm = true,
                             repotPeriod = null,
@@ -112,7 +118,7 @@ class PlantControllerTest : ExpectSpec() {
                             lastWateredDate = FUTURE_DATE,
                             waterAlarm = true,
                             waterPeriod = 60,
-                            nutrientsAlarm = null,
+                            nutrientsAlarm = false,
                             nutrientsPeriod = null,
                             repotAlarm = true,
                             repotPeriod = null,
@@ -133,12 +139,12 @@ class PlantControllerTest : ExpectSpec() {
             every { myPlantService.findAllPlant() } returns
                 listOf(
                     MyPlantResponse(
-                        id = ID,
+                        myPlantId = ID,
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
                     ),
                     MyPlantResponse(
-                        id = ID2,
+                        myPlantId = ID2,
                         nickname = NICKNAME2,
                         scientificName = SCIENTIFIC_NAME2,
                     ),
@@ -148,10 +154,10 @@ class PlantControllerTest : ExpectSpec() {
                     .andExpectAll {
                         status { isOk() }
                         MockMvcResultMatchers.jsonPath("$.size()").value(2)
-                        MockMvcResultMatchers.jsonPath("$[0].id").value(ID)
+                        MockMvcResultMatchers.jsonPath("$[0].myPlantId").value(ID)
                         MockMvcResultMatchers.jsonPath("$[0].name").value(NICKNAME)
                         MockMvcResultMatchers.jsonPath("$[0].scientificName").value(SCIENTIFIC_NAME)
-                        MockMvcResultMatchers.jsonPath("$[1].id").value(ID2)
+                        MockMvcResultMatchers.jsonPath("$[1].myPlantId").value(ID2)
                         MockMvcResultMatchers.jsonPath("$[1].name").value(NICKNAME2)
                         MockMvcResultMatchers.jsonPath("$[1].scientificName").value(SCIENTIFIC_NAME2)
                     }.andDo { print() }
@@ -190,9 +196,97 @@ class PlantControllerTest : ExpectSpec() {
                     }.andDo { print() }
             }
         }
+
+        context("내 식물의 알림 조회") {
+            beforeTest {
+                every { myPlantService.findPlantAlarm(ID) } returns
+                    AlarmResponse(
+                        waterAlarm = WATER_ALARM,
+                        waterPeriod = WATER_PERIOD,
+                        nutrientsAlarm = NUTRIENTS_ALARM,
+                        nutrientsPeriod = NUTRIENTS_PERIOD,
+                        repotAlarm = REPOT_ALARM,
+                        repotPeriod = REPOT_PERIDO,
+                    )
+                every { myPlantService.findPlantAlarm(not(eq(ID))) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+            }
+            expect("존재하는 id로 조회하면 내 알림이 조회되어야 한다.") {
+                mockMvc.get("/api/v1/plants/$ID/alarm")
+                    .andExpectAll {
+                        status { isOk() }
+                        MockMvcResultMatchers.jsonPath("$.waterAlarm").value(WATER_ALARM)
+                        MockMvcResultMatchers.jsonPath("$.waterPeriod").value(WATER_PERIOD)
+                        MockMvcResultMatchers.jsonPath("$.nutrientsAlarm").value(NUTRIENTS_ALARM)
+                        MockMvcResultMatchers.jsonPath("$.nutrientsPeriod").value(NUTRIENTS_PERIOD)
+                        MockMvcResultMatchers.jsonPath("$.repotAlarm").value(REPOT_ALARM)
+                        MockMvcResultMatchers.jsonPath("$.repotPeriod").value(REPOT_PERIDO)
+                    }.andDo { print() }
+            }
+            expect("존재하지 않는 id로 조회하면 예외응답이 반환되어야 한다.") {
+                mockMvc.get("/api/v1/plants/$ID2/alarm")
+                    .andExpectAll {
+                        status { isNotFound() }
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    }.andDo { print() }
+            }
+        }
+
+        context("내 식물의 알림 수정") {
+            beforeTest {
+                every { myPlantService.modifyPlantAlarm(ID, any()) } just runs
+                every { myPlantService.modifyPlantAlarm(not(eq(ID)), any()) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+            }
+            expect("존재하는 id로 수정하면 정상응답이 반환되어야 한다.") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        AlarmModifyRequest(
+                            waterAlarm = NEW_WATER_ALARM,
+                            waterPeriod = NEW_WATER_PERIOD,
+                            nutrientsAlarm = NEW_NUTRIENTS_ALARM,
+                            nutrientsPeriod = NEW_NUTRIENTS_PERIOD,
+                            repotAlarm = NEW_REPOT_ALARM,
+                            repotPeriod = NEW_REPOT_PERIDO,
+                        ),
+                    )
+                mockMvc.patch("/api/v1/plants/$ID/alarm") {
+                    contentType = MediaType.APPLICATION_JSON
+                    content = json
+                }
+                    .andExpectAll {
+                        status { isOk() }
+                    }.andDo { print() }
+            }
+            expect("존재하지 않는 id로 수정하면 예외응답이 반환되어야 한다.") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        AlarmModifyRequest(
+                            waterAlarm = NEW_WATER_ALARM,
+                            waterPeriod = NEW_WATER_PERIOD,
+                            nutrientsAlarm = NEW_NUTRIENTS_ALARM,
+                            nutrientsPeriod = NEW_NUTRIENTS_PERIOD,
+                            repotAlarm = NEW_REPOT_ALARM,
+                            repotPeriod = NEW_REPOT_PERIDO,
+                        ),
+                    )
+                mockMvc.patch("/api/v1/plants/$ID2/alarm") {
+                    contentType = MediaType.APPLICATION_JSON
+                    content = json
+                }
+                    .andExpectAll {
+                        status { isNotFound() }
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    }.andDo { print() }
+            }
+        }
     }
 
     companion object {
+        val CURRENT_DAY: LocalDate = LocalDate.now()
+
         const val ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
         const val NICKNAME = "뿡뿡이"
@@ -206,5 +300,18 @@ class PlantControllerTest : ExpectSpec() {
         val LAST_WATERED_DATE2: LocalDate = LocalDate.of(2024, 7, 20)
 
         val FUTURE_DATE: LocalDate = LocalDate.of(5000, 5, 17)
+
+        const val WATER_ALARM = true
+        const val WATER_PERIOD = 3
+        const val NUTRIENTS_ALARM = false
+        const val NUTRIENTS_PERIOD = 30
+        const val REPOT_ALARM = true
+        const val REPOT_PERIDO = 60
+        const val NEW_WATER_ALARM = false
+        const val NEW_WATER_PERIOD = 5
+        const val NEW_NUTRIENTS_ALARM = false
+        const val NEW_NUTRIENTS_PERIOD = 45
+        const val NEW_REPOT_ALARM = false
+        const val NEW_REPOT_PERIDO = 70
     }
 }

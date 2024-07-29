@@ -6,15 +6,15 @@ import jakarta.persistence.Embeddable
 @Embeddable
 class Alarm(
     @Column(nullable = false)
-    var waterAlarm: Boolean,
+    var waterAlarm: Boolean = false,
+    @Column
+    var waterPeriod: Int? = null,
     @Column(nullable = false)
-    var waterPeriod: Int,
+    var nutrientsAlarm: Boolean = false,
+    @Column
+    var nutrientsPeriod: Int? = null,
     @Column(nullable = false)
-    var nutrientsAlarm: Boolean,
-    @Column(nullable = false)
-    var nutrientsPeriod: Int,
-    @Column(nullable = false)
-    var repotAlarm: Boolean,
-    @Column(nullable = false)
-    var repotPeriod: Int,
+    var repotAlarm: Boolean = false,
+    @Column
+    var repotPeriod: Int? = null,
 )
