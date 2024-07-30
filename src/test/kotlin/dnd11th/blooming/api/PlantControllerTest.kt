@@ -2,6 +2,7 @@ package dnd11th.blooming.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
+import dnd11th.blooming.api.config.WebMvcConfig
 import dnd11th.blooming.api.controller.MyPlantController
 import dnd11th.blooming.api.dto.AlarmModifyRequest
 import dnd11th.blooming.api.dto.AlarmResponse
@@ -14,12 +15,16 @@ import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.jwt.JwtProvider
+import dnd11th.blooming.support.TestWebMvcConfig
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
@@ -28,7 +33,11 @@ import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
 
-@WebMvcTest(MyPlantController::class)
+@WebMvcTest(
+    value = [MyPlantController::class],
+    excludeFilters = [ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = [WebMvcConfig::class])],
+)
+@Import(TestWebMvcConfig::class)
 class PlantControllerTest : ExpectSpec() {
     @MockkBean
     private lateinit var myPlantService: MyPlantService

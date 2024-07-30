@@ -16,15 +16,27 @@ class User(
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    var id: Long? = null
 
     val email: String = email
 
     var nickname: String = nickname
 
+    constructor(id: Long, email: String, nickname: String) : this(email, nickname) {
+        this.id = id
+    }
+
     companion object {
         fun create(claims: UserClaims): User {
             return User(claims.email, claims.nickname)
+        }
+
+        fun createWithId(
+            id: Long,
+            email: String,
+            nickname: String,
+        ): User {
+            return User(id, email, nickname)
         }
     }
 }
