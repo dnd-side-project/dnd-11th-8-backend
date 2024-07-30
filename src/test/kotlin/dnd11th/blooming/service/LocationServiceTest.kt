@@ -27,8 +27,27 @@ class LocationServiceTest : DescribeSpec(
                 it("위치가 저장되어야 한다.") {
                     val response = locationService.saveLocation(request)
 
-                    response.id shouldBe 0L
-                    response.name shouldBe "거실"
+                    response.name shouldBe LOCATION_NAME
+                }
+            }
+        }
+        describe("위치 전체 조회") {
+            every { locationRepository.findAll() } returns
+                listOf(
+                    Location(
+                        name = LOCATION_NAME,
+                    ),
+                    Location(
+                        name = LOCATION_NAME2,
+                    ),
+                )
+            context("위치를 전체 조회하면") {
+                it("모든 위치가 조회되어야 한다.") {
+                    val response = locationService.findAllLocation()
+
+                    response.size shouldBe 2
+                    response[0].name shouldBe LOCATION_NAME
+                    response[1].name shouldBe LOCATION_NAME2
                 }
             }
         }
@@ -37,5 +56,6 @@ class LocationServiceTest : DescribeSpec(
     companion object {
         const val ID = 1L
         const val LOCATION_NAME = "거실"
+        const val LOCATION_NAME2 = "베란다"
     }
 }

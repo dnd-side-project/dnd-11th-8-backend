@@ -1,5 +1,6 @@
 package dnd11th.blooming.api.service
 
+import dnd11th.blooming.api.dto.LocationResponse
 import dnd11th.blooming.api.dto.LocationSaveRequest
 import dnd11th.blooming.api.dto.LocationSaveResponse
 import dnd11th.blooming.domain.repository.LocationRepository
@@ -12,5 +13,10 @@ class LocationService(
     fun saveLocation(request: LocationSaveRequest): LocationSaveResponse {
         val location = request.toLocation()
         return LocationSaveResponse.from(locationRepository.save(location))
+    }
+
+    fun findAllLocation(): List<LocationResponse> {
+        val locations = locationRepository.findAll()
+        return LocationResponse.fromList(locations)
     }
 }
