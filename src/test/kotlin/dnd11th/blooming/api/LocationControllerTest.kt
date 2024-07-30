@@ -3,10 +3,13 @@ package dnd11th.blooming.api
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.controller.LocationController
+import dnd11th.blooming.api.dto.LocationModifyRequest
 import dnd11th.blooming.api.dto.LocationResponse
 import dnd11th.blooming.api.dto.LocationSaveRequest
 import dnd11th.blooming.api.dto.LocationSaveResponse
 import dnd11th.blooming.api.service.LocationService
+import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.jwt.JwtProvider
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
@@ -15,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
@@ -81,6 +85,53 @@ class LocationControllerTest : DescribeSpec() {
                             MockMvcResultMatchers.jsonPath("$[1].id").value(LOCATION_ID2)
                             MockMvcResultMatchers.jsonPath("$[1].name").value(LOCATION_NAME2)
                         }
+                }
+            }
+        }
+        describe("위치 수정") {
+            beforeTest {
+                every { locationService.modifyLocation(LOCATION_ID, any()) } returns
+                    LocationResponse(
+                        id = LOCATION_ID,
+                        name = LOCATION_NAME,
+                    )
+                every { locationService.modifyLocation(not(eq(LOCATION_ID)), any()) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+            }
+            context("존재하는 위치로 위치 수정 요청을 전달하면") {
+                val request =
+                    objectMapper.writeValueAsString(
+                        LocationModifyRequest(
+                            name = LOCATION_NAME2,
+                        ),
+                    )
+                it("수정된 위치가 반환되어야 한다.") {
+                    mockMvc.patch("/location/$LOCATION_ID") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = request
+                    }.andExpectAll {
+                        status { isOk() }
+                        MockMvcResultMatchers.jsonPath("$.id").value(LOCATION_ID)
+                        MockMvcResultMatchers.jsonPath("$.name").value(LOCATION_NAME2)
+                    }.andDo { print() }
+                }
+            }
+            context("존재하지 않는 위치로 위치 수정 요청을 전달하면") {
+                val request =
+                    objectMapper.writeValueAsString(
+                        LocationModifyRequest(
+                            name = LOCATION_NAME2,
+                        ),
+                    )
+                it("예외 응답이 반환되어야 한다.") {
+                    mockMvc.patch("/location/$LOCATION_ID2") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = request
+                    }.andExpectAll {
+                        status { isNotFound() }
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 위치입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_LOCATION_ID)
+                    }.andDo { print() }
                 }
             }
         }

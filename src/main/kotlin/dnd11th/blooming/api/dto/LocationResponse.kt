@@ -16,5 +16,11 @@ data class LocationResponse(
                     )
                 }
                 .toList()
+
+        fun from(location: Location): LocationResponse =
+            LocationResponse(
+                id = location.id,
+                name = location.name,
+            )
     }
 }
