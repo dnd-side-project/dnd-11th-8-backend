@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.controller
+package dnd11th.blooming.api.controller.user
 
 import dnd11th.blooming.common.annotation.LoginUser
 import dnd11th.blooming.common.annotation.Secured
