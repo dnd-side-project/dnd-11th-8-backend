@@ -23,7 +23,9 @@ class LocationServiceTest : DescribeSpec(
             every { locationRepository.save(any()) } returns
                 Location(
                     name = LOCATION_NAME,
-                )
+                ).apply {
+                    id = LOCATION_ID
+                }
             context("name이 전달되면") {
                 val request =
                     LocationSaveRequest(
@@ -32,30 +34,39 @@ class LocationServiceTest : DescribeSpec(
                 it("위치가 저장되어야 한다.") {
                     val response = locationService.saveLocation(request)
 
+                    response.id shouldBe LOCATION_ID
                     response.name shouldBe LOCATION_NAME
                 }
             }
         }
+
         describe("위치 전체 조회") {
             every { locationRepository.findAll() } returns
                 listOf(
                     Location(
                         name = LOCATION_NAME,
-                    ),
+                    ).apply {
+                        id = LOCATION_ID
+                    },
                     Location(
                         name = LOCATION_NAME2,
-                    ),
+                    ).apply {
+                        id = LOCATION_ID2
+                    },
                 )
             context("위치를 전체 조회하면") {
                 it("모든 위치가 조회되어야 한다.") {
                     val response = locationService.findAllLocation()
 
                     response.size shouldBe 2
+                    response[0].id shouldBe LOCATION_ID
                     response[0].name shouldBe LOCATION_NAME
+                    response[1].id shouldBe LOCATION_ID2
                     response[1].name shouldBe LOCATION_NAME2
                 }
             }
         }
+
         describe("위치 수정") {
             beforeTest {
                 every { locationRepository.findByIdOrNull(LOCATION_ID) } returns

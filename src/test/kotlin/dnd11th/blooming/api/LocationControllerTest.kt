@@ -62,6 +62,7 @@ class LocationControllerTest : DescribeSpec() {
                 }
             }
         }
+
         describe("위치 전체 조회") {
             every { locationService.findAllLocation() } returns
                 listOf(
@@ -88,6 +89,7 @@ class LocationControllerTest : DescribeSpec() {
                 }
             }
         }
+
         describe("위치 수정") {
             beforeTest {
                 every { locationService.modifyLocation(LOCATION_ID, any()) } returns
