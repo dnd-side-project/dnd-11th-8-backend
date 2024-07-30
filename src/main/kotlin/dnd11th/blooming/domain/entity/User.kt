@@ -23,6 +23,9 @@ class User(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
     val locations: MutableList<Location> = mutableListOf()
 
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
+    val myPlants: MutableList<MyPlant> = mutableListOf()
+
     val email: String = email
 
     var nickname: String = nickname
