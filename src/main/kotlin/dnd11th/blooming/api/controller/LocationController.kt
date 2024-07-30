@@ -5,6 +5,7 @@ import dnd11th.blooming.api.dto.LocationResponse
 import dnd11th.blooming.api.dto.LocationSaveRequest
 import dnd11th.blooming.api.dto.LocationSaveResponse
 import dnd11th.blooming.api.service.LocationService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -29,4 +30,9 @@ class LocationController(
         @PathVariable locationId: Long,
         @RequestBody request: LocationModifyRequest,
     ): LocationResponse = locationService.modifyLocation(locationId, request)
+
+    @DeleteMapping("/location/{locationId}")
+    fun deleteLocation(
+        @PathVariable locationId: Long,
+    ) = locationService.deleteLocation(locationId)
 }

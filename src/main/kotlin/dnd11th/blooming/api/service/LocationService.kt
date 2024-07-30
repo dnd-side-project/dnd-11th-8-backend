@@ -36,4 +36,12 @@ class LocationService(
 
         return LocationResponse.from(modifyLocation)
     }
+
+    fun deleteLocation(locationId: Long) {
+        if (!locationRepository.existsById(locationId)) {
+            throw NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+        }
+
+        locationRepository.deleteById(locationId)
+    }
 }

@@ -11,7 +11,9 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import org.springframework.data.repository.findByIdOrNull
 
 class LocationServiceTest : DescribeSpec(
@@ -98,6 +100,29 @@ class LocationServiceTest : DescribeSpec(
                     val exception =
                         shouldThrow<NotFoundException> {
                             locationService.modifyLocation(LOCATION_ID2, request)
+                        }
+                    exception.message shouldBe "존재하지 않는 위치입니다."
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID
+                }
+            }
+        }
+
+        describe("위치 삭제") {
+            every { locationRepository.existsById(LOCATION_ID) } returns
+                true
+            every { locationRepository.existsById(not(eq(LOCATION_ID))) } returns
+                false
+            every { locationRepository.deleteById(LOCATION_ID) } just runs
+            context("존재하는 ID의 위치를 삭제하면") {
+                it("위치가 삭제되어야 한다.") {
+                    locationService.deleteLocation(LOCATION_ID)
+                }
+            }
+            context("존재하지 않는 ID의 위치를 삭제하면") {
+                it("NotFoundException(NOT_FOUND_LOCATION_ID) 예외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<NotFoundException> {
+                            locationService.deleteLocation(LOCATION_ID2)
                         }
                     exception.message shouldBe "존재하지 않는 위치입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID

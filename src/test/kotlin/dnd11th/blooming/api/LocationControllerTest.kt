@@ -13,10 +13,13 @@ import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.jwt.JwtProvider
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
@@ -134,6 +137,32 @@ class LocationControllerTest : DescribeSpec() {
                         MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 위치입니다.")
                         MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_LOCATION_ID)
                     }.andDo { print() }
+                }
+            }
+        }
+
+        describe("위치 삭제") {
+            beforeTest {
+                every { locationService.deleteLocation(LOCATION_ID) } just runs
+                every { locationService.deleteLocation(not(eq(LOCATION_ID))) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+            }
+            context("존재하는 위치로 위치 삭제 요청을 전달하면") {
+                it("정상 응답이 반환되어야 한다.") {
+                    mockMvc.delete("/location/$LOCATION_ID")
+                        .andExpectAll {
+                            status { isOk() }
+                        }.andDo { print() }
+                }
+            }
+            context("존재하지 않는 위치로 위치 삭제 요청을 전달하면") {
+                it("예외 응답이 반환되어야 한다.") {
+                    mockMvc.delete("/location/$LOCATION_ID2")
+                        .andExpectAll {
+                            status { isNotFound() }
+                            MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 위치입니다.")
+                            MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_LOCATION_ID)
+                        }.andDo { print() }
                 }
             }
         }
