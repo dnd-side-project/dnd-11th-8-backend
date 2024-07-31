@@ -31,4 +31,8 @@ class Location(
         this.user = user
         user.locations.add(this)
     }
+
+    fun modifyName(name: String) {
+        this.name = name
+    }
 }

@@ -36,9 +36,9 @@ class LocationService(
             locationRepository.findByIdOrNull(locationId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
 
-        val modifyLocation = request.modifyLocation(location)
+        location.modifyName(request.name)
 
-        return LocationResponse.from(modifyLocation)
+        return LocationResponse.from(location)
     }
 
     @Transactional
