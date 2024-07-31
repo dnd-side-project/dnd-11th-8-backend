@@ -11,27 +11,29 @@ import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/location")
 class LocationController(
     private val locationService: LocationService,
 ) {
-    @PostMapping("/location")
+    @PostMapping
     fun saveLocation(
         @RequestBody request: LocationSaveRequest,
     ): LocationSaveResponse = locationService.saveLocation(request)
 
-    @GetMapping("/location")
+    @GetMapping
     fun findAllLocation(): List<LocationResponse> = locationService.findAllLocation()
 
-    @PatchMapping("/location/{locationId}")
+    @PatchMapping("/{locationId}")
     fun modifyLocation(
         @PathVariable locationId: Long,
         @RequestBody request: LocationModifyRequest,
     ): LocationResponse = locationService.modifyLocation(locationId, request)
 
-    @DeleteMapping("/location/{locationId}")
+    @DeleteMapping("/{locationId}")
     fun deleteLocation(
         @PathVariable locationId: Long,
     ) = locationService.deleteLocation(locationId)
