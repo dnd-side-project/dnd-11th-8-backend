@@ -17,7 +17,6 @@ class User(
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
-
     val email: String = email
 
     var nickname: String = nickname

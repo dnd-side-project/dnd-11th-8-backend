@@ -1,7 +1,6 @@
 package dnd11th.blooming.domain.entity
 
 import jakarta.persistence.Column
-import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -9,20 +8,11 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import java.time.LocalDate
 
 @Entity
-class MyPlant(
-    @Column(nullable = false)
-    var scientificName: String,
+class Location(
     @Column
-    var nickname: String,
-    @Column
-    var startDate: LocalDate = LocalDate.now(),
-    @Column
-    var lastWateredDate: LocalDate = LocalDate.now(),
-    @Embedded
-    var alarm: Alarm,
+    var name: String,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +22,7 @@ class MyPlant(
     @JoinColumn(name = "user_id")
     var user: User? = null
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    var location: Location? = null
+    fun modifyName(name: String) {
+        this.name = name
+    }
 }
