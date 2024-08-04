@@ -1,5 +1,6 @@
 package dnd11th.blooming.domain.entity
 
+import dnd11th.blooming.domain.entity.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
