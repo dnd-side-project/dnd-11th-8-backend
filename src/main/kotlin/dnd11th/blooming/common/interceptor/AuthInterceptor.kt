@@ -26,7 +26,6 @@ class AuthInterceptor(
         if (handler !is HandlerMethod) {
             return super.preHandle(request, response, handler)
         }
-
         if (isSecured(handler)) processAuthenticate(request)
         return super.preHandle(request, response, handler)
     }
