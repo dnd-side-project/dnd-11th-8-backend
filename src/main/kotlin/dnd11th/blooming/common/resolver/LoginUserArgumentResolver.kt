@@ -1,8 +1,8 @@
 package dnd11th.blooming.common.resolver
 
 import dnd11th.blooming.common.annotation.LoginUser
-import dnd11th.blooming.domain.entity.User
-import dnd11th.blooming.domain.entity.UserClaims
+import dnd11th.blooming.domain.entity.user.User
+import dnd11th.blooming.domain.entity.user.UserClaims
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.support.WebDataBinderFactory

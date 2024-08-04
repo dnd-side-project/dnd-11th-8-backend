@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
 
 @FeignClient(
-    name = "KakaoOuthClient",
+    name = "KakaoOauthClient",
     url = "https://kauth.kakao.com",
 )
 interface KakaoOauthClient {

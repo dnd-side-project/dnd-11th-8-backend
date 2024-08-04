@@ -6,5 +6,4 @@ data class OidcPublicKey(
     val alg: String,
     val n: String,
     val e: String,
-) {
-}
+)

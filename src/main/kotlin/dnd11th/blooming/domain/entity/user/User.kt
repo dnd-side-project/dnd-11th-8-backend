@@ -1,6 +1,5 @@
-package dnd11th.blooming.domain.entity
+package dnd11th.blooming.domain.entity.user
 
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -14,13 +13,12 @@ class User(
     nickname: String,
 ) {
     @Id
-    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 
     val email: String = email
 
-    var nickname: String = nickname
+    val nickname: String = nickname
 
     companion object {
         fun create(claims: UserClaims): User {
