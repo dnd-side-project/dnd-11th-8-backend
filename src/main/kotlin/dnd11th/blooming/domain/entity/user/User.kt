@@ -15,7 +15,6 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
-
     val email: String = email
 
     val nickname: String = nickname
