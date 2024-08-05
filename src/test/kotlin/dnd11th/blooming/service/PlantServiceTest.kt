@@ -40,6 +40,7 @@ class PlantServiceTest : DescribeSpec(
                         nickname = NICKNAME,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
                         fertilizerAlarm = FERTILIZER_ALARM,
@@ -57,6 +58,7 @@ class PlantServiceTest : DescribeSpec(
                         nickname = NICKNAME,
                         startDate = FUTURE_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
                         fertilizerAlarm = FERTILIZER_ALARM,
@@ -79,6 +81,30 @@ class PlantServiceTest : DescribeSpec(
                         nickname = NICKNAME,
                         startDate = START_DATE,
                         lastWateredDate = FUTURE_DATE,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        waterAlarm = WATER_ALARM,
+                        waterPeriod = WATER_PERIOD,
+                        fertilizerAlarm = FERTILIZER_ALARM,
+                        fertilizerPeriod = FERTILIZER_PERIOD,
+                        healthCheckAlarm = HEALTHCHECK_ALARM,
+                    )
+                it("InvalidDateException 예외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<InvalidDateException> {
+                            myPlantService.savePlant(request, CURRENT_DAY)
+                        }
+                    exception.message shouldBe "올바르지 않은 날짜입니다."
+                    exception.errorType shouldBe ErrorType.INVALID_DATE
+                }
+            }
+            context("마지막으로 비료 준 날짜가 미래인 요청으로 내 식물을 저장하면") {
+                val request =
+                    MyPlantSaveRequest(
+                        scientificName = SCIENTIFIC_NAME,
+                        nickname = NICKNAME,
+                        startDate = START_DATE,
+                        lastWateredDate = LAST_WATERED_DATE,
+                        lastFertilizerDate = FUTURE_DATE,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
                         fertilizerAlarm = FERTILIZER_ALARM,

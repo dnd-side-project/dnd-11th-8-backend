@@ -23,8 +23,9 @@ class MyPlantService(
         request: MyPlantSaveRequest,
         now: LocalDate,
     ) {
-        validateDateNotInFuture(request.lastWateredDate, now)
         validateDateNotInFuture(request.startDate, now)
+        validateDateNotInFuture(request.lastWateredDate, now)
+        validateDateNotInFuture(request.lastFertilizerDate, now)
 
         val myPlant = request.toMyPlant()
 

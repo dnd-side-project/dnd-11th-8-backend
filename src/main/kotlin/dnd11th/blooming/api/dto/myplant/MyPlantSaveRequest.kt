@@ -9,6 +9,7 @@ data class MyPlantSaveRequest(
     val nickname: String,
     val startDate: LocalDate,
     val lastWateredDate: LocalDate,
+    val lastFertilizerDate: LocalDate,
     val waterAlarm: Boolean,
     val waterPeriod: Int?,
     val fertilizerAlarm: Boolean,
@@ -21,6 +22,7 @@ data class MyPlantSaveRequest(
             nickname = nickname,
             startDate = startDate,
             lastWateredDate = lastWateredDate,
+            lastFertilizerDate = lastFertilizerDate,
             alarm =
                 Alarm(
                     waterAlarm = waterAlarm,

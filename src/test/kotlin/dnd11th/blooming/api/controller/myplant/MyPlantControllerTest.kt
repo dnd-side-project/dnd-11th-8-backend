@@ -62,6 +62,7 @@ class MyPlantControllerTest : DescribeSpec() {
                             nickname = NICKNAME,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
                             waterAlarm = WATER_ALARM,
                             waterPeriod = WATER_PERIOD,
                             fertilizerAlarm = FERTILIZER_ALARM,
@@ -86,6 +87,7 @@ class MyPlantControllerTest : DescribeSpec() {
                             nickname = NICKNAME,
                             startDate = FUTURE_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
                             waterAlarm = true,
                             waterPeriod = 60,
                             fertilizerAlarm = false,
@@ -112,6 +114,7 @@ class MyPlantControllerTest : DescribeSpec() {
                             nickname = NICKNAME,
                             startDate = START_DATE,
                             lastWateredDate = FUTURE_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
                             waterAlarm = WATER_ALARM,
                             waterPeriod = WATER_PERIOD,
                             fertilizerAlarm = FERTILIZER_ALARM,
@@ -319,6 +322,7 @@ class MyPlantControllerTest : DescribeSpec() {
         const val LOCATION_NAME = "거실"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
+        val LAST_FERTILIZER_DATE: LocalDate = LocalDate.of(2024, 6, 15)
         const val WATER_REAMIN_DAY = 3
         const val FERTILIZER_REAMIN_DAY = 3
 
