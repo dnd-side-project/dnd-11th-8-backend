@@ -1,8 +1,7 @@
-package dnd11th.blooming.api
+package dnd11th.blooming.api.controller.myplant
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import dnd11th.blooming.api.controller.MyPlantController
 import dnd11th.blooming.api.dto.AlarmModifyRequest
 import dnd11th.blooming.api.dto.AlarmResponse
 import dnd11th.blooming.api.dto.MyPlantDetailResponse
@@ -29,7 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
 
 @WebMvcTest(MyPlantController::class)
-class PlantControllerTest : DescribeSpec() {
+class MyPlantControllerTest : DescribeSpec() {
     @MockkBean
     private lateinit var myPlantService: MyPlantService
 

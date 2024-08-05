@@ -1,8 +1,7 @@
-package dnd11th.blooming.api
+package dnd11th.blooming.api.controller.myplant
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import dnd11th.blooming.api.controller.LocationController
 import dnd11th.blooming.api.dto.LocationModifyRequest
 import dnd11th.blooming.api.dto.LocationResponse
 import dnd11th.blooming.api.dto.LocationSaveRequest
@@ -25,8 +24,8 @@ import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@WebMvcTest(LocationController::class)
-class LocationControllerTest : DescribeSpec() {
+@WebMvcTest(MyPlantLocationController::class)
+class MyPlantLocationControllerTest : DescribeSpec() {
     @MockkBean
     private lateinit var locationService: LocationService
 
@@ -54,7 +53,7 @@ class LocationControllerTest : DescribeSpec() {
                         ),
                     )
                 it("정상 응답이 반환되어야 한다.") {
-                    mockMvc.post("/location") {
+                    mockMvc.post("/api/v1/plants/location") {
                         contentType = MediaType.APPLICATION_JSON
                         content = request
                     }.andExpectAll {
@@ -80,7 +79,7 @@ class LocationControllerTest : DescribeSpec() {
                 )
             context("위치를 전체 조회하면") {
                 it("위치 리스트가 조회되어야 한다.") {
-                    mockMvc.get("/location")
+                    mockMvc.get("/api/v1/plants/location")
                         .andExpectAll {
                             status { isOk() }
                             MockMvcResultMatchers.jsonPath("$.size()").value(2)
@@ -111,7 +110,7 @@ class LocationControllerTest : DescribeSpec() {
                         ),
                     )
                 it("수정된 위치가 반환되어야 한다.") {
-                    mockMvc.patch("/location/$LOCATION_ID") {
+                    mockMvc.patch("/api/v1/plants/location/$LOCATION_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = request
                     }.andExpectAll {
@@ -129,7 +128,7 @@ class LocationControllerTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 반환되어야 한다.") {
-                    mockMvc.patch("/location/$LOCATION_ID2") {
+                    mockMvc.patch("/api/v1/plants/location/$LOCATION_ID2") {
                         contentType = MediaType.APPLICATION_JSON
                         content = request
                     }.andExpectAll {
@@ -149,7 +148,7 @@ class LocationControllerTest : DescribeSpec() {
             }
             context("존재하는 위치로 위치 삭제 요청을 전달하면") {
                 it("정상 응답이 반환되어야 한다.") {
-                    mockMvc.delete("/location/$LOCATION_ID")
+                    mockMvc.delete("/api/v1/plants/location/$LOCATION_ID")
                         .andExpectAll {
                             status { isOk() }
                         }.andDo { print() }
@@ -157,7 +156,7 @@ class LocationControllerTest : DescribeSpec() {
             }
             context("존재하지 않는 위치로 위치 삭제 요청을 전달하면") {
                 it("예외 응답이 반환되어야 한다.") {
-                    mockMvc.delete("/location/$LOCATION_ID2")
+                    mockMvc.delete("/api/v1/plants/location/$LOCATION_ID2")
                         .andExpectAll {
                             status { isNotFound() }
                             MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 위치입니다.")

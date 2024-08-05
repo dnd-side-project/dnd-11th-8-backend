@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.controller
+package dnd11th.blooming.api.controller.myplant
 
 import dnd11th.blooming.api.dto.LocationModifyRequest
 import dnd11th.blooming.api.dto.LocationResponse
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/location")
-class LocationController(
+@RequestMapping("/api/v1/plants/location")
+class MyPlantLocationController(
     private val locationService: LocationService,
 ) {
     @PostMapping

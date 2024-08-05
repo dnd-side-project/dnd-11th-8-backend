@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.controller
+package dnd11th.blooming.api.controller.myplant
 
 import dnd11th.blooming.api.dto.AlarmModifyRequest
 import dnd11th.blooming.api.dto.AlarmResponse
