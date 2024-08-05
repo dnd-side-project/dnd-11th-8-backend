@@ -1,11 +1,10 @@
 package dnd11th.blooming.api.controller.myplant
 
-import dnd11th.blooming.api.dto.AlarmModifyRequest
-import dnd11th.blooming.api.dto.AlarmResponse
-import dnd11th.blooming.api.dto.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.MyPlantResponse
-import dnd11th.blooming.api.dto.MyPlantSaveRequest
-import dnd11th.blooming.api.dto.MyPlantSaveResponse
+import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.AlarmResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.MyPlantService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -24,7 +23,7 @@ class MyPlantController(
     @PostMapping
     fun savePlant(
         @RequestBody request: MyPlantSaveRequest,
-    ): MyPlantSaveResponse = myPlantService.savePlant(request, LocalDate.now())
+    ) = myPlantService.savePlant(request, LocalDate.now())
 
     @GetMapping
     fun findAllPlant(): List<MyPlantResponse> = myPlantService.findAllPlant()
