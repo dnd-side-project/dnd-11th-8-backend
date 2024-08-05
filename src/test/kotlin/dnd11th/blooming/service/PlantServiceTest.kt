@@ -1,7 +1,7 @@
 package dnd11th.blooming.service
 
-import dnd11th.blooming.api.dto.AlarmModifyRequest
-import dnd11th.blooming.api.dto.MyPlantSaveRequest
+import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
@@ -42,14 +42,12 @@ class PlantServiceTest : DescribeSpec(
                         lastWateredDate = LAST_WATERED_DATE,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
-                        nutrientsAlarm = NUTRIENTS_ALARM,
-                        nutrientsPeriod = NUTRIENTS_PERIOD,
-                        repotAlarm = REPOT_ALARM,
-                        repotPeriod = REPOT_PERIDO,
+                        fertilizerAlarm = FERTILIZER_ALARM,
+                        fertilizerPeriod = FERTILIZER_PERIOD,
+                        healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
-                it("저장되고, 저장되었다는 응답이 와야 한다.") {
-                    val response = myPlantService.savePlant(request, CURRENT_DAY)
-                    response.myPlantId shouldBe PLANT_ID
+                it("정상적으로 저장되고 예외가 발생하면 안된다.") {
+                    myPlantService.savePlant(request, CURRENT_DAY)
                 }
             }
             context("시작날짜가 미래인 요청으로 내 식물을 저장하면") {
@@ -61,10 +59,9 @@ class PlantServiceTest : DescribeSpec(
                         lastWateredDate = LAST_WATERED_DATE,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
-                        nutrientsAlarm = NUTRIENTS_ALARM,
-                        nutrientsPeriod = NUTRIENTS_PERIOD,
-                        repotAlarm = REPOT_ALARM,
-                        repotPeriod = REPOT_PERIDO,
+                        fertilizerAlarm = FERTILIZER_ALARM,
+                        fertilizerPeriod = FERTILIZER_PERIOD,
+                        healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("InvalidDateException 예외가 발생해야 한다.") {
                     val exception =
@@ -84,10 +81,9 @@ class PlantServiceTest : DescribeSpec(
                         lastWateredDate = FUTURE_DATE,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
-                        nutrientsAlarm = NUTRIENTS_ALARM,
-                        nutrientsPeriod = NUTRIENTS_PERIOD,
-                        repotAlarm = REPOT_ALARM,
-                        repotPeriod = REPOT_PERIDO,
+                        fertilizerAlarm = FERTILIZER_ALARM,
+                        fertilizerPeriod = FERTILIZER_PERIOD,
+                        healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("InvalidDateException 예외가 발생해야 한다.") {
                     val exception =
@@ -188,10 +184,9 @@ class PlantServiceTest : DescribeSpec(
                     val response = myPlantService.findPlantAlarm(PLANT_ID)
                     response.waterAlarm shouldBe WATER_ALARM
                     response.waterPeriod shouldBe WATER_PERIOD
-                    response.nutrientsAlarm shouldBe NUTRIENTS_ALARM
-                    response.nutrientsPeriod shouldBe NUTRIENTS_PERIOD
-                    response.repotAlarm shouldBe REPOT_ALARM
-                    response.repotPeriod shouldBe REPOT_PERIDO
+                    response.fertilizerAlarm shouldBe FERTILIZER_ALARM
+                    response.fertilizerPeriod shouldBe FERTILIZER_PERIOD
+                    response.healthCheckAlarm shouldBe HEALTHCHECK_ALARM
                 }
             }
             context("존재하지 않는 ID로") {
@@ -222,12 +217,11 @@ class PlantServiceTest : DescribeSpec(
             context("존재하는 ID와 요청으로 알림 변경 요청을 하면") {
                 val request =
                     AlarmModifyRequest(
-                        waterAlarm = NEW_WATER_ALARM,
-                        waterPeriod = NEW_WATER_PERIOD,
-                        nutrientsAlarm = NEW_NUTRIENTS_ALARM,
-                        nutrientsPeriod = NEW_NUTRIENTS_PERIOD,
-                        repotAlarm = NEW_REPOT_ALARM,
-                        repotPeriod = NEW_REPOT_PERIDO,
+                        waterAlarm = WATER_ALARM,
+                        waterPeriod = WATER_PERIOD,
+                        fertilizerAlarm = FERTILIZER_ALARM,
+                        fertilizerPeriod = FERTILIZER_PERIOD,
+                        healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("알림 정보가 변경되어야 한다.") {
                     myPlantService.modifyPlantAlarm(PLANT_ID, request)
@@ -236,12 +230,11 @@ class PlantServiceTest : DescribeSpec(
             context("존재하지 않는 ID와 요청으로 알림 변경 요청을 하면") {
                 val request =
                     AlarmModifyRequest(
-                        waterAlarm = NEW_WATER_ALARM,
-                        waterPeriod = NEW_WATER_PERIOD,
-                        nutrientsAlarm = NEW_NUTRIENTS_ALARM,
-                        nutrientsPeriod = NEW_NUTRIENTS_PERIOD,
-                        repotAlarm = NEW_REPOT_ALARM,
-                        repotPeriod = NEW_REPOT_PERIDO,
+                        waterAlarm = WATER_ALARM,
+                        waterPeriod = WATER_PERIOD,
+                        fertilizerAlarm = FERTILIZER_ALARM,
+                        fertilizerPeriod = FERTILIZER_PERIOD,
+                        healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
@@ -273,17 +266,11 @@ class PlantServiceTest : DescribeSpec(
 
         const val WATER_ALARM = true
         const val WATER_PERIOD = 3
-        const val NUTRIENTS_ALARM = true
-        const val NUTRIENTS_PERIOD = 30
-        const val REPOT_ALARM = true
-        const val REPOT_PERIDO = 60
-        const val NEW_WATER_ALARM = false
-        const val NEW_WATER_PERIOD = 5
-        const val NEW_NUTRIENTS_ALARM = false
-        const val NEW_NUTRIENTS_PERIOD = 45
-        const val NEW_REPOT_ALARM = false
-        const val NEW_REPOT_PERIDO = 70
+        const val FERTILIZER_ALARM = false
+        const val FERTILIZER_PERIOD = 30
+        const val HEALTHCHECK_ALARM = true
+
         val ALARM: Alarm =
-            Alarm(WATER_ALARM, WATER_PERIOD, NUTRIENTS_ALARM, NUTRIENTS_PERIOD, REPOT_ALARM, REPOT_PERIDO)
+            Alarm(WATER_ALARM, WATER_PERIOD, FERTILIZER_ALARM, FERTILIZER_PERIOD, HEALTHCHECK_ALARM)
     }
 }

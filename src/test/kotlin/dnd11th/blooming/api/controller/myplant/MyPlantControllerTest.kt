@@ -2,12 +2,11 @@ package dnd11th.blooming.api.controller.myplant
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import dnd11th.blooming.api.dto.AlarmModifyRequest
-import dnd11th.blooming.api.dto.AlarmResponse
-import dnd11th.blooming.api.dto.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.MyPlantResponse
-import dnd11th.blooming.api.dto.MyPlantSaveRequest
-import dnd11th.blooming.api.dto.MyPlantSaveResponse
+import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.AlarmResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
@@ -44,10 +43,7 @@ class MyPlantControllerTest : DescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {
-                every { myPlantService.savePlant(any(), CURRENT_DAY) } returns
-                    MyPlantSaveResponse(
-                        myPlantId = ID,
-                    )
+                every { myPlantService.savePlant(any(), CURRENT_DAY) } just runs
                 every {
                     myPlantService.savePlant(
                         match {
@@ -66,12 +62,11 @@ class MyPlantControllerTest : DescribeSpec() {
                             nickname = NICKNAME,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
-                            waterAlarm = true,
-                            waterPeriod = 60,
-                            nutrientsAlarm = false,
-                            nutrientsPeriod = null,
-                            repotAlarm = true,
-                            repotPeriod = null,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
                         ),
                     )
                 it("정상 응답이 와야 한다.") {
@@ -80,7 +75,6 @@ class MyPlantControllerTest : DescribeSpec() {
                         content = json
                     }.andExpectAll {
                         status { isOk() }
-                        MockMvcResultMatchers.jsonPath("$.myPlantId").value(ID)
                     }.andDo { print() }
                 }
             }
@@ -94,10 +88,9 @@ class MyPlantControllerTest : DescribeSpec() {
                             lastWateredDate = LAST_WATERED_DATE,
                             waterAlarm = true,
                             waterPeriod = 60,
-                            nutrientsAlarm = false,
-                            nutrientsPeriod = null,
-                            repotAlarm = true,
-                            repotPeriod = null,
+                            fertilizerAlarm = false,
+                            fertilizerPeriod = null,
+                            healthCheckAlarm = true,
                         ),
                     )
                 it("예외응답이 반환되어야 한다.") {
@@ -119,12 +112,11 @@ class MyPlantControllerTest : DescribeSpec() {
                             nickname = NICKNAME,
                             startDate = START_DATE,
                             lastWateredDate = FUTURE_DATE,
-                            waterAlarm = true,
-                            waterPeriod = 60,
-                            nutrientsAlarm = false,
-                            nutrientsPeriod = null,
-                            repotAlarm = true,
-                            repotPeriod = null,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
                         ),
                     )
                 it("예외응답이 반환되어야 한다.") {
@@ -213,10 +205,9 @@ class MyPlantControllerTest : DescribeSpec() {
                     AlarmResponse(
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
-                        nutrientsAlarm = NUTRIENTS_ALARM,
-                        nutrientsPeriod = NUTRIENTS_PERIOD,
-                        repotAlarm = REPOT_ALARM,
-                        repotPeriod = REPOT_PERIDO,
+                        fertilizerAlarm = FERTILIZER_ALARM,
+                        fertilizerPeriod = FERTILIZER_PERIOD,
+                        healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 every { myPlantService.findPlantAlarm(not(eq(ID))) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
@@ -228,10 +219,9 @@ class MyPlantControllerTest : DescribeSpec() {
                             status { isOk() }
                             MockMvcResultMatchers.jsonPath("$.waterAlarm").value(WATER_ALARM)
                             MockMvcResultMatchers.jsonPath("$.waterPeriod").value(WATER_PERIOD)
-                            MockMvcResultMatchers.jsonPath("$.nutrientsAlarm").value(NUTRIENTS_ALARM)
-                            MockMvcResultMatchers.jsonPath("$.nutrientsPeriod").value(NUTRIENTS_PERIOD)
-                            MockMvcResultMatchers.jsonPath("$.repotAlarm").value(REPOT_ALARM)
-                            MockMvcResultMatchers.jsonPath("$.repotPeriod").value(REPOT_PERIDO)
+                            MockMvcResultMatchers.jsonPath("$.fetilizerAlarm").value(FERTILIZER_ALARM)
+                            MockMvcResultMatchers.jsonPath("$.fetilizerPeriod").value(FERTILIZER_PERIOD)
+                            MockMvcResultMatchers.jsonPath("$.healthcheckAlarm").value(HEALTHCHECK_ALARM)
                         }.andDo { print() }
                 }
             }
@@ -257,12 +247,11 @@ class MyPlantControllerTest : DescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         AlarmModifyRequest(
-                            waterAlarm = NEW_WATER_ALARM,
-                            waterPeriod = NEW_WATER_PERIOD,
-                            nutrientsAlarm = NEW_NUTRIENTS_ALARM,
-                            nutrientsPeriod = NEW_NUTRIENTS_PERIOD,
-                            repotAlarm = NEW_REPOT_ALARM,
-                            repotPeriod = NEW_REPOT_PERIDO,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
                         ),
                     )
                 it("정상응답이 반환되어야 한다.") {
@@ -279,12 +268,11 @@ class MyPlantControllerTest : DescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         AlarmModifyRequest(
-                            waterAlarm = NEW_WATER_ALARM,
-                            waterPeriod = NEW_WATER_PERIOD,
-                            nutrientsAlarm = NEW_NUTRIENTS_ALARM,
-                            nutrientsPeriod = NEW_NUTRIENTS_PERIOD,
-                            repotAlarm = NEW_REPOT_ALARM,
-                            repotPeriod = NEW_REPOT_PERIDO,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
                         ),
                     )
                 it("예외응답이 반환되어야 한다.") {
@@ -319,15 +307,8 @@ class MyPlantControllerTest : DescribeSpec() {
 
         const val WATER_ALARM = true
         const val WATER_PERIOD = 3
-        const val NUTRIENTS_ALARM = false
-        const val NUTRIENTS_PERIOD = 30
-        const val REPOT_ALARM = true
-        const val REPOT_PERIDO = 60
-        const val NEW_WATER_ALARM = false
-        const val NEW_WATER_PERIOD = 5
-        const val NEW_NUTRIENTS_ALARM = false
-        const val NEW_NUTRIENTS_PERIOD = 45
-        const val NEW_REPOT_ALARM = false
-        const val NEW_REPOT_PERIDO = 70
+        const val FERTILIZER_ALARM = false
+        const val FERTILIZER_PERIOD = 30
+        const val HEALTHCHECK_ALARM = true
     }
 }
