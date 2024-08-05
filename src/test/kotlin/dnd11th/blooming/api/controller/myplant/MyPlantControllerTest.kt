@@ -177,8 +177,14 @@ class MyPlantControllerTest : DescribeSpec() {
                     MyPlantDetailResponse(
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
+                        location = LOCATION_NAME,
                         startDate = START_DATE,
                         lastWatedDate = LAST_WATERED_DATE,
+                        waterAlarm = WATER_ALARM,
+                        waterPeriod = WATER_PERIOD,
+                        fertilizerAlarm = FERTILIZER_ALARM,
+                        fertilizerPeriod = FERTILIZER_PERIOD,
+                        healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 every { myPlantService.findPlantDetail(ID2) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
@@ -190,8 +196,14 @@ class MyPlantControllerTest : DescribeSpec() {
                             status { isOk() }
                             MockMvcResultMatchers.jsonPath("$.name").value(NICKNAME)
                             MockMvcResultMatchers.jsonPath("$.scientificName").value(SCIENTIFIC_NAME)
+                            MockMvcResultMatchers.jsonPath("$.location").value(LOCATION_NAME)
                             MockMvcResultMatchers.jsonPath("$.startDate").value(START_DATE)
                             MockMvcResultMatchers.jsonPath("$.lastWatedDate").value(LAST_WATERED_DATE)
+                            MockMvcResultMatchers.jsonPath("$.waterAlarm").value(WATER_ALARM)
+                            MockMvcResultMatchers.jsonPath("$.waterPeriod").value(WATER_PERIOD)
+                            MockMvcResultMatchers.jsonPath("$.fertilizerAlarm").value(FERTILIZER_ALARM)
+                            MockMvcResultMatchers.jsonPath("$.fertilizerPeriod").value(FERTILIZER_PERIOD)
+                            MockMvcResultMatchers.jsonPath("$.healthCheckAlarm").value(HEALTHCHECK_ALARM)
                         }.andDo { print() }
                 }
             }
@@ -304,6 +316,7 @@ class MyPlantControllerTest : DescribeSpec() {
         const val ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
         const val NICKNAME = "뿡뿡이"
+        const val LOCATION_NAME = "거실"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
         const val WATER_REAMIN_DAY = 3

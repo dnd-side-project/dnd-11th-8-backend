@@ -55,4 +55,10 @@ class MyPlant(
             Period.between(now, lastFertilizerDate).days + fertilizerPeriod
         }
     }
+
+    fun getLocationName(): String? {
+        return location?.let { location ->
+            location.name
+        }
+    }
 }
