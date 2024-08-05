@@ -133,17 +133,21 @@ class MyPlantControllerTest : DescribeSpec() {
         }
 
         describe("내 식물 전체 조회") {
-            every { myPlantService.findAllPlant() } returns
+            every { myPlantService.findAllPlant(any()) } returns
                 listOf(
                     MyPlantResponse(
                         myPlantId = ID,
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
+                        waterRemainDay = WATER_REAMIN_DAY,
+                        fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
                     ),
                     MyPlantResponse(
                         myPlantId = ID2,
                         nickname = NICKNAME2,
                         scientificName = SCIENTIFIC_NAME2,
+                        waterRemainDay = WATER_REAMIN_DAY,
+                        fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
                     ),
                 )
             context("내 모든 식물 조회를 하면") {
@@ -155,9 +159,13 @@ class MyPlantControllerTest : DescribeSpec() {
                             MockMvcResultMatchers.jsonPath("$[0].myPlantId").value(ID)
                             MockMvcResultMatchers.jsonPath("$[0].name").value(NICKNAME)
                             MockMvcResultMatchers.jsonPath("$[0].scientificName").value(SCIENTIFIC_NAME)
+                            MockMvcResultMatchers.jsonPath("$[0].waterRemainDay").value(WATER_REAMIN_DAY)
+                            MockMvcResultMatchers.jsonPath("$[0].fertilizerRemainDay").value(FERTILIZER_REAMIN_DAY)
                             MockMvcResultMatchers.jsonPath("$[1].myPlantId").value(ID2)
                             MockMvcResultMatchers.jsonPath("$[1].name").value(NICKNAME2)
                             MockMvcResultMatchers.jsonPath("$[1].scientificName").value(SCIENTIFIC_NAME2)
+                            MockMvcResultMatchers.jsonPath("$[1].waterRemainDay").value(WATER_REAMIN_DAY)
+                            MockMvcResultMatchers.jsonPath("$[1].fertilizerRemainDay").value(FERTILIZER_REAMIN_DAY)
                         }.andDo { print() }
                 }
             }
@@ -298,6 +306,8 @@ class MyPlantControllerTest : DescribeSpec() {
         const val NICKNAME = "뿡뿡이"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
+        const val WATER_REAMIN_DAY = 3
+        const val FERTILIZER_REAMIN_DAY = 3
 
         const val ID2 = 2L
         const val SCIENTIFIC_NAME2 = "병아리 눈물"

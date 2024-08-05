@@ -41,11 +41,11 @@ class MyPlantService(
     }
 
     @Transactional(readOnly = true)
-    fun findAllPlant(): List<MyPlantResponse> {
+    fun findAllPlant(now: LocalDate): List<MyPlantResponse> {
         val plantList = myPlantRepository.findAll()
 
         return plantList.stream().map { plant ->
-            MyPlantResponse.from(plant)
+            MyPlantResponse.from(plant, now)
         }.toList()
     }
 

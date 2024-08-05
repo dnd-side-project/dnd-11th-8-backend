@@ -26,7 +26,7 @@ class MyPlantController(
     ) = myPlantService.savePlant(request, LocalDate.now())
 
     @GetMapping
-    fun findAllPlant(): List<MyPlantResponse> = myPlantService.findAllPlant()
+    fun findAllPlant(): List<MyPlantResponse> = myPlantService.findAllPlant(LocalDate.now())
 
     @GetMapping("/{myPlantId}")
     fun findPlantDetail(

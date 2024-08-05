@@ -104,6 +104,7 @@ class PlantServiceTest : DescribeSpec(
                         nickname = NICKNAME,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE,
                         alarm = ALARM,
                     ).apply {
                         id = PLANT_ID
@@ -113,6 +114,7 @@ class PlantServiceTest : DescribeSpec(
                         nickname = NICKNAME2,
                         startDate = START_DATE2,
                         lastWateredDate = LAST_WATERED_DATE2,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE2,
                         alarm = ALARM,
                     ).apply {
                         id = PLANT_ID2
@@ -120,14 +122,18 @@ class PlantServiceTest : DescribeSpec(
                 )
             context("내 식물을 전체 조회하면") {
                 it("내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllPlant()
+                    val response = myPlantService.findAllPlant(CURRENT_DAY)
                     response.size shouldBe 2
                     response[0].myPlantId shouldBe PLANT_ID
                     response[0].nickname shouldBe NICKNAME
                     response[0].scientificName shouldBe SCIENTIFIC_NAME
+                    response[0].waterRemainDay shouldBe 2
+                    response[0].fertilizerRemainDay shouldBe 29
                     response[1].myPlantId shouldBe PLANT_ID2
                     response[1].nickname shouldBe NICKNAME2
                     response[1].scientificName shouldBe SCIENTIFIC_NAME2
+                    response[1].waterRemainDay shouldBe 2
+                    response[1].fertilizerRemainDay shouldBe 29
                 }
             }
         }
@@ -249,7 +255,7 @@ class PlantServiceTest : DescribeSpec(
     },
 ) {
     companion object {
-        val CURRENT_DAY: LocalDate = LocalDate.now()
+        val CURRENT_DAY: LocalDate = LocalDate.of(2024, 5, 17)
         val FUTURE_DATE: LocalDate = CURRENT_DAY.plusDays(1)
 
         const val PLANT_ID = 1L
@@ -257,16 +263,18 @@ class PlantServiceTest : DescribeSpec(
         const val NICKNAME = "뿡뿡이"
         val START_DATE: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_WATERED_DATE: LocalDate = CURRENT_DAY.minusDays(1)
+        val LAST_FERTILIZER_DATE: LocalDate = CURRENT_DAY.minusDays(1)
 
         const val PLANT_ID2 = 2L
         const val SCIENTIFIC_NAME2 = "병아리 눈물"
         const val NICKNAME2 = "빵빵이"
         val START_DATE2: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_WATERED_DATE2: LocalDate = CURRENT_DAY.minusDays(1)
+        val LAST_FERTILIZER_DATE2: LocalDate = CURRENT_DAY.minusDays(1)
 
         const val WATER_ALARM = true
         const val WATER_PERIOD = 3
-        const val FERTILIZER_ALARM = false
+        const val FERTILIZER_ALARM = true
         const val FERTILIZER_PERIOD = 30
         const val HEALTHCHECK_ALARM = true
 
