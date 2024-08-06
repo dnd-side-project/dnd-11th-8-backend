@@ -3,6 +3,7 @@ package dnd11th.blooming.api.controller.myplant
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.AlarmResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.MyPlantService
@@ -32,6 +33,12 @@ class MyPlantController(
     fun findPlantDetail(
         @PathVariable myPlantId: Long,
     ): MyPlantDetailResponse = myPlantService.findPlantDetail(myPlantId)
+
+    @PatchMapping("/{myPlantId}")
+    fun modifyMyPlant(
+        @PathVariable myPlantId: Long,
+        @RequestBody request: MyPlantModifyRequest,
+    ) = myPlantService.modifyMyPlant(myPlantId, request)
 
     @GetMapping("/{myPlantId}/alarm")
     fun findPlantAlarm(

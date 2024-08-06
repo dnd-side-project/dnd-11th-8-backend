@@ -1,13 +1,16 @@
 package dnd11th.blooming.service
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Alarm
+import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -20,7 +23,8 @@ import java.time.LocalDate
 class PlantServiceTest : DescribeSpec(
     {
         val plantRepsitory = mockk<MyPlantRepository>()
-        val myPlantService = MyPlantService(plantRepsitory)
+        val locationRepository = mockk<LocationRepository>()
+        val myPlantService = MyPlantService(plantRepsitory, locationRepository)
 
         describe("내 식물 저장") {
             every { plantRepsitory.save(any()) } returns
@@ -198,6 +202,71 @@ class PlantServiceTest : DescribeSpec(
             }
         }
 
+        describe("내 식물 수정") {
+            every { plantRepsitory.findByIdOrNull(any()) } returns
+                MyPlant(
+                    scientificName = SCIENTIFIC_NAME,
+                    nickname = NICKNAME,
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    alarm = ALARM,
+                )
+            every { plantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
+                null
+            every { locationRepository.findByName(any()) } returns
+                Location(
+                    name = LOCATION_NAME,
+                )
+            every { locationRepository.findByName(not(eq(LOCATION_NAME))) } returns
+                null
+            context("정상 요청으로 수정하면") {
+                val request =
+                    MyPlantModifyRequest(
+                        nickname = NICKNAME,
+                        location = LOCATION_NAME,
+                        startDate = START_DATE,
+                        lastWateredDate = LAST_WATERED_DATE,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    )
+                it("정상 흐름을 반환해야 한다.") {
+                    myPlantService.modifyMyPlant(PLANT_ID, request)
+                }
+            }
+            context("존재하지 않는 내 식물 ID로 수정하면") {
+                val request =
+                    MyPlantModifyRequest(
+                        nickname = NICKNAME,
+                        location = LOCATION_NAME,
+                        startDate = START_DATE,
+                        lastWateredDate = LAST_WATERED_DATE,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    )
+                it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<NotFoundException> { myPlantService.modifyMyPlant(PLANT_ID2, request) }
+                    exception.message shouldBe "존재하지 않는 내 식물입니다."
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
+                }
+            }
+            context("존재하지 않는 장소 이름으로 수정하면") {
+                val request =
+                    MyPlantModifyRequest(
+                        nickname = NICKNAME,
+                        location = LOCATION_NAME2,
+                        startDate = START_DATE,
+                        lastWateredDate = LAST_WATERED_DATE,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    )
+                it("NotFoundException(NOT_FOUND_LOCATION_ID) 예외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<NotFoundException> { myPlantService.modifyMyPlant(PLANT_ID, request) }
+                    exception.message shouldBe "존재하지 않는 위치입니다."
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID
+                }
+            }
+        }
+
         describe("알림 조회") {
             every { plantRepsitory.findByIdOrNull(PLANT_ID) } returns
                 MyPlant(
@@ -287,13 +356,15 @@ class PlantServiceTest : DescribeSpec(
         const val PLANT_ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
         const val NICKNAME = "뿡뿡이"
+        const val LOCATION_NAME = "거실"
         val START_DATE: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_WATERED_DATE: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_FERTILIZER_DATE: LocalDate = CURRENT_DAY.minusDays(1)
-
         const val PLANT_ID2 = 2L
+
         const val SCIENTIFIC_NAME2 = "병아리 눈물"
         const val NICKNAME2 = "빵빵이"
+        const val LOCATION_NAME2 = "베란다"
         val START_DATE2: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_WATERED_DATE2: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_FERTILIZER_DATE2: LocalDate = CURRENT_DAY.minusDays(1)

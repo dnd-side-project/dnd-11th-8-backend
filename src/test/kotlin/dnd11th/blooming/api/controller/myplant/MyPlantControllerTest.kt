@@ -5,6 +5,7 @@ import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.AlarmResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.MyPlantService
@@ -218,6 +219,87 @@ class MyPlantControllerTest : DescribeSpec() {
                             MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
                             MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
                         }.andDo { print() }
+                }
+            }
+        }
+
+        describe("내 식물 수정") {
+            beforeTest {
+                every { myPlantService.modifyMyPlant(any(), any()) } just runs
+                every { myPlantService.modifyMyPlant(not(eq(ID)), any()) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                every {
+                    myPlantService.modifyMyPlant(
+                        any(),
+                        match {
+                            it.location != LOCATION_NAME
+                        },
+                    )
+                } throws
+                    NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+            }
+            context("정상 요청으로 수정하면") {
+                val request =
+                    objectMapper.writeValueAsString(
+                        MyPlantModifyRequest(
+                            nickname = NICKNAME,
+                            location = LOCATION_NAME,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        ),
+                    )
+                it("정상 흐름이 반환되어야 한다.") {
+                    mockMvc.patch("/api/v1/plants/$ID") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = request
+                    }.andExpectAll {
+                        status { isOk() }
+                    }.andDo { print() }
+                }
+            }
+            context("존재하지 않는 식물 ID로 수정하면") {
+                val request =
+                    objectMapper.writeValueAsString(
+                        MyPlantModifyRequest(
+                            nickname = NICKNAME,
+                            location = LOCATION_NAME,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        ),
+                    )
+                it("예외응답이 반환되어야 한다.") {
+                    mockMvc.patch("/api/v1/plants/$ID2") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = request
+                    }.andExpectAll {
+                        status { isNotFound() }
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 식물입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
+                    }.andDo { print() }
+                }
+            }
+            context("존재하지 않는 장소 이름로 수정하면") {
+                val request =
+                    objectMapper.writeValueAsString(
+                        MyPlantModifyRequest(
+                            nickname = NICKNAME,
+                            location = "존재하지 않는 장소 이름",
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        ),
+                    )
+                it("예외응답이 반환되어야 한다.") {
+                    mockMvc.patch("/api/v1/plants/$ID2") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = request
+                    }.andExpectAll {
+                        status { isNotFound() }
+                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 장소입니다.")
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
+                    }.andDo { print() }
                 }
             }
         }

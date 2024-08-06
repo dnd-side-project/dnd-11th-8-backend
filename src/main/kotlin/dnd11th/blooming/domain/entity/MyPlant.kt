@@ -40,6 +40,20 @@ class MyPlant(
     @JoinColumn(name = "location_id")
     var location: Location? = null
 
+    fun modify(
+        nickname: String?,
+        location: Location?,
+        startDate: LocalDate?,
+        lastWateredDate: LocalDate?,
+        lastFertilizerDate: LocalDate?,
+    ) {
+        nickname?.let { this.nickname = nickname }
+        location?. let { this.location = location }
+        startDate?.let { this.startDate = startDate }
+        lastWateredDate?.let { this.lastWateredDate = lastWateredDate }
+        lastFertilizerDate?.let { this.lastFertilizerDate = lastFertilizerDate }
+    }
+
     fun getWaterRemainDay(now: LocalDate): Int? {
         if (!alarm.waterAlarm) return null
 
