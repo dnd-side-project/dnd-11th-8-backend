@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.service
+package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.AlarmResponse

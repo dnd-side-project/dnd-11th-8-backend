@@ -1,9 +1,9 @@
-package dnd11th.blooming.service
+package dnd11th.blooming.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
-import dnd11th.blooming.api.service.MyPlantService
+import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
@@ -22,7 +22,7 @@ import io.mockk.runs
 import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDate
 
-class PlantServiceTest : DescribeSpec(
+class MyPlantServiceTest : DescribeSpec(
     {
         val plantRepsitory = mockk<MyPlantRepository>()
         val locationRepository = mockk<LocationRepository>()

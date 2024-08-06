@@ -1,8 +1,8 @@
-package dnd11th.blooming.service
+package dnd11th.blooming.service.location
 
-import dnd11th.blooming.api.dto.LocationModifyRequest
-import dnd11th.blooming.api.dto.LocationSaveRequest
-import dnd11th.blooming.api.service.LocationService
+import dnd11th.blooming.api.dto.location.LocationModifyRequest
+import dnd11th.blooming.api.dto.location.LocationSaveRequest
+import dnd11th.blooming.api.service.location.LocationService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
