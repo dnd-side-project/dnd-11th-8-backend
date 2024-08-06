@@ -8,7 +8,7 @@ import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
-import dnd11th.blooming.api.service.MyPlantService
+import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
@@ -17,6 +17,7 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
+import org.hamcrest.CoreMatchers.equalTo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
@@ -25,7 +26,6 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.LocalDate
 
 @WebMvcTest(MyPlantController::class)
@@ -103,8 +103,8 @@ class MyPlantControllerTest : DescribeSpec() {
                         content = json
                     }.andExpectAll {
                         status { isBadRequest() }
-                        MockMvcResultMatchers.jsonPath("$.message").value("올바르지 않은 날짜입니다.")
-                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
+                        jsonPath("$.message", equalTo("올바르지 않은 날짜입니다."))
+                        jsonPath("$.code", equalTo(ErrorType.INVALID_DATE.name))
                     }.andDo { print() }
                 }
             }
@@ -130,8 +130,8 @@ class MyPlantControllerTest : DescribeSpec() {
                         content = json
                     }.andExpectAll {
                         status { isBadRequest() }
-                        MockMvcResultMatchers.jsonPath("$.message").value("올바르지 않은 날짜입니다.")
-                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
+                        jsonPath("$.message", equalTo("올바르지 않은 날짜입니다."))
+                        jsonPath("$.code", equalTo(ErrorType.INVALID_DATE.name))
                     }.andDo { print() }
                 }
             }
@@ -160,17 +160,17 @@ class MyPlantControllerTest : DescribeSpec() {
                     mockMvc.get("/api/v1/plants")
                         .andExpectAll {
                             status { isOk() }
-                            MockMvcResultMatchers.jsonPath("$.size()").value(2)
-                            MockMvcResultMatchers.jsonPath("$[0].myPlantId").value(ID)
-                            MockMvcResultMatchers.jsonPath("$[0].name").value(NICKNAME)
-                            MockMvcResultMatchers.jsonPath("$[0].scientificName").value(SCIENTIFIC_NAME)
-                            MockMvcResultMatchers.jsonPath("$[0].waterRemainDay").value(WATER_REAMIN_DAY)
-                            MockMvcResultMatchers.jsonPath("$[0].fertilizerRemainDay").value(FERTILIZER_REAMIN_DAY)
-                            MockMvcResultMatchers.jsonPath("$[1].myPlantId").value(ID2)
-                            MockMvcResultMatchers.jsonPath("$[1].name").value(NICKNAME2)
-                            MockMvcResultMatchers.jsonPath("$[1].scientificName").value(SCIENTIFIC_NAME2)
-                            MockMvcResultMatchers.jsonPath("$[1].waterRemainDay").value(WATER_REAMIN_DAY)
-                            MockMvcResultMatchers.jsonPath("$[1].fertilizerRemainDay").value(FERTILIZER_REAMIN_DAY)
+                            jsonPath("$.size()", equalTo(2))
+                            jsonPath("$[0].myPlantId", equalTo(ID.toInt()))
+                            jsonPath("$[0].nickname", equalTo(NICKNAME))
+                            jsonPath("$[0].scientificName", equalTo(SCIENTIFIC_NAME))
+                            jsonPath("$[0].waterRemainDay", equalTo(WATER_REAMIN_DAY))
+                            jsonPath("$[0].fertilizerRemainDay", equalTo(FERTILIZER_REAMIN_DAY))
+                            jsonPath("$[1].myPlantId", equalTo(ID2.toInt()))
+                            jsonPath("$[1].nickname", equalTo(NICKNAME2))
+                            jsonPath("$[1].scientificName", equalTo(SCIENTIFIC_NAME2))
+                            jsonPath("$[1].waterRemainDay", equalTo(WATER_REAMIN_DAY))
+                            jsonPath("$[1].fertilizerRemainDay", equalTo(FERTILIZER_REAMIN_DAY))
                         }.andDo { print() }
                 }
             }
@@ -199,16 +199,16 @@ class MyPlantControllerTest : DescribeSpec() {
                     mockMvc.get("/api/v1/plants/$ID")
                         .andExpectAll {
                             status { isOk() }
-                            MockMvcResultMatchers.jsonPath("$.name").value(NICKNAME)
-                            MockMvcResultMatchers.jsonPath("$.scientificName").value(SCIENTIFIC_NAME)
-                            MockMvcResultMatchers.jsonPath("$.location").value(LOCATION_NAME)
-                            MockMvcResultMatchers.jsonPath("$.startDate").value(START_DATE)
-                            MockMvcResultMatchers.jsonPath("$.lastWatedDate").value(LAST_WATERED_DATE)
-                            MockMvcResultMatchers.jsonPath("$.waterAlarm").value(WATER_ALARM)
-                            MockMvcResultMatchers.jsonPath("$.waterPeriod").value(WATER_PERIOD)
-                            MockMvcResultMatchers.jsonPath("$.fertilizerAlarm").value(FERTILIZER_ALARM)
-                            MockMvcResultMatchers.jsonPath("$.fertilizerPeriod").value(FERTILIZER_PERIOD)
-                            MockMvcResultMatchers.jsonPath("$.healthCheckAlarm").value(HEALTHCHECK_ALARM)
+                            jsonPath("$.nickname", equalTo(NICKNAME))
+                            jsonPath("$.scientificName", equalTo(SCIENTIFIC_NAME))
+                            jsonPath("$.location", equalTo(LOCATION_NAME))
+                            jsonPath("$.startDate", equalTo(START_DATE.toString()))
+                            jsonPath("$.lastWatedDate", equalTo(LAST_WATERED_DATE.toString()))
+                            jsonPath("$.waterAlarm", equalTo(WATER_ALARM))
+                            jsonPath("$.waterPeriod", equalTo(WATER_PERIOD))
+                            jsonPath("$.fertilizerAlarm", equalTo(FERTILIZER_ALARM))
+                            jsonPath("$.fertilizerPeriod", equalTo(FERTILIZER_PERIOD))
+                            jsonPath("$.healthCheckAlarm", equalTo(HEALTHCHECK_ALARM))
                         }.andDo { print() }
                 }
             }
@@ -217,8 +217,8 @@ class MyPlantControllerTest : DescribeSpec() {
                     mockMvc.get("/api/v1/plants/$ID2")
                         .andExpectAll {
                             status { isNotFound() }
-                            MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
-                            MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
+                            jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
                         }.andDo { print() }
                 }
             }
@@ -259,7 +259,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     }.andDo { print() }
                 }
             }
-            context("존재하지 않는 식물 ID로 수정하면") {
+            context("존재하지 않는 내 식물 ID로 수정하면") {
                 val request =
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
@@ -276,8 +276,8 @@ class MyPlantControllerTest : DescribeSpec() {
                         content = request
                     }.andExpectAll {
                         status { isNotFound() }
-                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 식물입니다.")
-                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
+                        jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
+                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
                     }.andDo { print() }
                 }
             }
@@ -298,8 +298,8 @@ class MyPlantControllerTest : DescribeSpec() {
                         content = request
                     }.andExpectAll {
                         status { isNotFound() }
-                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 장소입니다.")
-                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE.name)
+                        jsonPath("$.message", equalTo("존재하지 않는 위치입니다."))
+                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION_ID.name))
                     }.andDo { print() }
                 }
             }
@@ -319,14 +319,15 @@ class MyPlantControllerTest : DescribeSpec() {
                         }.andDo { print() }
                 }
             }
-            context("존재하지 않는 식물 ID로 삭제하면") {
+            context("존재하지 않는 내 식물 ID로 삭제하면") {
                 it("예외응답이 반환되어야 한다.") {
                     mockMvc.delete("/api/v1/plants/$ID2")
                         .andExpectAll {
                             status { isNotFound() }
-                            MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 식물입니다.")
-                            MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
-                        }.andDo { print() }
+                            jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
+                        }
+                        .andDo { print() }
                 }
             }
         }
@@ -349,11 +350,11 @@ class MyPlantControllerTest : DescribeSpec() {
                     mockMvc.get("/api/v1/plants/$ID/alarm")
                         .andExpectAll {
                             status { isOk() }
-                            MockMvcResultMatchers.jsonPath("$.waterAlarm").value(WATER_ALARM)
-                            MockMvcResultMatchers.jsonPath("$.waterPeriod").value(WATER_PERIOD)
-                            MockMvcResultMatchers.jsonPath("$.fetilizerAlarm").value(FERTILIZER_ALARM)
-                            MockMvcResultMatchers.jsonPath("$.fetilizerPeriod").value(FERTILIZER_PERIOD)
-                            MockMvcResultMatchers.jsonPath("$.healthcheckAlarm").value(HEALTHCHECK_ALARM)
+                            jsonPath("$.waterAlarm", equalTo(WATER_ALARM))
+                            jsonPath("$.waterPeriod", equalTo(WATER_PERIOD))
+                            jsonPath("$.fertilizerAlarm", equalTo(FERTILIZER_ALARM))
+                            jsonPath("$.fertilizerPeriod", equalTo(FERTILIZER_PERIOD))
+                            jsonPath("$.healthCheckAlarm", equalTo(HEALTHCHECK_ALARM))
                         }.andDo { print() }
                 }
             }
@@ -362,8 +363,8 @@ class MyPlantControllerTest : DescribeSpec() {
                     mockMvc.get("/api/v1/plants/$ID2/alarm")
                         .andExpectAll {
                             status { isNotFound() }
-                            MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
-                            MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
+                            jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
                         }.andDo { print() }
                 }
             }
@@ -414,8 +415,8 @@ class MyPlantControllerTest : DescribeSpec() {
                     }
                         .andExpectAll {
                             status { isNotFound() }
-                            MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 내 식물입니다.")
-                            MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
+                            jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
                         }.andDo { print() }
                 }
             }

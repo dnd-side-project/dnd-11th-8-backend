@@ -1,12 +1,12 @@
-package dnd11th.blooming.api.controller.myplant
+package dnd11th.blooming.api.controller.location
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import dnd11th.blooming.api.dto.LocationModifyRequest
-import dnd11th.blooming.api.dto.LocationResponse
-import dnd11th.blooming.api.dto.LocationSaveRequest
-import dnd11th.blooming.api.dto.LocationSaveResponse
-import dnd11th.blooming.api.service.LocationService
+import dnd11th.blooming.api.dto.location.LocationModifyRequest
+import dnd11th.blooming.api.dto.location.LocationResponse
+import dnd11th.blooming.api.dto.location.LocationSaveRequest
+import dnd11th.blooming.api.dto.location.LocationSaveResponse
+import dnd11th.blooming.api.service.location.LocationService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.jwt.JwtProvider
@@ -14,6 +14,7 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
+import org.hamcrest.CoreMatchers.equalTo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
@@ -22,10 +23,9 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@WebMvcTest(MyPlantLocationController::class)
-class MyPlantLocationControllerTest : DescribeSpec() {
+@WebMvcTest(LocationController::class)
+class LocationControllerTest : DescribeSpec() {
     @MockkBean
     private lateinit var locationService: LocationService
 
@@ -45,7 +45,7 @@ class MyPlantLocationControllerTest : DescribeSpec() {
                     id = LOCATION_ID,
                     name = LOCATION_NAME,
                 )
-            context("name을 request로 전달하면") {
+            context("정상 요청을 전달하면") {
                 val request =
                     objectMapper.writeValueAsString(
                         LocationSaveRequest(
@@ -58,8 +58,8 @@ class MyPlantLocationControllerTest : DescribeSpec() {
                         content = request
                     }.andExpectAll {
                         status { isOk() }
-                        MockMvcResultMatchers.jsonPath("$.id").value(LOCATION_ID)
-                        MockMvcResultMatchers.jsonPath("$.name").value(LOCATION_NAME)
+                        jsonPath("$.id", equalTo(LOCATION_ID.toInt()))
+                        jsonPath("$.name", equalTo(LOCATION_NAME))
                     }.andDo { print() }
                 }
             }
@@ -82,11 +82,11 @@ class MyPlantLocationControllerTest : DescribeSpec() {
                     mockMvc.get("/api/v1/plants/location")
                         .andExpectAll {
                             status { isOk() }
-                            MockMvcResultMatchers.jsonPath("$.size()").value(2)
-                            MockMvcResultMatchers.jsonPath("$[0].id").value(LOCATION_ID)
-                            MockMvcResultMatchers.jsonPath("$[0].name").value(LOCATION_NAME)
-                            MockMvcResultMatchers.jsonPath("$[1].id").value(LOCATION_ID2)
-                            MockMvcResultMatchers.jsonPath("$[1].name").value(LOCATION_NAME2)
+                            jsonPath("$.size()", equalTo(2))
+                            jsonPath("$[0].id", equalTo(LOCATION_ID.toInt()))
+                            jsonPath("$[0].name", equalTo(LOCATION_NAME))
+                            jsonPath("$[1].id", equalTo(LOCATION_ID2.toInt()))
+                            jsonPath("$[1].name", equalTo(LOCATION_NAME2))
                         }
                 }
             }
@@ -97,7 +97,7 @@ class MyPlantLocationControllerTest : DescribeSpec() {
                 every { locationService.modifyLocation(LOCATION_ID, any()) } returns
                     LocationResponse(
                         id = LOCATION_ID,
-                        name = LOCATION_NAME,
+                        name = LOCATION_NAME2,
                     )
                 every { locationService.modifyLocation(not(eq(LOCATION_ID)), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
@@ -115,8 +115,8 @@ class MyPlantLocationControllerTest : DescribeSpec() {
                         content = request
                     }.andExpectAll {
                         status { isOk() }
-                        MockMvcResultMatchers.jsonPath("$.id").value(LOCATION_ID)
-                        MockMvcResultMatchers.jsonPath("$.name").value(LOCATION_NAME2)
+                        jsonPath("$.id", equalTo(LOCATION_ID.toInt()))
+                        jsonPath("$.name", equalTo(LOCATION_NAME2))
                     }.andDo { print() }
                 }
             }
@@ -133,8 +133,8 @@ class MyPlantLocationControllerTest : DescribeSpec() {
                         content = request
                     }.andExpectAll {
                         status { isNotFound() }
-                        MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 위치입니다.")
-                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_LOCATION_ID)
+                        jsonPath("$.message", equalTo("존재하지 않는 위치입니다."))
+                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION_ID.name))
                     }.andDo { print() }
                 }
             }
@@ -159,8 +159,8 @@ class MyPlantLocationControllerTest : DescribeSpec() {
                     mockMvc.delete("/api/v1/plants/location/$LOCATION_ID2")
                         .andExpectAll {
                             status { isNotFound() }
-                            MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 위치입니다.")
-                            MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_LOCATION_ID)
+                            jsonPath("$.message", equalTo("존재하지 않는 위치입니다."))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION_ID.name))
                         }.andDo { print() }
                 }
             }
