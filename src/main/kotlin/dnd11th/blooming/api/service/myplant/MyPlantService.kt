@@ -2,6 +2,7 @@ package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
@@ -102,5 +103,18 @@ class MyPlantService(
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
 
         plant.alarm = request.toAlarm()
+    }
+
+    @Transactional
+    fun manageMyPlant(
+        myPlantId: Long,
+        request: MyPlantManageRequest,
+        now: LocalDate,
+    ) {
+        val plant =
+            myPlantRepository.findByIdOrNull(myPlantId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+
+        plant.manageLastDates(request.doWater, request.doFertilizer, now)
     }
 }

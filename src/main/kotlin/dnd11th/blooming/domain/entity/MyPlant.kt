@@ -75,4 +75,13 @@ class MyPlant(
             location.name
         }
     }
+
+    fun manageLastDates(
+        doWater: Boolean?,
+        doFertilizer: Boolean?,
+        manageDate: LocalDate,
+    ) {
+        doWater?.let { this.lastWateredDate = manageDate }
+        doFertilizer?.let { this.lastFertilizerDate = manageDate }
+    }
 }
