@@ -299,41 +299,6 @@ class MyPlantServiceTest : DescribeSpec(
             }
         }
 
-        describe("알림 조회") {
-            every { plantRepsitory.findByIdOrNull(PLANT_ID) } returns
-                MyPlant(
-                    scientificName = SCIENTIFIC_NAME,
-                    nickname = NICKNAME,
-                    startDate = START_DATE,
-                    lastWateredDate = LAST_WATERED_DATE,
-                    alarm = ALARM,
-                ).apply {
-                    id = PLANT_ID
-                }
-            every { plantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
-                null
-            context("존재하는 ID로 알림 조회 요청을 하면") {
-                it("내 식물의 알림 정보가 조회되어야 한다.") {
-                    val response = myPlantService.findPlantAlarm(PLANT_ID)
-                    response.waterAlarm shouldBe WATER_ALARM
-                    response.waterPeriod shouldBe WATER_PERIOD
-                    response.fertilizerAlarm shouldBe FERTILIZER_ALARM
-                    response.fertilizerPeriod shouldBe FERTILIZER_PERIOD
-                    response.healthCheckAlarm shouldBe HEALTHCHECK_ALARM
-                }
-            }
-            context("존재하지 않는 ID로") {
-                it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
-                    val exception =
-                        shouldThrow<NotFoundException> {
-                            myPlantService.findPlantAlarm(PLANT_ID2)
-                        }
-                    exception.message shouldBe "존재하지 않는 내 식물입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
-                }
-            }
-        }
-
         describe("알림 변경") {
             every { plantRepsitory.findByIdOrNull(PLANT_ID) } returns
                 MyPlant(

@@ -3,7 +3,6 @@ package dnd11th.blooming.api.controller.myplant
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
-import dnd11th.blooming.api.dto.myplant.AlarmResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
@@ -328,44 +327,6 @@ class MyPlantControllerTest : DescribeSpec() {
                             jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
                         }
                         .andDo { print() }
-                }
-            }
-        }
-
-        describe("내 식물의 알림 조회") {
-            beforeTest {
-                every { myPlantService.findPlantAlarm(ID) } returns
-                    AlarmResponse(
-                        waterAlarm = WATER_ALARM,
-                        waterPeriod = WATER_PERIOD,
-                        fertilizerAlarm = FERTILIZER_ALARM,
-                        fertilizerPeriod = FERTILIZER_PERIOD,
-                        healthCheckAlarm = HEALTHCHECK_ALARM,
-                    )
-                every { myPlantService.findPlantAlarm(not(eq(ID))) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
-            }
-            context("존재하는 ID로 조회하면") {
-                it("내 알림이 조회되어야 한다.") {
-                    mockMvc.get("/api/v1/plants/$ID/alarm")
-                        .andExpectAll {
-                            status { isOk() }
-                            jsonPath("$.waterAlarm", equalTo(WATER_ALARM))
-                            jsonPath("$.waterPeriod", equalTo(WATER_PERIOD))
-                            jsonPath("$.fertilizerAlarm", equalTo(FERTILIZER_ALARM))
-                            jsonPath("$.fertilizerPeriod", equalTo(FERTILIZER_PERIOD))
-                            jsonPath("$.healthCheckAlarm", equalTo(HEALTHCHECK_ALARM))
-                        }.andDo { print() }
-                }
-            }
-            context("존재하지 않는 ID로 조회하면") {
-                it("예외응답이 반환되어야 한다.") {
-                    mockMvc.get("/api/v1/plants/$ID2/alarm")
-                        .andExpectAll {
-                            status { isNotFound() }
-                            jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
-                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
-                        }.andDo { print() }
                 }
             }
         }

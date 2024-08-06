@@ -1,7 +1,6 @@
 package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
-import dnd11th.blooming.api.dto.myplant.AlarmResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
@@ -91,17 +90,6 @@ class MyPlantService(
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
 
         myPlantRepository.delete(plant)
-    }
-
-    @Transactional(readOnly = true)
-    fun findPlantAlarm(myPlantId: Long): AlarmResponse {
-        val plant =
-            myPlantRepository.findByIdOrNull(myPlantId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
-
-        val alarm = plant.alarm
-
-        return AlarmResponse.from(alarm)
     }
 
     @Transactional
