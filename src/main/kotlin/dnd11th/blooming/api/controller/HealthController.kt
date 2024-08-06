@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api")
 class HealthController : HealthApi {
-
     @GetMapping("/health")
-    override fun healthCheck() : ResponseEntity<String> {
+    override fun healthCheck(): ResponseEntity<String> {
         return ResponseEntity.ok().body("ok")
     }
 }
