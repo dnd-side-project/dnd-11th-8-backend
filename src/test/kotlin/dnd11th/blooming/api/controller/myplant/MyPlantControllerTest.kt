@@ -44,9 +44,9 @@ class MyPlantControllerTest : DescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {
-                every { myPlantService.savePlant(any(), CURRENT_DAY) } just runs
+                every { myPlantService.saveMyPlant(any(), CURRENT_DAY) } just runs
                 every {
-                    myPlantService.savePlant(
+                    myPlantService.saveMyPlant(
                         match {
                             it.startDate == FUTURE_DATE || it.lastWateredDate == FUTURE_DATE
                         },
@@ -137,7 +137,7 @@ class MyPlantControllerTest : DescribeSpec() {
         }
 
         describe("내 식물 전체 조회") {
-            every { myPlantService.findAllPlant(any()) } returns
+            every { myPlantService.findAllMyPlant(any()) } returns
                 listOf(
                     MyPlantResponse(
                         myPlantId = ID,
@@ -177,7 +177,7 @@ class MyPlantControllerTest : DescribeSpec() {
 
         describe("내 식물 상세 조회") {
             beforeTest {
-                every { myPlantService.findPlantDetail(ID) } returns
+                every { myPlantService.findMyPlantDetail(ID) } returns
                     MyPlantDetailResponse(
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
@@ -190,7 +190,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         fertilizerPeriod = FERTILIZER_PERIOD,
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
-                every { myPlantService.findPlantDetail(ID2) } throws
+                every { myPlantService.findMyPlantDetail(ID2) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
             }
             context("존재하는 ID로 조회하면") {
@@ -333,8 +333,8 @@ class MyPlantControllerTest : DescribeSpec() {
 
         describe("내 식물의 알림 수정") {
             beforeTest {
-                every { myPlantService.modifyPlantAlarm(ID, any()) } just runs
-                every { myPlantService.modifyPlantAlarm(not(eq(ID)), any()) } throws
+                every { myPlantService.modifyMyPlantAlarm(ID, any()) } just runs
+                every { myPlantService.modifyMyPlantAlarm(not(eq(ID)), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
             }
             context("존재하는 ID로 수정하면") {

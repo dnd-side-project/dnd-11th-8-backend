@@ -21,7 +21,7 @@ class MyPlantService(
     private val locationRepository: LocationRepository,
 ) {
     @Transactional
-    fun savePlant(
+    fun saveMyPlant(
         request: MyPlantSaveRequest,
         now: LocalDate,
     ) {
@@ -44,7 +44,7 @@ class MyPlantService(
     }
 
     @Transactional(readOnly = true)
-    fun findAllPlant(now: LocalDate): List<MyPlantResponse> {
+    fun findAllMyPlant(now: LocalDate): List<MyPlantResponse> {
         val plantList = myPlantRepository.findAll()
 
         return plantList.stream().map { plant ->
@@ -53,7 +53,7 @@ class MyPlantService(
     }
 
     @Transactional(readOnly = true)
-    fun findPlantDetail(myPlantId: Long): MyPlantDetailResponse {
+    fun findMyPlantDetail(myPlantId: Long): MyPlantDetailResponse {
         val plant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
@@ -93,7 +93,7 @@ class MyPlantService(
     }
 
     @Transactional
-    fun modifyPlantAlarm(
+    fun modifyMyPlantAlarm(
         myPlantId: Long,
         request: AlarmModifyRequest,
     ) {

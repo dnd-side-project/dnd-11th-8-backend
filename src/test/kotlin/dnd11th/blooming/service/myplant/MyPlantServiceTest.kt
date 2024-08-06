@@ -24,12 +24,12 @@ import java.time.LocalDate
 
 class MyPlantServiceTest : DescribeSpec(
     {
-        val plantRepsitory = mockk<MyPlantRepository>()
+        val myPlantRepsitory = mockk<MyPlantRepository>()
         val locationRepository = mockk<LocationRepository>()
-        val myPlantService = MyPlantService(plantRepsitory, locationRepository)
+        val myPlantService = MyPlantService(myPlantRepsitory, locationRepository)
 
         describe("내 식물 저장") {
-            every { plantRepsitory.save(any()) } returns
+            every { myPlantRepsitory.save(any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -54,7 +54,7 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("정상적으로 저장되고 예외가 발생하면 안된다.") {
-                    myPlantService.savePlant(request, CURRENT_DAY)
+                    myPlantService.saveMyPlant(request, CURRENT_DAY)
                 }
             }
             context("시작날짜가 미래인 요청으로 내 식물을 저장하면") {
@@ -74,7 +74,7 @@ class MyPlantServiceTest : DescribeSpec(
                 it("InvalidDateException 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<InvalidDateException> {
-                            myPlantService.savePlant(request, CURRENT_DAY)
+                            myPlantService.saveMyPlant(request, CURRENT_DAY)
                         }
                     exception.message shouldBe "올바르지 않은 날짜입니다."
                     exception.errorType shouldBe ErrorType.INVALID_DATE
@@ -97,7 +97,7 @@ class MyPlantServiceTest : DescribeSpec(
                 it("InvalidDateException 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<InvalidDateException> {
-                            myPlantService.savePlant(request, CURRENT_DAY)
+                            myPlantService.saveMyPlant(request, CURRENT_DAY)
                         }
                     exception.message shouldBe "올바르지 않은 날짜입니다."
                     exception.errorType shouldBe ErrorType.INVALID_DATE
@@ -120,7 +120,7 @@ class MyPlantServiceTest : DescribeSpec(
                 it("InvalidDateException 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<InvalidDateException> {
-                            myPlantService.savePlant(request, CURRENT_DAY)
+                            myPlantService.saveMyPlant(request, CURRENT_DAY)
                         }
                     exception.message shouldBe "올바르지 않은 날짜입니다."
                     exception.errorType shouldBe ErrorType.INVALID_DATE
@@ -129,7 +129,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 전체 조회") {
-            every { plantRepsitory.findAll() } returns
+            every { myPlantRepsitory.findAll() } returns
                 listOf(
                     MyPlant(
                         scientificName = SCIENTIFIC_NAME,
@@ -154,7 +154,7 @@ class MyPlantServiceTest : DescribeSpec(
                 )
             context("내 식물을 전체 조회하면") {
                 it("내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllPlant(CURRENT_DAY)
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY)
                     response.size shouldBe 2
                     response[0].myPlantId shouldBe PLANT_ID
                     response[0].nickname shouldBe NICKNAME
@@ -171,7 +171,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 상세 조회") {
-            every { plantRepsitory.findByIdOrNull(PLANT_ID) } returns
+            every { myPlantRepsitory.findByIdOrNull(PLANT_ID) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -181,11 +181,11 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = PLANT_ID
                 }
-            every { plantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
+            every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
                 null
             context("존재하는 ID로 상세 조회하면") {
                 it("내 식물의 상세 정보가 조회되어야 한다.") {
-                    val response = myPlantService.findPlantDetail(PLANT_ID)
+                    val response = myPlantService.findMyPlantDetail(PLANT_ID)
                     response.nickname shouldBe NICKNAME
                     response.scientificName shouldBe SCIENTIFIC_NAME
                     response.startDate shouldBe START_DATE
@@ -196,7 +196,7 @@ class MyPlantServiceTest : DescribeSpec(
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<NotFoundException> {
-                            myPlantService.findPlantDetail(PLANT_ID2)
+                            myPlantService.findMyPlantDetail(PLANT_ID2)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
@@ -205,7 +205,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 수정") {
-            every { plantRepsitory.findByIdOrNull(any()) } returns
+            every { myPlantRepsitory.findByIdOrNull(any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -214,7 +214,7 @@ class MyPlantServiceTest : DescribeSpec(
                     lastFertilizerDate = LAST_FERTILIZER_DATE,
                     alarm = ALARM,
                 )
-            every { plantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
+            every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
                 null
             every { locationRepository.findByName(any()) } returns
                 Location(
@@ -270,7 +270,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 삭제") {
-            every { plantRepsitory.findByIdOrNull(PLANT_ID) } returns
+            every { myPlantRepsitory.findByIdOrNull(PLANT_ID) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -280,9 +280,9 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = PLANT_ID
                 }
-            every { plantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
+            every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
                 null
-            every { plantRepsitory.delete(any()) } just runs
+            every { myPlantRepsitory.delete(any()) } just runs
 
             context("정상 요청으로 삭제하면") {
                 it("정상 흐름이 반환되어야 한다.") {
@@ -300,7 +300,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("알림 변경") {
-            every { plantRepsitory.findByIdOrNull(PLANT_ID) } returns
+            every { myPlantRepsitory.findByIdOrNull(PLANT_ID) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -310,7 +310,7 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = PLANT_ID
                 }
-            every { plantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
+            every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
                 null
             context("존재하는 ID와 요청으로 알림 변경 요청을 하면") {
                 val request =
@@ -322,7 +322,7 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("알림 정보가 변경되어야 한다.") {
-                    myPlantService.modifyPlantAlarm(PLANT_ID, request)
+                    myPlantService.modifyMyPlantAlarm(PLANT_ID, request)
                 }
             }
             context("존재하지 않는 ID와 요청으로 알림 변경 요청을 하면") {
@@ -337,7 +337,7 @@ class MyPlantServiceTest : DescribeSpec(
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<NotFoundException> {
-                            myPlantService.modifyPlantAlarm(PLANT_ID2, request)
+                            myPlantService.modifyMyPlantAlarm(PLANT_ID2, request)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
