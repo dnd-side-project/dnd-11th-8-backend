@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
@@ -298,8 +299,34 @@ class MyPlantControllerTest : DescribeSpec() {
                     }.andExpectAll {
                         status { isNotFound() }
                         MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 장소입니다.")
-                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE)
+                        MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.INVALID_DATE.name)
                     }.andDo { print() }
+                }
+            }
+        }
+
+        describe("내 식물 삭제") {
+            beforeTest {
+                every { myPlantService.deleteMyPlant(any()) } just runs
+                every { myPlantService.deleteMyPlant(not(eq(ID))) } throws
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+            }
+            context("정상 요청으로 삭제하면") {
+                it("정상 흐름이 반환되어야 한다.") {
+                    mockMvc.delete("/api/v1/plants/$ID")
+                        .andExpectAll {
+                            status { isOk() }
+                        }.andDo { print() }
+                }
+            }
+            context("존재하지 않는 식물 ID로 삭제하면") {
+                it("예외응답이 반환되어야 한다.") {
+                    mockMvc.delete("/api/v1/plants/$ID2")
+                        .andExpectAll {
+                            status { isNotFound() }
+                            MockMvcResultMatchers.jsonPath("$.message").value("존재하지 않는 식물입니다.")
+                            MockMvcResultMatchers.jsonPath("$.code").value(ErrorType.NOT_FOUND_MYPLANT_ID)
+                        }.andDo { print() }
                 }
             }
         }

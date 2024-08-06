@@ -16,7 +16,9 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDate
 
@@ -263,6 +265,36 @@ class PlantServiceTest : DescribeSpec(
                         shouldThrow<NotFoundException> { myPlantService.modifyMyPlant(PLANT_ID, request) }
                     exception.message shouldBe "존재하지 않는 위치입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID
+                }
+            }
+        }
+
+        describe("내 식물 삭제") {
+            every { plantRepsitory.findByIdOrNull(PLANT_ID) } returns
+                MyPlant(
+                    scientificName = SCIENTIFIC_NAME,
+                    nickname = NICKNAME,
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    alarm = ALARM,
+                ).apply {
+                    id = PLANT_ID
+                }
+            every { plantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
+                null
+            every { plantRepsitory.delete(any()) } just runs
+
+            context("정상 요청으로 삭제하면") {
+                it("정상 흐름이 반환되어야 한다.") {
+                    myPlantService.deleteMyPlant(PLANT_ID)
+                }
+            }
+            context("존재하지 않는 내 식물 ID로 삭제하면") {
+                it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<NotFoundException> { myPlantService.deleteMyPlant(PLANT_ID2) }
+                    exception.message shouldBe "존재하지 않는 내 식물입니다."
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
                 }
             }
         }

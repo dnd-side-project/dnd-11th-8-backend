@@ -84,6 +84,15 @@ class MyPlantService(
         )
     }
 
+    @Transactional
+    fun deleteMyPlant(myPlantId: Long) {
+        val plant =
+            myPlantRepository.findByIdOrNull(myPlantId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+
+        myPlantRepository.delete(plant)
+    }
+
     @Transactional(readOnly = true)
     fun findPlantAlarm(myPlantId: Long): AlarmResponse {
         val plant =
