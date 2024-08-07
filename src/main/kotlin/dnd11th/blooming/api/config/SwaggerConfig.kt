@@ -27,25 +27,10 @@ class SwaggerConfig {
 
     @Bean
     fun springOpenApi(): OpenAPI {
-        val tokenSchema: SecurityScheme =
-            SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT")
-                .name(AUTHORIZATION)
-                .`in`(SecurityScheme.In.HEADER)
-
-        val securityItem: SecurityRequirement = SecurityRequirement().addList(AUTHORIZATION)
-
         return OpenAPI()
-            .components(Components().addSecuritySchemes(AUTHORIZATION, tokenSchema))
-            .addSecurityItem(securityItem)
-            .info(
-                Info()
-                    .title("\uD83C\uDF40Blomming\uD83C\uDF40")
-                    .description("API 명세서입니다")
-                    .title("v0.0.1"),
-            )
+            .components(swaggerComponent())
+            .addSecurityItem(securityItem())
+            .info(swaggerInfo())
     }
 
     @Bean
@@ -60,6 +45,31 @@ class SwaggerConfig {
             }
             operation
         }
+
+    private fun swaggerComponent(): Components {
+        val tokenSchema: SecurityScheme =
+            SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
+                .name(AUTHORIZATION)
+                .`in`(SecurityScheme.In.HEADER)
+
+        return Components()
+            .addSecuritySchemes(AUTHORIZATION, tokenSchema)
+    }
+
+    private fun securityItem(): SecurityRequirement {
+        return SecurityRequirement()
+            .addList(AUTHORIZATION)
+    }
+
+    private fun swaggerInfo(): Info {
+        return Info()
+            .title("\uD83C\uDF40Blomming\uD83C\uDF40")
+            .description("API 명세서입니다")
+            .title("v0.0.1")
+    }
 
     private fun generateErrorResponse(
         operation: Operation,
