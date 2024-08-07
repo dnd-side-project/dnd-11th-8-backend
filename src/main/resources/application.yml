@@ -15,6 +15,7 @@ spring:
     hibernate:
       ddl-auto: update
     defer-datasource-initialization: true
+    open-in-view: false
 
 auth:
   jwt:
