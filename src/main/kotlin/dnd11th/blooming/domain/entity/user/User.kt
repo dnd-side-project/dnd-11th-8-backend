@@ -20,6 +20,10 @@ class User(
 
     val nickname: String = nickname
 
+    val nx: Int = 0
+
+    val ny: Int = 0
+
     companion object {
         fun create(claims: UserClaims): User {
             return User(claims.email, claims.nickname)
