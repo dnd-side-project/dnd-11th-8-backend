@@ -68,7 +68,7 @@ class SwaggerConfig {
     ) {
         val responses = operation.responses
         val exampleDto = createExampleDto(errorCode)
-        addExamplesToApiResponse(responses, description, exampleDto)
+        addExampleToApiResponse(responses, description, exampleDto)
     }
 
     private fun createExampleDto(errorCode: ErrorType): ExampleDto {
@@ -82,7 +82,7 @@ class SwaggerConfig {
         )
     }
 
-    private fun addExamplesToApiResponse(
+    private fun addExampleToApiResponse(
         responses: ApiResponses,
         description: String,
         exampleDto: ExampleDto,
