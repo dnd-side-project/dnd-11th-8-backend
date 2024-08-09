@@ -4,6 +4,7 @@ import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
+import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
 import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
@@ -28,7 +29,8 @@ class MyPlantServiceTest : DescribeSpec(
     {
         val myPlantRepsitory = mockk<MyPlantRepository>()
         val locationRepository = mockk<LocationRepository>()
-        val myPlantService = MyPlantService(myPlantRepsitory, locationRepository)
+        val myPlantMessageFactory = mockk<MyPlantMessageFactory>()
+        val myPlantService = MyPlantService(myPlantRepsitory, locationRepository, myPlantMessageFactory)
 
         describe("내 식물 저장") {
             every { myPlantRepsitory.save(any()) } returns
@@ -186,22 +188,33 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = PLANT_ID
                 }
+            every { myPlantMessageFactory.createWateredTitle() } returns
+                WATERED_TITLE
+            every { myPlantMessageFactory.createWateredInfo(any(), any()) } returns
+                WATERED_INFO
+            every { myPlantMessageFactory.createFertilizerTitle() } returns
+                FERTILIZER_TITLE
+            every { myPlantMessageFactory.createFertilizerInfo(any(), any()) } returns
+                FERTILIZER_INFO
             every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
                 null
             context("존재하는 ID로 상세 조회하면") {
                 it("내 식물의 상세 정보가 조회되어야 한다.") {
-                    val response = myPlantService.findMyPlantDetail(PLANT_ID)
+                    val response = myPlantService.findMyPlantDetail(PLANT_ID, CURRENT_DAY)
                     response.nickname shouldBe NICKNAME
                     response.scientificName shouldBe SCIENTIFIC_NAME
                     response.startDate shouldBe START_DATE
-                    response.lastWatedDate shouldBe LAST_WATERED_DATE
+                    response.lastWateredTitle shouldBe WATERED_TITLE
+                    response.lastWateredInfo shouldBe WATERED_INFO
+                    response.lastFertilizerTitle shouldBe FERTILIZER_TITLE
+                    response.lastFertilizerInfo shouldBe FERTILIZER_INFO
                 }
             }
             context("존재하지 않는 ID로 상세 조회하면") {
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<NotFoundException> {
-                            myPlantService.findMyPlantDetail(PLANT_ID2)
+                            myPlantService.findMyPlantDetail(PLANT_ID2, CURRENT_DAY)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
@@ -421,5 +434,10 @@ class MyPlantServiceTest : DescribeSpec(
 
         val ALARM: Alarm =
             Alarm(WATER_ALARM, WATER_PERIOD, FERTILIZER_ALARM, FERTILIZER_PERIOD, HEALTHCHECK_ALARM)
+
+        val FERTILIZER_TITLE = "비료주기"
+        val FERTILIZER_INFO = "이번 달"
+        val WATERED_TITLE = "마지막으로 물 준 날"
+        val WATERED_INFO = "${LAST_WATERED_DATE}\n1일전"
     }
 }

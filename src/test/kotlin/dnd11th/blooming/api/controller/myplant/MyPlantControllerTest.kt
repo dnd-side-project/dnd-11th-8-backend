@@ -184,20 +184,23 @@ class MyPlantControllerTest : DescribeSpec() {
 
         describe("내 식물 상세 조회") {
             beforeTest {
-                every { myPlantService.findMyPlantDetail(ID) } returns
+                every { myPlantService.findMyPlantDetail(ID, any()) } returns
                     MyPlantDetailResponse(
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
                         location = LOCATION_NAME,
                         startDate = START_DATE,
-                        lastWatedDate = LAST_WATERED_DATE,
+                        lastWateredTitle = LAST_WATERED_TITLE,
+                        lastWateredInfo = LAST_WATERED_INFO,
+                        lastFertilizerTitle = LAST_FERTILIZER_TITLE,
+                        lastFertilizerInfo = LAST_FERTILIZER_INFO,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
                         fertilizerAlarm = FERTILIZER_ALARM,
                         fertilizerPeriod = FERTILIZER_PERIOD,
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
-                every { myPlantService.findMyPlantDetail(ID2) } throws
+                every { myPlantService.findMyPlantDetail(ID2, any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
             }
             context("존재하는 ID로 조회하면") {
@@ -209,7 +212,10 @@ class MyPlantControllerTest : DescribeSpec() {
                             jsonPath("$.scientificName", equalTo(SCIENTIFIC_NAME))
                             jsonPath("$.location", equalTo(LOCATION_NAME))
                             jsonPath("$.startDate", equalTo(START_DATE.toString()))
-                            jsonPath("$.lastWatedDate", equalTo(LAST_WATERED_DATE.toString()))
+                            jsonPath("$.lastWateredTitle", equalTo(LAST_WATERED_TITLE))
+                            jsonPath("$.lastWateredInfo", equalTo(LAST_WATERED_INFO))
+                            jsonPath("$.lastFertilizerTitle", equalTo(LAST_FERTILIZER_TITLE))
+                            jsonPath("$.lastFertilizerInfo", equalTo(LAST_FERTILIZER_INFO))
                             jsonPath("$.waterAlarm", equalTo(WATER_ALARM))
                             jsonPath("$.waterPeriod", equalTo(WATER_PERIOD))
                             jsonPath("$.fertilizerAlarm", equalTo(FERTILIZER_ALARM))
@@ -459,5 +465,10 @@ class MyPlantControllerTest : DescribeSpec() {
         const val FERTILIZER_ALARM = false
         const val FERTILIZER_PERIOD = 30
         const val HEALTHCHECK_ALARM = true
+
+        val LAST_FERTILIZER_TITLE = "비료주기"
+        val LAST_FERTILIZER_INFO = "이번 달"
+        val LAST_WATERED_TITLE = "마지막으로 물 준 날"
+        val LAST_WATERED_INFO = "${LAST_WATERED_DATE}\n1일전"
     }
 }

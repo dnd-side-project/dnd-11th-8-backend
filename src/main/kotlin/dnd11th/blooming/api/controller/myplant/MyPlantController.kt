@@ -34,7 +34,7 @@ class MyPlantController(
     @GetMapping("/{myPlantId}")
     fun findMyPlantDetail(
         @PathVariable myPlantId: Long,
-    ): MyPlantDetailResponse = myPlantService.findMyPlantDetail(myPlantId)
+    ): MyPlantDetailResponse = myPlantService.findMyPlantDetail(myPlantId, LocalDate.now())
 
     @PatchMapping("/{myPlantId}")
     fun modifyMyPlant(

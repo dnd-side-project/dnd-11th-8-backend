@@ -1,5 +1,6 @@
 package dnd11th.blooming.api.dto.myplant
 
+import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
 import dnd11th.blooming.domain.entity.MyPlant
 import java.time.LocalDate
 
@@ -9,7 +10,10 @@ data class MyPlantDetailResponse(
     val plantId: Int = 0,
     val location: String?,
     val startDate: LocalDate,
-    val lastWatedDate: LocalDate,
+    val lastWateredTitle: String,
+    val lastWateredInfo: String,
+    val lastFertilizerTitle: String,
+    val lastFertilizerInfo: String,
     val waterAlarm: Boolean,
     val waterPeriod: Int?,
     val fertilizerAlarm: Boolean,
@@ -17,14 +21,29 @@ data class MyPlantDetailResponse(
     val healthCheckAlarm: Boolean,
 ) {
     companion object {
-        fun from(myPlant: MyPlant): MyPlantDetailResponse =
+        fun from(
+            myPlant: MyPlant,
+            messageFactory: MyPlantMessageFactory,
+            now: LocalDate,
+        ): MyPlantDetailResponse =
             MyPlantDetailResponse(
                 nickname = myPlant.nickname,
                 scientificName = myPlant.scientificName,
                 // TODO: 식물가이드 연관관계 매핑 후 plantId 세팅 필요
                 location = myPlant.getLocationName(),
                 startDate = myPlant.startDate,
-                lastWatedDate = myPlant.lastWateredDate,
+                lastWateredTitle = messageFactory.createWateredTitle(),
+                lastWateredInfo =
+                    messageFactory.createWateredInfo(
+                        myPlant.lastWateredDate,
+                        now,
+                    ),
+                lastFertilizerTitle = messageFactory.createFertilizerTitle(),
+                lastFertilizerInfo =
+                    messageFactory.createFertilizerInfo(
+                        myPlant.lastFertilizerDate,
+                        now,
+                    ),
                 waterAlarm = myPlant.alarm.waterAlarm,
                 waterPeriod = myPlant.alarm.waterPeriod,
                 fertilizerAlarm = myPlant.alarm.fertilizerAlarm,

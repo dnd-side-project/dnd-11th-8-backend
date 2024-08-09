@@ -21,6 +21,7 @@ import java.time.LocalDate
 class MyPlantService(
     private val myPlantRepository: MyPlantRepository,
     private val locationRepository: LocationRepository,
+    private val myPlantMessageFactory: MyPlantMessageFactory,
 ) {
     @Transactional
     fun saveMyPlant(
@@ -57,12 +58,19 @@ class MyPlantService(
     }
 
     @Transactional(readOnly = true)
-    fun findMyPlantDetail(myPlantId: Long): MyPlantDetailResponse {
+    fun findMyPlantDetail(
+        myPlantId: Long,
+        now: LocalDate,
+    ): MyPlantDetailResponse {
         val plant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
 
-        return MyPlantDetailResponse.from(plant)
+        return MyPlantDetailResponse.from(
+            plant,
+            myPlantMessageFactory,
+            now,
+        )
     }
 
     @Transactional
