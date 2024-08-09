@@ -8,6 +8,14 @@ import java.time.Period
 class MyPlantMessageFactory {
     private val wateredTitle = "마지막으로 물 준 날"
     private val fertilizerTitle = "비료주기"
+    private val greetingMessageList =
+        listOf(
+            "%s님 좋아요!\n초보식집사로서 멋진 데뷔네요.",
+        )
+
+    fun createGreetingMessage(username: String): String {
+        return greetingMessageList.random().format(username)
+    }
 
     fun createWateredTitle(): String = wateredTitle
 
