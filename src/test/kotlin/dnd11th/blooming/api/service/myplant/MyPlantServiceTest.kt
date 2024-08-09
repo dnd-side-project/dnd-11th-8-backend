@@ -1,12 +1,10 @@
-package dnd11th.blooming.service.myplant
+package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
-import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
-import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
@@ -522,6 +520,6 @@ class MyPlantServiceTest : DescribeSpec(
         val FERTILIZER_TITLE = "비료주기"
         val FERTILIZER_INFO = "이번 달"
         val WATERED_TITLE = "마지막으로 물 준 날"
-        val WATERED_INFO = "${LAST_WATERED_DATE}\n1일전"
+        val WATERED_INFO = "$LAST_WATERED_DATE\n1일전"
     }
 }
