@@ -20,6 +20,8 @@ class MyPlant(
     @Column
     var nickname: String,
     @Column
+    var createdDate: LocalDate = LocalDate.now(),
+    @Column
     var startDate: LocalDate = LocalDate.now(),
     @Column
     var lastWateredDate: LocalDate = LocalDate.now(),

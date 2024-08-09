@@ -144,7 +144,7 @@ class MyPlantControllerTest : DescribeSpec() {
         }
 
         describe("내 식물 전체 조회") {
-            every { myPlantService.findAllMyPlant(any()) } returns
+            every { myPlantService.findAllMyPlant(any(), any()) } returns
                 listOf(
                     MyPlantResponse(
                         myPlantId = ID,

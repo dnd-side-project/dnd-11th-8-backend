@@ -4,12 +4,14 @@ import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -49,12 +51,26 @@ class MyPlantService(
     }
 
     @Transactional(readOnly = true)
-    fun findAllMyPlant(now: LocalDate): List<MyPlantResponse> {
-        val plantList = myPlantRepository.findAll()
+    fun findAllMyPlant(
+        now: LocalDate,
+        sort: MyPlantQueryCreteria,
+    ): List<MyPlantResponse> {
+        val plantList = findSortedMyPlants(sort)
 
         return plantList.stream().map { plant ->
             MyPlantResponse.from(plant, now)
         }.toList()
+    }
+
+    private fun findSortedMyPlants(sort: MyPlantQueryCreteria): List<MyPlant> {
+        val plantList =
+            when (sort) {
+                MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByOrderByCreatedDateDesc()
+                MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByOrderByCreatedDateAsc()
+                MyPlantQueryCreteria.WateredDesc -> myPlantRepository.findAllByOrderByLastWateredDateDesc()
+                MyPlantQueryCreteria.WateredAsc -> myPlantRepository.findAllByOrderByLastWateredDateAsc()
+            }
+        return plantList
     }
 
     @Transactional(readOnly = true)

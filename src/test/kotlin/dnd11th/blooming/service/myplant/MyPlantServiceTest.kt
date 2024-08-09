@@ -3,6 +3,7 @@ package dnd11th.blooming.service.myplant
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
 import dnd11th.blooming.api.service.myplant.MyPlantService
@@ -136,43 +137,102 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 전체 조회") {
-            every { myPlantRepsitory.findAll() } returns
-                listOf(
-                    MyPlant(
-                        scientificName = SCIENTIFIC_NAME,
-                        nickname = NICKNAME,
-                        startDate = START_DATE,
-                        lastWateredDate = LAST_WATERED_DATE,
-                        lastFertilizerDate = LAST_FERTILIZER_DATE,
-                        alarm = ALARM,
-                    ).apply {
-                        id = PLANT_ID
-                    },
-                    MyPlant(
-                        scientificName = SCIENTIFIC_NAME2,
-                        nickname = NICKNAME2,
-                        startDate = START_DATE2,
-                        lastWateredDate = LAST_WATERED_DATE2,
-                        lastFertilizerDate = LAST_FERTILIZER_DATE2,
-                        alarm = ALARM,
-                    ).apply {
-                        id = PLANT_ID2
-                    },
-                )
-            context("내 식물을 전체 조회하면") {
+            val myPlant1 =
+                MyPlant(
+                    scientificName = "병아리눈물",
+                    nickname = "생성1등 물주기2등",
+                    createdDate = LocalDate.of(2024, 5, 15),
+                    lastWateredDate = LocalDate.of(2024, 5, 16),
+                    alarm = ALARM,
+                ).apply {
+                    id = 1
+                }
+            val myPlant2 =
+                MyPlant(
+                    scientificName = "몬스테라 델리오사",
+                    nickname = "생성2등 물주기3등",
+                    createdDate = LocalDate.of(2024, 5, 16),
+                    lastWateredDate = LocalDate.of(2024, 5, 17),
+                    alarm = ALARM,
+                ).apply {
+                    id = 2
+                }
+            val myPlant3 =
+                MyPlant(
+                    scientificName = "선인장",
+                    nickname = "생성3등 물주기1등",
+                    createdDate = LocalDate.of(2024, 5, 17),
+                    lastWateredDate = LocalDate.of(2024, 5, 15),
+                    alarm = ALARM,
+                ).apply {
+                    id = 3
+                }
+            every { myPlantRepsitory.findAllByOrderByCreatedDateDesc() } returns
+                listOf(myPlant1, myPlant2, myPlant3)
+            every { myPlantRepsitory.findAllByOrderByCreatedDateAsc() } returns
+                listOf(myPlant3, myPlant2, myPlant1)
+            every { myPlantRepsitory.findAllByOrderByLastWateredDateDesc() } returns
+                listOf(myPlant3, myPlant1, myPlant2)
+            every { myPlantRepsitory.findAllByOrderByLastWateredDateAsc() } returns
+                listOf(myPlant2, myPlant1, myPlant3)
+            context("내 식물을 최근 등록순으로 전체 조회하면") {
                 it("내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllMyPlant(CURRENT_DAY)
-                    response.size shouldBe 2
-                    response[0].myPlantId shouldBe PLANT_ID
-                    response[0].nickname shouldBe NICKNAME
-                    response[0].scientificName shouldBe SCIENTIFIC_NAME
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.CreatedDesc)
+                    response.size shouldBe 3
+
+                    response[0].myPlantId shouldBe 1
+                    response[0].nickname shouldBe "생성1등 물주기2등"
+                    response[0].scientificName shouldBe "병아리눈물"
                     response[0].waterRemainDay shouldBe 2
-                    response[0].fertilizerRemainDay shouldBe 29
-                    response[1].myPlantId shouldBe PLANT_ID2
-                    response[1].nickname shouldBe NICKNAME2
-                    response[1].scientificName shouldBe SCIENTIFIC_NAME2
-                    response[1].waterRemainDay shouldBe 2
-                    response[1].fertilizerRemainDay shouldBe 29
+                    response[0].fertilizerRemainDay shouldBe 53
+
+                    response[1].myPlantId shouldBe 2
+                    response[1].nickname shouldBe "생성2등 물주기3등"
+                    response[1].scientificName shouldBe "몬스테라 델리오사"
+                    response[1].waterRemainDay shouldBe 3
+                    response[1].fertilizerRemainDay shouldBe 53
+
+                    response[2].myPlantId shouldBe 3
+                    response[2].nickname shouldBe "생성3등 물주기1등"
+                    response[2].scientificName shouldBe "선인장"
+                    response[2].waterRemainDay shouldBe 1
+                    response[2].fertilizerRemainDay shouldBe 53
+                }
+            }
+            context("내 식물을 최근 등록순으로 전체 조회하면") {
+                it("순서에 맞게 내 식물 리스트가 조회되어야 한다.") {
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.CreatedDesc)
+                    response.size shouldBe 3
+                    response[0].nickname shouldBe "생성1등 물주기2등"
+                    response[1].nickname shouldBe "생성2등 물주기3등"
+                    response[2].nickname shouldBe "생성3등 물주기1등"
+                }
+            }
+            context("내 식물을 오래된 등록순으로 전체 조회하면") {
+                it("순서에 맞게 내 식물 리스트가 조회되어야 한다.") {
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.CreatedAsc)
+                    response.size shouldBe 3
+                    response[0].nickname shouldBe "생성3등 물주기1등"
+                    response[1].nickname shouldBe "생성2등 물주기3등"
+                    response[2].nickname shouldBe "생성1등 물주기2등"
+                }
+            }
+            context("내 식물을 최근 물 준 순으로 전체 조회하면") {
+                it("순서에 맞게 내 식물 리스트가 조회되어야 한다.") {
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.WateredDesc)
+                    response.size shouldBe 3
+                    response[0].nickname shouldBe "생성3등 물주기1등"
+                    response[1].nickname shouldBe "생성1등 물주기2등"
+                    response[2].nickname shouldBe "생성2등 물주기3등"
+                }
+            }
+            context("내 식물을 오래된 물 준 순으로 전체 조회하면") {
+                it("순서에 맞게 내 식물 리스트가 조회되어야 한다.") {
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.WateredAsc)
+                    response.size shouldBe 3
+                    response[0].nickname shouldBe "생성2등 물주기3등"
+                    response[1].nickname shouldBe "생성1등 물주기2등"
+                    response[2].nickname shouldBe "생성3등 물주기1등"
                 }
             }
         }
