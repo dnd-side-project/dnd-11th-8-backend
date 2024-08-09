@@ -6,6 +6,7 @@ import java.time.LocalDate
 data class MyPlantDetailResponse(
     val nickname: String,
     val scientificName: String,
+    val plantId: Int = 0,
     val location: String?,
     val startDate: LocalDate,
     val lastWatedDate: LocalDate,
@@ -20,6 +21,7 @@ data class MyPlantDetailResponse(
             MyPlantDetailResponse(
                 nickname = myPlant.nickname,
                 scientificName = myPlant.scientificName,
+                // TODO: 식물가이드 연관관계 매핑 후 plantId 세팅 필요
                 location = myPlant.getLocationName(),
                 startDate = myPlant.startDate,
                 lastWatedDate = myPlant.lastWateredDate,
