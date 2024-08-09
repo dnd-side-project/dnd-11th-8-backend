@@ -34,10 +34,11 @@ class MyPlantController(
 
     @GetMapping
     fun findAllMyPlant(
+        @RequestParam locationId: Long?,
         @RequestParam(defaultValue = "CREATED") sort: MyPlantSortParam,
         @RequestParam(defaultValue = "DESC") direction: MyPlantDirectionParam,
     ): List<MyPlantResponse> =
-        myPlantService.findAllMyPlant(LocalDate.now(), MyPlantQueryCreteria.from(sort, direction))
+        myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort, direction))
 
     @GetMapping("/{myPlantId}")
     fun findMyPlantDetail(

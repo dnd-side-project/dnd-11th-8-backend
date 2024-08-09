@@ -146,6 +146,7 @@ class MyPlantServiceTest : DescribeSpec(
                     alarm = ALARM,
                 ).apply {
                     id = 1
+                    location = LOCATION1
                 }
             val myPlant2 =
                 MyPlant(
@@ -156,6 +157,7 @@ class MyPlantServiceTest : DescribeSpec(
                     alarm = ALARM,
                 ).apply {
                     id = 2
+                    location = LOCATION1
                 }
             val myPlant3 =
                 MyPlant(
@@ -166,18 +168,25 @@ class MyPlantServiceTest : DescribeSpec(
                     alarm = ALARM,
                 ).apply {
                     id = 3
+                    location = LOCATION2
                 }
-            every { myPlantRepsitory.findAllByOrderByCreatedDateDesc() } returns
+            every { myPlantRepsitory.findAllByLocationOrderByCreatedDateDesc(any()) } returns
                 listOf(myPlant1, myPlant2, myPlant3)
-            every { myPlantRepsitory.findAllByOrderByCreatedDateAsc() } returns
+            every { myPlantRepsitory.findAllByLocationOrderByCreatedDateAsc(any()) } returns
                 listOf(myPlant3, myPlant2, myPlant1)
-            every { myPlantRepsitory.findAllByOrderByLastWateredDateDesc() } returns
+            every { myPlantRepsitory.findAllByLocationOrderByLastWateredDateDesc(any()) } returns
                 listOf(myPlant3, myPlant1, myPlant2)
-            every { myPlantRepsitory.findAllByOrderByLastWateredDateAsc() } returns
+            every { myPlantRepsitory.findAllByLocationOrderByLastWateredDateAsc(any()) } returns
                 listOf(myPlant2, myPlant1, myPlant3)
+            every { locationRepository.findByIdOrNull(any()) } returns
+                null
+            every { locationRepository.findByIdOrNull(LOCATION_ID) } returns
+                LOCATION1
+            every { myPlantRepsitory.findAllByLocationOrderByCreatedDateDesc(LOCATION1) } returns
+                listOf(myPlant1, myPlant2)
             context("내 식물을 최근 등록순으로 전체 조회하면") {
                 it("내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.CreatedDesc)
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY)
                     response.size shouldBe 3
 
                     response[0].myPlantId shouldBe 1
@@ -201,7 +210,7 @@ class MyPlantServiceTest : DescribeSpec(
             }
             context("내 식물을 최근 등록순으로 전체 조회하면") {
                 it("순서에 맞게 내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.CreatedDesc)
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, null, MyPlantQueryCreteria.CreatedDesc)
                     response.size shouldBe 3
                     response[0].nickname shouldBe "생성1등 물주기2등"
                     response[1].nickname shouldBe "생성2등 물주기3등"
@@ -210,7 +219,7 @@ class MyPlantServiceTest : DescribeSpec(
             }
             context("내 식물을 오래된 등록순으로 전체 조회하면") {
                 it("순서에 맞게 내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.CreatedAsc)
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, null, MyPlantQueryCreteria.CreatedAsc)
                     response.size shouldBe 3
                     response[0].nickname shouldBe "생성3등 물주기1등"
                     response[1].nickname shouldBe "생성2등 물주기3등"
@@ -219,7 +228,7 @@ class MyPlantServiceTest : DescribeSpec(
             }
             context("내 식물을 최근 물 준 순으로 전체 조회하면") {
                 it("순서에 맞게 내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.WateredDesc)
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, null, MyPlantQueryCreteria.WateredDesc)
                     response.size shouldBe 3
                     response[0].nickname shouldBe "생성3등 물주기1등"
                     response[1].nickname shouldBe "생성1등 물주기2등"
@@ -228,11 +237,19 @@ class MyPlantServiceTest : DescribeSpec(
             }
             context("내 식물을 오래된 물 준 순으로 전체 조회하면") {
                 it("순서에 맞게 내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, MyPlantQueryCreteria.WateredAsc)
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, null, MyPlantQueryCreteria.WateredAsc)
                     response.size shouldBe 3
                     response[0].nickname shouldBe "생성2등 물주기3등"
                     response[1].nickname shouldBe "생성1등 물주기2등"
                     response[2].nickname shouldBe "생성3등 물주기1등"
+                }
+            }
+            context("내 식물을 locationId를 포함하여 전체 조회하면") {
+                it("해당 location의 식물만이 조회된다.") {
+                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, LOCATION_ID)
+                    response.size shouldBe 2
+                    response[0].nickname shouldBe "생성1등 물주기2등"
+                    response[1].nickname shouldBe "생성2등 물주기3등"
                 }
             }
         }
@@ -471,6 +488,7 @@ class MyPlantServiceTest : DescribeSpec(
         val FUTURE_DATE: LocalDate = CURRENT_DAY.plusDays(1)
 
         const val PLANT_ID = 1L
+        const val LOCATION_ID = 100L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
         const val NICKNAME = "뿡뿡이"
         const val LOCATION_NAME = "거실"
@@ -494,6 +512,12 @@ class MyPlantServiceTest : DescribeSpec(
 
         val ALARM: Alarm =
             Alarm(WATER_ALARM, WATER_PERIOD, FERTILIZER_ALARM, FERTILIZER_PERIOD, HEALTHCHECK_ALARM)
+
+        val LOCATION1: Location =
+            Location(LOCATION_NAME)
+
+        val LOCATION2: Location =
+            Location(LOCATION_NAME2)
 
         val FERTILIZER_TITLE = "비료주기"
         val FERTILIZER_INFO = "이번 달"

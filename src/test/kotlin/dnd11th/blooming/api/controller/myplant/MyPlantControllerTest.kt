@@ -144,7 +144,7 @@ class MyPlantControllerTest : DescribeSpec() {
         }
 
         describe("내 식물 전체 조회") {
-            every { myPlantService.findAllMyPlant(any(), any()) } returns
+            every { myPlantService.findAllMyPlant(any(), any(), any()) } returns
                 listOf(
                     MyPlantResponse(
                         myPlantId = ID,
@@ -177,6 +177,32 @@ class MyPlantControllerTest : DescribeSpec() {
                             jsonPath("$[1].scientificName", equalTo(SCIENTIFIC_NAME2))
                             jsonPath("$[1].waterRemainDay", equalTo(WATER_REAMIN_DAY))
                             jsonPath("$[1].fertilizerRemainDay", equalTo(FERTILIZER_REAMIN_DAY))
+                        }.andDo { print() }
+                }
+            }
+            every { myPlantService.findAllMyPlant(any(), LOCATION_ID, any()) } returns
+                listOf(
+                    MyPlantResponse(
+                        myPlantId = ID,
+                        nickname = NICKNAME,
+                        scientificName = SCIENTIFIC_NAME,
+                        waterRemainDay = WATER_REAMIN_DAY,
+                        fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
+                    ),
+                )
+            context("locationId를 포함하여 내 모든 식물 조회를 하면") {
+                it("해당 location의 식물만 조회된다.") {
+                    mockMvc.get("/api/v1/plants") {
+                        param("locationId", LOCATION_ID.toString())
+                    }
+                        .andExpectAll {
+                            status { isOk() }
+                            jsonPath("$.size()", equalTo(1))
+                            jsonPath("$[0].myPlantId", equalTo(ID.toInt()))
+                            jsonPath("$[0].nickname", equalTo(NICKNAME))
+                            jsonPath("$[0].scientificName", equalTo(SCIENTIFIC_NAME))
+                            jsonPath("$[0].waterRemainDay", equalTo(WATER_REAMIN_DAY))
+                            jsonPath("$[0].fertilizerRemainDay", equalTo(FERTILIZER_REAMIN_DAY))
                         }.andDo { print() }
                 }
             }
@@ -447,6 +473,7 @@ class MyPlantControllerTest : DescribeSpec() {
         const val ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
         const val NICKNAME = "뿡뿡이"
+        const val LOCATION_ID = 100L
         const val LOCATION_NAME = "거실"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)

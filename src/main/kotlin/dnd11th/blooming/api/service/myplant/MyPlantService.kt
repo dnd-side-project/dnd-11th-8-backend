@@ -53,22 +53,34 @@ class MyPlantService(
     @Transactional(readOnly = true)
     fun findAllMyPlant(
         now: LocalDate,
-        sort: MyPlantQueryCreteria,
+        locationId: Long? = null,
+        sort: MyPlantQueryCreteria = MyPlantQueryCreteria.CreatedDesc,
     ): List<MyPlantResponse> {
-        val plantList = findSortedMyPlants(sort)
+        val plantList = findSortedMyPlants(locationId, sort)
 
         return plantList.stream().map { plant ->
             MyPlantResponse.from(plant, now)
         }.toList()
     }
 
-    private fun findSortedMyPlants(sort: MyPlantQueryCreteria): List<MyPlant> {
+    private fun findSortedMyPlants(
+        locationId: Long?,
+        sort: MyPlantQueryCreteria,
+    ): List<MyPlant> {
+        val location = locationId?.let { locationRepository.findByIdOrNull(locationId) }
+
         val plantList =
             when (sort) {
-                MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByOrderByCreatedDateDesc()
-                MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByOrderByCreatedDateAsc()
-                MyPlantQueryCreteria.WateredDesc -> myPlantRepository.findAllByOrderByLastWateredDateDesc()
-                MyPlantQueryCreteria.WateredAsc -> myPlantRepository.findAllByOrderByLastWateredDateAsc()
+                MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByLocationOrderByCreatedDateDesc(location)
+                MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByLocationOrderByCreatedDateAsc(location)
+                MyPlantQueryCreteria.WateredDesc ->
+                    myPlantRepository.findAllByLocationOrderByLastWateredDateDesc(
+                        location,
+                    )
+                MyPlantQueryCreteria.WateredAsc ->
+                    myPlantRepository.findAllByLocationOrderByLastWateredDateAsc(
+                        location,
+                    )
             }
         return plantList
     }
