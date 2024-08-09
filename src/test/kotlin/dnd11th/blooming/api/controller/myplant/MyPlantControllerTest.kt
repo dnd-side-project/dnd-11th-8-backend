@@ -8,6 +8,7 @@ import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
@@ -45,7 +46,10 @@ class MyPlantControllerTest : DescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {
-                every { myPlantService.saveMyPlant(any(), CURRENT_DAY) } just runs
+                every { myPlantService.saveMyPlant(any(), CURRENT_DAY) } returns
+                    MyPlantSaveResponse(
+                        myPlantId = ID,
+                    )
                 every {
                     myPlantService.saveMyPlant(
                         match {
@@ -78,6 +82,8 @@ class MyPlantControllerTest : DescribeSpec() {
                         content = json
                     }.andExpectAll {
                         status { isOk() }
+                        jsonPath("$.myPlantId", equalTo(ID.toInt()))
+                        jsonPath("$.message", equalTo("등록 되었습니다."))
                     }.andDo { print() }
                 }
             }

@@ -6,6 +6,7 @@ import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.api.service.myplant.MyPlantService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,7 +26,7 @@ class MyPlantController(
     @PostMapping
     fun saveMyPlant(
         @RequestBody request: MyPlantSaveRequest,
-    ) = myPlantService.saveMyPlant(request, LocalDate.now())
+    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request, LocalDate.now())
 
     @GetMapping
     fun findAllMyPlant(): List<MyPlantResponse> = myPlantService.findAllMyPlant(LocalDate.now())

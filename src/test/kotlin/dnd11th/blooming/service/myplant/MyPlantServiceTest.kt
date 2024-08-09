@@ -56,7 +56,10 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("정상적으로 저장되고 예외가 발생하면 안된다.") {
-                    myPlantService.saveMyPlant(request, CURRENT_DAY)
+                    val result = myPlantService.saveMyPlant(request, CURRENT_DAY)
+
+                    result.myPlantId shouldBe PLANT_ID
+                    result.message shouldBe "등록 되었습니다."
                 }
             }
             context("시작날짜가 미래인 요청으로 내 식물을 저장하면") {

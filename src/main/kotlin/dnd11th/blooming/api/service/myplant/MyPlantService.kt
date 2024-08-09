@@ -6,6 +6,7 @@ import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
@@ -25,14 +26,16 @@ class MyPlantService(
     fun saveMyPlant(
         request: MyPlantSaveRequest,
         now: LocalDate,
-    ) {
+    ): MyPlantSaveResponse {
         validateDateNotInFuture(request.startDate, now)
         validateDateNotInFuture(request.lastWateredDate, now)
         validateDateNotInFuture(request.lastFertilizerDate, now)
 
         val myPlant = request.toMyPlant()
 
-        myPlantRepository.save(myPlant)
+        val savedPlant = myPlantRepository.save(myPlant)
+
+        return MyPlantSaveResponse.from(savedPlant)
     }
 
     private fun validateDateNotInFuture(
