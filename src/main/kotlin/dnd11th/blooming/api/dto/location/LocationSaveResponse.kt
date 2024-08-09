@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.dto
+package dnd11th.blooming.api.dto.location
 
 import dnd11th.blooming.domain.entity.Location
 

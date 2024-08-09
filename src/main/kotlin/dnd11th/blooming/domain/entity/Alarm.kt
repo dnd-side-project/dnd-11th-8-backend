@@ -10,11 +10,9 @@ class Alarm(
     @Column
     var waterPeriod: Int? = null,
     @Column(nullable = false)
-    var nutrientsAlarm: Boolean = false,
+    var fertilizerAlarm: Boolean = false,
     @Column
-    var nutrientsPeriod: Int? = null,
+    var fertilizerPeriod: Int? = null,
     @Column(nullable = false)
-    var repotAlarm: Boolean = false,
-    @Column
-    var repotPeriod: Int? = null,
+    var healthCheckAlarm: Boolean = false,
 )

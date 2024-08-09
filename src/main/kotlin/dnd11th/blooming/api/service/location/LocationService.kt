@@ -1,9 +1,9 @@
-package dnd11th.blooming.api.service
+package dnd11th.blooming.api.service.location
 
-import dnd11th.blooming.api.dto.LocationModifyRequest
-import dnd11th.blooming.api.dto.LocationResponse
-import dnd11th.blooming.api.dto.LocationSaveRequest
-import dnd11th.blooming.api.dto.LocationSaveResponse
+import dnd11th.blooming.api.dto.location.LocationModifyRequest
+import dnd11th.blooming.api.dto.location.LocationResponse
+import dnd11th.blooming.api.dto.location.LocationSaveRequest
+import dnd11th.blooming.api.dto.location.LocationSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.repository.LocationRepository
@@ -34,7 +34,7 @@ class LocationService(
     ): LocationResponse {
         val location =
             locationRepository.findByIdOrNull(locationId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
         location.modifyName(request.name)
 
@@ -44,7 +44,7 @@ class LocationService(
     @Transactional
     fun deleteLocation(locationId: Long) {
         if (!locationRepository.existsById(locationId)) {
-            throw NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+            throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
         }
 
         locationRepository.deleteById(locationId)

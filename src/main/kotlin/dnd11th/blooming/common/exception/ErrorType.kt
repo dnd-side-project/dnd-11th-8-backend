@@ -8,8 +8,8 @@ enum class ErrorType(val status: HttpStatus, val message: String, val logLevel: 
     SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error has occurred.", LogLevel.ERROR),
 
     INVALID_DATE(HttpStatus.BAD_REQUEST, "올바르지 않은 날짜입니다.", LogLevel.DEBUG),
-    NOT_FOUND_MYPLANT_ID(HttpStatus.NOT_FOUND, "존재하지 않는 내 식물입니다.", LogLevel.DEBUG),
-    NOT_FOUND_LOCATION_ID(HttpStatus.NOT_FOUND, "존재하지 않는 위치입니다.", LogLevel.DEBUG),
+    NOT_FOUND_MYPLANT(HttpStatus.NOT_FOUND, "존재하지 않는 내 식물입니다.", LogLevel.DEBUG),
+    NOT_FOUND_LOCATION(HttpStatus.NOT_FOUND, "존재하지 않는 위치입니다.", LogLevel.DEBUG),
 
     // User
     INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다", LogLevel.DEBUG),
