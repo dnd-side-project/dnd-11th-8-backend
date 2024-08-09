@@ -34,7 +34,7 @@ class LocationService(
     ): LocationResponse {
         val location =
             locationRepository.findByIdOrNull(locationId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
         location.modifyName(request.name)
 
@@ -44,7 +44,7 @@ class LocationService(
     @Transactional
     fun deleteLocation(locationId: Long) {
         if (!locationRepository.existsById(locationId)) {
-            throw NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+            throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
         }
 
         locationRepository.deleteById(locationId)

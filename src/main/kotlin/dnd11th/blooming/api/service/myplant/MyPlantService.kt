@@ -92,7 +92,7 @@ class MyPlantService(
     ): MyPlantDetailResponse {
         val plant =
             myPlantRepository.findByIdOrNull(myPlantId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         return MyPlantDetailResponse.from(
             plant,
@@ -108,14 +108,14 @@ class MyPlantService(
     ) {
         val plant =
             myPlantRepository.findByIdOrNull(myPlantId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         plant.modify(
             nickname = request.nickname,
             location =
                 request.location?.let {
                     locationRepository.findByName(request.location)
-                        ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+                        ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
                 },
             startDate = request.startDate,
             lastWateredDate = request.lastWateredDate,
@@ -127,7 +127,7 @@ class MyPlantService(
     fun deleteMyPlant(myPlantId: Long) {
         val plant =
             myPlantRepository.findByIdOrNull(myPlantId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         myPlantRepository.delete(plant)
     }
@@ -139,7 +139,7 @@ class MyPlantService(
     ) {
         val plant =
             myPlantRepository.findByIdOrNull(myPlantId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         plant.alarm = request.toAlarm()
     }
@@ -152,7 +152,7 @@ class MyPlantService(
     ) {
         val plant =
             myPlantRepository.findByIdOrNull(myPlantId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         plant.manageLastDates(request.doWater, request.doFertilizer, now)
     }

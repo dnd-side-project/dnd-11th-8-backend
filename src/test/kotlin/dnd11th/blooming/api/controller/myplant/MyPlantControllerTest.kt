@@ -227,7 +227,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 every { myPlantService.findMyPlantDetail(ID2, any()) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
             }
             context("존재하는 ID로 조회하면") {
                 it("내 식물이 조회되어야 한다.") {
@@ -256,7 +256,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         .andExpectAll {
                             status { isNotFound() }
                             jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
-                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT.name))
                         }.andDo { print() }
                 }
             }
@@ -266,7 +266,7 @@ class MyPlantControllerTest : DescribeSpec() {
             beforeTest {
                 every { myPlantService.modifyMyPlant(any(), any()) } just runs
                 every { myPlantService.modifyMyPlant(not(eq(ID)), any()) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
                 every {
                     myPlantService.modifyMyPlant(
                         any(),
@@ -275,7 +275,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         },
                     )
                 } throws
-                    NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+                    NotFoundException(ErrorType.NOT_FOUND_LOCATION)
             }
             context("정상 요청으로 수정하면") {
                 val request =
@@ -315,7 +315,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     }.andExpectAll {
                         status { isNotFound() }
                         jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
-                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
+                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT.name))
                     }.andDo { print() }
                 }
             }
@@ -337,7 +337,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     }.andExpectAll {
                         status { isNotFound() }
                         jsonPath("$.message", equalTo("존재하지 않는 위치입니다."))
-                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION_ID.name))
+                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION.name))
                     }.andDo { print() }
                 }
             }
@@ -347,7 +347,7 @@ class MyPlantControllerTest : DescribeSpec() {
             beforeTest {
                 every { myPlantService.deleteMyPlant(any()) } just runs
                 every { myPlantService.deleteMyPlant(not(eq(ID))) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
             }
             context("정상 요청으로 삭제하면") {
                 it("정상 흐름이 반환되어야 한다.") {
@@ -363,7 +363,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         .andExpectAll {
                             status { isNotFound() }
                             jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
-                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT.name))
                         }
                         .andDo { print() }
                 }
@@ -374,7 +374,7 @@ class MyPlantControllerTest : DescribeSpec() {
             beforeTest {
                 every { myPlantService.manageMyPlant(any(), any(), any()) } just runs
                 every { myPlantService.manageMyPlant(not(eq(ID)), any(), any()) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
             }
             context("존재하는 내 식물 ID로 관리하면") {
                 val request =
@@ -408,7 +408,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     }.andExpectAll {
                         status { isNotFound() }
                         jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
-                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
+                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT.name))
                     }.andDo { print() }
                 }
             }
@@ -418,7 +418,7 @@ class MyPlantControllerTest : DescribeSpec() {
             beforeTest {
                 every { myPlantService.modifyMyPlantAlarm(ID, any()) } just runs
                 every { myPlantService.modifyMyPlantAlarm(not(eq(ID)), any()) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT_ID)
+                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
             }
             context("존재하는 ID로 수정하면") {
                 val json =
@@ -460,7 +460,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         .andExpectAll {
                             status { isNotFound() }
                             jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
-                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT_ID.name))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT.name))
                         }.andDo { print() }
                 }
             }

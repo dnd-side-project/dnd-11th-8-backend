@@ -292,7 +292,7 @@ class MyPlantServiceTest : DescribeSpec(
                             myPlantService.findMyPlantDetail(PLANT_ID2, CURRENT_DAY)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
                 }
             }
         }
@@ -341,7 +341,7 @@ class MyPlantServiceTest : DescribeSpec(
                     val exception =
                         shouldThrow<NotFoundException> { myPlantService.modifyMyPlant(PLANT_ID2, request) }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
                 }
             }
             context("존재하지 않는 장소 이름으로 수정하면") {
@@ -357,7 +357,7 @@ class MyPlantServiceTest : DescribeSpec(
                     val exception =
                         shouldThrow<NotFoundException> { myPlantService.modifyMyPlant(PLANT_ID, request) }
                     exception.message shouldBe "존재하지 않는 위치입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION
                 }
             }
         }
@@ -387,7 +387,7 @@ class MyPlantServiceTest : DescribeSpec(
                     val exception =
                         shouldThrow<NotFoundException> { myPlantService.deleteMyPlant(PLANT_ID2) }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
                 }
             }
         }
@@ -429,7 +429,7 @@ class MyPlantServiceTest : DescribeSpec(
                             myPlantService.manageMyPlant(PLANT_ID2, request, CURRENT_DAY)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
                 }
             }
         }
@@ -475,7 +475,7 @@ class MyPlantServiceTest : DescribeSpec(
                             myPlantService.modifyMyPlantAlarm(PLANT_ID2, request)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
                 }
             }
         }

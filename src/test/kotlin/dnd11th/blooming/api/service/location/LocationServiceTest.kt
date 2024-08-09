@@ -101,7 +101,7 @@ class LocationServiceTest : DescribeSpec(
                             locationService.modifyLocation(LOCATION_ID2, request)
                         }
                     exception.message shouldBe "존재하지 않는 위치입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION
                 }
             }
         }
@@ -124,7 +124,7 @@ class LocationServiceTest : DescribeSpec(
                             locationService.deleteLocation(LOCATION_ID2)
                         }
                     exception.message shouldBe "존재하지 않는 위치입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION
                 }
             }
         }

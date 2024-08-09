@@ -100,7 +100,7 @@ class LocationControllerTest : DescribeSpec() {
                         name = LOCATION_NAME2,
                     )
                 every { locationService.modifyLocation(not(eq(LOCATION_ID)), any()) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+                    NotFoundException(ErrorType.NOT_FOUND_LOCATION)
             }
             context("존재하는 위치로 위치 수정 요청을 전달하면") {
                 val request =
@@ -134,7 +134,7 @@ class LocationControllerTest : DescribeSpec() {
                     }.andExpectAll {
                         status { isNotFound() }
                         jsonPath("$.message", equalTo("존재하지 않는 위치입니다."))
-                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION_ID.name))
+                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION.name))
                     }.andDo { print() }
                 }
             }
@@ -144,7 +144,7 @@ class LocationControllerTest : DescribeSpec() {
             beforeTest {
                 every { locationService.deleteLocation(LOCATION_ID) } just runs
                 every { locationService.deleteLocation(not(eq(LOCATION_ID))) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_LOCATION_ID)
+                    NotFoundException(ErrorType.NOT_FOUND_LOCATION)
             }
             context("존재하는 위치로 위치 삭제 요청을 전달하면") {
                 it("정상 응답이 반환되어야 한다.") {
@@ -160,7 +160,7 @@ class LocationControllerTest : DescribeSpec() {
                         .andExpectAll {
                             status { isNotFound() }
                             jsonPath("$.message", equalTo("존재하지 않는 위치입니다."))
-                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION_ID.name))
+                            jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_LOCATION.name))
                         }.andDo { print() }
                 }
             }
