@@ -9,8 +9,10 @@ import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Alarm
+import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
 import io.kotest.assertions.throwables.shouldNotThrowAny
@@ -28,8 +30,10 @@ class MyPlantServiceTest : DescribeSpec(
     {
         val myPlantRepsitory = mockk<MyPlantRepository>()
         val locationRepository = mockk<LocationRepository>()
+        val imageRepository = mockk<ImageRepository>()
         val myPlantMessageFactory = mockk<MyPlantMessageFactory>()
-        val myPlantService = MyPlantService(myPlantRepsitory, locationRepository, myPlantMessageFactory)
+        val myPlantService =
+            MyPlantService(myPlantRepsitory, locationRepository, myPlantMessageFactory, imageRepository)
 
         describe("내 식물 저장") {
             every { myPlantRepsitory.save(any()) } returns
@@ -266,6 +270,20 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = PLANT_ID
                 }
+            every { imageRepository.findAllByMyPlant(any()) } returns
+                listOf(
+                    Image(
+                        url = "url1",
+                        favorite = true,
+                        currentDate = CURRENT_DAY,
+                    ),
+                    Image(
+                        url = "url2",
+                        favorite = false,
+                        currentDate = CURRENT_DAY,
+                    ),
+                )
+
             every { myPlantMessageFactory.createWateredTitle() } returns
                 WATERED_TITLE
             every { myPlantMessageFactory.createWateredInfo(any(), any()) } returns
@@ -286,6 +304,9 @@ class MyPlantServiceTest : DescribeSpec(
                     response.lastWateredInfo shouldBe WATERED_INFO
                     response.lastFertilizerTitle shouldBe FERTILIZER_TITLE
                     response.lastFertilizerInfo shouldBe FERTILIZER_INFO
+                    response.images.size shouldBe 2
+                    response.images[0].imageUrl shouldBe "url1"
+                    response.images[1].imageUrl shouldBe "url2"
                 }
             }
             context("존재하지 않는 ID로 상세 조회하면") {

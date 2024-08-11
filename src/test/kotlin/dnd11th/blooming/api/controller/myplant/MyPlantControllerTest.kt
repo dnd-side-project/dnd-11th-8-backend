@@ -2,6 +2,7 @@ package dnd11th.blooming.api.controller.myplant
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
+import dnd11th.blooming.api.dto.image.ImageResponse
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
@@ -225,6 +226,19 @@ class MyPlantControllerTest : DescribeSpec() {
                         fertilizerAlarm = FERTILIZER_ALARM,
                         fertilizerPeriod = FERTILIZER_PERIOD,
                         healthCheckAlarm = HEALTHCHECK_ALARM,
+                        images =
+                            listOf(
+                                ImageResponse(
+                                    imageUrl = "url1",
+                                    favorite = true,
+                                    createdDate = CURRENT_DAY,
+                                ),
+                                ImageResponse(
+                                    imageUrl = "url2",
+                                    favorite = false,
+                                    createdDate = CURRENT_DAY,
+                                ),
+                            ),
                     )
                 every { myPlantService.findMyPlantDetail(ID2, any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
@@ -247,6 +261,9 @@ class MyPlantControllerTest : DescribeSpec() {
                             jsonPath("$.fertilizerAlarm", equalTo(FERTILIZER_ALARM))
                             jsonPath("$.fertilizerPeriod", equalTo(FERTILIZER_PERIOD))
                             jsonPath("$.healthCheckAlarm", equalTo(HEALTHCHECK_ALARM))
+                            jsonPath("$.images.size()", equalTo(2))
+                            jsonPath("$.images[0].imageUrl", equalTo("url1"))
+                            jsonPath("$.images[1].imageUrl", equalTo("url2"))
                         }.andDo { print() }
                 }
             }
