@@ -64,9 +64,9 @@ class HomeServiceTest : DescribeSpec(
                     result.greetingMessage shouldBe "안녕하세요."
                     result.myPlantInfo shouldContainExactlyInAnyOrder
                         listOf(
-                            MyPlantHomeResponse.from(plant1, CURRENT_DAY),
-                            MyPlantHomeResponse.from(plant2, CURRENT_DAY),
-                            MyPlantHomeResponse.from(plant3, CURRENT_DAY),
+                            MyPlantHomeResponse.of(plant1, CURRENT_DAY),
+                            MyPlantHomeResponse.of(plant2, CURRENT_DAY),
+                            MyPlantHomeResponse.of(plant3, CURRENT_DAY),
                         )
                 }
             }

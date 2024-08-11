@@ -15,7 +15,7 @@ class HomeService(
     fun getHome(now: LocalDate): HomeResponse {
         val myPlantHomeResponses =
             myPlantRepository.findAll().stream()
-                .map { myPlant -> MyPlantHomeResponse.from(myPlant, now) }
+                .map { myPlant -> MyPlantHomeResponse.of(myPlant, now) }
                 .toList()
         // TODO : username 찾아와야함
         val message = myPlantMessageFactory.createGreetingMessage("테스트유저")

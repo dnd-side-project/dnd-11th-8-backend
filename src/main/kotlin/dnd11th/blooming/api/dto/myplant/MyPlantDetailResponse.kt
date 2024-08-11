@@ -21,7 +21,7 @@ data class MyPlantDetailResponse(
     val healthCheckAlarm: Boolean,
 ) {
     companion object {
-        fun from(
+        fun of(
             myPlant: MyPlant,
             messageFactory: MyPlantMessageFactory,
             now: LocalDate,

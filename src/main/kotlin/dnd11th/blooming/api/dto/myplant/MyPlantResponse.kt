@@ -11,7 +11,7 @@ data class MyPlantResponse(
     val fertilizerRemainDay: Int?,
 ) {
     companion object {
-        fun from(
+        fun of(
             myPlant: MyPlant,
             now: LocalDate,
         ): MyPlantResponse =

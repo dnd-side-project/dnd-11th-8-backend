@@ -50,7 +50,7 @@ class MyPlantService(
         val plantList = findSortedMyPlants(locationId, sort)
 
         return plantList.stream().map { plant ->
-            MyPlantResponse.from(plant, now)
+            MyPlantResponse.of(plant, now)
         }.toList()
     }
 
@@ -63,11 +63,7 @@ class MyPlantService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        return MyPlantDetailResponse.from(
-            plant,
-            myPlantMessageFactory,
-            now,
-        )
+        return MyPlantDetailResponse.of(plant, myPlantMessageFactory, now)
     }
 
     @Transactional
