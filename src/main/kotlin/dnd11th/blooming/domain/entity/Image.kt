@@ -25,4 +25,8 @@ class Image(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "myplant_id")
     var myPlant: MyPlant? = null
+
+    fun makeMyPlantRelation(myPlant: MyPlant) {
+        this.myPlant = myPlant
+    }
 }
