@@ -16,7 +16,7 @@ class WeatherMessageController(
     @GetMapping
     fun getWeatherMessage(): List<WeatherMessageResponse> {
         val weatherMessages: List<WeatherMessage> =
-            weatherService.createPlantMessageByWeather(LocalDateTime.now())
+            weatherService.createWeatherMessage(LocalDateTime.now())
         return weatherMessages.map { weatherMessage -> WeatherMessageResponse.from(weatherMessage) }
     }
 }

@@ -35,7 +35,7 @@ class WeatherService(
         private const val HIGH_TEMPERATURE_THRESHOLD = 30
     }
 
-    fun createPlantMessageByWeather(now: LocalDateTime): List<WeatherMessage> {
+    fun createWeatherMessage(now: LocalDateTime): List<WeatherMessage> {
         val user: User = userRepository.findById(1L).orElseThrow { throw NotFoundException(ErrorType.USER_NOT_FOUND) }
 
         val weatherItems: List<WeatherItem> =
