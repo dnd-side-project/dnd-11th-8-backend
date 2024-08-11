@@ -17,5 +17,20 @@ spring:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.H2Dialect
 
+auth:
+  jwt:
+    access:
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+      expiry: 100000000
+    refresh:
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+      expiry: 100000000
+  oidc:
+    provider:
+      kakao:
+        iss: https://kauth.kakao.com
+        aud: "testkakoclient"
+        nonce: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+
 weather:
   serviceKey: "serviceKey"
