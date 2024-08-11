@@ -47,10 +47,10 @@ class MyPlantService(
         locationId: Long? = null,
         sort: MyPlantQueryCreteria = MyPlantQueryCreteria.CreatedDesc,
     ): List<MyPlantResponse> {
-        val plantList = findSortedMyPlants(locationId, sort)
+        val myPlantList = findSortedMyPlants(locationId, sort)
 
-        return plantList.stream().map { plant ->
-            MyPlantResponse.of(plant, now)
+        return myPlantList.stream().map { myPlant ->
+            MyPlantResponse.of(myPlant, now)
         }.toList()
     }
 
@@ -59,11 +59,11 @@ class MyPlantService(
         myPlantId: Long,
         now: LocalDate,
     ): MyPlantDetailResponse {
-        val plant =
+        val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        return MyPlantDetailResponse.of(plant, myPlantMessageFactory, now)
+        return MyPlantDetailResponse.of(myPlant, myPlantMessageFactory, now)
     }
 
     @Transactional
@@ -71,11 +71,11 @@ class MyPlantService(
         myPlantId: Long,
         request: MyPlantModifyRequest,
     ) {
-        val plant =
+        val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        plant.modify(
+        myPlant.modify(
             nickname = request.nickname,
             location =
                 request.location?.let {
@@ -90,11 +90,11 @@ class MyPlantService(
 
     @Transactional
     fun deleteMyPlant(myPlantId: Long) {
-        val plant =
+        val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        myPlantRepository.delete(plant)
+        myPlantRepository.delete(myPlant)
     }
 
     @Transactional
@@ -102,11 +102,11 @@ class MyPlantService(
         myPlantId: Long,
         request: AlarmModifyRequest,
     ) {
-        val plant =
+        val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        plant.alarm = request.toAlarm()
+        myPlant.alarm = request.toAlarm()
     }
 
     @Transactional
@@ -115,11 +115,11 @@ class MyPlantService(
         request: MyPlantManageRequest,
         now: LocalDate,
     ) {
-        val plant =
+        val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        plant.manageLastDates(request.doWater, request.doFertilizer, now)
+        myPlant.manageLastDates(request.doWater, request.doFertilizer, now)
     }
 
     private fun validateDateNotInFuture(
@@ -137,7 +137,7 @@ class MyPlantService(
     ): List<MyPlant> {
         val location = locationId?.let { locationRepository.findByIdOrNull(locationId) }
 
-        val plantList =
+        val myPlantList =
             when (sort) {
                 MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByLocationOrderByCreatedDateDesc(location)
                 MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByLocationOrderByCreatedDateAsc(location)
@@ -150,6 +150,6 @@ class MyPlantService(
                         location,
                     )
             }
-        return plantList
+        return myPlantList
     }
 }
