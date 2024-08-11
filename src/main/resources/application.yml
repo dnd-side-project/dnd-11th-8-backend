@@ -30,3 +30,6 @@ auth:
         iss: https://kauth.kakao.com
         aud: ${KAKAO_CLIENT_ID}
         nonce: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+
+weather:
+  serviceKey: ${OPEN_API_SERVICE_KEY}
