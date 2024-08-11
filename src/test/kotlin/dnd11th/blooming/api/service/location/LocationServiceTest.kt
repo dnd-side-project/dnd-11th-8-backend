@@ -1,8 +1,7 @@
-package dnd11th.blooming.service
+package dnd11th.blooming.api.service.location
 
-import dnd11th.blooming.api.dto.LocationModifyRequest
-import dnd11th.blooming.api.dto.LocationSaveRequest
-import dnd11th.blooming.api.service.LocationService
+import dnd11th.blooming.api.dto.location.LocationModifyRequest
+import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
@@ -102,7 +101,7 @@ class LocationServiceTest : DescribeSpec(
                             locationService.modifyLocation(LOCATION_ID2, request)
                         }
                     exception.message shouldBe "존재하지 않는 위치입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION
                 }
             }
         }
@@ -125,7 +124,7 @@ class LocationServiceTest : DescribeSpec(
                             locationService.deleteLocation(LOCATION_ID2)
                         }
                     exception.message shouldBe "존재하지 않는 위치입니다."
-                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION_ID
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION
                 }
             }
         }
