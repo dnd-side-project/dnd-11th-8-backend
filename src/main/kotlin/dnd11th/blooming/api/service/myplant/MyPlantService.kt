@@ -45,6 +45,8 @@ class MyPlantService(
             request.toMyPlant().also {
                 it.setLocationRelation(location)
             }
+        // TODO : 유저와 매핑 필요
+        // TODO : 식물가이드와 매핑 필요
 
         val savedPlant = myPlantRepository.save(myPlant)
 
