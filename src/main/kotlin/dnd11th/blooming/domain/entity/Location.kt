@@ -9,12 +9,14 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import java.time.LocalDate
 
 @Entity
 class Location(
     @Column
     var name: String,
-) {
+    currentDate: LocalDate = LocalDate.now(),
+) : BaseEntity(currentDate) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0

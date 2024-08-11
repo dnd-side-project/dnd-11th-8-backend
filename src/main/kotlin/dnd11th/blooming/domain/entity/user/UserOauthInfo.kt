@@ -1,5 +1,6 @@
 package dnd11th.blooming.domain.entity.user
 
+import dnd11th.blooming.domain.entity.BaseEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -8,13 +9,15 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
+import java.time.LocalDate
 
 @Entity
 class UserOauthInfo(
     user: User,
     email: String,
     provider: OauthProvider,
-) {
+    currentDate: LocalDate = LocalDate.now(),
+) : BaseEntity(currentDate) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null

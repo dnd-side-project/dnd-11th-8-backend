@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import java.time.LocalDate
 
 @Entity
 class Image(
@@ -15,7 +16,8 @@ class Image(
     var url: String,
     @Column
     var favorite: Boolean,
-) {
+    currentDate: LocalDate = LocalDate.now(),
+) : BaseEntity(currentDate) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
