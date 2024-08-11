@@ -56,6 +56,10 @@ class MyPlant(
         lastFertilizerDate?.let { this.lastFertilizerDate = lastFertilizerDate }
     }
 
+    fun modifyAlarm(alarm: Alarm) {
+        this.alarm = alarm
+    }
+
     fun getWaterRemainDay(now: LocalDate): Int? {
         if (!alarm.waterAlarm) return null
 

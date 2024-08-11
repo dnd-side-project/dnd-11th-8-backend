@@ -106,7 +106,7 @@ class MyPlantService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        myPlant.alarm = request.toAlarm()
+        myPlant.modifyAlarm(request.toAlarm())
     }
 
     @Transactional
