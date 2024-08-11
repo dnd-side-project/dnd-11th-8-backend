@@ -40,8 +40,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_ID_PROD }}
-          password: ${{ secrets.DOCKERHUB_TOKEN_PROD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
@@ -49,7 +49,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_ID_PROD }}/blooming-server:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blooming-server:latest
           build-args: |
             PROFILE=prod
             DB_URL_PROD=${{ secrets.DB_URL_PROD }}
@@ -60,13 +60,13 @@ jobs:
       - name: Docker Deploy executing remote ssh commands using ssh_key
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.WAS_HOST_PROD }}
-          username: ${{ secrets.WAS_USERNAME_PROD }}
-          key: ${{ secrets.WAS_PASSWORD_PROD }}
-          port: ${{ secrets.WAS_PORT_PROD }}
+          host: ${{ secrets.REMOTE_IP }}
+          username: ${{ secrets.REMOTE_SSH_USERNAME }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             docker stop $(docker ps -a -q)
-            docker pull ${{ secrets.DOCKERHUB_ID_PROD }}/blooming-server
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/blooming-server
             docker rm -f $(docker ps -a -q)
-            docker run -d --name blooming-server -p ${{ secrets.SERVER_PORT}}:8080 ${{ secrets.DOCKERHUB_ID_PROD }}/blooming-server
+            docker run -d --name blooming-server -p ${{ secrets.SERVER_PORT }}:8080 ${{ secrets.DOCKERHUB_USERNAME }}/blooming-server
             docker image prune -f
