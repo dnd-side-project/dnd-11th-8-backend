@@ -8,7 +8,7 @@ data class WeatherMessageResponse(
     val message: List<String>,
 ) {
     companion object {
-        fun from(weatherMessages: WeatherMessage): WeatherMessageResponse  {
+        fun from(weatherMessages: WeatherMessage): WeatherMessageResponse {
             return WeatherMessageResponse(
                 status = weatherMessages.name,
                 title = weatherMessages.title,

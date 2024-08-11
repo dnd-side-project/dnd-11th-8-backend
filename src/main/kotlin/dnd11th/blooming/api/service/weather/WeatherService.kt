@@ -97,7 +97,7 @@ class WeatherService(
         }
     }
 
-    private fun formatDate(date: LocalDate): String  {
+    private fun formatDate(date: LocalDate): String {
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         return date.format(formatter)
     }
