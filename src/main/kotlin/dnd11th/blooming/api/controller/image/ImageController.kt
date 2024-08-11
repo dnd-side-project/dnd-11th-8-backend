@@ -3,6 +3,7 @@ package dnd11th.blooming.api.controller.image
 import dnd11th.blooming.api.dto.image.ImageFavoriteModifyRequest
 import dnd11th.blooming.api.dto.image.ImageSaveRequest
 import dnd11th.blooming.api.service.image.ImageService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,4 +28,9 @@ class ImageController(
         @PathVariable imageId: Long,
         @RequestBody request: ImageFavoriteModifyRequest,
     ) = imageService.modifyFavorite(imageId, request)
+
+    @DeleteMapping("/image/{imageId}")
+    fun deleteImage(
+        @PathVariable imageId: Long,
+    ) = imageService.deleteImage(imageId)
 }

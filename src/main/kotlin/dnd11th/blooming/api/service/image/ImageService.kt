@@ -23,7 +23,8 @@ class ImageService(
         now: LocalDate,
     ) {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository
+                .findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         val image =
@@ -39,8 +40,20 @@ class ImageService(
         imageId: Long,
         request: ImageFavoriteModifyRequest,
     ) {
-        val image = imageRepository.findByIdOrNull(imageId) ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
+        val image =
+            imageRepository
+                .findByIdOrNull(imageId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
 
         image.modifyFavorite(request.favorite)
+    }
+
+    @Transactional
+    fun deleteImage(imageId: Long) {
+        if (imageRepository.existsById(imageId)) {
+            throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
+        }
+
+        imageRepository.deleteById(imageId)
     }
 }
