@@ -6,7 +6,7 @@ ARG DB_USERNAME_PROD
 ARG DB_PASSWORD_PROD
 ARG OPEN_API_SERVICE_KEY
 
-COPY build/libs/blooming-api-0.0.1-SNAPSHOT.jar app.jar
+COPY build/libs/blooming-0.0.1-SNAPSHOT.jar app.jar
 
 ENV PROFILE=${PROFILE}
 ENV DB_URL_PROD=${DB_URL_PROD}
