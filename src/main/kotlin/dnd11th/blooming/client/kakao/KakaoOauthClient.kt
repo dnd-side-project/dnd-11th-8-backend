@@ -1,4 +1,4 @@
-package dnd11th.blooming.client
+package dnd11th.blooming.client.kakao
 
 import dnd11th.blooming.client.dto.OidcPublicKeys
 import org.springframework.cloud.openfeign.FeignClient
