@@ -3,7 +3,7 @@ package dnd11th.blooming.api.controller.myplant
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDirectionParam
-import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
@@ -56,11 +56,21 @@ class MyPlantController(
         @PathVariable myPlantId: Long,
     ) = myPlantService.deleteMyPlant(myPlantId)
 
-    @PostMapping("/{myPlantId}")
-    fun manageMyPlant(
+    @PostMapping("/{myPlantId}/water")
+    fun waterMyPlant(
         @PathVariable myPlantId: Long,
-        @RequestBody request: MyPlantManageRequest,
-    ) = myPlantService.manageMyPlant(myPlantId, request, LocalDate.now())
+    ) = myPlantService.waterMyPlant(myPlantId, LocalDate.now())
+
+    @PostMapping("/{myPlantId}/fertilizer")
+    fun fertilizerMyPlant(
+        @PathVariable myPlantId: Long,
+    ) = myPlantService.fertilizerMyPlant(myPlantId, LocalDate.now())
+
+    @PatchMapping("/{myPlantId}/healthcheck")
+    fun modifyMyPlantHealthCheck(
+        @PathVariable myPlantId: Long,
+        @RequestBody request: MyPlantHealthCheckRequest,
+    ) = myPlantService.modifyMyPlantHealthCheck(myPlantId, request)
 
     @PatchMapping("/{myPlantId}/alarm")
     fun modifyMyPlantAlarm(

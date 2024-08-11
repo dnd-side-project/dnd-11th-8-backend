@@ -2,7 +2,7 @@ package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
@@ -110,16 +110,39 @@ class MyPlantService(
     }
 
     @Transactional
-    fun manageMyPlant(
+    fun waterMyPlant(
         myPlantId: Long,
-        request: MyPlantManageRequest,
         now: LocalDate,
     ) {
         val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        myPlant.manageLastDates(request.doWater, request.doFertilizer, now)
+        myPlant.doWater(now)
+    }
+
+    @Transactional
+    fun fertilizerMyPlant(
+        myPlantId: Long,
+        now: LocalDate,
+    ) {
+        val myPlant =
+            myPlantRepository.findByIdOrNull(myPlantId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
+
+        myPlant.doFertilizer(now)
+    }
+
+    @Transactional
+    fun modifyMyPlantHealthCheck(
+        myPlantId: Long,
+        request: MyPlantHealthCheckRequest,
+    ) {
+        val myPlant =
+            myPlantRepository.findByIdOrNull(myPlantId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
+
+        myPlant.modifyHealthCheck(request.healthCheck)
     }
 
     private fun validateDateNotInFuture(

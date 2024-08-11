@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
-import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
@@ -395,7 +395,7 @@ class MyPlantServiceTest : DescribeSpec(
             }
         }
 
-        describe("내 식물 관리") {
+        describe("내 식물 물주기") {
             every { myPlantRepsitory.findByIdOrNull(PLANT_ID) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
@@ -408,28 +408,90 @@ class MyPlantServiceTest : DescribeSpec(
                 }
             every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
                 null
-            context("존재하는 내 식물 ID로 내 식물 관리 요청하면") {
-                val request =
-                    MyPlantManageRequest(
-                        doWater = true,
-                        doFertilizer = true,
-                    )
+            context("존재하는 내 식물 ID로 내 식물 물주기 요청하면") {
                 it("정상 흐름이 반환된다.") {
                     shouldNotThrowAny {
-                        myPlantService.manageMyPlant(PLANT_ID, request, CURRENT_DAY)
+                        myPlantService.waterMyPlant(PLANT_ID, CURRENT_DAY)
                     }
                 }
             }
-            context("존재하지 않는 내 식물 ID로 내 식물 관리 요청하면") {
+            context("존재하지 않는 내 식물 ID로 내 식물 물주기 요청하면") {
+                it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<NotFoundException> {
+                            myPlantService.waterMyPlant(PLANT_ID2, CURRENT_DAY)
+                        }
+                    exception.message shouldBe "존재하지 않는 내 식물입니다."
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
+                }
+            }
+        }
+
+        describe("내 식물 비료주기") {
+            every { myPlantRepsitory.findByIdOrNull(PLANT_ID) } returns
+                MyPlant(
+                    scientificName = SCIENTIFIC_NAME,
+                    nickname = NICKNAME,
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    alarm = ALARM,
+                ).apply {
+                    id = PLANT_ID
+                }
+            every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
+                null
+            context("존재하는 내 식물 ID로 내 식물 비료주기 요청하면") {
+                it("정상 흐름이 반환된다.") {
+                    shouldNotThrowAny {
+                        myPlantService.fertilizerMyPlant(PLANT_ID, CURRENT_DAY)
+                    }
+                }
+            }
+            context("존재하지 않는 내 식물 ID로 내 식물 비료주기 요청하면") {
+                it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<NotFoundException> {
+                            myPlantService.fertilizerMyPlant(PLANT_ID2, CURRENT_DAY)
+                        }
+                    exception.message shouldBe "존재하지 않는 내 식물입니다."
+                    exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
+                }
+            }
+        }
+
+        describe("내 식물 건강확인 알림 변경") {
+            every { myPlantRepsitory.findByIdOrNull(PLANT_ID) } returns
+                MyPlant(
+                    scientificName = SCIENTIFIC_NAME,
+                    nickname = NICKNAME,
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    alarm = ALARM,
+                ).apply {
+                    id = PLANT_ID
+                }
+            every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
+                null
+            context("존재하는 내 식물 ID로 내 식물 비료주기 요청하면") {
                 val request =
-                    MyPlantManageRequest(
-                        doWater = true,
-                        doFertilizer = true,
+                    MyPlantHealthCheckRequest(
+                        healthCheck = true,
+                    )
+                it("정상 흐름이 반환된다.") {
+                    shouldNotThrowAny {
+                        myPlantService.modifyMyPlantHealthCheck(PLANT_ID, request)
+                    }
+                }
+            }
+            context("존재하지 않는 내 식물 ID로 내 식물 비료주기 요청하면") {
+                val request =
+                    MyPlantHealthCheckRequest(
+                        healthCheck = true,
                     )
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<NotFoundException> {
-                            myPlantService.manageMyPlant(PLANT_ID2, request, CURRENT_DAY)
+                            myPlantService.modifyMyPlantHealthCheck(PLANT_ID2, request)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantManageRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
@@ -370,45 +370,51 @@ class MyPlantControllerTest : DescribeSpec() {
             }
         }
 
-        describe("내 식물 관리") {
+        describe("내 식물 물주기") {
             beforeTest {
-                every { myPlantService.manageMyPlant(any(), any(), any()) } just runs
-                every { myPlantService.manageMyPlant(not(eq(ID)), any(), any()) } throws
-                    NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
+                every { myPlantService.waterMyPlant(any(), any()) } just runs
             }
-            context("존재하는 내 식물 ID로 관리하면") {
+            context("물주기 요청을 하면") {
+                it("정상 흐름이 반환된다.") {
+                    mockMvc.post("/api/v1/plants/$ID/water")
+                        .andExpectAll {
+                            status { isOk() }
+                        }.andDo { print() }
+                }
+            }
+        }
+
+        describe("내 식물 비료주기") {
+            beforeTest {
+                every { myPlantService.fertilizerMyPlant(any(), any()) } just runs
+            }
+            context("물주기 요청을 하면") {
+                it("정상 흐름이 반환된다.") {
+                    mockMvc.post("/api/v1/plants/$ID/fertilizer")
+                        .andExpectAll {
+                            status { isOk() }
+                        }.andDo { print() }
+                }
+            }
+        }
+
+        describe("내 식물 건강확인 알림 변경") {
+            beforeTest {
+                every { myPlantService.modifyMyPlantHealthCheck(any(), any()) } just runs
+            }
+            context("건강확인 알림을 변경하면") {
                 val request =
                     objectMapper.writeValueAsString(
-                        MyPlantManageRequest(
-                            doWater = true,
-                            doFertilizer = true,
+                        MyPlantHealthCheckRequest(
+                            healthCheck = true,
                         ),
                     )
                 it("정상 흐름이 반환된다.") {
-                    mockMvc.post("/api/v1/plants/$ID") {
+                    mockMvc.patch("/api/v1/plants/$ID/healthcheck") {
                         contentType = MediaType.APPLICATION_JSON
                         content = request
                     }.andExpectAll {
                         status { isOk() }
-                    }.andDo { print() }
-                }
-            }
-            context("존재하지 않는 내 식물 ID로 관리하면") {
-                val request =
-                    objectMapper.writeValueAsString(
-                        MyPlantManageRequest(
-                            doWater = true,
-                            doFertilizer = true,
-                        ),
-                    )
-                it("정상 흐름이 반환된다.") {
-                    mockMvc.post("/api/v1/plants/$ID2") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = request
-                    }.andExpectAll {
-                        status { isNotFound() }
-                        jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
-                        jsonPath("$.code", equalTo(ErrorType.NOT_FOUND_MYPLANT.name))
                     }.andDo { print() }
                 }
             }

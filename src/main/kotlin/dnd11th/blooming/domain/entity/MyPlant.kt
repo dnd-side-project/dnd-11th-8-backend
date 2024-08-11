@@ -82,12 +82,15 @@ class MyPlant(
         }
     }
 
-    fun manageLastDates(
-        doWater: Boolean?,
-        doFertilizer: Boolean?,
-        manageDate: LocalDate,
-    ) {
-        doWater?.let { this.lastWateredDate = manageDate }
-        doFertilizer?.let { this.lastFertilizerDate = manageDate }
+    fun doWater(now: LocalDate) {
+        lastWateredDate = now
+    }
+
+    fun doFertilizer(now: LocalDate) {
+        lastFertilizerDate = now
+    }
+
+    fun modifyHealthCheck(healthCheckAlarm: Boolean) {
+        this.alarm.healthCheckAlarm = healthCheckAlarm
     }
 }
