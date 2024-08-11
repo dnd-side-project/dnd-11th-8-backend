@@ -1,21 +1,21 @@
 spring:
-  config:
-    activate:
-      on-profile: test
+  application:
+    name: dnd-11th-8-backend
 
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:blooming_test;MODE=MYSQL;
-    username: sa
-    password:
+    url: ${DB_URL_PROD}
+    username: ${DB_USERNAME_PROD}
+    password: ${DB_PASSWORD_PROD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  session:
+    jdbc:
+      initialize-schema: always
 
   jpa:
-    show-sql: true
     hibernate:
-      ddl-auto: create
-    properties:
-      hibernate.format_sql: true
-      dialect: org.hibernate.dialect.H2Dialect
+      ddl-auto: update
+    defer-datasource-initialization: true
+    open-in-view: false
 
 auth:
   jwt:
@@ -29,8 +29,8 @@ auth:
     provider:
       kakao:
         iss: https://kauth.kakao.com
-        aud: "testkakoclient"
+        aud: ${KAKAO_CLIENT_ID}
         nonce: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
 
 weather:
-  serviceKey: "serviceKey"
+  serviceKey: ${OPEN_API_SERVICE_KEY}
