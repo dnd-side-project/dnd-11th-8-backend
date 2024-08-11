@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: dnd-11th-8-backend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/blooming
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  session:
+    jdbc:
+      initialize-schema: always
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    open-in-view: false
+
+auth:
+  jwt:
+    access:
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+      expiry: 100000000
+    refresh:
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+      expiry: 100000000
+  oidc:
+    provider:
+      kakao:
+        iss: https://kauth.kakao.com
+        aud: ${KAKAO_CLIENT_ID}
+        nonce: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+
+weather:
+  serviceKey: ${OPEN_API_SERVICE_KEY}
