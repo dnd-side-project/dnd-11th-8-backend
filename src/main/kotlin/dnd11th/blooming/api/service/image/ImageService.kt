@@ -23,8 +23,7 @@ class ImageService(
         now: LocalDate,
     ) {
         val myPlant =
-            myPlantRepository
-                .findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         val image =
@@ -41,8 +40,7 @@ class ImageService(
         request: ImageFavoriteModifyRequest,
     ) {
         val image =
-            imageRepository
-                .findByIdOrNull(imageId)
+            imageRepository.findByIdOrNull(imageId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
 
         image.modifyFavorite(request.favorite)
