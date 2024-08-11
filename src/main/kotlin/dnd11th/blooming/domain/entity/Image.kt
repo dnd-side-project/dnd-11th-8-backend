@@ -29,4 +29,8 @@ class Image(
     fun makeMyPlantRelation(myPlant: MyPlant) {
         this.myPlant = myPlant
     }
+
+    fun modifyFavorite(favorite: Boolean) {
+        this.favorite = favorite
+    }
 }

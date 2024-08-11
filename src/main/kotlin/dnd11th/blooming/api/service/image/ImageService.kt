@@ -1,5 +1,6 @@
 package dnd11th.blooming.api.service.image
 
+import dnd11th.blooming.api.dto.image.ImageFavoriteModifyRequest
 import dnd11th.blooming.api.dto.image.ImageSaveRequest
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
@@ -31,5 +32,15 @@ class ImageService(
             }
 
         imageRepository.save(image)
+    }
+
+    @Transactional
+    fun modifyFavorite(
+        imageId: Long,
+        request: ImageFavoriteModifyRequest,
+    ) {
+        val image = imageRepository.findByIdOrNull(imageId) ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
+
+        image.modifyFavorite(request.favorite)
     }
 }
