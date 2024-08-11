@@ -4,15 +4,15 @@ import dnd11th.blooming.common.exception.ClientCallException
 import dnd11th.blooming.common.exception.ErrorType
 
 data class WeatherResponse(
-    val response: ResponseData
+    val response: ResponseData,
 ) {
     fun toWeatherItems(): List<WeatherItem> {
         validate()
-        return response.body?.items?.item?:emptyList()
+        return response.body?.items?.item ?: emptyList()
     }
 
     private fun validate() {
-        if(response.header.resultCode != "00") {
+        if (response.header.resultCode != "00") {
             throw ClientCallException(ErrorType.OPEN_API_CALL_EXCEPTION)
         }
     }
@@ -20,20 +20,20 @@ data class WeatherResponse(
 
 data class ResponseData(
     val header: HeaderData,
-    val body: BodyData?
+    val body: BodyData?,
 )
 
 data class HeaderData(
     val resultCode: String,
-    val resultMsg: String
+    val resultMsg: String,
 )
 
 data class BodyData(
-    val items: Items
+    val items: Items,
 )
 
 data class Items(
-    val item: List<WeatherItem>
+    val item: List<WeatherItem>,
 )
 
 data class WeatherItem(
@@ -44,5 +44,5 @@ data class WeatherItem(
     val fcstTime: String,
     val fcstValue: String,
     val nx: Int,
-    val ny: Int
+    val ny: Int,
 )

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
     name = "WeatherInfoClient",
     url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst",
 )
-interface WeatherInfoClient{
+interface WeatherInfoClient {
     companion object {
         const val FIXED_PAGE_NUMBER = 1
         const val FIXED_NUMBER_OF_ROWS = 288
@@ -18,12 +18,14 @@ interface WeatherInfoClient{
     }
 
     @GetMapping
-    fun getWeatherInfo(@RequestParam serviceKey: String,
-                       @RequestParam pageNo: Int = FIXED_PAGE_NUMBER,
-                       @RequestParam numOfRows: Int = FIXED_NUMBER_OF_ROWS,
-                       @RequestParam dataType: String = FIXED_DATA_TYPE,
-                       @RequestParam base_date: String,
-                       @RequestParam base_time: String = FIXED_BASE_TIME,
-                       @RequestParam nx: Int,
-                       @RequestParam ny: Int) : WeatherResponse
+    fun getWeatherInfo(
+        @RequestParam serviceKey: String,
+        @RequestParam pageNo: Int = FIXED_PAGE_NUMBER,
+        @RequestParam numOfRows: Int = FIXED_NUMBER_OF_ROWS,
+        @RequestParam dataType: String = FIXED_DATA_TYPE,
+        @RequestParam base_date: String,
+        @RequestParam base_time: String = FIXED_BASE_TIME,
+        @RequestParam nx: Int,
+        @RequestParam ny: Int,
+    ): WeatherResponse
 }

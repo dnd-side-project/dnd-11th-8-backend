@@ -20,9 +20,8 @@ class WeatherService(
     @Value("\${weather.serviceKey}")
     private val serviceKey: String,
     private val weatherInfoClient: WeatherInfoClient,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
-
     companion object {
         private const val HUMIDITY_KEY = "REH"
         private const val TEMPERATURE_KEY = "TMP"
@@ -36,15 +35,16 @@ class WeatherService(
         private const val HIGH_TEMPERATURE_THRESHOLD = 30
     }
 
-    fun createPlantMessageByWeather(now: LocalDateTime) : List<WeatherMessage> {
+    fun createPlantMessageByWeather(now: LocalDateTime): List<WeatherMessage> {
         val user: User = userRepository.findById(1L).orElseThrow { throw NotFoundException(ErrorType.USER_NOT_FOUND) }
 
-        val weatherItems: List<WeatherItem> = weatherInfoClient.getWeatherInfo(
-            serviceKey = serviceKey,
-            base_date = getBaseDate(now),
-            nx = user.nx,
-            ny = user.ny
-        ).toWeatherItems()
+        val weatherItems: List<WeatherItem> =
+            weatherInfoClient.getWeatherInfo(
+                serviceKey = serviceKey,
+                base_date = getBaseDate(now),
+                nx = user.nx,
+                ny = user.ny,
+            ).toWeatherItems()
 
         return determineWeatherMessages(weatherItems)
     }
@@ -88,7 +88,7 @@ class WeatherService(
      * 현재 시간이 2시 10분을 지났다면, 현재 날짜를 반환합니다.
      * 그렇지 않다면, 어제 날짜를 반환합니다.
      */
-    private fun getBaseDate(now: LocalDateTime) : String {
+    private fun getBaseDate(now: LocalDateTime): String {
         val baseTime = LocalTime.of(2, 20)
         return if (now.toLocalTime().isAfter(baseTime)) {
             formatDate(now.toLocalDate())
@@ -97,9 +97,8 @@ class WeatherService(
         }
     }
 
-    private fun formatDate(date: LocalDate): String{
+    private fun formatDate(date: LocalDate): String  {
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         return date.format(formatter)
     }
-
 }

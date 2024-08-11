@@ -11,11 +11,10 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping("/api/v1/weather-message")
 class WeatherMessageController(
-    private val weatherService: WeatherService
+    private val weatherService: WeatherService,
 ) {
-
     @GetMapping
-    fun getWeatherMessage() : List<WeatherMessageResponse> {
+    fun getWeatherMessage(): List<WeatherMessageResponse> {
         val weatherMessages: List<WeatherMessage> =
             weatherService.createPlantMessageByWeather(LocalDateTime.now())
         return weatherMessages.map { weatherMessage -> WeatherMessageResponse.from(weatherMessage) }
