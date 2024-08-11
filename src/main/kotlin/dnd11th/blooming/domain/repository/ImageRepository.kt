@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ImageRepository : JpaRepository<Image, Long> {
     fun findAllByMyPlant(myPlant: MyPlant): List<Image>
+
+    fun deleteAllByMyPlant(myPlant: MyPlant)
 }

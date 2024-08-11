@@ -108,6 +108,7 @@ class MyPlantService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
+        imageRepository.deleteAllByMyPlant(myPlant)
         myPlantRepository.delete(myPlant)
     }
 

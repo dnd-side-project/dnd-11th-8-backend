@@ -406,6 +406,7 @@ class MyPlantServiceTest : DescribeSpec(
             every { myPlantRepsitory.findByIdOrNull(not(eq(PLANT_ID))) } returns
                 null
             every { myPlantRepsitory.delete(any()) } just runs
+            every { imageRepository.deleteAllByMyPlant(any()) } just runs
 
             context("정상 요청으로 삭제하면") {
                 it("정상 흐름이 반환되어야 한다.") {
