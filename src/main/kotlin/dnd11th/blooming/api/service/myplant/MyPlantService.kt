@@ -41,15 +41,6 @@ class MyPlantService(
         return MyPlantSaveResponse.from(savedPlant)
     }
 
-    private fun validateDateNotInFuture(
-        targetDate: LocalDate,
-        currentDate: LocalDate,
-    ) {
-        if (targetDate.isAfter(currentDate)) {
-            throw InvalidDateException(ErrorType.INVALID_DATE)
-        }
-    }
-
     @Transactional(readOnly = true)
     fun findAllMyPlant(
         now: LocalDate,
@@ -61,28 +52,6 @@ class MyPlantService(
         return plantList.stream().map { plant ->
             MyPlantResponse.from(plant, now)
         }.toList()
-    }
-
-    private fun findSortedMyPlants(
-        locationId: Long?,
-        sort: MyPlantQueryCreteria,
-    ): List<MyPlant> {
-        val location = locationId?.let { locationRepository.findByIdOrNull(locationId) }
-
-        val plantList =
-            when (sort) {
-                MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByLocationOrderByCreatedDateDesc(location)
-                MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByLocationOrderByCreatedDateAsc(location)
-                MyPlantQueryCreteria.WateredDesc ->
-                    myPlantRepository.findAllByLocationOrderByLastWateredDateDesc(
-                        location,
-                    )
-                MyPlantQueryCreteria.WateredAsc ->
-                    myPlantRepository.findAllByLocationOrderByLastWateredDateAsc(
-                        location,
-                    )
-            }
-        return plantList
     }
 
     @Transactional(readOnly = true)
@@ -155,5 +124,36 @@ class MyPlantService(
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         plant.manageLastDates(request.doWater, request.doFertilizer, now)
+    }
+
+    private fun validateDateNotInFuture(
+        targetDate: LocalDate,
+        currentDate: LocalDate,
+    ) {
+        if (targetDate.isAfter(currentDate)) {
+            throw InvalidDateException(ErrorType.INVALID_DATE)
+        }
+    }
+
+    private fun findSortedMyPlants(
+        locationId: Long?,
+        sort: MyPlantQueryCreteria,
+    ): List<MyPlant> {
+        val location = locationId?.let { locationRepository.findByIdOrNull(locationId) }
+
+        val plantList =
+            when (sort) {
+                MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByLocationOrderByCreatedDateDesc(location)
+                MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByLocationOrderByCreatedDateAsc(location)
+                MyPlantQueryCreteria.WateredDesc ->
+                    myPlantRepository.findAllByLocationOrderByLastWateredDateDesc(
+                        location,
+                    )
+                MyPlantQueryCreteria.WateredAsc ->
+                    myPlantRepository.findAllByLocationOrderByLastWateredDateAsc(
+                        location,
+                    )
+            }
+        return plantList
     }
 }
