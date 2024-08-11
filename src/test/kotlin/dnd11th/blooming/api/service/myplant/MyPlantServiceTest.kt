@@ -46,11 +46,14 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = PLANT_ID
                 }
+            every { locationRepository.findByIdOrNull(any()) } returns
+                LOCATION1
             context("정상 요청으로 내 식물을 저장하면") {
                 val request =
                     MyPlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
                         nickname = NICKNAME,
+                        locationId = LOCATION_ID,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -72,6 +75,7 @@ class MyPlantServiceTest : DescribeSpec(
                     MyPlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
                         nickname = NICKNAME,
+                        locationId = LOCATION_ID,
                         startDate = FUTURE_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -95,6 +99,7 @@ class MyPlantServiceTest : DescribeSpec(
                     MyPlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
                         nickname = NICKNAME,
+                        locationId = LOCATION_ID,
                         startDate = START_DATE,
                         lastWateredDate = FUTURE_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -118,6 +123,7 @@ class MyPlantServiceTest : DescribeSpec(
                     MyPlantSaveRequest(
                         scientificName = SCIENTIFIC_NAME,
                         nickname = NICKNAME,
+                        locationId = LOCATION_ID,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = FUTURE_DATE,

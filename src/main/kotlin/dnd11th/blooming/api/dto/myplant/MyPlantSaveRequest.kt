@@ -7,6 +7,7 @@ import java.time.LocalDate
 data class MyPlantSaveRequest(
     val scientificName: String,
     val nickname: String,
+    val locationId: Long,
     val startDate: LocalDate,
     val lastWateredDate: LocalDate,
     val lastFertilizerDate: LocalDate,

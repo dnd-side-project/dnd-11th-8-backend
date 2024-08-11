@@ -36,7 +36,15 @@ class MyPlantService(
         validateDateNotInFuture(request.lastWateredDate, now)
         validateDateNotInFuture(request.lastFertilizerDate, now)
 
-        val myPlant = request.toMyPlant()
+        val location =
+            locationRepository
+                .findByIdOrNull(request.locationId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
+
+        val myPlant =
+            request.toMyPlant().also {
+                it.setLocationRelation(location)
+            }
 
         val savedPlant = myPlantRepository.save(myPlant)
 

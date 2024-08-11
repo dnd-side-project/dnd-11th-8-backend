@@ -41,6 +41,10 @@ class MyPlant(
     @JoinColumn(name = "location_id")
     var location: Location? = null
 
+    fun setLocationRelation(location: Location) {
+        this.location = location
+    }
+
     fun modify(
         nickname: String?,
         location: Location?,

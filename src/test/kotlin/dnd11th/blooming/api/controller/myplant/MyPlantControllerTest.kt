@@ -67,6 +67,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
+                            locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -94,6 +95,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
+                            locationId = LOCATION_ID,
                             startDate = FUTURE_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -121,6 +123,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
+                            locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = FUTURE_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,

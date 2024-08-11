@@ -28,7 +28,7 @@ class ImageService(
 
         val image =
             request.toImage(now).also {
-                it.makeMyPlantRelation(myPlant)
+                it.setMyPlantRelation(myPlant)
             }
 
         imageRepository.save(image)

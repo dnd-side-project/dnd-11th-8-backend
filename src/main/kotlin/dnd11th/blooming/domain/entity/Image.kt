@@ -26,7 +26,7 @@ class Image(
     @JoinColumn(name = "myplant_id")
     var myPlant: MyPlant? = null
 
-    fun makeMyPlantRelation(myPlant: MyPlant) {
+    fun setMyPlantRelation(myPlant: MyPlant) {
         this.myPlant = myPlant
     }
 
