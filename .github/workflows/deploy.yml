@@ -1,0 +1,72 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_ID_PROD }}
+          password: ${{ secrets.DOCKERHUB_TOKEN_PROD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_ID_PROD }}/blooming-server:latest
+          build-args: |
+            PROFILE=prod
+            DB_URL_PROD=${{ secrets.DB_URL_PROD }}
+            DB_USERNAME_PROD=${{ secrets.DB_USERNAME_PROD }}
+            DB_PASSWORD_PROD=${{ secrets.DB_PASSWORD_PROD }}
+            OPEN_API_SERVICE_KEY=${{ secrets.OPEN_API_SERVICE_KEY }}
+
+      - name: Docker Deploy executing remote ssh commands using ssh_key
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.WAS_HOST_PROD }}
+          username: ${{ secrets.WAS_USERNAME_PROD }}
+          key: ${{ secrets.WAS_PASSWORD_PROD }}
+          port: ${{ secrets.WAS_PORT_PROD }}
+          script: |
+            docker stop $(docker ps -a -q)
+            docker pull ${{ secrets.DOCKERHUB_ID_PROD }}/blooming-server
+            docker rm -f $(docker ps -a -q)
+            docker run -d --name blooming-server -p ${{ secrets.SERVER_PORT}}:8080 ${{ secrets.DOCKERHUB_ID_PROD }}/blooming-server
+            docker image prune -f
