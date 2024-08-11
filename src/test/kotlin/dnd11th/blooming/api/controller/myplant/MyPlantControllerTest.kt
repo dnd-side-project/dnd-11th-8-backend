@@ -291,7 +291,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     myPlantService.modifyMyPlant(
                         any(),
                         match {
-                            it.location != LOCATION_NAME
+                            it.locationId != LOCATION_ID
                         },
                     )
                 } throws
@@ -302,7 +302,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
                             nickname = NICKNAME,
-                            location = LOCATION_NAME,
+                            locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -322,7 +322,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
                             nickname = NICKNAME,
-                            location = LOCATION_NAME,
+                            locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -344,7 +344,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
                             nickname = NICKNAME,
-                            location = "존재하지 않는 장소 이름",
+                            locationId = LOCATION_ID + 1,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,

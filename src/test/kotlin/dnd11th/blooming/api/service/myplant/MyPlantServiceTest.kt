@@ -349,7 +349,7 @@ class MyPlantServiceTest : DescribeSpec(
                 val request =
                     MyPlantModifyRequest(
                         nickname = NICKNAME,
-                        location = LOCATION_NAME,
+                        locationId = LOCATION_ID,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -362,7 +362,7 @@ class MyPlantServiceTest : DescribeSpec(
                 val request =
                     MyPlantModifyRequest(
                         nickname = NICKNAME,
-                        location = LOCATION_NAME,
+                        locationId = LOCATION_ID,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -378,7 +378,7 @@ class MyPlantServiceTest : DescribeSpec(
                 val request =
                     MyPlantModifyRequest(
                         nickname = NICKNAME,
-                        location = LOCATION_NAME2,
+                        locationId = LOCATION_ID + 1,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,

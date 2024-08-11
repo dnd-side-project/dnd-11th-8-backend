@@ -92,8 +92,8 @@ class MyPlantService(
         myPlant.modify(
             nickname = request.nickname,
             location =
-                request.location?.let {
-                    locationRepository.findByName(request.location)
+                request.locationId?.let {
+                    locationRepository.findByIdOrNull(request.locationId)
                         ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
                 },
             startDate = request.startDate,
