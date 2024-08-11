@@ -141,6 +141,7 @@ class MyPlantServiceTest : DescribeSpec(
                     nickname = "생성1등 물주기2등",
                     createdDate = LocalDate.of(2024, 5, 15),
                     lastWateredDate = LocalDate.of(2024, 5, 16),
+                    lastFertilizerDate = LocalDate.of(2024, 5, 16),
                     alarm = ALARM,
                 ).apply {
                     id = 1
@@ -152,6 +153,7 @@ class MyPlantServiceTest : DescribeSpec(
                     nickname = "생성2등 물주기3등",
                     createdDate = LocalDate.of(2024, 5, 16),
                     lastWateredDate = LocalDate.of(2024, 5, 17),
+                    lastFertilizerDate = LocalDate.of(2024, 5, 17),
                     alarm = ALARM,
                 ).apply {
                     id = 2
@@ -163,6 +165,7 @@ class MyPlantServiceTest : DescribeSpec(
                     nickname = "생성3등 물주기1등",
                     createdDate = LocalDate.of(2024, 5, 17),
                     lastWateredDate = LocalDate.of(2024, 5, 15),
+                    lastFertilizerDate = LocalDate.of(2024, 5, 15),
                     alarm = ALARM,
                 ).apply {
                     id = 3
@@ -191,19 +194,19 @@ class MyPlantServiceTest : DescribeSpec(
                     response[0].nickname shouldBe "생성1등 물주기2등"
                     response[0].scientificName shouldBe "병아리눈물"
                     response[0].waterRemainDay shouldBe 2
-                    response[0].fertilizerRemainDay shouldBe 53
+                    response[0].fertilizerRemainDay shouldBe 29
 
                     response[1].myPlantId shouldBe 2
                     response[1].nickname shouldBe "생성2등 물주기3등"
                     response[1].scientificName shouldBe "몬스테라 델리오사"
                     response[1].waterRemainDay shouldBe 3
-                    response[1].fertilizerRemainDay shouldBe 53
+                    response[1].fertilizerRemainDay shouldBe 30
 
                     response[2].myPlantId shouldBe 3
                     response[2].nickname shouldBe "생성3등 물주기1등"
                     response[2].scientificName shouldBe "선인장"
                     response[2].waterRemainDay shouldBe 1
-                    response[2].fertilizerRemainDay shouldBe 53
+                    response[2].fertilizerRemainDay shouldBe 28
                 }
             }
             context("내 식물을 최근 등록순으로 전체 조회하면") {
