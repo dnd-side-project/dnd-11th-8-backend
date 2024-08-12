@@ -20,5 +20,5 @@ enum class ErrorType(val status: HttpStatus, val message: String, val logLevel: 
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않은 사용자입니다.", LogLevel.DEBUG),
 
     // OpenAPI
-    OPEN_API_CALL_EXCEPTION(HttpStatus.BAD_REQUEST, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
+    OPEN_API_CALL_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
 }
