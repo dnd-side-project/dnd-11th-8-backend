@@ -1,5 +1,7 @@
 package dnd11th.blooming.api.dto.myplant
 
+import jakarta.validation.constraints.NotNull
+
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(
@@ -7,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "건강확인 알림 변경 요청",
 )
 data class MyPlantHealthCheckRequest(
+    @NotNull(message = "건강확인 알림 여부는 필수값입니다.")
     @field:Schema(description = "건강확인 알림 여부", example = "true")
     val healthCheck: Boolean,
 )

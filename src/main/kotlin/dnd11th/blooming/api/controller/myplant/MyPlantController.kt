@@ -11,6 +11,7 @@ import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSortParam
 import dnd11th.blooming.api.service.myplant.MyPlantService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -29,7 +30,7 @@ class MyPlantController(
 ) : MyPlantApi {
     @PostMapping
     override fun saveMyPlant(
-        @RequestBody request: MyPlantSaveRequest,
+        @RequestBody @Valid request: MyPlantSaveRequest,
     ): MyPlantSaveResponse = myPlantService.saveMyPlant(request, LocalDate.now())
 
     @GetMapping
@@ -48,7 +49,7 @@ class MyPlantController(
     @PatchMapping("/{myPlantId}")
     override fun modifyMyPlant(
         @PathVariable myPlantId: Long,
-        @RequestBody request: MyPlantModifyRequest,
+        @RequestBody @Valid request: MyPlantModifyRequest,
     ) = myPlantService.modifyMyPlant(myPlantId, request)
 
     @DeleteMapping("/{myPlantId}")
@@ -69,12 +70,12 @@ class MyPlantController(
     @PatchMapping("/{myPlantId}/healthcheck")
     override fun modifyMyPlantHealthCheck(
         @PathVariable myPlantId: Long,
-        @RequestBody request: MyPlantHealthCheckRequest,
+        @RequestBody @Valid request: MyPlantHealthCheckRequest,
     ) = myPlantService.modifyMyPlantHealthCheck(myPlantId, request)
 
     @PatchMapping("/{myPlantId}/alarm")
     override fun modifyMyPlantAlarm(
         @PathVariable myPlantId: Long,
-        @RequestBody request: AlarmModifyRequest,
+        @RequestBody @Valid request: AlarmModifyRequest,
     ) = myPlantService.modifyMyPlantAlarm(myPlantId, request)
 }

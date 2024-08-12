@@ -4,6 +4,7 @@ import dnd11th.blooming.api.dto.user.IdTokenRequest
 import dnd11th.blooming.api.dto.user.TokenResponse
 import dnd11th.blooming.api.service.user.SocialLoginService
 import dnd11th.blooming.domain.entity.user.OauthProvider
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -18,7 +19,7 @@ class UserController(
     @PostMapping("/login/{provider}")
     fun login(
         @PathVariable provider: String,
-        @RequestBody idTokenRequest: IdTokenRequest,
+        @RequestBody @Valid idTokenRequest: IdTokenRequest,
     ): TokenResponse {
         return socialLoginService.socialLogin(OauthProvider.from(provider), idTokenRequest.idToken)
     }
