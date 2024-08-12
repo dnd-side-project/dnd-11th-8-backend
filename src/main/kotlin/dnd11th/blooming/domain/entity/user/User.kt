@@ -9,16 +9,12 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "users")
 class User(
-    email: String,
-    nickname: String,
+    val email: String,
+    val nickname: String? = null,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
-
-    val email: String = email
-
-    val nickname: String = nickname
 
     val nx: Int = 0
 
@@ -26,7 +22,7 @@ class User(
 
     companion object {
         fun create(claims: UserClaims): User {
-            return User(claims.email, claims.nickname)
+            return User(claims.email)
         }
     }
 }

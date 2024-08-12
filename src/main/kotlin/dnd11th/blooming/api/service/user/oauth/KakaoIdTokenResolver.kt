@@ -45,10 +45,8 @@ class KakaoIdTokenResolver(
     }
 
     fun getUserClaims(claims: Claims): OidcUser {
-        val sub = claims["sub"].toString()
         val email = claims["email"].toString()
-        val nickname = claims["nickname"].toString()
-        return OidcUser(sub, email, nickname)
+        return OidcUser(email)
     }
 
     fun verifySignature(

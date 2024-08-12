@@ -1,5 +1,7 @@
 package dnd11th.blooming.common.jwt
 
+import dnd11th.blooming.domain.entity.user.OauthProvider
+import dnd11th.blooming.domain.entity.user.RegisterClaims
 import dnd11th.blooming.domain.entity.user.UserClaims
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
@@ -14,6 +16,13 @@ import javax.crypto.SecretKey
 class JwtProvider(
     private val jwtProperties: JwtProperties,
 ) {
+    fun generateRegisterToken(
+        email: String,
+        provider: OauthProvider,
+    ): String {
+        return generateRegisterToken(email, provider.name, jwtProperties.access.expiry, jwtProperties.access.secret)
+    }
+
     fun generateAccessToken(
         userId: Long?,
         email: String,
@@ -30,12 +39,40 @@ class JwtProvider(
         return generateToken(userId, email, nickname, jwtProperties.refresh.expiry, jwtProperties.refresh.secret)
     }
 
+    fun resolveRegisterToken(
+        token: String?,
+        secret: String,
+    ): RegisterClaims {
+        val secretKey: SecretKey = getSecretKey(secret)
+        val claims = getClaims(token, secretKey)
+        return RegisterClaims(
+            claims["email"] as String,
+            claims["provider"] as String,
+        )
+    }
+
     fun resolveAccessToken(token: String?): UserClaims {
         return resolveToken(token, jwtProperties.access.secret)
     }
 
     fun resolveRefreshToken(token: String?): UserClaims {
         return resolveToken(token, jwtProperties.refresh.secret)
+    }
+
+    private fun generateRegisterToken(
+        email: String,
+        provider: String,
+        expiryTime: Long,
+        secret: String,
+    ): String {
+        val now = Date()
+        val expiry = Date(now.time + expiryTime)
+        return Jwts.builder()
+            .expiration(expiry)
+            .claim("email", email)
+            .claim("provider", provider)
+            .signWith(getSecretKey(secret))
+            .compact()
     }
 
     private fun generateToken(
