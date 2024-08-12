@@ -87,6 +87,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID,
                         nickname = NICKNAME,
+                        imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME,
                         waterRemainDay = WATER_REAMIN_DAY,
                         fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
@@ -94,6 +95,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID2,
                         nickname = NICKNAME2,
+                        imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME2,
                         waterRemainDay = WATER_REAMIN_DAY,
                         fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
@@ -123,6 +125,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID,
                         nickname = NICKNAME,
+                        imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME,
                         waterRemainDay = WATER_REAMIN_DAY,
                         fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
@@ -431,6 +434,7 @@ class MyPlantControllerTest : DescribeSpec() {
         val CURRENT_DAY: LocalDate = LocalDate.now()
 
         const val PLANT_ID = 1L
+        const val IMAGE_URL = "http://"
 
         const val MYPLANT_ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"

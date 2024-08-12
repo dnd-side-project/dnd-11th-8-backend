@@ -46,10 +46,14 @@ class MyPlantService(
         locationId: Long? = null,
         sort: MyPlantQueryCreteria = MyPlantQueryCreteria.CreatedDesc,
     ): List<MyPlantResponse> {
-        val myPlantList = findSortedMyPlants(locationId, sort)
+        val myPlantWithUrlList = findSortedMyPlantsWithImage(locationId, sort)
 
-        return myPlantList.stream().map { myPlant ->
-            MyPlantResponse.of(myPlant, now)
+        return myPlantWithUrlList.stream().map { myPlantAndImageUrl ->
+            MyPlantResponse.of(
+                myPlantAndImageUrl.first,
+                myPlantAndImageUrl.second,
+                now,
+            )
         }.toList()
     }
 
@@ -147,13 +151,13 @@ class MyPlantService(
         myPlant.modifyHealthCheck(request.healthCheck)
     }
 
-    private fun findSortedMyPlants(
+    private fun findSortedMyPlantsWithImage(
         locationId: Long?,
         sort: MyPlantQueryCreteria,
-    ): List<MyPlant> {
+    ): List<Pair<MyPlant, String>> {
         val location = locationId?.let { locationRepository.findByIdOrNull(locationId) }
 
-        val myPlantList =
+        val sortedMyPlantList =
             when (sort) {
                 MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByLocationOrderByCreatedDateDesc(location)
                 MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByLocationOrderByCreatedDateAsc(location)
@@ -166,6 +170,17 @@ class MyPlantService(
                         location,
                     )
             }
-        return myPlantList
+
+        val urlMap =
+            imageRepository.findFavoriteImagesForMyPlants(sortedMyPlantList)
+                .associate { it.myPlantId to it.imageUrl }
+
+        return sortedMyPlantList.map { myPlant ->
+            myPlant to
+                (
+                    urlMap[myPlant.id]
+                        ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
+                )
+        }
     }
 }
