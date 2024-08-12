@@ -1,6 +1,5 @@
 package dnd11th.blooming.api.dto.myplant
 
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.PastOrPresent
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
@@ -11,7 +10,6 @@ import java.time.LocalDate
 )
 data class MyPlantModifyRequest(
     @field:Schema(description = "변경할 식물 별명", example = "쫑쫑이")
-    @field:NotBlank(message = "식물 별명은 비어있을 수 없습니다.")
     val nickname: String?,
     @field:Schema(description = "변경할 위치 ID", example = "4")
     val locationId: Long?,

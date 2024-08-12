@@ -148,28 +148,6 @@ class MyPlantControllerValidationTest : DescribeSpec() {
         }
 
         describe("내 식물 수정") {
-            context("식물 별명을 비우고 전달하면") {
-                val json =
-                    objectMapper.writeValueAsString(
-                        MyPlantModifyRequest(
-                            nickname = " ",
-                            locationId = LOCATION_ID,
-                            startDate = START_DATE,
-                            lastWateredDate = LAST_WATERED_DATE,
-                            lastFertilizerDate = LAST_FERTILIZER_DATE,
-                        ),
-                    )
-                it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = json
-                    }.andExpectAll {
-                        status { isBadRequest() }
-                        jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("식물 별명은 비어있을 수 없습니다."))
-                    }.andDo { print() }
-                }
-            }
             context("키우기 시작한 날짜를 미래로 전달하면") {
                 val json =
                     objectMapper.writeValueAsString(

@@ -19,6 +19,7 @@ data class MyPlantSaveRequest(
     @field:NotNull(message = "식물 종류는 필수값입니다.")
     @field:NotBlank(message = "식물 종류는 비어있을 수 없습니다.")
     val plantId: Long,
+    @field:NotNull(message = "식물 별명은 필수값입니다.")
     @field:NotBlank(message = "식물 별명은 비어있을 수 없습니다.")
     val nickname: String,
     @field:Schema(description = "위치 ID", example = "4")
