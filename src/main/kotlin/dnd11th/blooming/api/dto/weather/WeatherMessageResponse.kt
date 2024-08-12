@@ -5,10 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(
     name = "Weather Message Response",
-    description = "날씨 메시지 반환 응답"
+    description = "날씨 메시지 반환 응답",
 )
 data class WeatherMessageResponse(
-
     @Schema(name = "status", example = "HUMIDITY")
     val status: String,
     @Schema(name = "title", example = "과습주의보")

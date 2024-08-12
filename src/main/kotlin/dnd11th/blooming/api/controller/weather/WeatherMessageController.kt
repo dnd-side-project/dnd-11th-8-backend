@@ -12,9 +12,9 @@ import java.time.LocalDateTime
 @Tag(name = "5. [날씨 메시지]")
 @RestController
 @RequestMapping("/api/v1/weather-message")
-class WeatherMessageController (
+class WeatherMessageController(
     private val weatherService: WeatherService,
-): WeatherMessageApi {
+) : WeatherMessageApi {
     @GetMapping
     override fun getWeatherMessage(): List<WeatherMessageResponse> {
         val weatherMessages: List<WeatherMessage> =
