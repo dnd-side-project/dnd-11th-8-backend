@@ -18,8 +18,7 @@ data class MyPlantSaveRequest(
 	@field:Schema(description = "식물 ID", example = "3")
     @field:NotNull(message = "식물 종류는 필수값입니다.")
     @field:NotBlank(message = "식물 종류는 비어있을 수 없습니다.")
-    val scientificName: String,
-    @field:Schema(description = "내 식물 별명", example = "쫑쫑이")
+    val plantId: Long,
     @field:NotBlank(message = "식물 별명은 비어있을 수 없습니다.")
     val nickname: String,
     @field:Schema(description = "위치 ID", example = "4")
@@ -50,7 +49,8 @@ data class MyPlantSaveRequest(
     val healthCheckAlarm: Boolean,
 ) {
     fun toMyPlant(
-        location: Location,
+	    location: Location,
+	    scientificName: String,
         now: LocalDate,
     ): MyPlant =
         MyPlant(
