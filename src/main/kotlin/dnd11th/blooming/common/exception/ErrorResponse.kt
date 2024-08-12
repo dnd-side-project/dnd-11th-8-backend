@@ -6,17 +6,17 @@ import com.fasterxml.jackson.annotation.JsonInclude
 data class ErrorResponse private constructor(
     val code: ErrorType,
     val message: String,
-    val field: List<String>?,
+    val fields: Map<String, String>?,
 ) {
     companion object {
         fun from(
             errorType: ErrorType,
-            field: List<String>? = null,
+            fields: Map<String, String>? = null,
         ): ErrorResponse =
             ErrorResponse(
                 code = errorType,
                 message = errorType.message,
-                field = field,
+                fields = fields,
             )
     }
 }
