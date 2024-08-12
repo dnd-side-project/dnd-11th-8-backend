@@ -12,7 +12,6 @@ import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
-import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.jwt.JwtProvider
 import io.kotest.core.spec.style.DescribeSpec
@@ -47,19 +46,10 @@ class MyPlantControllerTest : DescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {
-                every { myPlantService.saveMyPlant(any(), CURRENT_DAY) } returns
+                every { myPlantService.saveMyPlant(any()) } returns
                     MyPlantSaveResponse(
                         myPlantId = ID,
                     )
-                every {
-                    myPlantService.saveMyPlant(
-                        match {
-                            it.startDate == FUTURE_DATE || it.lastWateredDate == FUTURE_DATE
-                        },
-                        CURRENT_DAY,
-                    )
-                } throws
-                    InvalidDateException(ErrorType.INVALID_DATE)
             }
             context("정상적인 요청으로 저장하면") {
                 val json =
@@ -86,62 +76,6 @@ class MyPlantControllerTest : DescribeSpec() {
                         status { isOk() }
                         jsonPath("$.myPlantId", equalTo(ID.toInt()))
                         jsonPath("$.message", equalTo("등록 되었습니다."))
-                    }.andDo { print() }
-                }
-            }
-            context("시작날짜가 미래인 요청으로 저장하면") {
-                val json =
-                    objectMapper.writeValueAsString(
-                        MyPlantSaveRequest(
-                            scientificName = SCIENTIFIC_NAME,
-                            nickname = NICKNAME,
-                            locationId = LOCATION_ID,
-                            startDate = FUTURE_DATE,
-                            lastWateredDate = LAST_WATERED_DATE,
-                            lastFertilizerDate = LAST_FERTILIZER_DATE,
-                            waterAlarm = true,
-                            waterPeriod = 60,
-                            fertilizerAlarm = false,
-                            fertilizerPeriod = null,
-                            healthCheckAlarm = true,
-                        ),
-                    )
-                it("예외응답이 반환되어야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = json
-                    }.andExpectAll {
-                        status { isBadRequest() }
-                        jsonPath("$.message", equalTo("올바르지 않은 날짜입니다."))
-                        jsonPath("$.code", equalTo(ErrorType.INVALID_DATE.name))
-                    }.andDo { print() }
-                }
-            }
-            context("마지막으로 물 준 날짜가 미래인 요청으로 저장하면") {
-                val json =
-                    objectMapper.writeValueAsString(
-                        MyPlantSaveRequest(
-                            scientificName = SCIENTIFIC_NAME,
-                            nickname = NICKNAME,
-                            locationId = LOCATION_ID,
-                            startDate = START_DATE,
-                            lastWateredDate = FUTURE_DATE,
-                            lastFertilizerDate = LAST_FERTILIZER_DATE,
-                            waterAlarm = WATER_ALARM,
-                            waterPeriod = WATER_PERIOD,
-                            fertilizerAlarm = FERTILIZER_ALARM,
-                            fertilizerPeriod = FERTILIZER_PERIOD,
-                            healthCheckAlarm = HEALTHCHECK_ALARM,
-                        ),
-                    )
-                it("예외응답이 반환되어야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = json
-                    }.andExpectAll {
-                        status { isBadRequest() }
-                        jsonPath("$.message", equalTo("올바르지 않은 날짜입니다."))
-                        jsonPath("$.code", equalTo(ErrorType.INVALID_DATE.name))
                     }.andDo { print() }
                 }
             }
@@ -510,8 +444,6 @@ class MyPlantControllerTest : DescribeSpec() {
         const val ID2 = 2L
         const val SCIENTIFIC_NAME2 = "병아리 눈물"
         const val NICKNAME2 = "빵빵이"
-
-        val FUTURE_DATE: LocalDate = LocalDate.of(5000, 5, 17)
 
         const val WATER_ALARM = true
         const val WATER_PERIOD = 3

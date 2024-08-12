@@ -6,7 +6,6 @@ import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.common.exception.ErrorType
-import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Alarm
 import dnd11th.blooming.domain.entity.Image
@@ -64,82 +63,10 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("정상적으로 저장되고 예외가 발생하면 안된다.") {
-                    val result = myPlantService.saveMyPlant(request, CURRENT_DAY)
+                    val result = myPlantService.saveMyPlant(request)
 
                     result.myPlantId shouldBe PLANT_ID
                     result.message shouldBe "등록 되었습니다."
-                }
-            }
-            context("시작날짜가 미래인 요청으로 내 식물을 저장하면") {
-                val request =
-                    MyPlantSaveRequest(
-                        scientificName = SCIENTIFIC_NAME,
-                        nickname = NICKNAME,
-                        locationId = LOCATION_ID,
-                        startDate = FUTURE_DATE,
-                        lastWateredDate = LAST_WATERED_DATE,
-                        lastFertilizerDate = LAST_FERTILIZER_DATE,
-                        waterAlarm = WATER_ALARM,
-                        waterPeriod = WATER_PERIOD,
-                        fertilizerAlarm = FERTILIZER_ALARM,
-                        fertilizerPeriod = FERTILIZER_PERIOD,
-                        healthCheckAlarm = HEALTHCHECK_ALARM,
-                    )
-                it("InvalidDateException 예외가 발생해야 한다.") {
-                    val exception =
-                        shouldThrow<InvalidDateException> {
-                            myPlantService.saveMyPlant(request, CURRENT_DAY)
-                        }
-                    exception.message shouldBe "올바르지 않은 날짜입니다."
-                    exception.errorType shouldBe ErrorType.INVALID_DATE
-                }
-            }
-            context("마지막으로 물 준 날짜가 미래인 요청으로 내 식물을 저장하면") {
-                val request =
-                    MyPlantSaveRequest(
-                        scientificName = SCIENTIFIC_NAME,
-                        nickname = NICKNAME,
-                        locationId = LOCATION_ID,
-                        startDate = START_DATE,
-                        lastWateredDate = FUTURE_DATE,
-                        lastFertilizerDate = LAST_FERTILIZER_DATE,
-                        waterAlarm = WATER_ALARM,
-                        waterPeriod = WATER_PERIOD,
-                        fertilizerAlarm = FERTILIZER_ALARM,
-                        fertilizerPeriod = FERTILIZER_PERIOD,
-                        healthCheckAlarm = HEALTHCHECK_ALARM,
-                    )
-                it("InvalidDateException 예외가 발생해야 한다.") {
-                    val exception =
-                        shouldThrow<InvalidDateException> {
-                            myPlantService.saveMyPlant(request, CURRENT_DAY)
-                        }
-                    exception.message shouldBe "올바르지 않은 날짜입니다."
-                    exception.errorType shouldBe ErrorType.INVALID_DATE
-                }
-            }
-            context("마지막으로 비료 준 날짜가 미래인 요청으로 내 식물을 저장하면") {
-                val request =
-                    MyPlantSaveRequest(
-                        scientificName = SCIENTIFIC_NAME,
-                        nickname = NICKNAME,
-                        locationId = LOCATION_ID,
-                        startDate = START_DATE,
-                        lastWateredDate = LAST_WATERED_DATE,
-                        lastFertilizerDate = FUTURE_DATE,
-                        waterAlarm = WATER_ALARM,
-                        waterPeriod = WATER_PERIOD,
-                        fertilizerAlarm = FERTILIZER_ALARM,
-                        fertilizerPeriod = FERTILIZER_PERIOD,
-                        healthCheckAlarm = HEALTHCHECK_ALARM,
-                    )
-                it("InvalidDateException 예외가 발생해야 한다.") {
-                    val exception =
-                        shouldThrow<InvalidDateException> {
-                            myPlantService.saveMyPlant(request, CURRENT_DAY)
-                        }
-                    exception.message shouldBe "올바르지 않은 날짜입니다."
-                    exception.errorType shouldBe ErrorType.INVALID_DATE
                 }
             }
         }
