@@ -33,39 +33,11 @@ class MyPlantControllerValidationTest : DescribeSpec() {
 
     init {
         describe("내 식물 저장") {
-            context("식물 종류를 비우고 전달하면") {
-                val json =
-                    objectMapper.writeValueAsString(
-                        MyPlantSaveRequest(
-                            scientificName = " ",
-                            nickname = NICKNAME,
-                            locationId = LOCATION_ID,
-                            startDate = START_DATE,
-                            lastWateredDate = LAST_WATERED_DATE,
-                            lastFertilizerDate = LAST_FERTILIZER_DATE,
-                            waterAlarm = WATER_ALARM,
-                            waterPeriod = WATER_PERIOD,
-                            fertilizerAlarm = FERTILIZER_ALARM,
-                            fertilizerPeriod = FERTILIZER_PERIOD,
-                            healthCheckAlarm = HEALTHCHECK_ALARM,
-                        ),
-                    )
-                it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = json
-                    }.andExpectAll {
-                        status { isBadRequest() }
-                        jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("식물 종류는 비어있을 수 없습니다."))
-                    }.andDo { print() }
-                }
-            }
             context("식물 별명을 비우고 전달하면") {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
-                            scientificName = SCIENTIFIC_NAME,
+                            plantId = PLANT_ID,
                             nickname = " ",
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
@@ -93,7 +65,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
-                            scientificName = SCIENTIFIC_NAME,
+                            plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
                             startDate = FUTURE_DATE,
@@ -121,7 +93,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
-                            scientificName = SCIENTIFIC_NAME,
+                            plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
@@ -149,7 +121,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
-                            scientificName = SCIENTIFIC_NAME,
+                            plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
@@ -188,7 +160,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$PLANT_ID") {
+                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -210,7 +182,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$PLANT_ID") {
+                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -232,7 +204,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$PLANT_ID") {
+                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -254,7 +226,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$PLANT_ID") {
+                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -270,6 +242,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
     companion object {
         val ERROR_CODE = ErrorType.ARGUMENT_ERROR.name
         const val PLANT_ID = 1L
+        const val MYPLANT_ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
         const val NICKNAME = "뿡뿡이"
         const val LOCATION_ID = 100L
