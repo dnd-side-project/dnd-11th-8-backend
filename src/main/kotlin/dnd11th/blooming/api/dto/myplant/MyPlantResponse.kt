@@ -13,6 +13,7 @@ data class MyPlantResponse(
     val myPlantId: Long?,
     @field:Schema(description = "내 식물 별명", example = "쫑쫑이")
     val nickname: String,
+    val imageUrl: String,
     @field:Schema(description = "내 식물 학명", example = "몬스테라 델리오사")
     val scientificName: String,
     @field:Schema(description = "다음 물주기까지 남은 날짜", example = "4")
@@ -23,11 +24,13 @@ data class MyPlantResponse(
     companion object {
         fun of(
             myPlant: MyPlant,
+            imageUrl: String,
             now: LocalDate,
         ): MyPlantResponse =
             MyPlantResponse(
                 myPlantId = myPlant.id,
                 nickname = myPlant.nickname,
+                imageUrl = imageUrl,
                 scientificName = myPlant.scientificName,
                 waterRemainDay = myPlant.getWaterRemainDay(now),
                 fertilizerRemainDay = myPlant.getFerilizerRemainDate(now),
