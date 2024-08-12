@@ -3,10 +3,11 @@ package dnd11th.blooming.common.exception
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
 
-enum class ErrorType(val status: HttpStatus, val message: String, val logLevel: LogLevel) {
+enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: LogLevel) {
     // COMMON
     SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error has occurred.", LogLevel.ERROR),
     INVALID_DATE(HttpStatus.BAD_REQUEST, "올바르지 않은 날짜입니다.", LogLevel.DEBUG),
+    ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "올바르지 않은 요청이 포함되었습니다.", LogLevel.DEBUG),
 
     // MyPlant
     NOT_FOUND_MYPLANT(HttpStatus.NOT_FOUND, "존재하지 않는 내 식물입니다.", LogLevel.DEBUG),
