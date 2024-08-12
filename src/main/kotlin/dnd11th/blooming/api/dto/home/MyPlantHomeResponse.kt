@@ -10,7 +10,7 @@ import java.time.LocalDate
 )
 data class MyPlantHomeResponse(
     @field:Schema(description = "내 식물 ID", example = "1")
-    val myPlantId: Long,
+    val myPlantId: Long?,
     @field:Schema(description = "내 식물 별명", example = "뿡뿡이")
     val nickname: String,
     @field:Schema(description = "내 식물 학명", example = "몬스테라 델리오사")

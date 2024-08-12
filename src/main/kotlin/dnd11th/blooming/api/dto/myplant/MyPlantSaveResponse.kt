@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 data class MyPlantSaveResponse(
     @field:Schema(description = "내 식물 ID", example = "17")
-    val myPlantId: Long,
+    val myPlantId: Long?,
 ) {
     @field:Schema(description = "저장메시지", example = "등록 되었습니다.")
     val message: String = "등록 되었습니다."
