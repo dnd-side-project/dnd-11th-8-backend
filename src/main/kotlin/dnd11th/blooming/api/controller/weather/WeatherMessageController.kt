@@ -3,18 +3,20 @@ package dnd11th.blooming.api.controller.weather
 import dnd11th.blooming.api.dto.weather.WeatherMessageResponse
 import dnd11th.blooming.api.service.weather.WeatherMessage
 import dnd11th.blooming.api.service.weather.WeatherService
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
+@Tag(name = "5. [날씨 메시지]")
 @RestController
 @RequestMapping("/api/v1/weather-message")
-class WeatherMessageController(
+class WeatherMessageController (
     private val weatherService: WeatherService,
-) {
+): WeatherMessageApi {
     @GetMapping
-    fun getWeatherMessage(): List<WeatherMessageResponse> {
+    override fun getWeatherMessage(): List<WeatherMessageResponse> {
         val weatherMessages: List<WeatherMessage> =
             weatherService.createWeatherMessage(LocalDateTime.now())
         return weatherMessages.map { weatherMessage -> WeatherMessageResponse.from(weatherMessage) }
