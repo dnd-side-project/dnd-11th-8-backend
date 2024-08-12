@@ -9,7 +9,6 @@ import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
-import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.repository.ImageRepository
@@ -28,14 +27,7 @@ class MyPlantService(
     private val imageRepository: ImageRepository,
 ) {
     @Transactional
-    fun saveMyPlant(
-        request: MyPlantSaveRequest,
-        now: LocalDate,
-    ): MyPlantSaveResponse {
-        validateDateNotInFuture(request.startDate, now)
-        validateDateNotInFuture(request.lastWateredDate, now)
-        validateDateNotInFuture(request.lastFertilizerDate, now)
-
+    fun saveMyPlant(request: MyPlantSaveRequest): MyPlantSaveResponse {
         val location =
             locationRepository
                 .findByIdOrNull(request.locationId)
@@ -153,15 +145,6 @@ class MyPlantService(
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         myPlant.modifyHealthCheck(request.healthCheck)
-    }
-
-    private fun validateDateNotInFuture(
-        targetDate: LocalDate,
-        currentDate: LocalDate,
-    ) {
-        if (targetDate.isAfter(currentDate)) {
-            throw InvalidDateException(ErrorType.INVALID_DATE)
-        }
     }
 
     private fun findSortedMyPlants(
