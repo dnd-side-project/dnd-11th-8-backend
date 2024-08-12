@@ -34,11 +34,12 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-	runtimeOnly("com.mysql:mysql-connector-j")
-	runtimeOnly("com.h2database:h2")
+    runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("com.h2database:h2")
 
-	// Validation
-	implementation("org.springframework.boot:spring-boot-starter-validation")
+    // Validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("jakarta.validation:jakarta.validation-api:3.1.0")
 
     // Configuration
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
