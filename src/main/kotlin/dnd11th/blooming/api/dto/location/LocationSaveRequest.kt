@@ -11,8 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 data class LocationSaveRequest(
 	@field:Schema(description = "새로운 위치 이름", example = "부엌")
-    @NotNull(message = "새로운 위치명은 필수값입니다.")
-    @NotBlank(message = "새로운 위치명은 비어있을 수 없습니다.")
+    @field:NotNull(message = "새로운 위치명은 필수값입니다.")
+    @field:NotBlank(message = "새로운 위치명은 비어있을 수 없습니다.")
     val name: String,
 ) {
     fun toLocation(): Location =

@@ -10,6 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 data class ImageFavoriteModifyRequest(
 	@field:Schema(description = "즐겨찾기 여부", example = "true")
-    @NotNull(message = "즐겨찾기 여부는 필수값입니다.")
+    @field:NotNull(message = "즐겨찾기 여부는 필수값입니다.")
     val favorite: Boolean,
 )
