@@ -3,7 +3,7 @@ package dnd11th.blooming.api.dto.location
 import dnd11th.blooming.domain.entity.Location
 
 data class LocationResponse(
-    val id: Long,
+    val id: Long?,
     val name: String,
 ) {
     companion object {

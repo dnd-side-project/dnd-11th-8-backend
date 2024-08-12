@@ -4,7 +4,7 @@ import dnd11th.blooming.domain.entity.MyPlant
 import java.time.LocalDate
 
 data class MyPlantResponse(
-    val myPlantId: Long,
+    val myPlantId: Long?,
     val nickname: String,
     val scientificName: String,
     val waterRemainDay: Int?,

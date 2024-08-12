@@ -20,7 +20,7 @@ class Image(
 ) : BaseEntity(currentDate) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0
+    var id: Long? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "myplant_id")
