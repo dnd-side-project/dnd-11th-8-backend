@@ -34,7 +34,7 @@ class ImageControllerValidationTest : DescribeSpec() {
                 val request =
                     objectMapper.writeValueAsString(
                         ImageSaveRequest(
-                            imageUrl = "",
+                            imageUrl = " ",
                         ),
                     )
                 it("예외 응답이 와야 한다.") {

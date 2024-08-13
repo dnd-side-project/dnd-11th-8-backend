@@ -27,13 +27,19 @@ class MyPlantService(
     private val imageRepository: ImageRepository,
 ) {
     @Transactional
-    fun saveMyPlant(request: MyPlantSaveRequest): MyPlantSaveResponse {
+    fun saveMyPlant(
+        request: MyPlantSaveRequest,
+        now: LocalDate,
+    ): MyPlantSaveResponse {
         val location =
             locationRepository
                 .findByIdOrNull(request.locationId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
-        val myPlant = request.toMyPlant(location, now)
+        // TODO : 식물 가이드 데이터 가져오기 필요
+        val scientificName = "몬스테라 델리오사"
+
+        val myPlant = request.toMyPlant(location, now, scientificName)
 
         val savedPlant = myPlantRepository.save(myPlant)
 

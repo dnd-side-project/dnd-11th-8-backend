@@ -46,7 +46,7 @@ class MyPlantControllerTest : DescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {
-                every { myPlantService.saveMyPlant(any()) } returns
+                every { myPlantService.saveMyPlant(any(), any()) } returns
                     MyPlantSaveResponse(
                         myPlantId = MYPLANT_ID,
                     )
