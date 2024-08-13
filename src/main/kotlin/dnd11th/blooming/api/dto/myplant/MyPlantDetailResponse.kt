@@ -1,6 +1,8 @@
 package dnd11th.blooming.api.dto.myplant
 
+import dnd11th.blooming.api.dto.image.ImageResponse
 import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
+import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.MyPlant
 import java.time.LocalDate
 
@@ -19,11 +21,13 @@ data class MyPlantDetailResponse(
     val fertilizerAlarm: Boolean,
     val fertilizerPeriod: Int?,
     val healthCheckAlarm: Boolean,
+    val images: List<ImageResponse>,
 ) {
     companion object {
         fun of(
             myPlant: MyPlant,
             messageFactory: MyPlantMessageFactory,
+            images: List<Image>,
             now: LocalDate,
         ): MyPlantDetailResponse =
             MyPlantDetailResponse(
@@ -49,6 +53,7 @@ data class MyPlantDetailResponse(
                 fertilizerAlarm = myPlant.alarm.fertilizerAlarm,
                 fertilizerPeriod = myPlant.alarm.fertilizerPeriod,
                 healthCheckAlarm = myPlant.alarm.healthCheckAlarm,
+                images = ImageResponse.fromList(images),
             )
     }
 }

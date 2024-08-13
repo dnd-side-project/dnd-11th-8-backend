@@ -17,6 +17,7 @@ class LocationService(
 ) {
     @Transactional
     fun saveLocation(request: LocationSaveRequest): LocationSaveResponse {
+        // TODO : 유저와 매핑 필요
         val location = request.toLocation()
         return LocationSaveResponse.from(locationRepository.save(location))
     }
@@ -46,6 +47,8 @@ class LocationService(
         if (!locationRepository.existsById(locationId)) {
             throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
         }
+
+        // TODO : Location 삭제시 그 안에 있던 식물들을 어떻게 다룰지 추가 작성 필요
 
         locationRepository.deleteById(locationId)
     }

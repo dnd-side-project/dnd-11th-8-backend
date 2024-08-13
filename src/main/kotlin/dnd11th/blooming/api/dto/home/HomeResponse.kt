@@ -3,6 +3,7 @@ package dnd11th.blooming.api.dto.home
 data class HomeResponse(
     val greetingMessage: String,
     val myPlantInfo: List<MyPlantHomeResponse>,
+    // TODO : 식물 일러스트 응답 추가 필요
 ) {
     companion object {
         fun from(

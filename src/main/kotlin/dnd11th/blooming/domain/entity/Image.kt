@@ -1,6 +1,5 @@
 package dnd11th.blooming.domain.entity
 
-import dnd11th.blooming.domain.entity.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -12,9 +11,11 @@ import jakarta.persistence.ManyToOne
 import java.time.LocalDate
 
 @Entity
-class Location(
+class Image(
     @Column
-    var name: String,
+    var url: String,
+    @Column
+    var favorite: Boolean,
     currentDate: LocalDate = LocalDate.now(),
 ) : BaseEntity(currentDate) {
     @Id
@@ -22,10 +23,14 @@ class Location(
     var id: Long = 0
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    var user: User? = null
+    @JoinColumn(name = "myplant_id")
+    var myPlant: MyPlant? = null
 
-    fun modifyName(name: String) {
-        this.name = name
+    fun setMyPlantRelation(myPlant: MyPlant) {
+        this.myPlant = myPlant
+    }
+
+    fun modifyFavorite(favorite: Boolean) {
+        this.favorite = favorite
     }
 }
