@@ -106,7 +106,7 @@ class LocationControllerTest : DescribeSpec() {
                 val request =
                     objectMapper.writeValueAsString(
                         LocationModifyRequest(
-                            _name = LOCATION_NAME2,
+                            name = LOCATION_NAME2,
                         ),
                     )
                 it("수정된 위치가 반환되어야 한다.") {
@@ -124,7 +124,7 @@ class LocationControllerTest : DescribeSpec() {
                 val request =
                     objectMapper.writeValueAsString(
                         LocationModifyRequest(
-                            _name = LOCATION_NAME2,
+                            name = LOCATION_NAME2,
                         ),
                     )
                 it("예외 응답이 반환되어야 한다.") {

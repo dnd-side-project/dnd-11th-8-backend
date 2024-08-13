@@ -32,6 +32,24 @@ class LocationControllerValidationTest : DescribeSpec() {
 
     init {
         describe("위치 저장") {
+            context("위치명을 전달하지 않으면") {
+                val request =
+                    objectMapper.writeValueAsString(
+                        LocationSaveRequest(
+                            name = null,
+                        ),
+                    )
+                it("예외 응답이 반환되어야 한다.") {
+                    mockMvc.post("/api/v1/location") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = request
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("새로운 위치명은 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
             context("위치명을 비우고 전달하면") {
                 val request =
                     objectMapper.writeValueAsString(
@@ -46,18 +64,18 @@ class LocationControllerValidationTest : DescribeSpec() {
                     }.andExpectAll {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("새로운 위치명은 비어있을 수 없습니다."))
+                        jsonPath("$.message", equalTo("새로운 위치명은 필수값입니다."))
                     }.andDo { print() }
                 }
             }
         }
 
         describe("위치 이름 수정") {
-            context("위치명을 비우고 전달하면") {
+            context("위치명을 전달하지 않으면") {
                 val request =
                     objectMapper.writeValueAsString(
                         LocationModifyRequest(
-                            _name = "",
+                            name = null,
                         ),
                     )
                 it("수정된 위치가 반환되어야 한다.") {
@@ -67,7 +85,25 @@ class LocationControllerValidationTest : DescribeSpec() {
                     }.andExpectAll {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("새로운 위치명은 비어있을 수 없습니다."))
+                        jsonPath("$.message", equalTo("새로운 위치명은 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+            context("위치명을 비우고 전달하면") {
+                val request =
+                    objectMapper.writeValueAsString(
+                        LocationModifyRequest(
+                            name = "",
+                        ),
+                    )
+                it("수정된 위치가 반환되어야 한다.") {
+                    mockMvc.patch("/api/v1/location/$LOCATION_ID") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = request
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("새로운 위치명은 필수값입니다."))
                     }.andDo { print() }
                 }
             }

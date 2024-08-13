@@ -2,6 +2,8 @@ package dnd11th.blooming.api.controller.myplant
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
+import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.myplant.MyPlantService
@@ -33,6 +35,62 @@ class MyPlantControllerValidationTest : DescribeSpec() {
 
     init {
         describe("내 식물 저장") {
+            context("식물종류를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        MyPlantSaveRequest(
+                            plantId = null,
+                            nickname = NICKNAME,
+                            locationId = LOCATION_ID,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.post("/api/v1/plants") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("식물 종류는 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+            context("식물 별명을 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        MyPlantSaveRequest(
+                            plantId = PLANT_ID,
+                            nickname = null,
+                            locationId = LOCATION_ID,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.post("/api/v1/plants") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("식물 별명은 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
             context("식물 별명을 비우고 전달하면") {
                 val json =
                     objectMapper.writeValueAsString(
@@ -57,7 +115,35 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                     }.andExpectAll {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("식물 별명은 비어있을 수 없습니다."))
+                        jsonPath("$.message", equalTo("식물 별명은 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+            context("식물위치를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        MyPlantSaveRequest(
+                            plantId = PLANT_ID,
+                            nickname = NICKNAME,
+                            locationId = null,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.post("/api/v1/plants") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("위치는 필수값입니다."))
                     }.andDo { print() }
                 }
             }
@@ -142,6 +228,90 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
                         jsonPath("$.message", equalTo("마지막으로 비료 준 날짜는 미래일 수 없습니다."))
+                    }.andDo { print() }
+                }
+            }
+            context("물주기 알림 여부를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        MyPlantSaveRequest(
+                            plantId = PLANT_ID,
+                            nickname = NICKNAME,
+                            locationId = LOCATION_ID,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                            waterAlarm = null,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.post("/api/v1/plants") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("물주기 알림 여부는 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+            context("비료주기 알림 여부를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        MyPlantSaveRequest(
+                            plantId = PLANT_ID,
+                            nickname = NICKNAME,
+                            locationId = LOCATION_ID,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = null,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.post("/api/v1/plants") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("비료주기 알림 여부는 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+            context("건강확인 알림 여부를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        MyPlantSaveRequest(
+                            plantId = PLANT_ID,
+                            nickname = NICKNAME,
+                            locationId = LOCATION_ID,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = null,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.post("/api/v1/plants") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("건강확인 알림 여부는 필수값입니다."))
                     }.andDo { print() }
                 }
             }
@@ -211,6 +381,96 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
                         jsonPath("$.message", equalTo("마지막으로 비료 준 날짜는 미래일 수 없습니다."))
+                    }.andDo { print() }
+                }
+            }
+        }
+
+        describe("내 식물 알림 수정") {
+            context("물주기 알림 여부를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        AlarmModifyRequest(
+                            waterAlarm = null,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/alarm") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("물주기 알림 여부는 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+            context("비료주기 알림 여부를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        AlarmModifyRequest(
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = null,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/alarm") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("비료주기 알림 여부는 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+            context("건강확인 알림 여부를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        AlarmModifyRequest(
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = null,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/alarm") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("건강확인 알림 여부는 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+        }
+
+        describe("내 식물 건강확인") {
+            context("건강확인 알림 여부를 전달하지 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        MyPlantHealthCheckRequest(
+                            healthCheck = null,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/healthcheck") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("건강확인 알림 여부는 필수값입니다."))
                     }.andDo { print() }
                 }
             }
