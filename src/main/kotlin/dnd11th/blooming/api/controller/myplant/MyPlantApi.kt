@@ -14,11 +14,9 @@ import dnd11th.blooming.common.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
 
 @Tag(name = "3. [내 식물]")
 interface MyPlantApi {
@@ -38,18 +36,19 @@ interface MyPlantApi {
         ],
     )
     fun saveMyPlant(
-        @RequestBody request: MyPlantSaveRequest,
+        @RequestBody(description = "내 식물 저장 요청", required = true)
+        request: MyPlantSaveRequest,
     ): MyPlantSaveResponse
 
     @Operation(summary = "내 전체 식물들을 조회하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "내 식물 전체 조회 성공")
     fun findAllMyPlant(
         @Parameter(description = "위치 ID", required = false)
-        @RequestParam locationId: Long?,
+        locationId: Long?,
         @Parameter(description = "정렬 기준", required = false)
-        @RequestParam(defaultValue = "CREATED") sort: MyPlantSortParam,
+        sort: MyPlantSortParam,
         @Parameter(description = "정렬 순서", required = false)
-        @RequestParam(defaultValue = "DESC") direction: MyPlantDirectionParam,
+        direction: MyPlantDirectionParam,
     ): List<MyPlantResponse>
 
     @Operation(summary = "내 식물의 상세정보를 조회하는 API 입니다.")
@@ -57,7 +56,7 @@ interface MyPlantApi {
     @ApiErrorResponse(ErrorType.NOT_FOUND_MYPLANT, "id에 해당하는 내 식물을 찾지 못했을 때 예외입니다.")
     fun findMyPlantDetail(
         @Parameter(description = "내 식물 ID", required = true)
-        @PathVariable myPlantId: Long,
+        myPlantId: Long,
     ): MyPlantDetailResponse
 
     @Operation(summary = "내 식물을 수정하는 API 입니다.")
@@ -73,8 +72,9 @@ interface MyPlantApi {
     )
     fun modifyMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
-        @PathVariable myPlantId: Long,
-        @RequestBody request: MyPlantModifyRequest,
+        myPlantId: Long,
+        @RequestBody(description = "내 식물 수정 요청", required = true)
+        request: MyPlantModifyRequest,
     )
 
     @Operation(summary = "내 식물을 삭제하는 API 입니다.")
@@ -82,7 +82,7 @@ interface MyPlantApi {
     @ApiErrorResponse(ErrorType.NOT_FOUND_MYPLANT, "id에 해당하는 내 식물을 찾지 못했을 때 예외입니다.")
     fun deleteMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
-        @PathVariable myPlantId: Long,
+        myPlantId: Long,
     )
 
     @Operation(summary = "내 식물에 물을 주는 API 입니다.")
@@ -90,14 +90,14 @@ interface MyPlantApi {
     @ApiErrorResponse(ErrorType.NOT_FOUND_MYPLANT, "id에 해당하는 내 식물을 찾지 못했을 때 예외입니다.")
     fun waterMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
-        @PathVariable myPlantId: Long,
+        myPlantId: Long,
     )
 
     @Operation(summary = "내 식물을 비료를 주는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "내 식물 비료주기 성공")
     fun fertilizerMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
-        @PathVariable myPlantId: Long,
+        myPlantId: Long,
     )
 
     @Operation(summary = "내 식물의 건강확인 알림을 변경하는 API 입니다.")
@@ -110,8 +110,9 @@ interface MyPlantApi {
     )
     fun modifyMyPlantHealthCheck(
         @Parameter(description = "내 식물 ID", required = true)
-        @PathVariable myPlantId: Long,
-        @RequestBody request: MyPlantHealthCheckRequest,
+        myPlantId: Long,
+        @RequestBody(description = "이미지 건강확인 수정 요청", required = true)
+        request: MyPlantHealthCheckRequest,
     )
 
     @Operation(summary = "내 식물의 알림을 수정하는 API 입니다.")
@@ -126,7 +127,8 @@ interface MyPlantApi {
     )
     fun modifyMyPlantAlarm(
         @Parameter(description = "내 식물 ID", required = true)
-        @PathVariable myPlantId: Long,
-        @RequestBody request: AlarmModifyRequest,
+        myPlantId: Long,
+        @RequestBody(description = "이미지 저장 요청", required = true)
+        request: AlarmModifyRequest,
     )
 }

@@ -9,10 +9,9 @@ import dnd11th.blooming.common.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
 
 @Tag(name = "5. [위치]")
 interface LocationApi {
@@ -20,7 +19,8 @@ interface LocationApi {
     @ApiResponse(responseCode = "200", description = "위치 저장 성공")
     @ApiErrorResponse(errorType = ErrorType.BAD_REQUEST, description = "요청의 name이 null이거나 비어있을 때 에러입니다.")
     fun saveLocation(
-        @RequestBody request: LocationSaveRequest,
+        @RequestBody(description = "위치 저장 요청", required = true)
+        request: LocationSaveRequest,
     ): LocationSaveResponse
 
     @Operation(summary = "전체 위치들을 조회하는 API 입니다.")
@@ -37,8 +37,9 @@ interface LocationApi {
     )
     fun modifyLocation(
         @Parameter(description = "위치 ID", required = true)
-        @PathVariable locationId: Long,
-        @RequestBody request: LocationModifyRequest,
+        locationId: Long,
+        @RequestBody(description = "이미지 수정 요청", required = true)
+        request: LocationModifyRequest,
     ): LocationResponse
 
     @Operation(summary = "위치를 삭제하는 API 입니다.")
@@ -46,6 +47,6 @@ interface LocationApi {
     @ApiErrorResponse(errorType = ErrorType.NOT_FOUND_LOCATION, description = "id에 해당하는 위치를 찾지 못했을 때 에러입니다.")
     fun deleteLocation(
         @Parameter(description = "위치 ID", required = true)
-        @PathVariable locationId: Long,
+        locationId: Long,
     )
 }
