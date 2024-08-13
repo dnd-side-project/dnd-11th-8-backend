@@ -28,7 +28,7 @@ class GlobalExceptionHandler {
 
         // bindingResult를 순회하며 errorArgumentMap을 채운다.
         val fieldErrorList: List<FieldErrorResponse> =
-            exception.bindingResult.allErrors
+            exception.bindingResult.allErrors.reversed()
                 .mapNotNull { error ->
                     val field = (error as? FieldError)?.field
                     val message = error?.defaultMessage
@@ -39,8 +39,8 @@ class GlobalExceptionHandler {
                     }
                 }
 
-        // 가장 첫번째 bindingResult의 message를 예외의 message로 처리한다.
-        exception.bindingResult.allErrors[0].defaultMessage?.also {
+        // 가장 처음 발생한 bindingResult의 message를 예외의 message로 처리한다.
+        exception.bindingResult.allErrors.last().defaultMessage?.also {
             errorType.message = it
         }
 
