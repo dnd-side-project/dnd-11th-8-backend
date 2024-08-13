@@ -16,21 +16,21 @@ import java.time.LocalDate
 @RequestMapping("/api/v1/myplants")
 class ImageController(
     private val imageService: ImageService,
-) {
+) : ImageApi {
     @PostMapping("/{myPlantId}/image")
-    fun saveImage(
+    override fun saveImage(
         @PathVariable myPlantId: Long,
         @RequestBody request: ImageSaveRequest,
     ) = imageService.saveImage(myPlantId, request, LocalDate.now())
 
     @PatchMapping("/image/{imageId}")
-    fun modifyFavorite(
+    override fun modifyFavorite(
         @PathVariable imageId: Long,
         @RequestBody request: ImageFavoriteModifyRequest,
     ) = imageService.modifyFavorite(imageId, request)
 
     @DeleteMapping("/image/{imageId}")
-    fun deleteImage(
+    override fun deleteImage(
         @PathVariable imageId: Long,
     ) = imageService.deleteImage(imageId)
 }
