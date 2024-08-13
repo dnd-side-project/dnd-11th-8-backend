@@ -478,7 +478,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
     }
 
     companion object {
-        val ERROR_CODE = ErrorType.ARGUMENT_ERROR.name
+        val ERROR_CODE = ErrorType.BAD_REQUEST.name
         const val PLANT_ID = 1L
         const val MYPLANT_ID = 1L
         const val SCIENTIFIC_NAME = "몬스테라 델리오사"
