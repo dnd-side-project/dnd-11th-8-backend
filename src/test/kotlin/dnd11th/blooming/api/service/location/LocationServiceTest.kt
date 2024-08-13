@@ -82,7 +82,7 @@ class LocationServiceTest : DescribeSpec(
             context("존재하는 ID의 위치를 수정하면") {
                 val request =
                     LocationModifyRequest(
-                        name = MODIFIED_LOCATION_NAME,
+                        _name = MODIFIED_LOCATION_NAME,
                     )
                 it("위치가 수정되고, 수정된 위치가 조회되어야 한다.") {
                     val response = locationService.modifyLocation(LOCATION_ID, request)
@@ -93,7 +93,7 @@ class LocationServiceTest : DescribeSpec(
             context("존재하지 않는 ID의 위치를 수정하면") {
                 val request =
                     LocationModifyRequest(
-                        name = MODIFIED_LOCATION_NAME,
+                        _name = MODIFIED_LOCATION_NAME,
                     )
                 it("NotFoundException(NOT_FOUND_LOCATION_ID) 예외가 발생해야 한다.") {
                     val exception =

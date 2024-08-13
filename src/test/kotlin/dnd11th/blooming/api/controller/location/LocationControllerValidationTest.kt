@@ -57,7 +57,7 @@ class LocationControllerValidationTest : DescribeSpec() {
                 val request =
                     objectMapper.writeValueAsString(
                         LocationModifyRequest(
-                            name = "",
+                            _name = "",
                         ),
                     )
                 it("수정된 위치가 반환되어야 한다.") {
