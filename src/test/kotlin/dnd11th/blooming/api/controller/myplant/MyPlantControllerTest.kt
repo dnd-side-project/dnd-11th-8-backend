@@ -363,7 +363,7 @@ class MyPlantControllerTest : DescribeSpec() {
                 val request =
                     objectMapper.writeValueAsString(
                         MyPlantHealthCheckRequest(
-                            _healthCheck = true,
+                            healthCheck = true,
                         ),
                     )
                 it("정상 흐름이 반환된다.") {
