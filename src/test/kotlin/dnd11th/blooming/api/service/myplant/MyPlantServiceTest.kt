@@ -395,7 +395,7 @@ class MyPlantServiceTest : DescribeSpec(
             context("존재하는 내 식물 ID로 내 식물 비료주기 요청하면") {
                 val request =
                     MyPlantHealthCheckRequest(
-                        healthCheck = true,
+                        _healthCheck = true,
                     )
                 it("정상 흐름이 반환된다.") {
                     shouldNotThrowAny {
@@ -406,7 +406,7 @@ class MyPlantServiceTest : DescribeSpec(
             context("존재하지 않는 내 식물 ID로 내 식물 비료주기 요청하면") {
                 val request =
                     MyPlantHealthCheckRequest(
-                        healthCheck = true,
+                        _healthCheck = true,
                     )
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
