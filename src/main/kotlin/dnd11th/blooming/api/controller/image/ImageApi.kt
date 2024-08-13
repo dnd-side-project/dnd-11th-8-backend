@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 
-@Tag(name = "2. [이미지]")
+@Tag(name = "10. [이미지]")
 interface ImageApi {
     @Operation(summary = "이미지를 저장하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "이미지 저장 성공")

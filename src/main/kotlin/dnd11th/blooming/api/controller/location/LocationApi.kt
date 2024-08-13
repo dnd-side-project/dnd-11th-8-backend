@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 
-@Tag(name = "3. [위치]")
+@Tag(name = "5. [위치]")
 interface LocationApi {
     @Operation(summary = "위치를 저장하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "위치 저장 성공")

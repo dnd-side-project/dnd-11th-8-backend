@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 
-@Tag(name = "1. [헬스체크]")
+@Tag(name = "9. [헬스체크]")
 interface HealthApi {
     @Operation(summary = "헬스 체크 API 입니다.")
     @ApiResponse(responseCode = "200", description = "서버가 정상적으로 동작할 시 ok를 응답합니다.")

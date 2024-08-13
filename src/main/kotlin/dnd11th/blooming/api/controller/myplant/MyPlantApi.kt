@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
-@Tag(name = "4. [내 식물]")
+@Tag(name = "3. [내 식물]")
 interface MyPlantApi {
     @Operation(summary = "내 식물을 저장하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "내 식물 저장 성공")
