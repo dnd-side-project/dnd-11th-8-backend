@@ -29,6 +29,12 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
     lateinit var locationRepository: LocationRepository
 
     init {
+        afterTest {
+            imageRepository.deleteAllInBatch()
+            myPlantRepository.deleteAllInBatch()
+            locationRepository.deleteAllInBatch()
+        }
+
         describe("최근생성순 식물 전체 조회") {
             val location =
                 locationRepository.save(
