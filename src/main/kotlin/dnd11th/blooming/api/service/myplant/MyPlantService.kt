@@ -41,10 +41,9 @@ class MyPlantService(
                 .findByIdOrNull(request.locationId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
-        val myPlant =
-            request.toMyPlant().also {
-                it.setLocationRelation(location)
-            }
+        val myPlant = request.toMyPlant()
+
+        myPlant.setLocationRelation(location)
         // TODO : 유저와 매핑 필요
         // TODO : 식물가이드와 매핑 필요
 
