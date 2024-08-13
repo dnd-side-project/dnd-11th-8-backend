@@ -25,17 +25,19 @@ class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleArgumentValidationException(exception: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.ARGUMENT_ERROR
-        val errorArgumentMap = mutableMapOf<String, String>()
 
         // bindingResult를 순회하며 errorArgumentMap을 채운다.
-        exception.bindingResult.allErrors
-            .forEach { error ->
-                run {
-                    val field = (error as? FieldError)?.field ?: return@forEach
-                    val message = error.defaultMessage ?: return@forEach
-                    errorArgumentMap[field] = message
+        val fieldErrorList: List<FieldErrorResponse> =
+            exception.bindingResult.allErrors
+                .mapNotNull { error ->
+                    val field = (error as? FieldError)?.field
+                    val message = error?.defaultMessage
+                    if (field != null && message != null) {
+                        FieldErrorResponse(field, message)
+                    } else {
+                        null
+                    }
                 }
-            }
 
         // 가장 첫번째 bindingResult의 message를 예외의 message로 처리한다.
         exception.bindingResult.allErrors[0].defaultMessage?.also {
@@ -44,6 +46,6 @@ class GlobalExceptionHandler {
 
         return ResponseEntity
             .status(exception.statusCode)
-            .body(ErrorResponse.from(ErrorType.ARGUMENT_ERROR, errorArgumentMap))
+            .body(ErrorResponse.from(errorType, fieldErrorList))
     }
 }

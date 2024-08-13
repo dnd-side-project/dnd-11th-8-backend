@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonInclude
 data class ErrorResponse private constructor(
     val code: ErrorType,
     val message: String,
-    val fields: Map<String, String>?,
+    val fields: List<FieldErrorResponse>?,
 ) {
     companion object {
         fun from(
             errorType: ErrorType,
-            fields: Map<String, String>? = null,
+            fields: List<FieldErrorResponse>? = null,
         ): ErrorResponse =
             ErrorResponse(
                 code = errorType,
