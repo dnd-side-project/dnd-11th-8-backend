@@ -31,7 +31,6 @@ class LoginUserArgumentResolver : HandlerMethodArgumentResolver {
         val value =
             webRequest.getAttribute(ATTRIBUTE_KEY, RequestAttributes.SCOPE_REQUEST)
                 ?: throw IllegalArgumentException()
-        val userClaims = value as UserClaims
-        return User.create(userClaims)
+        return value as UserClaims
     }
 }

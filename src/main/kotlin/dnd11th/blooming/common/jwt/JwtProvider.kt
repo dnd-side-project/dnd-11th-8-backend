@@ -20,30 +20,26 @@ class JwtProvider(
         email: String,
         provider: OauthProvider,
     ): String {
+        println(email)
         return generateRegisterToken(email, provider.name, jwtProperties.access.expiry, jwtProperties.access.secret)
     }
 
     fun generateAccessToken(
         userId: Long?,
         email: String,
-        nickname: String,
     ): String {
-        return generateToken(userId, email, nickname, jwtProperties.access.expiry, jwtProperties.access.secret)
+        return generateToken(userId, email, jwtProperties.access.expiry, jwtProperties.access.secret)
     }
 
     fun generateRefreshToken(
         userId: Long?,
         email: String,
-        nickname: String,
     ): String {
-        return generateToken(userId, email, nickname, jwtProperties.refresh.expiry, jwtProperties.refresh.secret)
+        return generateToken(userId, email, jwtProperties.refresh.expiry, jwtProperties.refresh.secret)
     }
 
-    fun resolveRegisterToken(
-        token: String?,
-        secret: String,
-    ): RegisterClaims {
-        val secretKey: SecretKey = getSecretKey(secret)
+    fun resolveRegisterToken(token: String?): RegisterClaims {
+        val secretKey: SecretKey = getSecretKey(jwtProperties.access.secret)
         val claims = getClaims(token, secretKey)
         return RegisterClaims(
             claims["email"] as String,
@@ -78,7 +74,6 @@ class JwtProvider(
     private fun generateToken(
         userId: Long?,
         email: String,
-        nickname: String,
         expiryTime: Long,
         secret: String,
     ): String {
@@ -88,7 +83,6 @@ class JwtProvider(
             .expiration(expiry)
             .claim("id", userId)
             .claim("email", email)
-            .claim("nickname", nickname)
             .signWith(getSecretKey(secret))
             .compact()
     }
@@ -102,7 +96,6 @@ class JwtProvider(
         return UserClaims(
             (claims["id"] as Number).toLong(),
             claims["email"] as String,
-            claims["nickname"] as String,
         )
     }
 

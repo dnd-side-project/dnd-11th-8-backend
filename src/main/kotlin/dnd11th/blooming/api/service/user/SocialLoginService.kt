@@ -9,8 +9,10 @@ import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.entity.user.UserOauthInfo
 import dnd11th.blooming.domain.repository.user.UserOauthRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class SocialLoginService(
     val jwtProvider: JwtProvider,
     val openIdTokenResolver: OpenIdTokenResolver,
@@ -29,8 +31,8 @@ class SocialLoginService(
 
         val user: User = userOauthInfo.user
         return SocialLoginResponse.Success(
-            accessToken = jwtProvider.generateAccessToken(user.id, user.email, user.nickname!!),
-            refreshToken = jwtProvider.generateRefreshToken(user.id, user.email, user.nickname!!),
+            accessToken = jwtProvider.generateAccessToken(user.id, user.email),
+            refreshToken = jwtProvider.generateRefreshToken(user.id, user.email),
         )
     }
 }
