@@ -31,7 +31,7 @@ class MyPlantController(
     @PostMapping
     fun saveMyPlant(
         @RequestBody @Valid request: MyPlantSaveRequest,
-    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request)
+    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request, LocalDate.now())
 
     @GetMapping
     fun findAllMyPlant(

@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.dto.myplant
 
 import dnd11th.blooming.domain.entity.Alarm
+import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -32,13 +33,18 @@ data class MyPlantSaveRequest(
     @field:NotNull(message = "건강확인 알림 여부는 필수값입니다.")
     val healthCheckAlarm: Boolean,
 ) {
-    fun toMyPlant(scientificName: String): MyPlant =
+    fun toMyPlant(
+        location: Location,
+        now: LocalDate,
+        scientificName: String,
+    ): MyPlant =
         MyPlant(
             scientificName = scientificName,
             nickname = nickname,
             startDate = startDate,
             lastWateredDate = lastWateredDate,
             lastFertilizerDate = lastFertilizerDate,
+            currentDate = now,
             alarm =
                 Alarm(
                     waterAlarm = waterAlarm,
@@ -47,5 +53,7 @@ data class MyPlantSaveRequest(
                     fertilizerPeriod = fertilizerPeriod,
                     healthCheckAlarm = healthCheckAlarm,
                 ),
-        )
+        ).also {
+            it.setLocationRelation(location)
+        }
 }
