@@ -37,7 +37,7 @@ class LocationService(
             locationRepository.findByIdOrNull(locationId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
-        location.modifyName(request.name)
+        location.modifyName(request.name!!)
 
         return LocationResponse.from(location)
     }

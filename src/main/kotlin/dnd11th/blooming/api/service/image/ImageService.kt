@@ -40,7 +40,7 @@ class ImageService(
             imageRepository.findByIdOrNull(imageId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
 
-        image.modifyFavorite(request.favorite)
+        image.modifyFavorite(request.favorite!!)
     }
 
     @Transactional
