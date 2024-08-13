@@ -85,27 +85,25 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     },
                 )
 
-            val image2 =
-                imageRepository.save(
-                    Image(
-                        url = "url2",
-                        favorite = true,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(recentPlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url2",
+                    favorite = true,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(recentPlant)
+                },
+            )
 
-            val image3 =
-                imageRepository.save(
-                    Image(
-                        url = "url3",
-                        favorite = false,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(recentPlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url3",
+                    favorite = false,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(recentPlant)
+                },
+            )
 
             val image4 =
                 imageRepository.save(
@@ -118,16 +116,15 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     },
                 )
 
-            val image5 =
-                imageRepository.save(
-                    Image(
-                        url = "url5",
-                        favorite = false,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(latePlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url5",
+                    favorite = false,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(latePlant)
+                },
+            )
             context("식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
@@ -195,27 +192,25 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     },
                 )
 
-            val image2 =
-                imageRepository.save(
-                    Image(
-                        url = "url2",
-                        favorite = true,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(recentPlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url2",
+                    favorite = true,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(recentPlant)
+                },
+            )
 
-            val image3 =
-                imageRepository.save(
-                    Image(
-                        url = "url3",
-                        favorite = false,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(recentPlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url3",
+                    favorite = false,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(recentPlant)
+                },
+            )
 
             val image4 =
                 imageRepository.save(
@@ -228,16 +223,15 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     },
                 )
 
-            val image5 =
-                imageRepository.save(
-                    Image(
-                        url = "url5",
-                        favorite = false,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(latePlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url5",
+                    favorite = false,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(latePlant)
+                },
+            )
             context("식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
@@ -305,27 +299,25 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     },
                 )
 
-            val image2 =
-                imageRepository.save(
-                    Image(
-                        url = "url2",
-                        favorite = true,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(recentPlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url2",
+                    favorite = true,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(recentPlant)
+                },
+            )
 
-            val image3 =
-                imageRepository.save(
-                    Image(
-                        url = "url3",
-                        favorite = false,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(recentPlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url3",
+                    favorite = false,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(recentPlant)
+                },
+            )
 
             val image4 =
                 imageRepository.save(
@@ -338,16 +330,15 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     },
                 )
 
-            val image5 =
-                imageRepository.save(
-                    Image(
-                        url = "url5",
-                        favorite = false,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(latePlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url5",
+                    favorite = false,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(latePlant)
+                },
+            )
             context("식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
@@ -415,27 +406,25 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     },
                 )
 
-            val image2 =
-                imageRepository.save(
-                    Image(
-                        url = "url2",
-                        favorite = true,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(recentPlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url2",
+                    favorite = true,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(recentPlant)
+                },
+            )
 
-            val image3 =
-                imageRepository.save(
-                    Image(
-                        url = "url3",
-                        favorite = false,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(recentPlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url3",
+                    favorite = false,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(recentPlant)
+                },
+            )
 
             val image4 =
                 imageRepository.save(
@@ -448,16 +437,15 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     },
                 )
 
-            val image5 =
-                imageRepository.save(
-                    Image(
-                        url = "url5",
-                        favorite = false,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.setMyPlantRelation(latePlant)
-                    },
-                )
+            imageRepository.save(
+                Image(
+                    url = "url5",
+                    favorite = false,
+                    currentDate = CURRENT_DAY,
+                ).also {
+                    it.setMyPlantRelation(latePlant)
+                },
+            )
             context("식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
