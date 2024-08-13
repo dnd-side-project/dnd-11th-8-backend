@@ -21,4 +21,7 @@ enum class ErrorType(val status: HttpStatus, val message: String, val logLevel: 
 
     // OpenAPI
     OPEN_API_CALL_EXCEPTION(HttpStatus.BAD_REQUEST, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
+
+    // REGION
+    NOT_FOUND_REGION(HttpStatus.NOT_FOUND, "존재하지 않는 지역번호입니다.", LogLevel.DEBUG),
 }
