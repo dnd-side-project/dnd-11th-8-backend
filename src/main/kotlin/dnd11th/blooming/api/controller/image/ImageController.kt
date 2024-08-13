@@ -28,7 +28,10 @@ class ImageController(
     override fun modifyFavorite(
         @PathVariable imageId: Long,
         @RequestBody @Valid request: ImageFavoriteModifyRequest,
-    ) = imageService.modifyFavorite(imageId, request)
+    ) {
+        println(">>>" + request.favorite)
+        imageService.modifyFavorite(imageId, request)
+    }
 
     @DeleteMapping("/image/{imageId}")
     override fun deleteImage(

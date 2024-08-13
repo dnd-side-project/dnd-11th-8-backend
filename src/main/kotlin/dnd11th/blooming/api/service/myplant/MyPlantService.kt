@@ -154,7 +154,7 @@ class MyPlantService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        myPlant.modifyHealthCheck(request.healthCheck)
+        myPlant.modifyHealthCheck(request.healthCheck!!)
     }
 
     private fun findSortedMyPlantsWithImage(

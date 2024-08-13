@@ -1,6 +1,5 @@
 package dnd11th.blooming.api.dto.image
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotNull
 
 import io.swagger.v3.oas.annotations.media.Schema
@@ -12,9 +11,5 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class ImageFavoriteModifyRequest(
 	@field:Schema(description = "즐겨찾기 여부", example = "true")
     @field:NotNull(message = "즐겨찾기 여부는 필수값입니다.")
-    @JsonProperty("favorite")
-    private val _favorite: Boolean?,
-) {
-    val favorite: Boolean
-        get() = _favorite!!
-}
+    val favorite: Boolean?,
+)
