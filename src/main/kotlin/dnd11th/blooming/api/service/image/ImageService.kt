@@ -26,9 +26,7 @@ class ImageService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        val image = request.toImage(now)
-
-        image.setMyPlantRelation(myPlant)
+        val image = request.toImage(myPlant, now)
 
         imageRepository.save(image)
     }
