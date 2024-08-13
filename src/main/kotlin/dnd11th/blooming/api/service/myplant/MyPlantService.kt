@@ -39,7 +39,7 @@ class MyPlantService(
         // TODO : 식물 가이드 데이터 가져오기 필요
         val scientificName = "몬스테라 델리오사"
 
-        val myPlant = request.toMyPlant(location, now, scientificName)
+        val myPlant = request.toMyPlant(location, scientificName, now)
 
         val savedPlant = myPlantRepository.save(myPlant)
 

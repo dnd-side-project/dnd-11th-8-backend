@@ -15,15 +15,16 @@ import java.time.LocalDate
 )
 data class MyPlantSaveRequest(
     // TODO : 식물 종류를 String이 아니라 plantId로 받기
-	@field:Schema(description = "식물 ID", example = "3")
-    @field:NotBlank(message = "식물 종류는 필수값입니다.")
+    @field:Schema(description = "식물 ID", example = "3")
+    @field:NotNull(message = "식물 종류는 필수값입니다.")
     val plantId: Long?,
+    @field:Schema(description = "식물 별명", example = "쫑쫑이")
     @field:NotBlank(message = "식물 별명은 필수값입니다.")
     val nickname: String?,
     @field:Schema(description = "위치 ID", example = "4")
     @field:NotNull(message = "위치는 필수값입니다.")
     val locationId: Long?,
-	// TODO : 키우기 시작한 날짜, 마지막으로 물 준 날짜, 마지막으로 비료 준 날짜 optional로 만들기
+    // TODO : 키우기 시작한 날짜, 마지막으로 물 준 날짜, 마지막으로 비료 준 날짜 optional로 만들기
     @field:Schema(description = "키우기 시작한 날짜", example = "2024-05-17")
     @field:PastOrPresent(message = "키우기 시작한 날짜는 미래일 수 없습니다.")
     val startDate: LocalDate,
@@ -48,8 +49,8 @@ data class MyPlantSaveRequest(
     val healthCheckAlarm: Boolean?,
 ) {
     fun toMyPlant(
-	    location: Location,
-	    scientificName: String,
+        location: Location,
+        scientificName: String,
         now: LocalDate,
     ): MyPlant =
         MyPlant(

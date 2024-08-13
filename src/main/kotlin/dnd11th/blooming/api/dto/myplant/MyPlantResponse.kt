@@ -13,6 +13,7 @@ data class MyPlantResponse(
     val myPlantId: Long?,
     @field:Schema(description = "내 식물 별명", example = "쫑쫑이")
     val nickname: String,
+    @field:Schema(description = "이미지 URL", example = "image.com/7")
     val imageUrl: String,
     @field:Schema(description = "내 식물 학명", example = "몬스테라 델리오사")
     val scientificName: String,
