@@ -111,7 +111,7 @@ class LocationControllerValidationTest : DescribeSpec() {
     }
 
     companion object {
-        val ERROR_CODE = ErrorType.ARGUMENT_ERROR.name
+        val ERROR_CODE = ErrorType.BAD_REQUEST.name
 
         const val LOCATION_ID = 1L
     }

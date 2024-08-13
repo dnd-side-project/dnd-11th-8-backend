@@ -24,7 +24,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleArgumentValidationException(exception: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
-        val errorType = ErrorType.ARGUMENT_ERROR
+        val errorType = ErrorType.BAD_REQUEST
 
         // bindingResult를 순회하며 errorArgumentMap을 채운다.
         val fieldErrorList: List<FieldErrorResponse> =

@@ -93,6 +93,6 @@ class ImageControllerValidationTest : DescribeSpec() {
     }
 
     companion object {
-        val ERROR_CODE = ErrorType.ARGUMENT_ERROR.name
+        val ERROR_CODE = ErrorType.BAD_REQUEST.name
     }
 }
