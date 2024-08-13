@@ -8,11 +8,11 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "날씨 메시지 반환 응답",
 )
 data class WeatherMessageResponse(
-    @Schema(name = "status", example = "HUMIDITY")
+    @field:Schema(name = "status", example = "HUMIDITY")
     val status: String,
-    @Schema(name = "title", example = "과습주의보")
+    @field:Schema(name = "title", example = "과습주의보")
     val title: String,
-    @Schema(name = "message", example = "[습도가 높습니다, 주의하세요]")
+    @field:Schema(name = "message", example = "[습도가 높습니다, 주의하세요]")
     val message: List<String>,
 ) {
     companion object {
