@@ -9,11 +9,11 @@ import java.time.LocalDate
     description = "이미지 응답",
 )
 data class ImageResponse(
-    @field:Schema(name = "이미지 URL", example = "image.com/17")
+    @field:Schema(description = "이미지 URL", example = "image.com/17")
     val imageUrl: String,
-    @field:Schema(name = "즐겨찾기 여부", example = "true")
+    @field:Schema(description = "즐겨찾기 여부", example = "true")
     val favorite: Boolean,
-    @field:Schema(name = "이미지를 저장한 날짜", example = "2000-05-17")
+    @field:Schema(description = "이미지를 저장한 날짜", example = "2000-05-17")
     val createdDate: LocalDate,
 ) {
     companion object {

@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "위치 저장 요청",
 )
 data class LocationSaveRequest(
-    @field:Schema(name = "새로운 위치 이름", example = "부엌")
+    @field:Schema(description = "새로운 위치 이름", example = "부엌")
     val name: String,
 ) {
     fun toLocation(): Location =

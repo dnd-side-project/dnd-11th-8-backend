@@ -8,15 +8,15 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "알림 수정 요청",
 )
 data class AlarmModifyRequest(
-    @field:Schema(name = "물주기 알림 여부", example = "true")
+    @field:Schema(description = "물주기 알림 여부", example = "true")
     val waterAlarm: Boolean,
-    @field:Schema(name = "물주기 알림 주기", example = "4")
+    @field:Schema(description = "물주기 알림 주기", example = "4")
     val waterPeriod: Int?,
-    @field:Schema(name = "비료주기 알림 여부", example = "false")
+    @field:Schema(description = "비료주기 알림 여부", example = "false")
     val fertilizerAlarm: Boolean,
-    @field:Schema(name = "비료주기 알림 주기", example = "45")
+    @field:Schema(description = "비료주기 알림 주기", example = "45")
     val fertilizerPeriod: Int?,
-    @field:Schema(name = "건강확인 알림 여부", example = "true")
+    @field:Schema(description = "건강확인 알림 여부", example = "true")
     val healthCheckAlarm: Boolean,
 ) {
     fun toAlarm(): Alarm =

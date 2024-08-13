@@ -7,6 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "건강확인 알림 변경 요청",
 )
 data class MyPlantHealthCheckRequest(
-    @field:Schema(name = "건강확인 알림 여부", example = "true")
+    @field:Schema(description = "건강확인 알림 여부", example = "true")
     val healthCheck: Boolean,
 )

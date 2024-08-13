@@ -10,7 +10,7 @@ import java.time.LocalDate
     description = "이미지를 저장하는 요청",
 )
 data class ImageSaveRequest(
-    @field:Schema(name = "이미지 URL", example = "image.com/17")
+    @field:Schema(description = "이미지 URL", example = "image.com/17")
     val imageUrl: String,
 ) {
     fun toImage(

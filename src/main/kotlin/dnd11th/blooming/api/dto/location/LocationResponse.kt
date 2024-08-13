@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "위치 응답",
 )
 data class LocationResponse(
-    @field:Schema(name = "위치 ID", example = "3")
+    @field:Schema(description = "위치 ID", example = "3")
     val id: Long,
-    @field:Schema(name = "위치 이름", example = "베란다")
+    @field:Schema(description = "위치 이름", example = "베란다")
     val name: String,
 ) {
     companion object {

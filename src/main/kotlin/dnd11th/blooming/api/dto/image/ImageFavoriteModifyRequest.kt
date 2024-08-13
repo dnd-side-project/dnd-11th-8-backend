@@ -7,6 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "이미지 즐겨찾기 수정 요청",
 )
 data class ImageFavoriteModifyRequest(
-    @field:Schema(name = "즐겨찾기 여부", example = "true")
+    @field:Schema(description = "즐겨찾기 여부", example = "true")
     val favorite: Boolean,
 )
