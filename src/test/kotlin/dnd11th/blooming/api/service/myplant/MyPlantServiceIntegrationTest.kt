@@ -12,9 +12,11 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 
 @SpringBootTest
+@ActiveProfiles("test")
 class MyPlantServiceIntegrationTest : DescribeSpec() {
     @Autowired
     lateinit var myPlantService: MyPlantService

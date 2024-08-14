@@ -12,11 +12,13 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(ImageController::class)
+@ActiveProfiles("test")
 class ImageControllerValidationTest : DescribeSpec() {
     @MockkBean
     private lateinit var imageService: ImageService
