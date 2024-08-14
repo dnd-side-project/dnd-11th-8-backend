@@ -1,8 +1,8 @@
 package dnd11th.blooming.api.service.location
 
+import dnd11th.blooming.api.dto.location.LocationCreateDto
 import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
-import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
@@ -19,16 +19,12 @@ class LocationService(
 ) {
     @Transactional
     fun saveLocation(
-        request: LocationSaveRequest,
+        dto: LocationCreateDto,
         now: LocalDate,
     ): LocationSaveResponse {
         // TODO : 유저와 매핑 필요
 
-        val location =
-            Location.createLocation(
-                request.toLocationCreateDto(),
-                now,
-            )
+        val location = Location.createLocation(dto, now)
 
         return LocationSaveResponse.from(locationRepository.save(location))
     }

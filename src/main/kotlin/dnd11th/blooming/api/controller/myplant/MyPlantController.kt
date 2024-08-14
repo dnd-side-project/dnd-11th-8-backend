@@ -31,7 +31,12 @@ class MyPlantController(
     @PostMapping
     override fun saveMyPlant(
         @RequestBody @Valid request: MyPlantSaveRequest,
-    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request, LocalDate.now())
+    ): MyPlantSaveResponse =
+        myPlantService.saveMyPlant(
+            request.toMyPlantCreateDto(),
+            request.locationId!!,
+            LocalDate.now(),
+        )
 
     @GetMapping
     override fun findAllMyPlant(

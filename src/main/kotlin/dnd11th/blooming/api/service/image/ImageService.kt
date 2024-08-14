@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.image
 
+import dnd11th.blooming.api.dto.image.ImageCreateDto
 import dnd11th.blooming.api.dto.image.ImageFavoriteModifyRequest
-import dnd11th.blooming.api.dto.image.ImageSaveRequest
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Image
@@ -20,19 +20,14 @@ class ImageService(
     @Transactional
     fun saveImage(
         myPlantId: Long,
-        request: ImageSaveRequest,
+        dto: ImageCreateDto,
         now: LocalDate,
     ) {
         val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        val image =
-            Image.createImage(
-                dto = request.toImageCreateDto(),
-                myPlant = myPlant,
-                now = now,
-            )
+        val image = Image.createImage(dto, myPlant, now)
 
         imageRepository.save(image)
     }

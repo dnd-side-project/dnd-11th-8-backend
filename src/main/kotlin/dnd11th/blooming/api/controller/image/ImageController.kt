@@ -22,7 +22,7 @@ class ImageController(
     override fun saveImage(
         @PathVariable myPlantId: Long,
         @RequestBody @Valid request: ImageSaveRequest,
-    ) = imageService.saveImage(myPlantId, request, LocalDate.now())
+    ) = imageService.saveImage(myPlantId, request.toImageCreateDto(), LocalDate.now())
 
     @PatchMapping("/image/{imageId}")
     override fun modifyFavorite(

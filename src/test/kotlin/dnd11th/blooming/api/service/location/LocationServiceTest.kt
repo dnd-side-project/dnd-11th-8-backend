@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.location
 
+import dnd11th.blooming.api.dto.location.LocationCreateDto
 import dnd11th.blooming.api.dto.location.LocationModifyRequest
-import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
@@ -30,7 +30,7 @@ class LocationServiceTest : DescribeSpec(
                 }
             context("name이 전달되면") {
                 val request =
-                    LocationSaveRequest(
+                    LocationCreateDto(
                         name = "거실",
                     )
                 it("위치가 저장되어야 한다.") {

@@ -24,7 +24,7 @@ class LocationController(
     @PostMapping
     override fun saveLocation(
         @RequestBody @Valid request: LocationSaveRequest,
-    ): LocationSaveResponse = locationService.saveLocation(request, LocalDate.now())
+    ): LocationSaveResponse = locationService.saveLocation(request.toLocationCreateDto(), LocalDate.now())
 
     @GetMapping
     override fun findAllLocation(): List<LocationResponse> = locationService.findAllLocation()
