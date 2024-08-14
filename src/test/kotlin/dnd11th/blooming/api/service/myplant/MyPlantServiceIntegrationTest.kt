@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -42,46 +43,61 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 locationRepository.save(
                     Location(
                         name = "장소명",
-                        currentDate = CURRENT_DAY,
                     ),
+                )
+
+            val pastPlant =
+                myPlantRepository.save(
+                    MyPlant(
+                        scientificName = "학명1",
+                        nickname = "별명1",
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME,
+                        lastFertilizerDate = DATE_TIME,
+                        alarm = Alarm(),
+                    ).also {
+                        it.location = location
+                    },
                 )
 
             val recentPlant =
                 myPlantRepository.save(
                     MyPlant(
-                        scientificName = "학명1",
-                        nickname = "별명1",
-                        startDate = CURRENT_DAY,
-                        lastWateredDate = CURRENT_DAY,
-                        lastFertilizerDate = CURRENT_DAY,
-                        alarm = Alarm(),
-                        currentDate = CURRENT_DAY.minusDays(5),
-                    ).also {
-                        it.location = location
-                    },
-                )
-
-            val latePlant =
-                myPlantRepository.save(
-                    MyPlant(
                         scientificName = "학명2",
                         nickname = "별명2",
-                        startDate = CURRENT_DAY,
-                        lastWateredDate = CURRENT_DAY,
-                        lastFertilizerDate = CURRENT_DAY,
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME,
+                        lastFertilizerDate = DATE_TIME,
                         alarm = Alarm(),
-                        currentDate = CURRENT_DAY.minusDays(10),
                     ).also {
                         it.location = location
                     },
                 )
 
-            val image1 =
+            val pastImage =
+                imageRepository.save(
+                    Image(
+                        url = "url4",
+                        favorite = true,
+                    ).also {
+                        it.myPlant = pastPlant
+                    },
+                )
+
+            imageRepository.save(
+                Image(
+                    url = "url5",
+                    favorite = false,
+                ).also {
+                    it.myPlant = pastPlant
+                },
+            )
+
+            val recentImage =
                 imageRepository.save(
                     Image(
                         url = "url1",
                         favorite = true,
-                        currentDate = CURRENT_DAY,
                     ).also {
                         it.myPlant = recentPlant
                     },
@@ -91,7 +107,6 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url2",
                     favorite = true,
-                    currentDate = CURRENT_DAY,
                 ).also {
                     it.myPlant = recentPlant
                 },
@@ -101,36 +116,14 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url3",
                     favorite = false,
-                    currentDate = CURRENT_DAY,
                 ).also {
                     it.myPlant = recentPlant
                 },
             )
-
-            val image4 =
-                imageRepository.save(
-                    Image(
-                        url = "url4",
-                        favorite = true,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.myPlant = latePlant
-                    },
-                )
-
-            imageRepository.save(
-                Image(
-                    url = "url5",
-                    favorite = false,
-                    currentDate = CURRENT_DAY,
-                ).also {
-                    it.myPlant = latePlant
-                },
-            )
-            context("식물 전체 조회를 하면") {
+            context("최근생성순 식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
-                        now = CURRENT_DAY,
+                        now = DATE_TIME,
                         locationId = location.id,
                         sort = MyPlantQueryCreteria.CreatedDesc,
                     )
@@ -138,9 +131,9 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 it("식물 정보와 인삿말과 imageUrl이 잘 조회된다.") {
                     result.size shouldBe 2
                     result[0].nickname shouldBe recentPlant.nickname
-                    result[0].imageUrl shouldBe image1.url
-                    result[1].nickname shouldBe latePlant.nickname
-                    result[1].imageUrl shouldBe image4.url
+                    result[0].imageUrl shouldBe recentImage.url
+                    result[1].nickname shouldBe pastPlant.nickname
+                    result[1].imageUrl shouldBe pastImage.url
                 }
             }
         }
@@ -149,46 +142,61 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 locationRepository.save(
                     Location(
                         name = "장소명",
-                        currentDate = CURRENT_DAY,
                     ),
+                )
+
+            val pastPlant =
+                myPlantRepository.save(
+                    MyPlant(
+                        scientificName = "학명1",
+                        nickname = "별명1",
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME,
+                        lastFertilizerDate = DATE_TIME,
+                        alarm = Alarm(),
+                    ).also {
+                        it.location = location
+                    },
                 )
 
             val recentPlant =
                 myPlantRepository.save(
                     MyPlant(
-                        scientificName = "학명1",
-                        nickname = "별명1",
-                        startDate = CURRENT_DAY,
-                        lastWateredDate = CURRENT_DAY,
-                        lastFertilizerDate = CURRENT_DAY,
-                        alarm = Alarm(),
-                        currentDate = CURRENT_DAY.minusDays(5),
-                    ).also {
-                        it.location = location
-                    },
-                )
-
-            val latePlant =
-                myPlantRepository.save(
-                    MyPlant(
                         scientificName = "학명2",
                         nickname = "별명2",
-                        startDate = CURRENT_DAY,
-                        lastWateredDate = CURRENT_DAY,
-                        lastFertilizerDate = CURRENT_DAY,
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME,
+                        lastFertilizerDate = DATE_TIME,
                         alarm = Alarm(),
-                        currentDate = CURRENT_DAY.minusDays(10),
                     ).also {
                         it.location = location
                     },
                 )
 
-            val image1 =
+            val pastImage =
+                imageRepository.save(
+                    Image(
+                        url = "url4",
+                        favorite = true,
+                    ).also {
+                        it.myPlant = pastPlant
+                    },
+                )
+
+            imageRepository.save(
+                Image(
+                    url = "url5",
+                    favorite = false,
+                ).also {
+                    it.myPlant = pastPlant
+                },
+            )
+
+            val recentImage =
                 imageRepository.save(
                     Image(
                         url = "url1",
                         favorite = true,
-                        currentDate = CURRENT_DAY,
                     ).also {
                         it.myPlant = recentPlant
                     },
@@ -198,7 +206,6 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url2",
                     favorite = true,
-                    currentDate = CURRENT_DAY,
                 ).also {
                     it.myPlant = recentPlant
                 },
@@ -208,46 +215,24 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url3",
                     favorite = false,
-                    currentDate = CURRENT_DAY,
                 ).also {
                     it.myPlant = recentPlant
                 },
             )
-
-            val image4 =
-                imageRepository.save(
-                    Image(
-                        url = "url4",
-                        favorite = true,
-                        currentDate = CURRENT_DAY,
-                    ).also {
-                        it.myPlant = latePlant
-                    },
-                )
-
-            imageRepository.save(
-                Image(
-                    url = "url5",
-                    favorite = false,
-                    currentDate = CURRENT_DAY,
-                ).also {
-                    it.myPlant = latePlant
-                },
-            )
-            context("식물 전체 조회를 하면") {
+            context("오래된 생성순 식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
-                        now = CURRENT_DAY,
+                        now = DATE_TIME,
                         locationId = location.id,
                         sort = MyPlantQueryCreteria.CreatedAsc,
                     )
 
                 it("식물 정보와 인삿말과 imageUrl이 잘 조회된다.") {
                     result.size shouldBe 2
-                    result[0].nickname shouldBe latePlant.nickname
-                    result[0].imageUrl shouldBe image4.url
+                    result[0].nickname shouldBe pastPlant.nickname
+                    result[0].imageUrl shouldBe pastImage.url
                     result[1].nickname shouldBe recentPlant.nickname
-                    result[1].imageUrl shouldBe image1.url
+                    result[1].imageUrl shouldBe recentImage.url
                 }
             }
         }
@@ -256,7 +241,6 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 locationRepository.save(
                     Location(
                         name = "장소명",
-                        currentDate = CURRENT_DAY,
                     ),
                 )
 
@@ -265,37 +249,34 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     MyPlant(
                         scientificName = "학명1",
                         nickname = "별명1",
-                        startDate = CURRENT_DAY,
-                        lastWateredDate = CURRENT_DAY.minusDays(5),
-                        lastFertilizerDate = CURRENT_DAY,
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME.minusDays(5),
+                        lastFertilizerDate = DATE_TIME,
                         alarm = Alarm(),
-                        currentDate = CURRENT_DAY,
                     ).also {
                         it.location = location
                     },
                 )
 
-            val latePlant =
+            val pastPlant =
                 myPlantRepository.save(
                     MyPlant(
                         scientificName = "학명2",
                         nickname = "별명2",
-                        startDate = CURRENT_DAY,
-                        lastWateredDate = CURRENT_DAY.minusDays(10),
-                        lastFertilizerDate = CURRENT_DAY,
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME.minusDays(10),
+                        lastFertilizerDate = DATE_TIME,
                         alarm = Alarm(),
-                        currentDate = CURRENT_DAY,
                     ).also {
                         it.location = location
                     },
                 )
 
-            val image1 =
+            val recentImage =
                 imageRepository.save(
                     Image(
                         url = "url1",
                         favorite = true,
-                        currentDate = CURRENT_DAY,
                     ).also {
                         it.myPlant = recentPlant
                     },
@@ -305,7 +286,6 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url2",
                     favorite = true,
-                    currentDate = CURRENT_DAY,
                 ).also {
                     it.myPlant = recentPlant
                 },
@@ -315,20 +295,18 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url3",
                     favorite = false,
-                    currentDate = CURRENT_DAY,
                 ).also {
                     it.myPlant = recentPlant
                 },
             )
 
-            val image4 =
+            val pastImage =
                 imageRepository.save(
                     Image(
                         url = "url4",
                         favorite = true,
-                        currentDate = CURRENT_DAY,
                     ).also {
-                        it.myPlant = latePlant
+                        it.myPlant = pastPlant
                     },
                 )
 
@@ -336,15 +314,14 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url5",
                     favorite = false,
-                    currentDate = CURRENT_DAY,
                 ).also {
-                    it.myPlant = latePlant
+                    it.myPlant = pastPlant
                 },
             )
             context("식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
-                        now = CURRENT_DAY,
+                        now = DATE_TIME,
                         locationId = location.id,
                         sort = MyPlantQueryCreteria.WateredDesc,
                     )
@@ -352,9 +329,9 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 it("식물 정보와 인삿말과 imageUrl이 잘 조회된다.") {
                     result.size shouldBe 2
                     result[0].nickname shouldBe recentPlant.nickname
-                    result[0].imageUrl shouldBe image1.url
-                    result[1].nickname shouldBe latePlant.nickname
-                    result[1].imageUrl shouldBe image4.url
+                    result[0].imageUrl shouldBe recentImage.url
+                    result[1].nickname shouldBe pastPlant.nickname
+                    result[1].imageUrl shouldBe pastImage.url
                 }
             }
         }
@@ -363,7 +340,6 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 locationRepository.save(
                     Location(
                         name = "장소명",
-                        currentDate = CURRENT_DAY,
                     ),
                 )
 
@@ -372,37 +348,34 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     MyPlant(
                         scientificName = "학명1",
                         nickname = "별명1",
-                        startDate = CURRENT_DAY,
-                        lastWateredDate = CURRENT_DAY.minusDays(5),
-                        lastFertilizerDate = CURRENT_DAY,
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME.minusDays(5),
+                        lastFertilizerDate = DATE_TIME,
                         alarm = Alarm(),
-                        currentDate = CURRENT_DAY,
                     ).also {
                         it.location = location
                     },
                 )
 
-            val latePlant =
+            val pastPlant =
                 myPlantRepository.save(
                     MyPlant(
                         scientificName = "학명2",
                         nickname = "별명2",
-                        startDate = CURRENT_DAY,
-                        lastWateredDate = CURRENT_DAY.minusDays(10),
-                        lastFertilizerDate = CURRENT_DAY,
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME.minusDays(10),
+                        lastFertilizerDate = DATE_TIME,
                         alarm = Alarm(),
-                        currentDate = CURRENT_DAY,
                     ).also {
                         it.location = location
                     },
                 )
 
-            val image1 =
+            val recentImage =
                 imageRepository.save(
                     Image(
                         url = "url1",
                         favorite = true,
-                        currentDate = CURRENT_DAY,
                     ).also {
                         it.myPlant = recentPlant
                     },
@@ -412,7 +385,6 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url2",
                     favorite = true,
-                    currentDate = CURRENT_DAY,
                 ).also {
                     it.myPlant = recentPlant
                 },
@@ -422,20 +394,18 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url3",
                     favorite = false,
-                    currentDate = CURRENT_DAY,
                 ).also {
                     it.myPlant = recentPlant
                 },
             )
 
-            val image4 =
+            val pastImage =
                 imageRepository.save(
                     Image(
                         url = "url4",
                         favorite = true,
-                        currentDate = CURRENT_DAY,
                     ).also {
-                        it.myPlant = latePlant
+                        it.myPlant = pastPlant
                     },
                 )
 
@@ -443,31 +413,31 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                 Image(
                     url = "url5",
                     favorite = false,
-                    currentDate = CURRENT_DAY,
                 ).also {
-                    it.myPlant = latePlant
+                    it.myPlant = pastPlant
                 },
             )
             context("식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
-                        now = CURRENT_DAY,
+                        now = DATE_TIME,
                         locationId = location.id,
                         sort = MyPlantQueryCreteria.WateredAsc,
                     )
 
                 it("식물 정보와 인삿말과 imageUrl이 잘 조회된다.") {
                     result.size shouldBe 2
-                    result[0].nickname shouldBe latePlant.nickname
-                    result[0].imageUrl shouldBe image4.url
+                    result[0].nickname shouldBe pastPlant.nickname
+                    result[0].imageUrl shouldBe pastImage.url
                     result[1].nickname shouldBe recentPlant.nickname
-                    result[1].imageUrl shouldBe image1.url
+                    result[1].imageUrl shouldBe recentImage.url
                 }
             }
         }
     }
 
     companion object {
-        val CURRENT_DAY: LocalDate = LocalDate.of(2000, 5, 17)
+        val CURRENT_TIME: LocalDateTime = LocalDateTime.of(2000, 5, 17, 12, 0, 0)
+        val DATE_TIME: LocalDate = CURRENT_TIME.toLocalDate().minusDays(10)
     }
 }

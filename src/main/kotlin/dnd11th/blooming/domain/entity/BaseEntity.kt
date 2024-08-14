@@ -4,23 +4,23 @@ import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @MappedSuperclass
 abstract class BaseEntity {
     @Column(name = "created_date", updatable = false)
-    var createdDate: LocalDate = LocalDate.now()
+    var createdDate: LocalDateTime = LocalDateTime.now()
 
     @Column(name = "updated_date")
-    var updatedDate: LocalDate = LocalDate.now()
+    var updatedDate: LocalDateTime = LocalDateTime.now()
 
     @PrePersist
     protected fun onCreate() {
-        createdDate = LocalDate.now()
+        createdDate = LocalDateTime.now()
     }
 
     @PreUpdate
     protected fun onUpdate() {
-        updatedDate = LocalDate.now()
+        updatedDate = LocalDateTime.now()
     }
 }

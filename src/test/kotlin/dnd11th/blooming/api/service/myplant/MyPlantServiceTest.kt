@@ -74,7 +74,6 @@ class MyPlantServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "병아리눈물",
                     nickname = "식물1",
-                    currentDate = LocalDate.of(2024, 5, 15),
                     lastWateredDate = LocalDate.of(2024, 5, 16),
                     lastFertilizerDate = LocalDate.of(2024, 5, 16),
                     alarm = ALARM,
@@ -86,7 +85,6 @@ class MyPlantServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "몬스테라 델리오사",
                     nickname = "식물2",
-                    currentDate = LocalDate.of(2024, 5, 16),
                     lastWateredDate = LocalDate.of(2024, 5, 17),
                     lastFertilizerDate = LocalDate.of(2024, 5, 17),
                     alarm = ALARM,
@@ -98,7 +96,6 @@ class MyPlantServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "선인장",
                     nickname = "식물3",
-                    currentDate = LocalDate.of(2024, 5, 17),
                     lastWateredDate = LocalDate.of(2024, 5, 15),
                     lastFertilizerDate = LocalDate.of(2024, 5, 15),
                     alarm = ALARM,
@@ -171,12 +168,10 @@ class MyPlantServiceTest : DescribeSpec(
                     Image(
                         url = "url1",
                         favorite = true,
-                        currentDate = CURRENT_DAY,
                     ),
                     Image(
                         url = "url2",
                         favorite = false,
-                        currentDate = CURRENT_DAY,
                     ),
                 )
 

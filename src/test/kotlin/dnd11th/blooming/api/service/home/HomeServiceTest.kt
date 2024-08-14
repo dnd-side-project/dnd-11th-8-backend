@@ -24,7 +24,6 @@ class HomeServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "병아리눈물",
                     nickname = "일번",
-                    currentDate = LocalDate.of(2024, 5, 15),
                     lastWateredDate = LocalDate.of(2024, 5, 16),
                     alarm = ALARM,
                 ).apply {
@@ -35,7 +34,6 @@ class HomeServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "몬스테라 델리오사",
                     nickname = "이번",
-                    currentDate = LocalDate.of(2024, 5, 16),
                     lastWateredDate = LocalDate.of(2024, 5, 17),
                     alarm = ALARM,
                 ).apply {
@@ -46,7 +44,6 @@ class HomeServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "선인장",
                     nickname = "삼번",
-                    currentDate = LocalDate.of(2024, 5, 17),
                     lastWateredDate = LocalDate.of(2024, 5, 15),
                     alarm = ALARM,
                 ).apply {
