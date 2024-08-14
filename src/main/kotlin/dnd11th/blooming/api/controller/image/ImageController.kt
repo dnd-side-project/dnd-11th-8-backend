@@ -29,7 +29,6 @@ class ImageController(
         @PathVariable imageId: Long,
         @RequestBody @Valid request: ImageFavoriteModifyRequest,
     ) {
-        println(">>>" + request.favorite)
         imageService.modifyFavorite(imageId, request)
     }
 
