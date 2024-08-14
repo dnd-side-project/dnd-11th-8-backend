@@ -28,7 +28,7 @@ class ImageController(
         @PathVariable imageId: Long,
         @RequestBody @Valid request: ImageFavoriteModifyRequest,
     ) {
-        imageService.modifyFavorite(imageId, request)
+        imageService.modifyFavorite(imageId, request.favorite!!)
     }
 
     @DeleteMapping("/image/{imageId}")
