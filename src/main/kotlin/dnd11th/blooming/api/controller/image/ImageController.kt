@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDate
 
 @RestController
 @RequestMapping("/api/v1/myplants")
@@ -22,7 +21,7 @@ class ImageController(
     override fun saveImage(
         @PathVariable myPlantId: Long,
         @RequestBody @Valid request: ImageSaveRequest,
-    ) = imageService.saveImage(myPlantId, request.toImageCreateDto(), LocalDate.now())
+    ) = imageService.saveImage(myPlantId, request.toImageCreateDto())
 
     @PatchMapping("/image/{imageId}")
     override fun modifyFavorite(

@@ -34,7 +34,7 @@ class LocationServiceTest : DescribeSpec(
                         name = "거실",
                     )
                 it("위치가 저장되어야 한다.") {
-                    val response = locationService.saveLocation(request, CURRENT_DAY)
+                    val response = locationService.saveLocation(request)
 
                     response.id shouldBe LOCATION_ID
                     response.name shouldBe LOCATION_NAME

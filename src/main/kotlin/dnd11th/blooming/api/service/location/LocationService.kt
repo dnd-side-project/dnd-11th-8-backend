@@ -11,20 +11,16 @@ import dnd11th.blooming.domain.repository.LocationRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 
 @Service
 class LocationService(
     private val locationRepository: LocationRepository,
 ) {
     @Transactional
-    fun saveLocation(
-        dto: LocationCreateDto,
-        now: LocalDate,
-    ): LocationSaveResponse {
+    fun saveLocation(dto: LocationCreateDto): LocationSaveResponse {
         // TODO : 유저와 매핑 필요
 
-        val location = Location.createLocation(dto, now)
+        val location = Location.createLocation(dto)
 
         return LocationSaveResponse.from(locationRepository.save(location))
     }

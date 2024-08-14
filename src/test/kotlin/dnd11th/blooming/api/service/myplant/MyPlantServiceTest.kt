@@ -61,7 +61,7 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("정상적으로 저장되고 예외가 발생하면 안된다.") {
-                    val result = myPlantService.saveMyPlant(request, LOCATION_ID, CURRENT_DAY)
+                    val result = myPlantService.saveMyPlant(request, LOCATION_ID)
 
                     result.myPlantId shouldBe MYPLANT_ID
                     result.message shouldBe "등록 되었습니다."

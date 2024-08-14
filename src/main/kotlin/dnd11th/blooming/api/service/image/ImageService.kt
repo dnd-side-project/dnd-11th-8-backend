@@ -10,7 +10,6 @@ import dnd11th.blooming.domain.repository.MyPlantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 
 @Service
 class ImageService(
@@ -21,13 +20,12 @@ class ImageService(
     fun saveImage(
         myPlantId: Long,
         dto: ImageCreateDto,
-        now: LocalDate,
     ) {
         val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        val image = Image.createImage(dto, myPlant, now)
+        val image = Image.createImage(dto, myPlant)
 
         imageRepository.save(image)
     }

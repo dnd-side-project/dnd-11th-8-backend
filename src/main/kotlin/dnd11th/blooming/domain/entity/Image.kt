@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import java.time.LocalDate
 
 @Entity
 class Image(
@@ -17,8 +16,7 @@ class Image(
     var url: String,
     @Column
     var favorite: Boolean,
-    currentDate: LocalDate = LocalDate.now(),
-) : BaseEntity(currentDate) {
+) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -35,11 +33,9 @@ class Image(
         fun createImage(
             dto: ImageCreateDto,
             myPlant: MyPlant,
-            now: LocalDate,
         ) = Image(
             url = dto.url,
             favorite = false,
-            currentDate = now,
         ).also {
             it.myPlant = myPlant
         }

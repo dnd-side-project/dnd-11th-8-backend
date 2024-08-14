@@ -28,8 +28,7 @@ class MyPlant(
     var lastFertilizerDate: LocalDate = LocalDate.now(),
     @Embedded
     var alarm: Alarm,
-    currentDate: LocalDate = LocalDate.now(),
-) : BaseEntity(currentDate) {
+) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -99,7 +98,6 @@ class MyPlant(
             dto: MyPlantCreateDto,
             location: Location,
             plant: String,
-            now: LocalDate,
         ): MyPlant =
             MyPlant(
                 scientificName = plant,
@@ -107,7 +105,6 @@ class MyPlant(
                 startDate = dto.startDate,
                 lastWateredDate = dto.lastWateredDate,
                 lastFertilizerDate = dto.lastFertilizerDate,
-                currentDate = now,
                 alarm =
                     Alarm(
                         waterAlarm = dto.waterAlarm,

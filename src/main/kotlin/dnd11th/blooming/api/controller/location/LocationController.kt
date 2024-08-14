@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDate
 
 @RestController
 @RequestMapping("/api/v1/location")
@@ -24,7 +23,7 @@ class LocationController(
     @PostMapping
     override fun saveLocation(
         @RequestBody @Valid request: LocationSaveRequest,
-    ): LocationSaveResponse = locationService.saveLocation(request.toLocationCreateDto(), LocalDate.now())
+    ): LocationSaveResponse = locationService.saveLocation(request.toLocationCreateDto())
 
     @GetMapping
     override fun findAllLocation(): List<LocationResponse> = locationService.findAllLocation()

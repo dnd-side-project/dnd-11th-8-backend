@@ -30,7 +30,6 @@ class MyPlantService(
     fun saveMyPlant(
         dto: MyPlantCreateDto,
         locationId: Long,
-        now: LocalDate,
     ): MyPlantSaveResponse {
         val location =
             locationRepository
@@ -41,7 +40,7 @@ class MyPlantService(
         val plant = "몬스테라 델리오사"
 
         val myPlant =
-            MyPlant.createMyPlant(dto, location, plant, now)
+            MyPlant.createMyPlant(dto, location, plant)
 
         val savedPlant = myPlantRepository.save(myPlant)
 
