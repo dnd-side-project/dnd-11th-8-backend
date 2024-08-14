@@ -14,6 +14,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import org.springframework.data.repository.findByIdOrNull
+import java.time.LocalDate
 
 class LocationServiceTest : DescribeSpec(
     {
@@ -33,7 +34,7 @@ class LocationServiceTest : DescribeSpec(
                         name = "거실",
                     )
                 it("위치가 저장되어야 한다.") {
-                    val response = locationService.saveLocation(request)
+                    val response = locationService.saveLocation(request, CURRENT_DAY)
 
                     response.id shouldBe LOCATION_ID
                     response.name shouldBe LOCATION_NAME
@@ -131,6 +132,7 @@ class LocationServiceTest : DescribeSpec(
     },
 ) {
     companion object {
+        val CURRENT_DAY: LocalDate = LocalDate.of(2024, 5, 17)
         const val LOCATION_ID = 1L
         const val LOCATION_ID2 = 2L
         const val LOCATION_NAME = "거실"

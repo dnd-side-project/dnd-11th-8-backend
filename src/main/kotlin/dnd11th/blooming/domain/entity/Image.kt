@@ -1,5 +1,6 @@
 package dnd11th.blooming.domain.entity
 
+import dnd11th.blooming.api.dto.image.ImageCreateDto
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -26,11 +27,21 @@ class Image(
     @JoinColumn(name = "myplant_id")
     var myPlant: MyPlant? = null
 
-    fun setMyPlantRelation(myPlant: MyPlant) {
-        this.myPlant = myPlant
-    }
-
     fun modifyFavorite(favorite: Boolean) {
         this.favorite = favorite
+    }
+
+    companion object {
+        fun createImage(
+            dto: ImageCreateDto,
+            myPlant: MyPlant,
+            now: LocalDate,
+        ) = Image(
+            url = dto.url,
+            favorite = false,
+            currentDate = now,
+        ).also {
+            it.myPlant = myPlant
+        }
     }
 }

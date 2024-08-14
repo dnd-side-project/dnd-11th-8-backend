@@ -1,8 +1,7 @@
 package dnd11th.blooming.api.dto.myplant
 
-import jakarta.validation.constraints.NotNull
-
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotNull
 
 @Schema(
     name = "HealthCheck Alarm Modify Request",

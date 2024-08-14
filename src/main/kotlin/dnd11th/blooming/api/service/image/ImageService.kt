@@ -4,6 +4,7 @@ import dnd11th.blooming.api.dto.image.ImageFavoriteModifyRequest
 import dnd11th.blooming.api.dto.image.ImageSaveRequest
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -26,7 +27,12 @@ class ImageService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        val image = request.toImage(myPlant, now)
+        val image =
+            Image.createImage(
+                dto = request.toImageCreateDto(),
+                myPlant = myPlant,
+                now = now,
+            )
 
         imageRepository.save(image)
     }

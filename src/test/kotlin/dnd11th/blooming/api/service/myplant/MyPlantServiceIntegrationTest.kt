@@ -55,7 +55,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                         currentDate = CURRENT_DAY.minusDays(5),
                     ).also {
-                        it.setLocationRelation(location)
+                        it.location = location
                     },
                 )
 
@@ -70,7 +70,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                         currentDate = CURRENT_DAY.minusDays(10),
                     ).also {
-                        it.setLocationRelation(location)
+                        it.location = location
                     },
                 )
 
@@ -81,7 +81,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         favorite = true,
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setMyPlantRelation(recentPlant)
+                        it.myPlant = recentPlant
                     },
                 )
 
@@ -91,7 +91,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = true,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(recentPlant)
+                    it.myPlant = recentPlant
                 },
             )
 
@@ -101,7 +101,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = false,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(recentPlant)
+                    it.myPlant = recentPlant
                 },
             )
 
@@ -112,7 +112,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         favorite = true,
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setMyPlantRelation(latePlant)
+                        it.myPlant = latePlant
                     },
                 )
 
@@ -122,7 +122,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = false,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(latePlant)
+                    it.myPlant = latePlant
                 },
             )
             context("식물 전체 조회를 하면") {
@@ -162,7 +162,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                         currentDate = CURRENT_DAY.minusDays(5),
                     ).also {
-                        it.setLocationRelation(location)
+                        it.location = location
                     },
                 )
 
@@ -177,7 +177,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                         currentDate = CURRENT_DAY.minusDays(10),
                     ).also {
-                        it.setLocationRelation(location)
+                        it.location = location
                     },
                 )
 
@@ -188,7 +188,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         favorite = true,
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setMyPlantRelation(recentPlant)
+                        it.myPlant = recentPlant
                     },
                 )
 
@@ -198,7 +198,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = true,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(recentPlant)
+                    it.myPlant = recentPlant
                 },
             )
 
@@ -208,7 +208,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = false,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(recentPlant)
+                    it.myPlant = recentPlant
                 },
             )
 
@@ -219,7 +219,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         favorite = true,
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setMyPlantRelation(latePlant)
+                        it.myPlant = latePlant
                     },
                 )
 
@@ -229,7 +229,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = false,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(latePlant)
+                    it.myPlant = latePlant
                 },
             )
             context("식물 전체 조회를 하면") {
@@ -269,7 +269,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setLocationRelation(location)
+                        it.location = location
                     },
                 )
 
@@ -284,7 +284,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setLocationRelation(location)
+                        it.location = location
                     },
                 )
 
@@ -295,7 +295,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         favorite = true,
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setMyPlantRelation(recentPlant)
+                        it.myPlant = recentPlant
                     },
                 )
 
@@ -305,7 +305,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = true,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(recentPlant)
+                    it.myPlant = recentPlant
                 },
             )
 
@@ -315,7 +315,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = false,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(recentPlant)
+                    it.myPlant = recentPlant
                 },
             )
 
@@ -326,7 +326,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         favorite = true,
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setMyPlantRelation(latePlant)
+                        it.myPlant = latePlant
                     },
                 )
 
@@ -336,7 +336,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = false,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(latePlant)
+                    it.myPlant = latePlant
                 },
             )
             context("식물 전체 조회를 하면") {
@@ -376,7 +376,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setLocationRelation(location)
+                        it.location = location
                     },
                 )
 
@@ -391,7 +391,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setLocationRelation(location)
+                        it.location = location
                     },
                 )
 
@@ -402,7 +402,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         favorite = true,
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setMyPlantRelation(recentPlant)
+                        it.myPlant = recentPlant
                     },
                 )
 
@@ -412,7 +412,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = true,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(recentPlant)
+                    it.myPlant = recentPlant
                 },
             )
 
@@ -422,7 +422,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = false,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(recentPlant)
+                    it.myPlant = recentPlant
                 },
             )
 
@@ -433,7 +433,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         favorite = true,
                         currentDate = CURRENT_DAY,
                     ).also {
-                        it.setMyPlantRelation(latePlant)
+                        it.myPlant = latePlant
                     },
                 )
 
@@ -443,7 +443,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     favorite = false,
                     currentDate = CURRENT_DAY,
                 ).also {
-                    it.setMyPlantRelation(latePlant)
+                    it.myPlant = latePlant
                 },
             )
             context("식물 전체 조회를 하면") {

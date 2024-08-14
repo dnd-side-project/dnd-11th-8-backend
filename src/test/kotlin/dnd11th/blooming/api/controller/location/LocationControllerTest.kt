@@ -40,7 +40,7 @@ class LocationControllerTest : DescribeSpec() {
 
     init {
         describe("위치 저장") {
-            every { locationService.saveLocation(any()) } returns
+            every { locationService.saveLocation(any(), any()) } returns
                 LocationSaveResponse(
                     id = LOCATION_ID,
                     name = LOCATION_NAME,

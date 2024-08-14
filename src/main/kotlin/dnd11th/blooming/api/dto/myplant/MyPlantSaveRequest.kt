@@ -1,8 +1,5 @@
 package dnd11th.blooming.api.dto.myplant
 
-import dnd11th.blooming.domain.entity.Alarm
-import dnd11th.blooming.domain.entity.Location
-import dnd11th.blooming.domain.entity.MyPlant
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -48,29 +45,16 @@ data class MyPlantSaveRequest(
     @field:Schema(description = "건강확인 알림 여부", example = "true")
     val healthCheckAlarm: Boolean?,
 ) {
-    fun toMyPlant(
-        location: Location,
-        scientificName: String,
-        now: LocalDate,
-    ): MyPlant =
-        MyPlant(
-            scientificName = scientificName,
+    fun toMyPlantCreateDto(): MyPlantCreateDto =
+        MyPlantCreateDto(
             nickname = nickname!!,
             startDate = startDate,
             lastWateredDate = lastWateredDate,
             lastFertilizerDate = lastFertilizerDate,
-            currentDate = now,
-            alarm =
-                Alarm(
-                    waterAlarm = waterAlarm!!,
-                    waterPeriod = waterPeriod,
-                    fertilizerAlarm = fertilizerAlarm!!,
-                    fertilizerPeriod = fertilizerPeriod,
-                    healthCheckAlarm = healthCheckAlarm!!,
-                ),
-        ).also {
-            it.setLocationRelation(location)
-            // TODO : 유저와 매핑 필요
-            // TODO : 식물가이드와 매핑 필요
-        }
+            waterAlarm = waterAlarm!!,
+            waterPeriod = waterPeriod,
+            fertilizerAlarm = fertilizerAlarm!!,
+            fertilizerPeriod = fertilizerPeriod,
+            healthCheckAlarm = healthCheckAlarm!!,
+        )
 }

@@ -1,5 +1,6 @@
 package dnd11th.blooming.domain.entity
 
+import dnd11th.blooming.api.dto.location.LocationCreateDto
 import dnd11th.blooming.domain.entity.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -27,5 +28,16 @@ class Location(
 
     fun modifyName(name: String) {
         this.name = name
+    }
+
+    companion object {
+        fun createLocation(
+            dto: LocationCreateDto,
+            now: LocalDate,
+        ): Location =
+            Location(
+                name = dto.name,
+                currentDate = now,
+            )
     }
 }

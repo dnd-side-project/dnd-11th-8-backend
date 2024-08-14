@@ -6,19 +6,30 @@ import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.repository.LocationRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 
 @Service
 class LocationService(
     private val locationRepository: LocationRepository,
 ) {
     @Transactional
-    fun saveLocation(request: LocationSaveRequest): LocationSaveResponse {
+    fun saveLocation(
+        request: LocationSaveRequest,
+        now: LocalDate,
+    ): LocationSaveResponse {
         // TODO : 유저와 매핑 필요
-        val location = request.toLocation()
+
+        val location =
+            Location.createLocation(
+                request.toLocationCreateDto(),
+                now,
+            )
+
         return LocationSaveResponse.from(locationRepository.save(location))
     }
 
