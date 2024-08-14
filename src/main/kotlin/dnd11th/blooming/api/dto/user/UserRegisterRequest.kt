@@ -9,7 +9,7 @@ data class UserRegisterRequest(
     val ctpId: Int,
     val sigId: Int,
 ) {
-    fun toUserRegisterInfo(): UserRegisterInfo  {
+    fun toUserRegisterInfo(): UserRegisterInfo {
         return UserRegisterInfo(
             nickname = nickname,
             alarmTime = AlarmTime.from(alarmTime),

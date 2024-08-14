@@ -31,7 +31,7 @@ class PendingUserArgumentResolver(
         binderFactory: WebDataBinderFactory?,
     ): Any? {
         val request: HttpServletRequest = webRequest.nativeRequest as HttpServletRequest
-        val registerToken: String = request.getHeader(ATTRIBUTE_KEY) ?: return null
+        val registerToken: String? = request.getHeader(ATTRIBUTE_KEY) ?: null
         return jwtProvider.resolveRegisterToken(registerToken)
     }
 }

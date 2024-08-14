@@ -20,8 +20,7 @@ class JwtProvider(
         email: String,
         provider: OauthProvider,
     ): String {
-        println(email)
-        return generateRegisterToken(email, provider.name, jwtProperties.access.expiry, jwtProperties.access.secret)
+        return generateToken(email, provider.name, jwtProperties.access.expiry, jwtProperties.access.secret)
     }
 
     fun generateAccessToken(
@@ -55,7 +54,7 @@ class JwtProvider(
         return resolveToken(token, jwtProperties.refresh.secret)
     }
 
-    private fun generateRegisterToken(
+    private fun generateToken(
         email: String,
         provider: String,
         expiryTime: Long,
