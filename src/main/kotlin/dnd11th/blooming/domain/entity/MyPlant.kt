@@ -20,8 +20,6 @@ class MyPlant(
     @Column
     var nickname: String,
     @Column
-    var createdDate: LocalDate = LocalDate.now(),
-    @Column
     var startDate: LocalDate = LocalDate.now(),
     @Column
     var lastWateredDate: LocalDate = LocalDate.now(),
@@ -29,7 +27,8 @@ class MyPlant(
     var lastFertilizerDate: LocalDate = LocalDate.now(),
     @Embedded
     var alarm: Alarm,
-) {
+    currentDate: LocalDate = LocalDate.now(),
+) : BaseEntity(currentDate) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
@@ -41,6 +40,10 @@ class MyPlant(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     var location: Location? = null
+
+    fun setLocationRelation(location: Location) {
+        this.location = location
+    }
 
     fun modify(
         nickname: String?,

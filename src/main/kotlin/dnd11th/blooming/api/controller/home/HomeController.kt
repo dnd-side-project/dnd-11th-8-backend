@@ -11,7 +11,7 @@ import java.time.LocalDate
 @RequestMapping("/api/v1/home")
 class HomeController(
     private val homeService: HomeService,
-) {
+) : HomeApi {
     @GetMapping
-    fun getHome(): HomeResponse = homeService.getHome(LocalDate.now())
+    override fun getHome(): HomeResponse = homeService.getHome(LocalDate.now())
 }

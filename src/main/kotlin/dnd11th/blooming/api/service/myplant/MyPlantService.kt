@@ -12,6 +12,7 @@ import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -24,6 +25,7 @@ class MyPlantService(
     private val myPlantRepository: MyPlantRepository,
     private val locationRepository: LocationRepository,
     private val myPlantMessageFactory: MyPlantMessageFactory,
+    private val imageRepository: ImageRepository,
 ) {
     @Transactional
     fun saveMyPlant(
@@ -34,7 +36,12 @@ class MyPlantService(
         validateDateNotInFuture(request.lastWateredDate, now)
         validateDateNotInFuture(request.lastFertilizerDate, now)
 
-        val myPlant = request.toMyPlant()
+        val location =
+            locationRepository
+                .findByIdOrNull(request.locationId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
+
+        val myPlant = request.toMyPlant(location, now)
 
         val savedPlant = myPlantRepository.save(myPlant)
 
@@ -63,7 +70,9 @@ class MyPlantService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        return MyPlantDetailResponse.of(myPlant, myPlantMessageFactory, now)
+        val myPlantImages = imageRepository.findAllByMyPlant(myPlant)
+
+        return MyPlantDetailResponse.of(myPlant, myPlantMessageFactory, myPlantImages, now)
     }
 
     @Transactional
@@ -78,8 +87,8 @@ class MyPlantService(
         myPlant.modify(
             nickname = request.nickname,
             location =
-                request.location?.let {
-                    locationRepository.findByName(request.location)
+                request.locationId?.let {
+                    locationRepository.findByIdOrNull(request.locationId)
                         ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
                 },
             startDate = request.startDate,
@@ -94,6 +103,7 @@ class MyPlantService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
+        imageRepository.deleteAllInBatchByMyPlant(myPlant)
         myPlantRepository.delete(myPlant)
     }
 

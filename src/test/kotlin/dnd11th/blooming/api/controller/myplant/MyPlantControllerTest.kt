@@ -2,6 +2,7 @@ package dnd11th.blooming.api.controller.myplant
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
+import dnd11th.blooming.api.dto.image.ImageResponse
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
@@ -66,6 +67,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
+                            locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -93,6 +95,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
+                            locationId = LOCATION_ID,
                             startDate = FUTURE_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -120,6 +123,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         MyPlantSaveRequest(
                             scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
+                            locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = FUTURE_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -225,6 +229,19 @@ class MyPlantControllerTest : DescribeSpec() {
                         fertilizerAlarm = FERTILIZER_ALARM,
                         fertilizerPeriod = FERTILIZER_PERIOD,
                         healthCheckAlarm = HEALTHCHECK_ALARM,
+                        images =
+                            listOf(
+                                ImageResponse(
+                                    imageUrl = "url1",
+                                    favorite = true,
+                                    createdDate = CURRENT_DAY,
+                                ),
+                                ImageResponse(
+                                    imageUrl = "url2",
+                                    favorite = false,
+                                    createdDate = CURRENT_DAY,
+                                ),
+                            ),
                     )
                 every { myPlantService.findMyPlantDetail(ID2, any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
@@ -247,6 +264,9 @@ class MyPlantControllerTest : DescribeSpec() {
                             jsonPath("$.fertilizerAlarm", equalTo(FERTILIZER_ALARM))
                             jsonPath("$.fertilizerPeriod", equalTo(FERTILIZER_PERIOD))
                             jsonPath("$.healthCheckAlarm", equalTo(HEALTHCHECK_ALARM))
+                            jsonPath("$.images.size()", equalTo(2))
+                            jsonPath("$.images[0].imageUrl", equalTo("url1"))
+                            jsonPath("$.images[1].imageUrl", equalTo("url2"))
                         }.andDo { print() }
                 }
             }
@@ -271,7 +291,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     myPlantService.modifyMyPlant(
                         any(),
                         match {
-                            it.location != LOCATION_NAME
+                            it.locationId != LOCATION_ID
                         },
                     )
                 } throws
@@ -282,7 +302,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
                             nickname = NICKNAME,
-                            location = LOCATION_NAME,
+                            locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -302,7 +322,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
                             nickname = NICKNAME,
-                            location = LOCATION_NAME,
+                            locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -324,7 +344,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
                             nickname = NICKNAME,
-                            location = "존재하지 않는 장소 이름",
+                            locationId = LOCATION_ID + 1,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,

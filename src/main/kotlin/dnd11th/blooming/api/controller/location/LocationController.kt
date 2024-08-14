@@ -18,23 +18,23 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/location")
 class LocationController(
     private val locationService: LocationService,
-) {
+) : LocationApi {
     @PostMapping
-    fun saveLocation(
+    override fun saveLocation(
         @RequestBody request: LocationSaveRequest,
     ): LocationSaveResponse = locationService.saveLocation(request)
 
     @GetMapping
-    fun findAllLocation(): List<LocationResponse> = locationService.findAllLocation()
+    override fun findAllLocation(): List<LocationResponse> = locationService.findAllLocation()
 
     @PatchMapping("/{locationId}")
-    fun modifyLocation(
+    override fun modifyLocation(
         @PathVariable locationId: Long,
         @RequestBody request: LocationModifyRequest,
     ): LocationResponse = locationService.modifyLocation(locationId, request)
 
     @DeleteMapping("/{locationId}")
-    fun deleteLocation(
+    override fun deleteLocation(
         @PathVariable locationId: Long,
     ) = locationService.deleteLocation(locationId)
 }

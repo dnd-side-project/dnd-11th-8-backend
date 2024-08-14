@@ -26,14 +26,14 @@ import java.time.LocalDate
 @RequestMapping("/api/v1/plants")
 class MyPlantController(
     private val myPlantService: MyPlantService,
-) {
+) : MyPlantApi {
     @PostMapping
-    fun saveMyPlant(
+    override fun saveMyPlant(
         @RequestBody request: MyPlantSaveRequest,
     ): MyPlantSaveResponse = myPlantService.saveMyPlant(request, LocalDate.now())
 
     @GetMapping
-    fun findAllMyPlant(
+    override fun findAllMyPlant(
         @RequestParam locationId: Long?,
         @RequestParam(defaultValue = "CREATED") sort: MyPlantSortParam,
         @RequestParam(defaultValue = "DESC") direction: MyPlantDirectionParam,
@@ -41,39 +41,39 @@ class MyPlantController(
         myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort, direction))
 
     @GetMapping("/{myPlantId}")
-    fun findMyPlantDetail(
+    override fun findMyPlantDetail(
         @PathVariable myPlantId: Long,
     ): MyPlantDetailResponse = myPlantService.findMyPlantDetail(myPlantId, LocalDate.now())
 
     @PatchMapping("/{myPlantId}")
-    fun modifyMyPlant(
+    override fun modifyMyPlant(
         @PathVariable myPlantId: Long,
         @RequestBody request: MyPlantModifyRequest,
     ) = myPlantService.modifyMyPlant(myPlantId, request)
 
     @DeleteMapping("/{myPlantId}")
-    fun deleteMyPlant(
+    override fun deleteMyPlant(
         @PathVariable myPlantId: Long,
     ) = myPlantService.deleteMyPlant(myPlantId)
 
     @PostMapping("/{myPlantId}/water")
-    fun waterMyPlant(
+    override fun waterMyPlant(
         @PathVariable myPlantId: Long,
     ) = myPlantService.waterMyPlant(myPlantId, LocalDate.now())
 
     @PostMapping("/{myPlantId}/fertilizer")
-    fun fertilizerMyPlant(
+    override fun fertilizerMyPlant(
         @PathVariable myPlantId: Long,
     ) = myPlantService.fertilizerMyPlant(myPlantId, LocalDate.now())
 
     @PatchMapping("/{myPlantId}/healthcheck")
-    fun modifyMyPlantHealthCheck(
+    override fun modifyMyPlantHealthCheck(
         @PathVariable myPlantId: Long,
         @RequestBody request: MyPlantHealthCheckRequest,
     ) = myPlantService.modifyMyPlantHealthCheck(myPlantId, request)
 
     @PatchMapping("/{myPlantId}/alarm")
-    fun modifyMyPlantAlarm(
+    override fun modifyMyPlantAlarm(
         @PathVariable myPlantId: Long,
         @RequestBody request: AlarmModifyRequest,
     ) = myPlantService.modifyMyPlantAlarm(myPlantId, request)

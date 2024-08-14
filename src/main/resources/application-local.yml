@@ -18,6 +18,11 @@ spring:
     open-in-view: false
     show-sql: true
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+
 auth:
   jwt:
     access:
