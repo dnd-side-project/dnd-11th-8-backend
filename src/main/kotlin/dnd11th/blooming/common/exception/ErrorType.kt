@@ -32,3 +32,4 @@ enum class ErrorType(val status: HttpStatus, val message: String, val logLevel: 
 
     // REGION
     NOT_FOUND_REGION(HttpStatus.NOT_FOUND, "존재하지 않는 지역번호입니다.", LogLevel.DEBUG),
+}

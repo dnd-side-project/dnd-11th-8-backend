@@ -1,7 +1,7 @@
 package dnd11th.blooming.domain.entity.user
 
-import jakarta.persistence.Column
 import dnd11th.blooming.domain.entity.BaseEntity
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -23,7 +23,7 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    currentDate: LocalDate = LocalDate.now()
+    currentDate: LocalDate = LocalDate.now(),
 ) : BaseEntity(currentDate) {
     @Column
     var nickname: String = nickname
