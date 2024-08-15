@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
 @RestController
-@RequestMapping("/api/v1/plants")
+@RequestMapping("/api/v1/myplants")
 class MyPlantController(
     private val myPlantService: MyPlantService,
 ) : MyPlantApi {
