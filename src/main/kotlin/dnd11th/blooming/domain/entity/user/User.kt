@@ -1,7 +1,10 @@
 package dnd11th.blooming.domain.entity.user
 
 import dnd11th.blooming.domain.entity.BaseEntity
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -10,24 +13,42 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "users")
 class User(
-    email: String,
+    @Column
+    val email: String,
     nickname: String,
-) : BaseEntity() {
+    alarmTime: AlarmTime,
+    nx: Int,
+    ny: Int,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    val id: Long? = null,
+) : BaseEntity() {
+    @Column
+    var nickname: String = nickname
+        protected set
 
-    val email: String = email
+    @Column
+    @Enumerated(EnumType.STRING)
+    var alarmTime: AlarmTime = alarmTime
+        protected set
 
-    val nickname: String = nickname
+    @Column
+    var nx: Int = nx
+        protected set
 
-    val nx: Int = 0
-
-    val ny: Int = 0
+    @Column
+    var ny: Int = ny
+        protected set
 
     companion object {
-        fun create(claims: UserClaims): User {
-            return User(claims.email, claims.nickname)
+        fun create(
+            email: String,
+            nickname: String,
+            alarmTime: AlarmTime,
+            nx: Int,
+            ny: Int,
+        ): User {
+            return User(email, nickname, alarmTime, nx, ny)
         }
     }
 }

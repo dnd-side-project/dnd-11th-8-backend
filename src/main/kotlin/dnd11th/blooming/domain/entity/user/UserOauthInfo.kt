@@ -1,6 +1,7 @@
 package dnd11th.blooming.domain.entity.user
 
 import dnd11th.blooming.domain.entity.BaseEntity
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -23,6 +24,7 @@ class UserOauthInfo(
     @ManyToOne(fetch = FetchType.LAZY)
     val user: User = user
 
+    @Column
     var email: String = email
 
     @Enumerated(EnumType.STRING)

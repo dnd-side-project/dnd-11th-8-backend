@@ -16,6 +16,7 @@ spring:
       ddl-auto: update
     defer-datasource-initialization: true
     open-in-view: false
+    show-sql: true
 
 springdoc:
   swagger-ui:
