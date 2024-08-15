@@ -1,15 +1,14 @@
 package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
-import dnd11th.blooming.common.exception.InvalidDateException
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.repository.ImageRepository
@@ -29,19 +28,19 @@ class MyPlantService(
 ) {
     @Transactional
     fun saveMyPlant(
-        request: MyPlantSaveRequest,
-        now: LocalDate,
+        dto: MyPlantCreateDto,
+        locationId: Long,
     ): MyPlantSaveResponse {
-        validateDateNotInFuture(request.startDate, now)
-        validateDateNotInFuture(request.lastWateredDate, now)
-        validateDateNotInFuture(request.lastFertilizerDate, now)
-
         val location =
             locationRepository
-                .findByIdOrNull(request.locationId)
+                .findByIdOrNull(locationId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
-        val myPlant = request.toMyPlant(location, now)
+        // TODO : 식물 가이드 데이터 가져오기 필요
+        val plant = "몬스테라 델리오사"
+
+        val myPlant =
+            MyPlant.createMyPlant(dto, location, plant)
 
         val savedPlant = myPlantRepository.save(myPlant)
 
@@ -54,10 +53,14 @@ class MyPlantService(
         locationId: Long? = null,
         sort: MyPlantQueryCreteria = MyPlantQueryCreteria.CreatedDesc,
     ): List<MyPlantResponse> {
-        val myPlantList = findSortedMyPlants(locationId, sort)
+        val myPlantWithUrlList = findSortedMyPlantsWithImage(locationId, sort)
 
-        return myPlantList.stream().map { myPlant ->
-            MyPlantResponse.of(myPlant, now)
+        return myPlantWithUrlList.stream().map { myPlantAndImageUrl ->
+            MyPlantResponse.of(
+                myPlantAndImageUrl.first,
+                myPlantAndImageUrl.second,
+                now,
+            )
         }.toList()
     }
 
@@ -152,25 +155,16 @@ class MyPlantService(
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        myPlant.modifyHealthCheck(request.healthCheck)
+        myPlant.modifyHealthCheck(request.healthCheck!!)
     }
 
-    private fun validateDateNotInFuture(
-        targetDate: LocalDate,
-        currentDate: LocalDate,
-    ) {
-        if (targetDate.isAfter(currentDate)) {
-            throw InvalidDateException(ErrorType.INVALID_DATE)
-        }
-    }
-
-    private fun findSortedMyPlants(
+    private fun findSortedMyPlantsWithImage(
         locationId: Long?,
         sort: MyPlantQueryCreteria,
-    ): List<MyPlant> {
+    ): List<Pair<MyPlant, String>> {
         val location = locationId?.let { locationRepository.findByIdOrNull(locationId) }
 
-        val myPlantList =
+        val sortedMyPlantList =
             when (sort) {
                 MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByLocationOrderByCreatedDateDesc(location)
                 MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByLocationOrderByCreatedDateAsc(location)
@@ -183,6 +177,17 @@ class MyPlantService(
                         location,
                     )
             }
-        return myPlantList
+
+        val urlMap =
+            imageRepository.findFavoriteImagesForMyPlants(sortedMyPlantList)
+                .associate { it.myPlantId to it.imageUrl }
+
+        return sortedMyPlantList.map { myPlant ->
+            myPlant to
+                (
+                    urlMap[myPlant.id]
+                        ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
+                )
+        }
     }
 }

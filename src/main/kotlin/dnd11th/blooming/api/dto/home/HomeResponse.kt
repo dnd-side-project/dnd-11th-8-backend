@@ -12,6 +12,7 @@ data class HomeResponse(
     @field:Schema(description = "내 식물 정보 리스트")
     val myPlantInfo: List<MyPlantHomeResponse>,
     // TODO : 식물 일러스트 응답 추가 필요
+    // val illustUrl: String,
 ) {
     companion object {
         fun from(

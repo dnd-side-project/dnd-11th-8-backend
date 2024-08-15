@@ -1,9 +1,7 @@
 package dnd11th.blooming.api.dto.image
 
-import dnd11th.blooming.domain.entity.Image
-import dnd11th.blooming.domain.entity.MyPlant
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDate
+import jakarta.validation.constraints.NotBlank
 
 @Schema(
     name = "Image Save Request",
@@ -11,17 +9,11 @@ import java.time.LocalDate
 )
 data class ImageSaveRequest(
     @field:Schema(description = "이미지 URL", example = "image.com/17")
-    val imageUrl: String,
+    @field:NotBlank(message = "URL은 필수값입니다.")
+    val imageUrl: String?,
 ) {
-    fun toImage(
-        myPlant: MyPlant,
-        now: LocalDate,
-    ): Image =
-        Image(
-            url = imageUrl,
-            favorite = false,
-            currentDate = now,
-        ).also {
-            it.setMyPlantRelation(myPlant)
-        }
+    fun toImageCreateDto(): ImageCreateDto =
+        ImageCreateDto(
+            url = imageUrl!!,
+        )
 }
