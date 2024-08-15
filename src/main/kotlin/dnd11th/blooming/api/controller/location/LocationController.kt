@@ -5,6 +5,7 @@ import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
 import dnd11th.blooming.api.service.location.LocationService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -21,8 +22,8 @@ class LocationController(
 ) : LocationApi {
     @PostMapping
     override fun saveLocation(
-        @RequestBody request: LocationSaveRequest,
-    ): LocationSaveResponse = locationService.saveLocation(request)
+        @RequestBody @Valid request: LocationSaveRequest,
+    ): LocationSaveResponse = locationService.saveLocation(request.toLocationCreateDto())
 
     @GetMapping
     override fun findAllLocation(): List<LocationResponse> = locationService.findAllLocation()
@@ -30,7 +31,7 @@ class LocationController(
     @PatchMapping("/{locationId}")
     override fun modifyLocation(
         @PathVariable locationId: Long,
-        @RequestBody request: LocationModifyRequest,
+        @RequestBody @Valid request: LocationModifyRequest,
     ): LocationResponse = locationService.modifyLocation(locationId, request)
 
     @DeleteMapping("/{locationId}")

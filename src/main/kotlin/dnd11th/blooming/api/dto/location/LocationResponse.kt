@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 data class LocationResponse(
     @field:Schema(description = "위치 ID", example = "3")
-    val id: Long,
+    val id: Long?,
     @field:Schema(description = "위치 이름", example = "베란다")
     val name: String,
 ) {

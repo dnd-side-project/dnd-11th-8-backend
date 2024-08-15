@@ -1,11 +1,12 @@
 package dnd11th.blooming.api.service.location
 
+import dnd11th.blooming.api.dto.location.LocationCreateDto
 import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
-import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.repository.LocationRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -16,9 +17,11 @@ class LocationService(
     private val locationRepository: LocationRepository,
 ) {
     @Transactional
-    fun saveLocation(request: LocationSaveRequest): LocationSaveResponse {
+    fun saveLocation(dto: LocationCreateDto): LocationSaveResponse {
         // TODO : 유저와 매핑 필요
-        val location = request.toLocation()
+
+        val location = Location.createLocation(dto)
+
         return LocationSaveResponse.from(locationRepository.save(location))
     }
 
@@ -37,7 +40,7 @@ class LocationService(
             locationRepository.findByIdOrNull(locationId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
-        location.modifyName(request.name)
+        location.modifyName(request.name!!)
 
         return LocationResponse.from(location)
     }

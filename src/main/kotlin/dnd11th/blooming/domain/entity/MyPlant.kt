@@ -1,5 +1,6 @@
 package dnd11th.blooming.domain.entity
 
+import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.domain.entity.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
@@ -27,11 +28,10 @@ class MyPlant(
     var lastFertilizerDate: LocalDate = LocalDate.now(),
     @Embedded
     var alarm: Alarm,
-    currentDate: LocalDate = LocalDate.now(),
-) : BaseEntity(currentDate) {
+) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0
+    var id: Long? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -40,10 +40,6 @@ class MyPlant(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     var location: Location? = null
-
-    fun setLocationRelation(location: Location) {
-        this.location = location
-    }
 
     fun modify(
         nickname: String?,
@@ -95,5 +91,34 @@ class MyPlant(
 
     fun modifyHealthCheck(healthCheckAlarm: Boolean) {
         this.alarm.healthCheckAlarm = healthCheckAlarm
+    }
+
+    companion object {
+        fun createMyPlant(
+            dto: MyPlantCreateDto,
+            location: Location,
+            plant: String,
+        ): MyPlant =
+            MyPlant(
+                scientificName = plant,
+                nickname = dto.nickname,
+                startDate = dto.startDate,
+                lastWateredDate = dto.lastWateredDate,
+                lastFertilizerDate = dto.lastFertilizerDate,
+                alarm =
+                    Alarm(
+                        waterAlarm = dto.waterAlarm,
+                        waterPeriod = dto.waterPeriod,
+                        fertilizerAlarm = dto.fertilizerAlarm,
+                        fertilizerPeriod = dto.fertilizerPeriod,
+                        healthCheckAlarm = dto.healthCheckAlarm,
+                    ),
+            ).also {
+                it.location = location
+                // it.plant = plant
+                // it.user = user
+                // TODO : 유저와 매핑 필요
+                // TODO : 식물가이드와 매핑 필요
+            }
     }
 }

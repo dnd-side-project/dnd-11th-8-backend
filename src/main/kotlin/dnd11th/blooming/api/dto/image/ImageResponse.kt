@@ -21,7 +21,7 @@ data class ImageResponse(
             ImageResponse(
                 imageUrl = image.url,
                 favorite = image.favorite,
-                createdDate = image.createdDate,
+                createdDate = image.createdDate.toLocalDate(),
             )
 
         fun fromList(images: List<Image>): List<ImageResponse> =

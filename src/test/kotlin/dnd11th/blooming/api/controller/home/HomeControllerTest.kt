@@ -10,10 +10,12 @@ import io.mockk.every
 import org.hamcrest.CoreMatchers.equalTo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
 @WebMvcTest(HomeController::class)
+@ActiveProfiles("test")
 class HomeControllerTest : DescribeSpec() {
     @MockkBean
     private lateinit var homeService: HomeService

@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.location
 
+import dnd11th.blooming.api.dto.location.LocationCreateDto
 import dnd11th.blooming.api.dto.location.LocationModifyRequest
-import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
@@ -14,6 +14,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import org.springframework.data.repository.findByIdOrNull
+import java.time.LocalDate
 
 class LocationServiceTest : DescribeSpec(
     {
@@ -29,7 +30,7 @@ class LocationServiceTest : DescribeSpec(
                 }
             context("name이 전달되면") {
                 val request =
-                    LocationSaveRequest(
+                    LocationCreateDto(
                         name = "거실",
                     )
                 it("위치가 저장되어야 한다.") {
@@ -131,6 +132,7 @@ class LocationServiceTest : DescribeSpec(
     },
 ) {
     companion object {
+        val CURRENT_DAY: LocalDate = LocalDate.of(2024, 5, 17)
         const val LOCATION_ID = 1L
         const val LOCATION_ID2 = 2L
         const val LOCATION_NAME = "거실"
