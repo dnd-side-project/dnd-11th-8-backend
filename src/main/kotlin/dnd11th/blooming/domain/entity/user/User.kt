@@ -22,8 +22,7 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    currentDate: LocalDate = LocalDate.now(),
-) : BaseEntity(currentDate) {
+) : BaseEntity() {
     @Column
     var nickname: String = nickname
         protected set
