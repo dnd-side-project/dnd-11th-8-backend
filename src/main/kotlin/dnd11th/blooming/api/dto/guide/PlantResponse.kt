@@ -1,7 +1,12 @@
 package dnd11th.blooming.api.dto.guide
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 data class PlantResponse(
+    @field:Schema(description = "식물 ID", example = "1")
     val plantId: Long,
+    @field:Schema(description = "식물 이름", example = "몬스테라 델리오사")
     val name: String,
+    @field:Schema(description = "식물 이미지 URL", example = "image.com")
     val imageUrl: String,
 )
