@@ -44,6 +44,9 @@ class Plant(
     @Enumerated(EnumType.STRING)
     var fertilizer: Fertilizer,
     @Column
+    @Enumerated(EnumType.STRING)
+    var humidity: Humidity,
+    @Column
     var pests: String,
     @Column
     var location: String,

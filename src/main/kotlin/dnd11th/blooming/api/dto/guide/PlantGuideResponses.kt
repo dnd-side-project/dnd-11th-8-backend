@@ -1,6 +1,9 @@
 package dnd11th.blooming.api.dto.guide
 
+import dnd11th.blooming.api.service.guide.PlantMessageFactory
+import dnd11th.blooming.domain.entity.plant.Plant
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.Month
 
 data class PlantGuideResponse(
     @field:Schema(description = "식물 한글명", example = "몬스테라 델리오사")
@@ -15,7 +18,23 @@ data class PlantGuideResponse(
     val simpleView: PlantGuideSimpleViewResponse,
     @field:Schema(description = "자세한 식물 정보")
     val detailView: PlantGuideDetailViewResponse,
-)
+) {
+    companion object {
+        fun of(
+            plant: Plant,
+            month: Month,
+            messageFactory: PlantMessageFactory,
+        ): PlantGuideResponse =
+            PlantGuideResponse(
+                korName = plant.korName,
+                engName = plant.engName,
+                imageUrl = plant.imageUrl,
+                tag = messageFactory.buildTags(plant),
+                simpleView = messageFactory.buildSimpleView(plant, month),
+                detailView = messageFactory.buildDetailView(plant),
+            )
+    }
+}
 
 data class PlantGuideSimpleViewResponse(
     @field:Schema(description = "난이도 정보")

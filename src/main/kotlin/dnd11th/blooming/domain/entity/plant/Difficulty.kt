@@ -1,9 +1,19 @@
 package dnd11th.blooming.domain.entity.plant
 
 enum class Difficulty(
-    val displayName: String,
+    val targetPeople: String,
+    val apiName: String,
 ) {
-    LOW("낮음 (잘 견딤)"),
-    MEDIUM("보통 (약간 잘 견딤)"),
-    HIGH("필요함"),
+    LOW(
+        "초보식집사",
+        "낮음 (잘 견딤)",
+    ),
+    MEDIUM(
+        "경험자",
+        "보통 (약간 잘 견딤)",
+    ),
+    HIGH(
+        "고수식집사",
+        "필요함",
+    ),
 }

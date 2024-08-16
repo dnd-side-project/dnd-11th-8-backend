@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/api/v1/plants")
@@ -20,8 +21,8 @@ class GuideController(
         @RequestParam plantName: String,
     ): List<PlantResponse> = guideService.findPlantList(plantName)
 
-    @GetMapping("/{guideId}")
+    @GetMapping("/{plantId}")
     override fun findPlantGuide(
-        @PathVariable guideId: Long,
-    ): PlantGuideResponse = guideService.findPlantGuide(guideId)
+        @PathVariable plantId: Long,
+    ): PlantGuideResponse = guideService.findPlantGuide(plantId, LocalDate.now().month)
 }

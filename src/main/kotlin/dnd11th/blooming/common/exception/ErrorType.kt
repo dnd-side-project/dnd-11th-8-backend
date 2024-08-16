@@ -11,6 +11,9 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
     // MyPlant
     NOT_FOUND_MYPLANT(HttpStatus.NOT_FOUND, "존재하지 않는 내 식물입니다.", LogLevel.DEBUG),
 
+    // Plant
+    NOT_FOUND_PLANT(HttpStatus.NOT_FOUND, "존재하지 않는 식물입니다.", LogLevel.DEBUG),
+
     // Image
     NOT_FOUND_IMAGE(HttpStatus.NOT_FOUND, "존재하지 않는 이미지입니다.", LogLevel.DEBUG),
 

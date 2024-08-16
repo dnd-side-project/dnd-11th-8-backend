@@ -19,7 +19,7 @@ interface GuideApi {
     @Operation(summary = "식물 가이드를 조회하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "식물 가이드 조회 성공")
     fun findPlantGuide(
-        @Parameter(description = "가이드 ID", required = true)
-        guideId: Long,
+        @Parameter(description = "식물 ID", required = true)
+        plantId: Long,
     ): PlantGuideResponse
 }
