@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 interface GuideApi {
     @Operation(summary = "식물 종류를 검색하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "식물 종류 검색 성공")
-    fun findPlant(
+    fun findPlantList(
         @Parameter(description = "식물 이름", required = true)
         plantName: String,
     ): List<PlantResponse>
