@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.controller.guide
 
 import dnd11th.blooming.api.dto.guide.PlantGuideResponse
+import dnd11th.blooming.api.dto.guide.PlantRecommendedPeriodResponse
 import dnd11th.blooming.api.dto.guide.PlantResponse
 import dnd11th.blooming.api.service.guide.GuideService
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,4 +26,9 @@ class GuideController(
     override fun findPlantGuide(
         @PathVariable plantId: Long,
     ): PlantGuideResponse = guideService.findPlantGuide(plantId, LocalDate.now().month)
+
+    @GetMapping("/{plantId}/period")
+    override fun findPlantRecommendedPeriod(
+        @PathVariable plantId: Long,
+    ): PlantRecommendedPeriodResponse = guideService.findPlantRecommendedPeriod(plantId, LocalDate.now().month)
 }
