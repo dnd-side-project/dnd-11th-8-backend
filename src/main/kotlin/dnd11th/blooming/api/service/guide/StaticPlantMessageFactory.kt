@@ -25,6 +25,8 @@ class StaticPlantMessageFactory : PlantMessageFactory {
             plant.difficulty.targetPeople,
         )
 
+        // TODO : 태그 더 넣기
+
         return tagList
     }
 
@@ -85,7 +87,7 @@ class StaticPlantMessageFactory : PlantMessageFactory {
                     springsummerfallDescription = makeDetailSpringSummerFallDescription(plant),
                     winterSubTitle = WINTER_TITLE,
                     winterDescription = makeDetailWinterDescription(plant),
-                    addition = makeDetailWaterAddition(plant),
+                    addition = makeDetailWaterAddition(),
                 ),
             light =
                 DetailLightResponse(
@@ -98,7 +100,7 @@ class StaticPlantMessageFactory : PlantMessageFactory {
                 DetailHumidityResponse(
                     title = HUMIDITY_TITLE,
                     description = makeDetailHumidityDescription(plant),
-                    addition = makeDetailHumidityAddition(plant),
+                    addition = makeDetailHumidityAddition(),
                 ),
             toxicity =
                 DetailToxicityResponse(
@@ -127,7 +129,7 @@ class StaticPlantMessageFactory : PlantMessageFactory {
                 else -> plant.springSummerFallWater
             }
 
-        return "${water.waterPerWeek},\n${water.getWrittenDecription()}"
+        return "${water.waterPerWeek},\n${water.description}할 것"
     }
 
     private fun makeSimplePestsDescription(plant: Plant): String {
@@ -147,51 +149,52 @@ class StaticPlantMessageFactory : PlantMessageFactory {
 
     private fun makeSimpleToxicityDescription(plant: Plant): String {
         return when (plant.toxicity) {
-            Toxicity.EXISTS -> "동물이나 어린이 주위에 두지말 것"
             Toxicity.NOT_EXISTS -> "독성 없음"
+            Toxicity.EXISTS -> "동물이나 어린이 주위에 두지 말 것"
         }
     }
 
     private fun makeSimpleTemperatureDescription(plant: Plant): String {
-        val lowestTemperature = "${plant.lowestTemperature.displayName}도 이하는 주의할 것"
-        val growTemplate = "${plant.growTemperature.displayName}도 사이"
+        val growTemperatureDescription = "${plant.growTemperature.displayName}사이"
+        val lowestTemperature = "${plant.lowestTemperature.displayName} 이하는 주의할 것"
 
-        return "${growTemplate}\n$lowestTemperature"
+        return "${growTemperatureDescription}\n$lowestTemperature"
     }
 
     private fun makeSimpleFertilizerDescription(plant: Plant): String {
         return when (plant.fertilizer) {
-            Fertilizer.DEMANDING -> "봄,여름에 2~4주 간격으로 주기"
-            Fertilizer.NOT_VERY_DEMANDING -> "봄,여름에 4~8주 간격으로 주기"
+            Fertilizer.DEMANDING -> "봄, 여름에 2~4주 간격으로 주기"
+            Fertilizer.NOT_VERY_DEMANDING -> "봄, 여름에 4~8주 간격으로 주기"
         }
     }
 
     private fun makeDetailSpringSummerFallDescription(plant: Plant): String {
-        val description = plant.springSummerFallWater.getColloquialDecription()
-
-        return "$description ${plant.springSummerFallWater.waterPerWeek} 정도가 적당해요."
+        val waterDescription = "${plant.springSummerFallWater.description}해주세요."
+        val perWeekDescription = "${plant.springSummerFallWater.waterPerWeek} 정도가 적당해요."
+        return "$waterDescription $perWeekDescription"
     }
 
     private fun makeDetailWinterDescription(plant: Plant): String {
-        return plant.winterWater.getColloquialDecription()
+        return "${plant.springSummerFallWater.waterPerWeek} 정도가 적당해요."
     }
 
-    private fun makeDetailWaterAddition(plant: Plant): String {
-        return "빗물을 주면 토양이 산성화 될 수도 있어요. 따뜻한 물을 사용하고 더운 여름에는 젖은 천으로 잎을 닦아주고, 분무해주세요."
+    private fun makeDetailWaterAddition(): String {
+        return WATER_DETAIL_ADDITION
     }
 
     private fun makeDetailLightDescription(plant: Plant): String {
-        return plant.light.displayName
+        return plant.light.apiName
     }
 
     private fun makeDetailLightAddition(plant: Plant): String {
+        val eunOrNun = getEunOrNun(plant.korName)
+
         val description =
             when (plant.light) {
                 Light.LOW -> "빛을 많이 받지 않아도 괜찮습니다."
                 Light.MEDIUM -> "간접적인 밝은 빛을 가장 좋아합니다.\n단, 직사광선은 잎을 태울 수 있으므로 피하는 것이 좋아요."
                 Light.HIGH -> "직접적인 밝은 빛을 가장 좋아합니다."
             }
-        val eunOrNun = getEunOrNun(plant.korName)
 
         return "${plant.korName}$eunOrNun $description"
     }
@@ -199,21 +202,23 @@ class StaticPlantMessageFactory : PlantMessageFactory {
     private fun makeDetailHumidityDescription(plant: Plant): String {
         val eunOrNun = getEunOrNun(plant.korName)
 
-        return "${plant.korName}$eunOrNun ${plant.humidity.description}을 좋아해요.\n" +
+        return "${plant.korName}$eunOrNun ${plant.humidity.humidityLevel}을 좋아해요.\n" +
             "${plant.humidity.displayName}의 습도가 가장 이상적이에요."
     }
 
-    private fun makeDetailHumidityAddition(plant: Plant): String {
-        return "습도를 높이기 위해 자주 분무하거나, 식물 주변에 물그릇을 놓아 습도를 유지할 수 있어요. 가습기를 사용하는 것도 좋아요."
+    private fun makeDetailHumidityAddition(): String {
+        return HUMIDITY_DETAIL_ADDITION
     }
 
     private fun makeDetailToxicityDescription(plant: Plant): String {
         val eunOrNun = getEunOrNun(plant.korName)
+
         val description =
             when (plant.toxicity) {
                 Toxicity.NOT_EXISTS -> "독성이 없어요."
-                Toxicity.EXISTS -> "독성이 있어 반려동물과 어린아이들이 먹지 않도록 주의해야 합니다."
+                Toxicity.EXISTS -> "독성이 있어 반려동물과 어린아이들이 먹지 않도록 주의해야 해요."
             }
+
         return "${plant.korName}$eunOrNun $description"
     }
 
@@ -251,5 +256,7 @@ class StaticPlantMessageFactory : PlantMessageFactory {
         const val TOXICITY_TITLE = "독성"
         const val TEMPERATURE_TITLE = "온도"
         const val FERTILIZER_TITLE = "비료"
+        const val WATER_DETAIL_ADDITION = "빗물을 주면 토양이 산성화 될 수도 있어요. 따뜻한 물을 사용하고 더운 여름에는 젖은 천으로 잎을 닦아주고, 분무해주세요."
+        const val HUMIDITY_DETAIL_ADDITION = "습도를 높이기 위해 자주 분무하거나, 식물 주변에 물그릇을 놓아 습도를 유지할 수 있어요. 가습기를 사용하는 것도 좋아요."
     }
 }

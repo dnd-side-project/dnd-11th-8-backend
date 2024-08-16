@@ -1,7 +1,7 @@
 package dnd11th.blooming.domain.entity.plant
 
 enum class Water(
-    private val description: String,
+    val description: String,
     val waterPerWeek: String,
     val periodDay: Int,
     val apiName: String,
@@ -30,13 +30,4 @@ enum class Water(
         7,
         "화분 흙 대부분이 말랐을때 충분히 관수함",
     ),
-    ;
-
-    fun getWrittenDecription(): String {
-        return "${description}할 것"
-    }
-
-    fun getColloquialDecription(): String {
-        return "${description}해주세요."
-    }
 }
