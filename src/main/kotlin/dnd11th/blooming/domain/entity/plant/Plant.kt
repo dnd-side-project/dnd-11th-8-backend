@@ -47,6 +47,8 @@ class Plant(
     var pests: String,
     @Column
     var location: String,
+    @Column
+    var imageUrl: String,
 ) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
