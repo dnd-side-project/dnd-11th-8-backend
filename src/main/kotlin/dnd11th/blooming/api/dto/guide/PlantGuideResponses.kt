@@ -5,6 +5,10 @@ import dnd11th.blooming.domain.entity.plant.Plant
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.Month
 
+@Schema(
+    name = "Plant Guide Response",
+    description = "식물가이드 응답",
+)
 data class PlantGuideResponse(
     @field:Schema(description = "식물 한글명", example = "몬스테라 델리오사")
     val korName: String,
@@ -36,6 +40,10 @@ data class PlantGuideResponse(
     }
 }
 
+@Schema(
+    name = "Plant Guide Simple Response",
+    description = "한눈에 보는 식물 정보 응답",
+)
 data class PlantGuideSimpleViewResponse(
     @field:Schema(description = "난이도 정보")
     val difficulty: PlantGuideSimpleResponse,
@@ -60,6 +68,10 @@ data class PlantGuideSimpleResponse(
     val description: String,
 )
 
+@Schema(
+    name = "Plant Guide Detail Response",
+    description = "자세한 식물 정보 응답",
+)
 data class PlantGuideDetailViewResponse(
     @field:Schema(description = "상세한 물주기 정보")
     val water: DetailWaterResponse,
