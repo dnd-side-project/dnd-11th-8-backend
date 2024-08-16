@@ -35,85 +35,113 @@ class StaticPlantMessageFactory : PlantMessageFactory {
         month: Month,
     ): PlantGuideSimpleViewResponse {
         return PlantGuideSimpleViewResponse(
-            difficulty =
-                PlantGuideSimpleResponse(
-                    title = DIFFICULTY_TITLE,
-                    description = makeSimpleDifficultyDescription(plant),
-                ),
-            water =
-                PlantGuideSimpleResponse(
-                    title = WATER_TITLE,
-                    description = makeSimpleWaterDescription(plant, month),
-                ),
-            pests =
-                PlantGuideSimpleResponse(
-                    title = PESTS_TITLE,
-                    description = makeSimplePestsDescription(plant),
-                ),
-            location =
-                PlantGuideSimpleResponse(
-                    title = LOCATION_TITLE,
-                    description = makeSimpleLocationDescription(plant),
-                ),
-            size =
-                PlantGuideSimpleResponse(
-                    title = SIZE_TITLE,
-                    description = makeSimpleSizeDescription(plant),
-                ),
-            toxicity =
-                PlantGuideSimpleResponse(
-                    title = TOXICITY_TITLE,
-                    description = makeSimpleToxicityDescription(plant),
-                ),
-            temperature =
-                PlantGuideSimpleResponse(
-                    title = TEMPERATURE_TITLE,
-                    description = makeSimpleTemperatureDescription(plant),
-                ),
-            fertilizer =
-                PlantGuideSimpleResponse(
-                    title = FERTILIZER_TITLE,
-                    description = makeSimpleFertilizerDescription(plant),
-                ),
+            difficulty = simpleDifficultyResponse(plant),
+            water = simpleWaterResponse(plant, month),
+            pests = simplePestsResponse(plant),
+            location = simpleLocationResponse(plant),
+            size = simpleSizeResponse(plant),
+            toxicity = simpleToxicityResponse(plant),
+            temperature = simpleTemperatureResponse(plant),
+            fertilizer = simpleFertilizerResponse(plant),
         )
     }
 
     override fun buildDetailView(plant: Plant): PlantGuideDetailViewResponse {
         return PlantGuideDetailViewResponse(
-            water =
-                DetailWaterResponse(
-                    title = WATER_TITLE,
-                    springsummerfallSubTitle = SPRING_SUMMER_FALL_TITLE,
-                    springsummerfallDescription = makeDetailSpringSummerFallDescription(plant),
-                    winterSubTitle = WINTER_TITLE,
-                    winterDescription = makeDetailWinterDescription(plant),
-                    addition = makeDetailWaterAddition(),
-                ),
-            light =
-                DetailLightResponse(
-                    title = LIGHT_TITLE,
-                    lightSubTitle = LIGHT_SUB_TITLE,
-                    lightDescription = makeDetailLightDescription(plant),
-                    addition = makeDetailLightAddition(plant),
-                ),
-            humidity =
-                DetailHumidityResponse(
-                    title = HUMIDITY_TITLE,
-                    description = makeDetailHumidityDescription(plant),
-                    addition = makeDetailHumidityAddition(),
-                ),
-            toxicity =
-                DetailToxicityResponse(
-                    title = TOXICITY_TITLE,
-                    description = makeDetailToxicityDescription(plant),
-                ),
-            pests =
-                DetailPestsResponse(
-                    title = PESTS_TITLE,
-                    description = makeDetailPestsDescription(plant),
-                ),
+            water = detailWaterResponse(plant),
+            light = detailLightResponse(plant),
+            humidity = detailHumidityResponse(plant),
+            toxicity = detailToxicityResponse(plant),
+            pests = detailPestsResponse(plant),
         )
     }
+
+    private fun detailPestsResponse(plant: Plant) =
+        DetailPestsResponse(
+            title = PESTS_TITLE,
+            description = makeDetailPestsDescription(plant),
+        )
+
+    private fun detailToxicityResponse(plant: Plant) =
+        DetailToxicityResponse(
+            title = TOXICITY_TITLE,
+            description = makeDetailToxicityDescription(plant),
+        )
+
+    private fun detailHumidityResponse(plant: Plant) =
+        DetailHumidityResponse(
+            title = HUMIDITY_TITLE,
+            description = makeDetailHumidityDescription(plant),
+            addition = makeDetailHumidityAddition(),
+        )
+
+    private fun detailLightResponse(plant: Plant) =
+        DetailLightResponse(
+            title = LIGHT_TITLE,
+            lightSubTitle = LIGHT_SUB_TITLE,
+            lightDescription = makeDetailLightDescription(plant),
+            addition = makeDetailLightAddition(plant),
+        )
+
+    private fun detailWaterResponse(plant: Plant) =
+        DetailWaterResponse(
+            title = WATER_TITLE,
+            springsummerfallSubTitle = SPRING_SUMMER_FALL_TITLE,
+            springsummerfallDescription = makeDetailSpringSummerFallDescription(plant),
+            winterSubTitle = WINTER_TITLE,
+            winterDescription = makeDetailWinterDescription(plant),
+            addition = makeDetailWaterAddition(),
+        )
+
+    private fun simpleFertilizerResponse(plant: Plant) =
+        PlantGuideSimpleResponse(
+            title = FERTILIZER_TITLE,
+            description = makeSimpleFertilizerDescription(plant),
+        )
+
+    private fun simpleTemperatureResponse(plant: Plant) =
+        PlantGuideSimpleResponse(
+            title = TEMPERATURE_TITLE,
+            description = makeSimpleTemperatureDescription(plant),
+        )
+
+    private fun simpleToxicityResponse(plant: Plant) =
+        PlantGuideSimpleResponse(
+            title = TOXICITY_TITLE,
+            description = makeSimpleToxicityDescription(plant),
+        )
+
+    private fun simpleSizeResponse(plant: Plant) =
+        PlantGuideSimpleResponse(
+            title = SIZE_TITLE,
+            description = makeSimpleSizeDescription(plant),
+        )
+
+    private fun simpleLocationResponse(plant: Plant) =
+        PlantGuideSimpleResponse(
+            title = LOCATION_TITLE,
+            description = makeSimpleLocationDescription(plant),
+        )
+
+    private fun simplePestsResponse(plant: Plant) =
+        PlantGuideSimpleResponse(
+            title = PESTS_TITLE,
+            description = makeSimplePestsDescription(plant),
+        )
+
+    private fun simpleWaterResponse(
+        plant: Plant,
+        month: Month,
+    ) = PlantGuideSimpleResponse(
+        title = WATER_TITLE,
+        description = makeSimpleWaterDescription(plant, month),
+    )
+
+    private fun simpleDifficultyResponse(plant: Plant) =
+        PlantGuideSimpleResponse(
+            title = DIFFICULTY_TITLE,
+            description = makeSimpleDifficultyDescription(plant),
+        )
 
     private fun makeSimpleDifficultyDescription(plant: Plant): String {
         return "${plant.difficulty.targetPeople}추천"
