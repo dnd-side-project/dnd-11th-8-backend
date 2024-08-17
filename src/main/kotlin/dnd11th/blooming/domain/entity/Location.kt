@@ -33,5 +33,24 @@ class Location(
             Location(
                 name = dto.name,
             )
+
+        fun createDefaultLocations(user: User): List<Location> =
+            listOf(
+                Location(
+                    name = "거실",
+                ).also {
+                    it.user = user
+                },
+                Location(
+                    name = "침실",
+                ).also {
+                    it.user = user
+                },
+                Location(
+                    name = "테라스",
+                ).also {
+                    it.user = user
+                },
+            )
     }
 }
