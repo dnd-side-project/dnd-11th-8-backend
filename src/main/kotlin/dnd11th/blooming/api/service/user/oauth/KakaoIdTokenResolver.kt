@@ -1,5 +1,6 @@
 package dnd11th.blooming.api.service.user.oauth
 
+import dnd11th.blooming.api.service.user.oauth.property.KakaoOauthProperties
 import dnd11th.blooming.client.dto.OidcPublicKeys
 import dnd11th.blooming.client.oauth.KakaoOauthClient
 import dnd11th.blooming.common.exception.ErrorType

@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.service.user.oauth
+package dnd11th.blooming.api.service.user.oauth.property
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
