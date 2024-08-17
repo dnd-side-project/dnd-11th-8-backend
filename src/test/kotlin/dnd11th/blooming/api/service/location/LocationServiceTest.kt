@@ -5,7 +5,9 @@ import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
+import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
+import dnd11th.blooming.domain.repository.MyPlantRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -19,7 +21,10 @@ import java.time.LocalDate
 class LocationServiceTest : DescribeSpec(
     {
         val locationRepository = mockk<LocationRepository>()
-        val locationService = LocationService(locationRepository)
+        val myPlantRepository = mockk<MyPlantRepository>()
+        val imageRepository = mockk<ImageRepository>()
+
+        val locationService = LocationService(locationRepository, myPlantRepository, imageRepository)
 
         describe("위치 저장") {
             every { locationRepository.save(any()) } returns
@@ -112,6 +117,10 @@ class LocationServiceTest : DescribeSpec(
                 true
             every { locationRepository.existsById(not(eq(LOCATION_ID))) } returns
                 false
+            every { myPlantRepository.findAllByLocationId(LOCATION_ID) } returns
+                listOf()
+            every { myPlantRepository.deleteAllByLocationId(LOCATION_ID) } just runs
+            every { imageRepository.deleteAllByMyPlantIn(any()) } just runs
             every { locationRepository.deleteById(LOCATION_ID) } just runs
             context("존재하는 ID의 위치를 삭제하면") {
                 it("위치가 삭제되어야 한다.") {

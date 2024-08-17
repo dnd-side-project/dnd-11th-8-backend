@@ -4,6 +4,7 @@ import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
+import dnd11th.blooming.api.dto.location.MyPlantExistInLocationResponse
 import dnd11th.blooming.api.service.location.LocationService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -33,6 +34,11 @@ class LocationController(
         @PathVariable locationId: Long,
         @RequestBody @Valid request: LocationModifyRequest,
     ): LocationResponse = locationService.modifyLocation(locationId, request)
+
+    @GetMapping("/{locationId}")
+    override fun myPlantExistInLocation(
+        @PathVariable locationId: Long,
+    ): MyPlantExistInLocationResponse = locationService.myPlantExistInLocation(locationId)
 
     @DeleteMapping("/{locationId}")
     override fun deleteLocation(
