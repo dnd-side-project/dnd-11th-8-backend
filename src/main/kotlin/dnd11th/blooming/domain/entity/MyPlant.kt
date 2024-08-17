@@ -27,6 +27,8 @@ class MyPlant(
     var lastWateredDate: LocalDate,
     @Column
     var lastFertilizerDate: LocalDate,
+    @Column
+    var lastHealthCheckDate: LocalDate,
     @Embedded
     var alarm: Alarm,
 ) : BaseEntity() {
@@ -92,8 +94,8 @@ class MyPlant(
         lastFertilizerDate = now
     }
 
-    fun modifyHealthCheck(healthCheckAlarm: Boolean) {
-        this.alarm.healthCheckAlarm = healthCheckAlarm
+    fun doHealthCheck(now: LocalDate) {
+        lastHealthCheckDate = now
     }
 
     companion object {
@@ -108,6 +110,7 @@ class MyPlant(
                 startDate = dto.startDate,
                 lastWateredDate = dto.lastWateredDate,
                 lastFertilizerDate = dto.lastFertilizerDate,
+                lastHealthCheckDate = LocalDate.now(),
                 alarm =
                     Alarm(
                         waterAlarm = dto.waterAlarm,
