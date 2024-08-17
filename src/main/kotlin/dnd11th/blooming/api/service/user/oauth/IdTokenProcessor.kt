@@ -20,13 +20,21 @@ class IdTokenProcessor(
         aud: String,
     ): OidcUser {
         val splitToken = idToken.split(".")
-        val headerJson = base64Decode(splitToken[0])
-        val payloadJson = base64Decode(splitToken[1])
-        val header = objectMapper.readValue<Map<String, Any>>(headerJson)
-        val payload = objectMapper.readValue<Map<String, Any>>(payloadJson)
+        val header = parseHeader(splitToken[0])
+        val payload = parsePayload(splitToken[1])
         idTokenValidator.verifyPayload(payload, iss, aud)
         val claims = idTokenValidator.verifySignature(idToken, header, oidcPublicKeys)
         return getUserClaims(claims)
+    }
+
+    private fun parseHeader(encodedHeader: String): Map<String, Any> {
+        val headerJson = base64Decode(encodedHeader)
+        return objectMapper.readValue<Map<String, Any>>(headerJson)
+    }
+
+    private fun parsePayload(encodedPayload: String): Map<String, Any> {
+        val payloadJson = base64Decode(encodedPayload)
+        return objectMapper.readValue<Map<String, Any>>(payloadJson)
     }
 
     private fun getUserClaims(claims: Claims): OidcUser {
