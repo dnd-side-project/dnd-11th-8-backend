@@ -13,6 +13,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import java.time.LocalDate
+import java.time.Period
 
 @Entity
 class MyPlant(
@@ -23,9 +24,9 @@ class MyPlant(
     @Column
     var startDate: LocalDate,
     @Column
-    var lastWateredDate: LocalDate,
+    var lastWateredDate: LocalDate?,
     @Column
-    var lastFertilizerDate: LocalDate,
+    var lastFertilizerDate: LocalDate?,
     @Column
     var lastHealthCheckDate: LocalDate,
     @Embedded
@@ -49,6 +50,18 @@ class MyPlant(
 
     fun getLocationName(): String? {
         return location?.name
+    }
+
+    fun getDateSinceLastWater(now: LocalDate): Int? {
+        return lastWateredDate?.let { Period.between(lastWateredDate, now).days }
+    }
+
+    fun getDateSinceLastFertilizer(now: LocalDate): Int? {
+        return lastFertilizerDate?.let { Period.between(lastFertilizerDate, now).days }
+    }
+
+    fun getDateSinceLastHealthCheck(now: LocalDate): Int {
+        return Period.between(lastHealthCheckDate, now).days
     }
 
     fun modify(

@@ -3,7 +3,6 @@ package dnd11th.blooming.api.dto.home
 import dnd11th.blooming.domain.entity.MyPlant
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
-import java.time.Period
 
 @Schema(
     name = "MyPlant Home Response",
@@ -21,7 +20,7 @@ data class MyPlantHomeResponse(
     @field:Schema(description = "마지막 비료주기로부터 지난 날짜", example = "30")
     val dateSinceLastFertilizer: Int?,
     @field:Schema(description = "마지막 눈길주기로부터 지난 날짜", example = "30")
-    val dateSinceLasthealthCheck: Int?,
+    val dateSinceLasthealthCheck: Int,
 ) {
     companion object {
         fun of(
@@ -32,9 +31,9 @@ data class MyPlantHomeResponse(
                 myPlantId = myPlant.id,
                 nickname = myPlant.nickname,
                 scientificName = myPlant.scientificName,
-                dateSinceLastWater = Period.between(myPlant.lastWateredDate, now).days,
-                dateSinceLastFertilizer = Period.between(myPlant.lastFertilizerDate, now).days,
-                dateSinceLasthealthCheck = Period.between(myPlant.lastHealthCheckDate, now).days,
+                dateSinceLastWater = myPlant.getDateSinceLastWater(now),
+                dateSinceLastFertilizer = myPlant.getDateSinceLastFertilizer(now),
+                dateSinceLasthealthCheck = myPlant.getDateSinceLastHealthCheck(now),
             )
     }
 }

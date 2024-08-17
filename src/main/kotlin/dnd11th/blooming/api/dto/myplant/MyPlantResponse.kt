@@ -17,10 +17,12 @@ data class MyPlantResponse(
     val imageUrl: String,
     @field:Schema(description = "내 식물 학명", example = "몬스테라 델리오사")
     val scientificName: String,
-    @field:Schema(description = "다음 물주기까지 남은 날짜", example = "4")
-    val waterRemainDay: Int?,
-    @field:Schema(description = "다음 비료주기까지 남은 날짜", example = "45")
-    val fertilizerRemainDay: Int?,
+    @field:Schema(description = "마지막 물주기로부터 지난 날짜", example = "2")
+    val dateSinceLastWater: Int?,
+    @field:Schema(description = "마지막 비료주기로부터 지난 날짜", example = "30")
+    val dateSinceLastFertilizer: Int?,
+    @field:Schema(description = "마지막 눈길주기로부터 지난 날짜", example = "30")
+    val dateSinceLasthealthCheck: Int,
 ) {
     companion object {
         fun of(
@@ -33,8 +35,9 @@ data class MyPlantResponse(
                 nickname = myPlant.nickname,
                 imageUrl = imageUrl,
                 scientificName = myPlant.scientificName,
-                waterRemainDay = myPlant.getWaterRemainDay(now),
-                fertilizerRemainDay = myPlant.getFerilizerRemainDate(now),
+                dateSinceLastWater = myPlant.getDateSinceLastWater(now),
+                dateSinceLastFertilizer = myPlant.getDateSinceLastFertilizer(now),
+                dateSinceLasthealthCheck = myPlant.getDateSinceLastHealthCheck(now),
             )
     }
 }
