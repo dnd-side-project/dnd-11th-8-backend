@@ -66,7 +66,7 @@ class MyPlantController(
         @PathVariable myPlantId: Long,
     ) = myPlantService.fertilizerMyPlant(myPlantId, LocalDate.now())
 
-    @PostMapping("/{myPlantId}/healthCheck")
+    @PostMapping("/{myPlantId}/healthcheck")
     override fun healthCheckMyPlant(
         @PathVariable myPlantId: Long,
     ) = myPlantService.healthCheckMyPlant(myPlantId, LocalDate.now())

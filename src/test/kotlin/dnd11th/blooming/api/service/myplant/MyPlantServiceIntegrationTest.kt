@@ -54,6 +54,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         startDate = DATE_TIME,
                         lastWateredDate = DATE_TIME,
                         lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
@@ -68,6 +69,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         startDate = DATE_TIME,
                         lastWateredDate = DATE_TIME,
                         lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
@@ -153,6 +155,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         startDate = DATE_TIME,
                         lastWateredDate = DATE_TIME,
                         lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
@@ -167,6 +170,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         startDate = DATE_TIME,
                         lastWateredDate = DATE_TIME,
                         lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
@@ -252,6 +256,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         startDate = DATE_TIME,
                         lastWateredDate = DATE_TIME.minusDays(5),
                         lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
@@ -266,6 +271,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         startDate = DATE_TIME,
                         lastWateredDate = DATE_TIME.minusDays(10),
                         lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
@@ -351,6 +357,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         startDate = DATE_TIME,
                         lastWateredDate = DATE_TIME.minusDays(5),
                         lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
@@ -365,6 +372,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         startDate = DATE_TIME,
                         lastWateredDate = DATE_TIME.minusDays(10),
                         lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location

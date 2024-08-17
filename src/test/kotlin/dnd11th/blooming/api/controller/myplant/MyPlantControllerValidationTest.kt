@@ -3,7 +3,6 @@ package dnd11th.blooming.api.controller.myplant
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
-import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.service.myplant.MyPlantService
@@ -55,7 +54,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -83,7 +82,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -111,7 +110,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -139,7 +138,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -167,7 +166,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -195,7 +194,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -223,7 +222,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -251,7 +250,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -279,7 +278,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -307,7 +306,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -332,7 +331,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -354,7 +353,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -376,7 +375,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -401,7 +400,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/alarm") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID/alarm") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -423,7 +422,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/alarm") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID/alarm") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -445,28 +444,7 @@ class MyPlantControllerValidationTest : DescribeSpec() {
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/alarm") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = json
-                    }.andExpectAll {
-                        status { isBadRequest() }
-                        jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("건강확인 알림 여부는 필수값입니다."))
-                    }.andDo { print() }
-                }
-            }
-        }
-
-        describe("내 식물 건강확인") {
-            context("건강확인 알림 여부를 전달하지 않으면") {
-                val json =
-                    objectMapper.writeValueAsString(
-                        MyPlantHealthCheckRequest(
-                            healthCheck = null,
-                        ),
-                    )
-                it("예외 응답이 와야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/healthcheck") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID/alarm") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {

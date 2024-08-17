@@ -5,7 +5,6 @@ import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.dto.image.ImageResponse
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
@@ -71,7 +70,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         ),
                     )
                 it("정상 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/plants") {
+                    mockMvc.post("/api/v1/myplants") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }.andExpectAll {
@@ -91,34 +90,38 @@ class MyPlantControllerTest : DescribeSpec() {
                         nickname = NICKNAME,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME,
-                        waterRemainDay = WATER_REAMIN_DAY,
-                        fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
+                        dateSinceLastWater = DATE_SINCE_LAST_WATER,
+                        dateSinceLastFertilizer = DATE_SINCE_LAST_FERTILIZER,
+                        dateSinceLastHealthCheck = DATE_SINCE_LAST_HEALTHCHECK,
                     ),
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID2,
                         nickname = NICKNAME2,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME2,
-                        waterRemainDay = WATER_REAMIN_DAY,
-                        fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
+                        dateSinceLastWater = DATE_SINCE_LAST_WATER,
+                        dateSinceLastFertilizer = DATE_SINCE_LAST_FERTILIZER,
+                        dateSinceLastHealthCheck = DATE_SINCE_LAST_HEALTHCHECK,
                     ),
                 )
             context("내 모든 식물 조회를 하면") {
                 it("정상적으로 모두 조회되어야 한다.") {
-                    mockMvc.get("/api/v1/plants")
+                    mockMvc.get("/api/v1/myplants")
                         .andExpectAll {
                             status { isOk() }
                             jsonPath("$.size()", equalTo(2))
                             jsonPath("$[0].myPlantId", equalTo(MYPLANT_ID.toInt()))
                             jsonPath("$[0].nickname", equalTo(NICKNAME))
                             jsonPath("$[0].scientificName", equalTo(SCIENTIFIC_NAME))
-                            jsonPath("$[0].waterRemainDay", equalTo(WATER_REAMIN_DAY))
-                            jsonPath("$[0].fertilizerRemainDay", equalTo(FERTILIZER_REAMIN_DAY))
+                            jsonPath("$[0].dateSinceLastWater", equalTo(DATE_SINCE_LAST_WATER))
+                            jsonPath("$[0].dateSinceLastFertilizer", equalTo(DATE_SINCE_LAST_FERTILIZER))
+                            jsonPath("$[0].dateSinceLastHealthCheck", equalTo(DATE_SINCE_LAST_HEALTHCHECK))
                             jsonPath("$[1].myPlantId", equalTo(MYPLANT_ID2.toInt()))
                             jsonPath("$[1].nickname", equalTo(NICKNAME2))
                             jsonPath("$[1].scientificName", equalTo(SCIENTIFIC_NAME2))
-                            jsonPath("$[1].waterRemainDay", equalTo(WATER_REAMIN_DAY))
-                            jsonPath("$[1].fertilizerRemainDay", equalTo(FERTILIZER_REAMIN_DAY))
+                            jsonPath("$[1].dateSinceLastWater", equalTo(DATE_SINCE_LAST_WATER))
+                            jsonPath("$[1].dateSinceLastFertilizer", equalTo(DATE_SINCE_LAST_FERTILIZER))
+                            jsonPath("$[1].dateSinceLastHealthCheck", equalTo(DATE_SINCE_LAST_HEALTHCHECK))
                         }.andDo { print() }
                 }
             }
@@ -129,13 +132,14 @@ class MyPlantControllerTest : DescribeSpec() {
                         nickname = NICKNAME,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME,
-                        waterRemainDay = WATER_REAMIN_DAY,
-                        fertilizerRemainDay = FERTILIZER_REAMIN_DAY,
+                        dateSinceLastWater = DATE_SINCE_LAST_WATER,
+                        dateSinceLastFertilizer = DATE_SINCE_LAST_FERTILIZER,
+                        dateSinceLastHealthCheck = DATE_SINCE_LAST_HEALTHCHECK,
                     ),
                 )
             context("locationId를 포함하여 내 모든 식물 조회를 하면") {
                 it("해당 location의 식물만 조회된다.") {
-                    mockMvc.get("/api/v1/plants") {
+                    mockMvc.get("/api/v1/myplants") {
                         param("locationId", LOCATION_ID.toString())
                     }
                         .andExpectAll {
@@ -144,8 +148,9 @@ class MyPlantControllerTest : DescribeSpec() {
                             jsonPath("$[0].myPlantId", equalTo(MYPLANT_ID.toInt()))
                             jsonPath("$[0].nickname", equalTo(NICKNAME))
                             jsonPath("$[0].scientificName", equalTo(SCIENTIFIC_NAME))
-                            jsonPath("$[0].waterRemainDay", equalTo(WATER_REAMIN_DAY))
-                            jsonPath("$[0].fertilizerRemainDay", equalTo(FERTILIZER_REAMIN_DAY))
+                            jsonPath("$[0].dateSinceLastWater", equalTo(DATE_SINCE_LAST_WATER))
+                            jsonPath("$[0].dateSinceLastFertilizer", equalTo(DATE_SINCE_LAST_FERTILIZER))
+                            jsonPath("$[0].dateSinceLastHealthCheck", equalTo(DATE_SINCE_LAST_HEALTHCHECK))
                         }.andDo { print() }
                 }
             }
@@ -157,6 +162,7 @@ class MyPlantControllerTest : DescribeSpec() {
                     MyPlantDetailResponse(
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
+                        plantId = PLANT_ID,
                         location = LOCATION_NAME,
                         startDate = START_DATE,
                         lastWateredTitle = LAST_WATERED_TITLE,
@@ -187,7 +193,7 @@ class MyPlantControllerTest : DescribeSpec() {
             }
             context("존재하는 ID로 조회하면") {
                 it("내 식물이 조회되어야 한다.") {
-                    mockMvc.get("/api/v1/plants/$MYPLANT_ID")
+                    mockMvc.get("/api/v1/myplants/$MYPLANT_ID")
                         .andExpectAll {
                             status { isOk() }
                             jsonPath("$.nickname", equalTo(NICKNAME))
@@ -211,7 +217,7 @@ class MyPlantControllerTest : DescribeSpec() {
             }
             context("존재하지 않는 ID로 조회하면") {
                 it("예외응답이 반한되어야 한다.") {
-                    mockMvc.get("/api/v1/plants/$MYPLANT_ID2")
+                    mockMvc.get("/api/v1/myplants/$MYPLANT_ID2")
                         .andExpectAll {
                             status { isNotFound() }
                             jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
@@ -248,7 +254,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         ),
                     )
                 it("정상 흐름이 반환되어야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID") {
                         contentType = MediaType.APPLICATION_JSON
                         content = request
                     }.andExpectAll {
@@ -268,7 +274,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         ),
                     )
                 it("예외응답이 반환되어야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID2") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID2") {
                         contentType = MediaType.APPLICATION_JSON
                         content = request
                     }.andExpectAll {
@@ -290,7 +296,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         ),
                     )
                 it("예외응답이 반환되어야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID2") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID2") {
                         contentType = MediaType.APPLICATION_JSON
                         content = request
                     }.andExpectAll {
@@ -310,7 +316,7 @@ class MyPlantControllerTest : DescribeSpec() {
             }
             context("정상 요청으로 삭제하면") {
                 it("정상 흐름이 반환되어야 한다.") {
-                    mockMvc.delete("/api/v1/plants/$MYPLANT_ID")
+                    mockMvc.delete("/api/v1/myplants/$MYPLANT_ID")
                         .andExpectAll {
                             status { isOk() }
                         }.andDo { print() }
@@ -318,7 +324,7 @@ class MyPlantControllerTest : DescribeSpec() {
             }
             context("존재하지 않는 내 식물 ID로 삭제하면") {
                 it("예외응답이 반환되어야 한다.") {
-                    mockMvc.delete("/api/v1/plants/$MYPLANT_ID2")
+                    mockMvc.delete("/api/v1/myplants/$MYPLANT_ID2")
                         .andExpectAll {
                             status { isNotFound() }
                             jsonPath("$.message", equalTo("존재하지 않는 내 식물입니다."))
@@ -335,7 +341,7 @@ class MyPlantControllerTest : DescribeSpec() {
             }
             context("물주기 요청을 하면") {
                 it("정상 흐름이 반환된다.") {
-                    mockMvc.post("/api/v1/plants/$MYPLANT_ID/water")
+                    mockMvc.post("/api/v1/myplants/$MYPLANT_ID/water")
                         .andExpectAll {
                             status { isOk() }
                         }.andDo { print() }
@@ -349,7 +355,7 @@ class MyPlantControllerTest : DescribeSpec() {
             }
             context("물주기 요청을 하면") {
                 it("정상 흐름이 반환된다.") {
-                    mockMvc.post("/api/v1/plants/$MYPLANT_ID/fertilizer")
+                    mockMvc.post("/api/v1/myplants/$MYPLANT_ID/fertilizer")
                         .andExpectAll {
                             status { isOk() }
                         }.andDo { print() }
@@ -357,24 +363,16 @@ class MyPlantControllerTest : DescribeSpec() {
             }
         }
 
-        describe("내 식물 건강확인 알림 변경") {
+        describe("내 식물 눈길주기") {
             beforeTest {
-                every { myPlantService.modifyMyPlantHealthCheck(any(), any()) } just runs
+                every { myPlantService.healthCheckMyPlant(any(), any()) } just runs
             }
-            context("건강확인 알림을 변경하면") {
-                val request =
-                    objectMapper.writeValueAsString(
-                        MyPlantHealthCheckRequest(
-                            healthCheck = true,
-                        ),
-                    )
+            context("눈길주기 요청을 하면") {
                 it("정상 흐름이 반환된다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/healthcheck") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = request
-                    }.andExpectAll {
-                        status { isOk() }
-                    }.andDo { print() }
+                    mockMvc.post("/api/v1/myplants/$MYPLANT_ID/healthcheck")
+                        .andExpectAll {
+                            status { isOk() }
+                        }.andDo { print() }
                 }
             }
         }
@@ -397,7 +395,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         ),
                     )
                 it("정상응답이 반환되어야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID/alarm") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID/alarm") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }
@@ -418,7 +416,7 @@ class MyPlantControllerTest : DescribeSpec() {
                         ),
                     )
                 it("예외응답이 반환되어야 한다.") {
-                    mockMvc.patch("/api/v1/plants/$MYPLANT_ID2/alarm") {
+                    mockMvc.patch("/api/v1/myplants/$MYPLANT_ID2/alarm") {
                         contentType = MediaType.APPLICATION_JSON
                         content = json
                     }
@@ -446,8 +444,10 @@ class MyPlantControllerTest : DescribeSpec() {
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
         val LAST_FERTILIZER_DATE: LocalDate = LocalDate.of(2024, 6, 15)
-        const val WATER_REAMIN_DAY = 3
-        const val FERTILIZER_REAMIN_DAY = 3
+        val LAST_HEALTHCHECK_DATE: LocalDate = LocalDate.of(2024, 6, 15)
+        const val DATE_SINCE_LAST_WATER = 3
+        const val DATE_SINCE_LAST_FERTILIZER = 3
+        const val DATE_SINCE_LAST_HEALTHCHECK = 3
 
         const val MYPLANT_ID2 = 2L
         const val SCIENTIFIC_NAME2 = "병아리 눈물"

@@ -17,7 +17,7 @@ data class MyPlantDetailResponse(
     @field:Schema(description = "내 식물 학명", example = "몬스테라 델리오사")
     val scientificName: String,
     @field:Schema(description = "식물 ID", example = "7")
-    val plantId: Long,
+    val plantId: Long?,
     @field:Schema(description = "내 식물 위치 이름", example = "베란다")
     val location: String?,
     @field:Schema(description = "키우기 시작한 날짜", example = "2024-05-17")
@@ -53,7 +53,7 @@ data class MyPlantDetailResponse(
             MyPlantDetailResponse(
                 nickname = myPlant.nickname,
                 scientificName = myPlant.scientificName,
-                plantId = myPlant.plant?.id!!,
+                plantId = myPlant.plant?.id,
                 location = myPlant.getLocationName(),
                 startDate = myPlant.startDate,
                 lastWateredTitle = messageFactory.createWateredTitle(),

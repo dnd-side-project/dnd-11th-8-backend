@@ -22,7 +22,7 @@ data class MyPlantResponse(
     @field:Schema(description = "마지막 비료주기로부터 지난 날짜", example = "30")
     val dateSinceLastFertilizer: Int?,
     @field:Schema(description = "마지막 눈길주기로부터 지난 날짜", example = "30")
-    val dateSinceLasthealthCheck: Int,
+    val dateSinceLastHealthCheck: Int,
 ) {
     companion object {
         fun of(
@@ -37,7 +37,7 @@ data class MyPlantResponse(
                 scientificName = myPlant.scientificName,
                 dateSinceLastWater = myPlant.getDateSinceLastWater(now),
                 dateSinceLastFertilizer = myPlant.getDateSinceLastFertilizer(now),
-                dateSinceLasthealthCheck = myPlant.getDateSinceLastHealthCheck(now),
+                dateSinceLastHealthCheck = myPlant.getDateSinceLastHealthCheck(now),
             )
     }
 }

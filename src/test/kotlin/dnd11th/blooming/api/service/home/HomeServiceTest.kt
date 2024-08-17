@@ -25,6 +25,9 @@ class HomeServiceTest : DescribeSpec(
                     scientificName = "병아리눈물",
                     nickname = "일번",
                     lastWateredDate = LocalDate.of(2024, 5, 16),
+                    lastFertilizerDate = LocalDate.of(2024, 5, 16),
+                    lastHealthCheckDate = LocalDate.of(2024, 5, 16),
+                    startDate = LocalDate.of(2024, 5, 16),
                     alarm = ALARM,
                 ).apply {
                     id = 1
@@ -35,6 +38,9 @@ class HomeServiceTest : DescribeSpec(
                     scientificName = "몬스테라 델리오사",
                     nickname = "이번",
                     lastWateredDate = LocalDate.of(2024, 5, 17),
+                    lastFertilizerDate = LocalDate.of(2024, 5, 16),
+                    lastHealthCheckDate = LocalDate.of(2024, 5, 16),
+                    startDate = LocalDate.of(2024, 5, 16),
                     alarm = ALARM,
                 ).apply {
                     id = 2
@@ -45,6 +51,9 @@ class HomeServiceTest : DescribeSpec(
                     scientificName = "선인장",
                     nickname = "삼번",
                     lastWateredDate = LocalDate.of(2024, 5, 15),
+                    lastFertilizerDate = LocalDate.of(2024, 5, 16),
+                    lastHealthCheckDate = LocalDate.of(2024, 5, 16),
+                    startDate = LocalDate.of(2024, 5, 16),
                     alarm = ALARM,
                 ).apply {
                     id = 3
