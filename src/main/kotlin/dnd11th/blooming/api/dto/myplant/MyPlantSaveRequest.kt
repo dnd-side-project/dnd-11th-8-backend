@@ -11,7 +11,6 @@ import java.time.LocalDate
     description = "내 식물 저장 요청",
 )
 data class MyPlantSaveRequest(
-    // TODO : 식물 종류를 String이 아니라 plantId로 받기
     @field:Schema(description = "식물 ID", example = "3")
     @field:NotNull(message = "식물 종류는 필수값입니다.")
     val plantId: Long?,
@@ -47,6 +46,7 @@ data class MyPlantSaveRequest(
 ) {
     fun toMyPlantCreateDto(): MyPlantCreateDto =
         MyPlantCreateDto(
+            plantId = plantId!!,
             nickname = nickname!!,
             startDate = startDate,
             lastWateredDate = lastWateredDate,

@@ -1,6 +1,7 @@
 package dnd11th.blooming.domain.entity
 
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
+import dnd11th.blooming.domain.entity.plant.Plant
 import dnd11th.blooming.domain.entity.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
@@ -36,6 +37,10 @@ class MyPlant(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     var user: User? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plant_id")
+    var plant: Plant? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
@@ -97,10 +102,10 @@ class MyPlant(
         fun createMyPlant(
             dto: MyPlantCreateDto,
             location: Location,
-            plant: String,
+            plant: Plant,
         ): MyPlant =
             MyPlant(
-                scientificName = plant,
+                scientificName = plant.korName,
                 nickname = dto.nickname,
                 startDate = dto.startDate,
                 lastWateredDate = dto.lastWateredDate,
@@ -115,10 +120,9 @@ class MyPlant(
                     ),
             ).also {
                 it.location = location
-                // it.plant = plant
+                it.plant = plant
                 // it.user = user
                 // TODO : 유저와 매핑 필요
-                // TODO : 식물가이드와 매핑 필요
             }
     }
 }

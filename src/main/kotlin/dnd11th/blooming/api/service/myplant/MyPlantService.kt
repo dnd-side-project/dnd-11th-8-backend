@@ -14,6 +14,7 @@ import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
+import dnd11th.blooming.domain.repository.PlantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,6 +23,7 @@ import java.time.LocalDate
 @Service
 class MyPlantService(
     private val myPlantRepository: MyPlantRepository,
+    private val plantRepository: PlantRepository,
     private val locationRepository: LocationRepository,
     private val myPlantMessageFactory: MyPlantMessageFactory,
     private val imageRepository: ImageRepository,
@@ -36,12 +38,13 @@ class MyPlantService(
                 .findByIdOrNull(locationId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
-        // TODO : 식물 가이드 데이터 가져오기 필요
-        val plant = "몬스테라 델리오사"
+        val plant =
+            plantRepository
+                .findByIdOrNull(dto.plantId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_PLANT)
 
         val myPlant =
             MyPlant.createMyPlant(dto, location, plant)
-
         val savedPlant = myPlantRepository.save(myPlant)
 
         return MyPlantSaveResponse.from(savedPlant)
