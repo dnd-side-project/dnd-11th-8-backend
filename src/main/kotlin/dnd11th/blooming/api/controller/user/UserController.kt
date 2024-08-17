@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/users")
 class UserController(
     private val userRegisterService: UserRegisterService,
-) {
+) : UserApi {
     @PostMapping("/register")
-    fun register(
+    override fun register(
         @PendingUser registerClaims: RegisterClaims,
         @RequestBody userRegisterRequest: UserRegisterRequest,
     ): TokenResponse {

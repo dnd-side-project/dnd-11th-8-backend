@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/login")
 class UserLoginController(
     private val socialLoginService: SocialLoginService,
-) {
+) : UserLoginApi {
     @PostMapping("/{provider}")
-    fun login(
+    override fun login(
         @PathVariable provider: String,
         @RequestBody idTokenRequest: IdTokenRequest,
     ): SocialLoginResponse {
