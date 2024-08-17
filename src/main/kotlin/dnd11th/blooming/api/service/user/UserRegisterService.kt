@@ -29,8 +29,8 @@ class UserRegisterService(
         userRegisterInfo: UserRegisterInfo,
     ): TokenResponse {
         val region: Region =
-            regionRepository.findByCtpIdAndSigId(userRegisterInfo.ctpId, userRegisterInfo.sigId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_REGION)
+            regionRepository.findById(userRegisterInfo.regionId)
+                .orElseThrow { NotFoundException(ErrorType.NOT_FOUND_REGION) }
         val user =
             userRepository.save(
                 User.create(email, userRegisterInfo.nickname, userRegisterInfo.alarmTime, region.nx, region.ny),
