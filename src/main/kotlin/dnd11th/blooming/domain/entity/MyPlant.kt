@@ -13,7 +13,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import java.time.LocalDate
-import java.time.Period
 
 @Entity
 class MyPlant(
@@ -48,6 +47,10 @@ class MyPlant(
     @JoinColumn(name = "location_id")
     var location: Location? = null
 
+    fun getLocationName(): String? {
+        return location?.name
+    }
+
     fun modify(
         nickname: String?,
         location: Location?,
@@ -64,26 +67,6 @@ class MyPlant(
 
     fun modifyAlarm(alarm: Alarm) {
         this.alarm = alarm
-    }
-
-    fun getWaterRemainDay(now: LocalDate): Int? {
-        if (!alarm.waterAlarm) return null
-
-        return alarm.waterPeriod?.let { waterPeriod ->
-            Period.between(now, lastWateredDate).days + waterPeriod
-        }
-    }
-
-    fun getFerilizerRemainDate(now: LocalDate): Int? {
-        if (!alarm.fertilizerAlarm) return null
-
-        return alarm.fertilizerPeriod?.let { fertilizerPeriod ->
-            Period.between(now, lastFertilizerDate).days + fertilizerPeriod
-        }
-    }
-
-    fun getLocationName(): String? {
-        return location?.name
     }
 
     fun doWater(now: LocalDate) {
