@@ -22,11 +22,11 @@ class MyPlant(
     @Column
     var nickname: String,
     @Column
-    var startDate: LocalDate = LocalDate.now(),
+    var startDate: LocalDate,
     @Column
-    var lastWateredDate: LocalDate = LocalDate.now(),
+    var lastWateredDate: LocalDate,
     @Column
-    var lastFertilizerDate: LocalDate = LocalDate.now(),
+    var lastFertilizerDate: LocalDate,
     @Embedded
     var alarm: Alarm,
 ) : BaseEntity() {
@@ -81,9 +81,7 @@ class MyPlant(
     }
 
     fun getLocationName(): String? {
-        return location?.let { location ->
-            location.name
-        }
+        return location?.name
     }
 
     fun doWater(now: LocalDate) {

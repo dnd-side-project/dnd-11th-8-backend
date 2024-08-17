@@ -20,16 +20,15 @@ data class MyPlantSaveRequest(
     @field:Schema(description = "위치 ID", example = "4")
     @field:NotNull(message = "위치는 필수값입니다.")
     val locationId: Long?,
-    // TODO : 키우기 시작한 날짜, 마지막으로 물 준 날짜, 마지막으로 비료 준 날짜 optional로 만들기
     @field:Schema(description = "키우기 시작한 날짜", example = "2024-05-17")
     @field:PastOrPresent(message = "키우기 시작한 날짜는 미래일 수 없습니다.")
-    val startDate: LocalDate,
+    val startDate: LocalDate?,
     @field:Schema(description = "마지막으로 물 준 날짜", example = "2024-05-17")
     @field:PastOrPresent(message = "마지막으로 물 준 날짜는 미래일 수 없습니다.")
-    val lastWateredDate: LocalDate,
+    val lastWateredDate: LocalDate?,
     @field:Schema(description = "마지막으로 비료 준 날짜", example = "2024-05-17")
     @field:PastOrPresent(message = "마지막으로 비료 준 날짜는 미래일 수 없습니다.")
-    val lastFertilizerDate: LocalDate,
+    val lastFertilizerDate: LocalDate?,
     @field:NotNull(message = "물주기 알림 여부는 필수값입니다.")
     @field:Schema(description = "물주기 알림 여부", example = "true")
     val waterAlarm: Boolean?,
@@ -48,9 +47,9 @@ data class MyPlantSaveRequest(
         MyPlantCreateDto(
             plantId = plantId!!,
             nickname = nickname!!,
-            startDate = startDate,
-            lastWateredDate = lastWateredDate,
-            lastFertilizerDate = lastFertilizerDate,
+            startDate = startDate ?: LocalDate.now(),
+            lastWateredDate = lastWateredDate ?: LocalDate.now(),
+            lastFertilizerDate = lastFertilizerDate ?: LocalDate.now(),
             waterAlarm = waterAlarm!!,
             waterPeriod = waterPeriod,
             fertilizerAlarm = fertilizerAlarm!!,
