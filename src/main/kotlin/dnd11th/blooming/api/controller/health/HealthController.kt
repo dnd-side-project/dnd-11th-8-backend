@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.controller
+package dnd11th.blooming.api.controller.health
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.service.user.oauth
+package dnd11th.blooming.api.service.user.oauth.property
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
@@ -6,5 +6,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class KakaoOauthProperties(
     val iss: String,
     val aud: String,
-    val nonce: String,
 )

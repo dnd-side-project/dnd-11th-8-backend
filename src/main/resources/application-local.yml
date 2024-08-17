@@ -27,16 +27,19 @@ auth:
   jwt:
     access:
       secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
-      expiry: 100000000
+      expiry: 1000000000
     refresh:
       secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
-      expiry: 100000000
+      expiry: 1000000000
   oidc:
     provider:
       kakao:
         iss: https://kauth.kakao.com
         aud: ${KAKAO_CLIENT_ID}
-        nonce: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+      apple:
+        iss: https://appleid.apple.com
+        aud: ${APPLE_CLIENT_ID}
+
 
 weather:
   serviceKey: ${OPEN_API_SERVICE_KEY}

@@ -1,4 +1,4 @@
-package dnd11th.blooming.api.controller
+package dnd11th.blooming.api.controller.health
 
 import dnd11th.blooming.common.annotation.ApiErrorResponse
 import dnd11th.blooming.common.exception.ErrorType
