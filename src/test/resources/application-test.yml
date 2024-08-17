@@ -29,8 +29,10 @@ auth:
     provider:
       kakao:
         iss: https://kauth.kakao.com
-        aud: "testkakoclient"
-        nonce: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+        aud: testkakaoclient
+      apple:
+        iss: https://appleid.apple.com
+        aud: testappleclient
 
 weather:
-  serviceKey: "serviceKey"
+  serviceKey: serviceKey
