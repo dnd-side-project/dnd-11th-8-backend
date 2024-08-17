@@ -57,6 +57,7 @@ jobs:
             DB_PASSWORD_PROD=${{ secrets.DB_PASSWORD_PROD }}
             OPEN_API_SERVICE_KEY=${{ secrets.OPEN_API_SERVICE_KEY }}
             KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}
+            APPLE_CLIENT_ID=${{ secrets.APPLE_CLIENT_ID }}
 
       - name: Docker Deploy executing remote ssh commands using ssh_key
         uses: appleboy/ssh-action@v0.1.6
