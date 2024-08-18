@@ -2,6 +2,10 @@ package dnd11th.blooming.api.dto.user
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(
+    name = "RefreshToken Response",
+    description = "토큰 갱신 응답",
+)
 data class TokenResponse(
     @field:Schema(description = "AccessToken", example = "accessToken")
     val accessToken: String,

@@ -3,6 +3,10 @@ package dnd11th.blooming.api.dto.user
 import io.swagger.v3.oas.annotations.media.Schema
 
 sealed class SocialLoginResponse {
+    @Schema(
+        name = "SocialLoginResponse(Success)",
+        description = "소셜 로그인 성공(사용자가 이미 존재할 때)",
+    )
     data class Success(
         @field:Schema(description = "소셜 로그인 성공 여부", example = "success")
         val status: String = "success",
@@ -16,6 +20,10 @@ sealed class SocialLoginResponse {
         val refreshTokenExpiresIn: Int,
     ) : SocialLoginResponse()
 
+    @Schema(
+        name = "SocialLoginResponse(Pending)",
+        description = "소셜 로그인 진행(사용자가 존재하지 않을 때)",
+    )
     data class Pending(
         @field:Schema(description = "소셜 로그인 성공 여부", example = "pending")
         val status: String = "pending",
