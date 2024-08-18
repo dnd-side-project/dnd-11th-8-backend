@@ -28,6 +28,10 @@ class User(
         protected set
 
     @Column
+    var alarmStatus: Boolean = true
+        protected set
+
+    @Column
     @Enumerated(EnumType.STRING)
     var alarmTime: AlarmTime = alarmTime
         protected set
