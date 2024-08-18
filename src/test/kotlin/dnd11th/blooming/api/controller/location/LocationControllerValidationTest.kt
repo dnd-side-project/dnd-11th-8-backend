@@ -7,6 +7,7 @@ import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.service.location.LocationService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.jwt.JwtProvider
+import dnd11th.blooming.domain.repository.user.UserRepository
 import io.kotest.core.spec.style.DescribeSpec
 import org.hamcrest.CoreMatchers.equalTo
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +26,9 @@ class LocationControllerValidationTest : DescribeSpec() {
 
     @MockkBean
     private lateinit var jwtProvider: JwtProvider
+
+    @MockkBean
+    private lateinit var userRepository: UserRepository
 
     @Autowired
     private lateinit var mockMvc: MockMvc

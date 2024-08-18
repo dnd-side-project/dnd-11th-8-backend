@@ -14,6 +14,7 @@ import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.jwt.JwtProvider
+import dnd11th.blooming.domain.repository.user.UserRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
 import io.mockk.just
@@ -38,6 +39,9 @@ class MyPlantControllerTest : DescribeSpec() {
 
     @MockkBean
     private lateinit var jwtProvider: JwtProvider
+
+    @MockkBean
+    private lateinit var userRepository: UserRepository
 
     @Autowired
     private lateinit var mockMvc: MockMvc
