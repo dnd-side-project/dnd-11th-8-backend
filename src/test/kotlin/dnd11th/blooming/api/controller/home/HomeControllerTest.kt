@@ -5,6 +5,7 @@ import dnd11th.blooming.api.dto.home.HomeResponse
 import dnd11th.blooming.api.dto.home.MyPlantHomeResponse
 import dnd11th.blooming.api.service.home.HomeService
 import dnd11th.blooming.common.jwt.JwtProvider
+import dnd11th.blooming.domain.repository.user.UserRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
 import org.hamcrest.CoreMatchers.equalTo
@@ -22,6 +23,9 @@ class HomeControllerTest : DescribeSpec() {
 
     @MockkBean
     private lateinit var jwtProvider: JwtProvider
+
+    @MockkBean
+    private lateinit var userRepository: UserRepository
 
     @Autowired
     private lateinit var mockMvc: MockMvc
