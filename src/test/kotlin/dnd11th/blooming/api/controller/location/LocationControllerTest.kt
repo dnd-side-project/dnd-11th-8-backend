@@ -1,49 +1,23 @@
 package dnd11th.blooming.api.controller.location
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
-import dnd11th.blooming.api.service.location.LocationService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.common.jwt.JwtProvider
-import dnd11th.blooming.domain.repository.user.UserRepository
-import io.kotest.core.spec.style.DescribeSpec
+import dnd11th.blooming.support.WebMvcDescribeSpec
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
 import org.hamcrest.CoreMatchers.equalTo
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
-@WebMvcTest(LocationController::class)
-@ActiveProfiles("test")
-class LocationControllerTest : DescribeSpec() {
-    @MockkBean
-    private lateinit var locationService: LocationService
-
-    @MockkBean
-    private lateinit var jwtProvider: JwtProvider
-
-    @MockkBean
-    private lateinit var userRepository: UserRepository
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    private lateinit var objectMapper: ObjectMapper
-
+class LocationControllerTest : WebMvcDescribeSpec() {
     init {
         describe("위치 저장") {
             every { locationService.saveLocation(any()) } returns
