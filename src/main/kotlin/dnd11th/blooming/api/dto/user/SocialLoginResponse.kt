@@ -8,8 +8,12 @@ sealed class SocialLoginResponse {
         val status: String = "success",
         @field:Schema(description = "accessToken", example = "accessToken")
         val accessToken: String,
+        @field:Schema(description = "accessToken 만료일자(초)", example = "604800(1주일)")
+        val expiresIn: Int,
         @field:Schema(description = "refreshToken", example = "refreshToken")
         val refreshToken: String,
+        @field:Schema(description = "refreshToken 만료일자(초)", example = "15552000(6개월)")
+        val refreshTokenExpiresIn: Int,
     ) : SocialLoginResponse()
 
     data class Pending(

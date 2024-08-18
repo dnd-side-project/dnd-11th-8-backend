@@ -44,7 +44,9 @@ class UserRegisterService(
         userOauthRepository.save(UserOauthInfo(email = email, provider = provider, user = user))
         return TokenResponse(
             accessToken = jwtProvider.generateAccessToken(user.id, user.email),
+            expiresIn = jwtProvider.getExpiredIn(),
             refreshToken = jwtProvider.generateRefreshToken(user.id, user.email),
+            refreshTokenExpiresIn = jwtProvider.getRefreshExpiredIn(),
         )
     }
 }

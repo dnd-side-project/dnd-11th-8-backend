@@ -54,6 +54,16 @@ class JwtProvider(
         return resolveToken(token, jwtProperties.refresh.secret)
     }
 
+    fun getExpiredIn(): Int {
+        val expiryInMillis: Long = jwtProperties.access.expiry
+        return (expiryInMillis / 1000).toInt()
+    }
+
+    fun getRefreshExpiredIn(): Int {
+        val expiryInMillis: Long = jwtProperties.refresh.expiry
+        return (expiryInMillis / 1000).toInt()
+    }
+
     private fun generateToken(
         email: String,
         provider: String,

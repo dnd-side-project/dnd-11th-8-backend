@@ -33,7 +33,9 @@ class SocialLoginService(
         val user: User = userOauthInfo.user
         return SocialLoginResponse.Success(
             accessToken = jwtProvider.generateAccessToken(user.id, user.email),
+            expiresIn = jwtProvider.getExpiredIn(),
             refreshToken = jwtProvider.generateRefreshToken(user.id, user.email),
+            refreshTokenExpiresIn = jwtProvider.getRefreshExpiredIn(),
         )
     }
 }
