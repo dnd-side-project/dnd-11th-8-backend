@@ -67,8 +67,8 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
-            docker stop $(docker ps -a -q)
+            docker stop blooming-server || true
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/blooming-server
-            docker rm -f $(docker ps -a -q)
+            docker rm -f blooming-server || true
             docker run -d --name blooming-server -p ${{ secrets.SERVER_PORT }}:8080 ${{ secrets.DOCKERHUB_USERNAME }}/blooming-server
             docker image prune -f
