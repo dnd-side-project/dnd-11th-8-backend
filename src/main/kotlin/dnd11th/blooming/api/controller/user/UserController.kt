@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.controller.user
 
 import dnd11th.blooming.api.dto.user.MyProfileResponse
+import dnd11th.blooming.api.dto.user.MyProfileUpdateRequest
 import dnd11th.blooming.api.dto.user.TokenResponse
 import dnd11th.blooming.api.dto.user.UserRegisterRequest
 import dnd11th.blooming.api.service.user.UserProfileService
@@ -12,6 +13,7 @@ import dnd11th.blooming.domain.entity.user.OauthProvider
 import dnd11th.blooming.domain.entity.user.RegisterClaims
 import dnd11th.blooming.domain.entity.user.User
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -41,5 +43,14 @@ class UserController(
         @LoginUser user: User,
     ): MyProfileResponse {
         return userProfileService.findProfile(user)
+    }
+
+    @Secured
+    @PatchMapping("/my/nickname")
+    fun updateNickname(
+        @LoginUser user: User,
+        @RequestBody updateNickName: MyProfileUpdateRequest.Nickname
+    ) {
+        userProfileService.updateNickname(user, updateNickName.nickname)
     }
 }

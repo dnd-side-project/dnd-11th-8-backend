@@ -55,4 +55,8 @@ class User(
             return User(email, nickname, alarmTime, nx, ny)
         }
     }
+
+    fun updateNickname(nickname: String) {
+        this.nickname = nickname
+    }
 }
