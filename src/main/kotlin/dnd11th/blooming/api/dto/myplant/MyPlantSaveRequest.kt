@@ -12,7 +12,7 @@ import java.time.LocalDate
 )
 data class MyPlantSaveRequest(
     @field:Schema(description = "식물 학명", example = "몬스테라 델리오사")
-    @field:NotBlank(message = "식물 학명은 필수입니다.")
+    @field:NotBlank(message = "식물 학명은 필수값입니다.")
     val scientificName: String?,
     @field:Schema(description = "식물 ID", example = "3")
     val plantId: Long?,
