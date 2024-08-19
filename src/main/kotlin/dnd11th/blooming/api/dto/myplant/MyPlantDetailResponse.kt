@@ -6,6 +6,7 @@ import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.MyPlant
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
+import java.time.Period
 
 @Schema(
     name = "MyPlant Detail Response",
@@ -20,16 +21,16 @@ data class MyPlantDetailResponse(
     val plantId: Long?,
     @field:Schema(description = "내 식물 위치 이름", example = "베란다")
     val location: String?,
-    @field:Schema(description = "키우기 시작한 날짜", example = "2024-05-17")
-    val startDate: LocalDate,
+    @field:Schema(description = "함께한지 N일째", example = "13")
+    val withDays: Int,
     @field:Schema(description = "마지막으로 물 준 날짜 컴포넌트 제목", example = "마지막으로 물 준 날")
     val lastWateredTitle: String,
     @field:Schema(description = "마지막으로 물 준 날짜 컴포넌트 내용", example = "2024-05-17\n17일전")
-    val lastWateredInfo: String?,
+    val lastWateredInfo: String,
     @field:Schema(description = "마지막으로 비료 준 날짜 컴포넌트 제목", example = "비료주기")
     val lastFertilizerTitle: String,
     @field:Schema(description = "마지막으로 물 준 날짜 컴포넌트 내용", example = "17일전")
-    val lastFertilizerInfo: String?,
+    val lastFertilizerInfo: String,
     @field:Schema(description = "물주기 알림 여부", example = "true")
     val waterAlarm: Boolean,
     @field:Schema(description = "물주기 알림 주기", example = "4")
@@ -55,11 +56,17 @@ data class MyPlantDetailResponse(
                 scientificName = myPlant.scientificName,
                 plantId = myPlant.plant?.id,
                 location = myPlant.getLocationName(),
-                startDate = myPlant.startDate,
+                withDays = Period.between(myPlant.startDate, now).days,
                 lastWateredTitle = messageFactory.createWateredTitle(),
-                lastWateredInfo = myPlant.lastWateredDate?.let { messageFactory.createWateredInfo(it, now) },
+                lastWateredInfo =
+                    myPlant.lastWateredDate?.let {
+                        messageFactory.createWateredInfo(it, now)
+                    } ?: "기록없음",
                 lastFertilizerTitle = messageFactory.createFertilizerTitle(),
-                lastFertilizerInfo = myPlant.lastFertilizerDate?.let { messageFactory.createFertilizerInfo(it, now) },
+                lastFertilizerInfo =
+                    myPlant.lastFertilizerDate?.let {
+                        messageFactory.createFertilizerInfo(it, now)
+                    } ?: "기록없음",
                 waterAlarm = myPlant.alarm.waterAlarm,
                 waterPeriod = myPlant.alarm.waterPeriod,
                 fertilizerAlarm = myPlant.alarm.fertilizerAlarm,
