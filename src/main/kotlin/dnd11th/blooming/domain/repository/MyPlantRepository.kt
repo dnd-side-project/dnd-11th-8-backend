@@ -21,6 +21,8 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
 
     fun findAllByLocationId(locationId: Long): List<MyPlant>
 
+    fun findAllByUser(user: User): List<MyPlant>
+
     @Modifying
     @Query(
         """
