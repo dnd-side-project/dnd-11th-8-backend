@@ -25,7 +25,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {
-                every { myPlantService.saveMyPlant(any(), any()) } returns
+                every { myPlantService.saveMyPlant(any(), any(), any()) } returns
                     MyPlantSaveResponse(
                         myPlantId = MYPLANT_ID,
                     )
@@ -61,7 +61,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         }
 
         describe("내 식물 전체 조회") {
-            every { myPlantService.findAllMyPlant(any(), any(), any()) } returns
+            every { myPlantService.findAllMyPlant(any(), any(), any(), any()) } returns
                 listOf(
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID,
@@ -103,7 +103,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         }.andDo { print() }
                 }
             }
-            every { myPlantService.findAllMyPlant(any(), LOCATION_ID, any()) } returns
+            every { myPlantService.findAllMyPlant(any(), LOCATION_ID, any(), any()) } returns
                 listOf(
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID,
@@ -136,7 +136,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물 상세 조회") {
             beforeTest {
-                every { myPlantService.findMyPlantDetail(MYPLANT_ID, any()) } returns
+                every { myPlantService.findMyPlantDetail(MYPLANT_ID, any(), any()) } returns
                     MyPlantDetailResponse(
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
@@ -166,7 +166,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                                 ),
                             ),
                     )
-                every { myPlantService.findMyPlantDetail(MYPLANT_ID2, any()) } throws
+                every { myPlantService.findMyPlantDetail(MYPLANT_ID2, any(), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
             }
             context("존재하는 ID로 조회하면") {
@@ -207,8 +207,8 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물 수정") {
             beforeTest {
-                every { myPlantService.modifyMyPlant(any(), any()) } just runs
-                every { myPlantService.modifyMyPlant(not(eq(MYPLANT_ID)), any()) } throws
+                every { myPlantService.modifyMyPlant(any(), any(), any()) } just runs
+                every { myPlantService.modifyMyPlant(not(eq(MYPLANT_ID)), any(), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
                 every {
                     myPlantService.modifyMyPlant(
@@ -216,6 +216,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         match {
                             it.locationId != LOCATION_ID
                         },
+                        any(),
                     )
                 } throws
                     NotFoundException(ErrorType.NOT_FOUND_LOCATION)
@@ -288,8 +289,8 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물 삭제") {
             beforeTest {
-                every { myPlantService.deleteMyPlant(any()) } just runs
-                every { myPlantService.deleteMyPlant(not(eq(MYPLANT_ID))) } throws
+                every { myPlantService.deleteMyPlant(any(), any()) } just runs
+                every { myPlantService.deleteMyPlant(not(eq(MYPLANT_ID)), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
             }
             context("정상 요청으로 삭제하면") {
@@ -315,7 +316,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물 물주기") {
             beforeTest {
-                every { myPlantService.waterMyPlant(any(), any()) } just runs
+                every { myPlantService.waterMyPlant(any(), any(), any()) } just runs
             }
             context("물주기 요청을 하면") {
                 it("정상 흐름이 반환된다.") {
@@ -329,7 +330,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물 비료주기") {
             beforeTest {
-                every { myPlantService.fertilizerMyPlant(any(), any()) } just runs
+                every { myPlantService.fertilizerMyPlant(any(), any(), any()) } just runs
             }
             context("물주기 요청을 하면") {
                 it("정상 흐름이 반환된다.") {
@@ -343,7 +344,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물 눈길주기") {
             beforeTest {
-                every { myPlantService.healthCheckMyPlant(any(), any()) } just runs
+                every { myPlantService.healthCheckMyPlant(any(), any(), any()) } just runs
             }
             context("눈길주기 요청을 하면") {
                 it("정상 흐름이 반환된다.") {
@@ -357,8 +358,8 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물의 알림 수정") {
             beforeTest {
-                every { myPlantService.modifyMyPlantAlarm(MYPLANT_ID, any()) } just runs
-                every { myPlantService.modifyMyPlantAlarm(not(eq(MYPLANT_ID)), any()) } throws
+                every { myPlantService.modifyMyPlantAlarm(MYPLANT_ID, any(), any()) } just runs
+                every { myPlantService.modifyMyPlantAlarm(not(eq(MYPLANT_ID)), any(), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
             }
             context("존재하는 ID로 수정하면") {

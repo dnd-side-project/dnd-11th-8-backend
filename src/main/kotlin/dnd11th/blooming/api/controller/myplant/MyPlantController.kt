@@ -10,6 +10,9 @@ import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSortParam
 import dnd11th.blooming.api.service.myplant.MyPlantService
+import dnd11th.blooming.common.annotation.LoginUser
+import dnd11th.blooming.common.annotation.Secured
+import dnd11th.blooming.domain.entity.user.User
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -27,53 +30,71 @@ import java.time.LocalDate
 class MyPlantController(
     private val myPlantService: MyPlantService,
 ) : MyPlantApi {
+    @Secured
     @PostMapping
     override fun saveMyPlant(
         @RequestBody @Valid request: MyPlantSaveRequest,
-    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request.toMyPlantCreateDto(), request.locationId!!)
+        @LoginUser user: User,
+    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request.toMyPlantCreateDto(), request.locationId!!, user)
 
+    @Secured
     @GetMapping
     override fun findAllMyPlant(
         @RequestParam locationId: Long?,
         @RequestParam(defaultValue = "CREATED") sort: MyPlantSortParam,
         @RequestParam(defaultValue = "DESC") direction: MyPlantDirectionParam,
+        @LoginUser user: User,
     ): List<MyPlantResponse> =
-        myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort, direction))
+        myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort, direction), user)
 
+    @Secured
     @GetMapping("/{myPlantId}")
     override fun findMyPlantDetail(
         @PathVariable myPlantId: Long,
-    ): MyPlantDetailResponse = myPlantService.findMyPlantDetail(myPlantId, LocalDate.now())
+        @LoginUser user: User,
+    ): MyPlantDetailResponse = myPlantService.findMyPlantDetail(myPlantId, LocalDate.now(), user)
 
+    @Secured
     @PatchMapping("/{myPlantId}")
     override fun modifyMyPlant(
         @PathVariable myPlantId: Long,
         @RequestBody @Valid request: MyPlantModifyRequest,
-    ) = myPlantService.modifyMyPlant(myPlantId, request)
+        @LoginUser user: User,
+    ) = myPlantService.modifyMyPlant(myPlantId, request, user)
 
+    @Secured
     @DeleteMapping("/{myPlantId}")
     override fun deleteMyPlant(
         @PathVariable myPlantId: Long,
-    ) = myPlantService.deleteMyPlant(myPlantId)
+        @LoginUser user: User,
+    ) = myPlantService.deleteMyPlant(myPlantId, user)
 
+    @Secured
     @PostMapping("/{myPlantId}/water")
     override fun waterMyPlant(
         @PathVariable myPlantId: Long,
-    ) = myPlantService.waterMyPlant(myPlantId, LocalDate.now())
+        @LoginUser user: User,
+    ) = myPlantService.waterMyPlant(myPlantId, LocalDate.now(), user)
 
+    @Secured
     @PostMapping("/{myPlantId}/fertilizer")
     override fun fertilizerMyPlant(
         @PathVariable myPlantId: Long,
-    ) = myPlantService.fertilizerMyPlant(myPlantId, LocalDate.now())
+        @LoginUser user: User,
+    ) = myPlantService.fertilizerMyPlant(myPlantId, LocalDate.now(), user)
 
+    @Secured
     @PostMapping("/{myPlantId}/healthcheck")
     override fun healthCheckMyPlant(
         @PathVariable myPlantId: Long,
-    ) = myPlantService.healthCheckMyPlant(myPlantId, LocalDate.now())
+        @LoginUser user: User,
+    ) = myPlantService.healthCheckMyPlant(myPlantId, LocalDate.now(), user)
 
+    @Secured
     @PatchMapping("/{myPlantId}/alarm")
     override fun modifyMyPlantAlarm(
         @PathVariable myPlantId: Long,
         @RequestBody @Valid request: AlarmModifyRequest,
-    ) = myPlantService.modifyMyPlantAlarm(myPlantId, request)
+        @LoginUser user: User,
+    ) = myPlantService.modifyMyPlantAlarm(myPlantId, request, user)
 }

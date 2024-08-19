@@ -99,6 +99,7 @@ class MyPlant(
             dto: MyPlantCreateDto,
             location: Location,
             plant: Plant,
+            user: User,
         ): MyPlant =
             MyPlant(
                 scientificName = plant.korName,
@@ -118,8 +119,7 @@ class MyPlant(
             ).also {
                 it.location = location
                 it.plant = plant
-                // it.user = user
-                // TODO : 유저와 매핑 필요
+                it.user = user
             }
     }
 }

@@ -5,9 +5,12 @@ import dnd11th.blooming.domain.entity.Alarm
 import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.entity.user.AlarmTime
+import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
+import dnd11th.blooming.domain.repository.user.UserRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +22,9 @@ import java.time.LocalDateTime
 @SpringBootTest
 @ActiveProfiles("test")
 class MyPlantServiceIntegrationTest : DescribeSpec() {
+    @Autowired
+    lateinit var userRepository: UserRepository
+
     @Autowired
     lateinit var myPlantService: MyPlantService
 
@@ -32,18 +38,32 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
     lateinit var locationRepository: LocationRepository
 
     init {
-        afterTest {
+        afterEach {
             imageRepository.deleteAllInBatch()
             myPlantRepository.deleteAllInBatch()
             locationRepository.deleteAllInBatch()
+            userRepository.deleteAllInBatch()
         }
 
         describe("최근생성순 식물 전체 조회") {
+            val user =
+                userRepository.save(
+                    User(
+                        email = "email",
+                        nickname = "nickname",
+                        alarmTime = AlarmTime.TIME_12_13,
+                        nx = 100,
+                        ny = 100,
+                        id = 1,
+                    ),
+                )
+
             val location =
                 locationRepository.save(
-                    Location(
-                        name = "장소명",
-                    ),
+                    Location(name = "장소명")
+                        .also {
+                            it.user = user
+                        },
                 )
 
             val pastPlant =
@@ -58,6 +78,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                     ).also {
                         it.location = location
+                        it.user = user
                     },
                 )
 
@@ -73,6 +94,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                     ).also {
                         it.location = location
+                        it.user = user
                     },
                 )
 
@@ -128,6 +150,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         now = DATE_TIME,
                         locationId = location.id,
                         sort = MyPlantQueryCreteria.CreatedDesc,
+                        user = user,
                     )
 
                 it("식물 정보와 인삿말과 imageUrl이 잘 조회된다.") {
@@ -140,11 +163,24 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
             }
         }
         describe("오래된 생성순 식물 전체 조회") {
+            val user =
+                userRepository.save(
+                    User(
+                        email = "email",
+                        nickname = "nickname",
+                        alarmTime = AlarmTime.TIME_12_13,
+                        nx = 100,
+                        ny = 100,
+                        id = 1,
+                    ),
+                )
+
             val location =
                 locationRepository.save(
-                    Location(
-                        name = "장소명",
-                    ),
+                    Location(name = "장소명")
+                        .also {
+                            it.user = user
+                        },
                 )
 
             val pastPlant =
@@ -159,6 +195,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                     ).also {
                         it.location = location
+                        it.user = user
                     },
                 )
 
@@ -174,6 +211,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         alarm = Alarm(),
                     ).also {
                         it.location = location
+                        it.user = user
                     },
                 )
 
@@ -229,6 +267,7 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                         now = DATE_TIME,
                         locationId = location.id,
                         sort = MyPlantQueryCreteria.CreatedAsc,
+                        user = user,
                     )
 
                 it("식물 정보와 인삿말과 imageUrl이 잘 조회된다.") {
@@ -241,42 +280,76 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
             }
         }
         describe("최근 물주기순 식물 전체 조회") {
-            val location =
-                locationRepository.save(
-                    Location(
-                        name = "장소명",
+            val user =
+                userRepository.save(
+                    User(
+                        email = "email",
+                        nickname = "nickname",
+                        alarmTime = AlarmTime.TIME_12_13,
+                        nx = 100,
+                        ny = 100,
+                        id = 1,
                     ),
                 )
 
-            val recentPlant =
-                myPlantRepository.save(
-                    MyPlant(
-                        scientificName = "학명1",
-                        nickname = "별명1",
-                        startDate = DATE_TIME,
-                        lastWateredDate = DATE_TIME.minusDays(5),
-                        lastFertilizerDate = DATE_TIME,
-                        lastHealthCheckDate = DATE_TIME,
-                        alarm = Alarm(),
-                    ).also {
-                        it.location = location
-                    },
+            val location =
+                locationRepository.save(
+                    Location(name = "장소명")
+                        .also {
+                            it.user = user
+                        },
                 )
 
             val pastPlant =
                 myPlantRepository.save(
                     MyPlant(
-                        scientificName = "학명2",
-                        nickname = "별명2",
+                        scientificName = "학명1",
+                        nickname = "별명1",
                         startDate = DATE_TIME,
-                        lastWateredDate = DATE_TIME.minusDays(10),
+                        lastWateredDate = DATE_TIME.minusDays(1),
                         lastFertilizerDate = DATE_TIME,
                         lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
+                        it.user = user
                     },
                 )
+
+            val recentPlant =
+                myPlantRepository.save(
+                    MyPlant(
+                        scientificName = "학명2",
+                        nickname = "별명2",
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME,
+                        lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
+                        alarm = Alarm(),
+                    ).also {
+                        it.location = location
+                        it.user = user
+                    },
+                )
+
+            val pastImage =
+                imageRepository.save(
+                    Image(
+                        url = "url4",
+                        favorite = true,
+                    ).also {
+                        it.myPlant = pastPlant
+                    },
+                )
+
+            imageRepository.save(
+                Image(
+                    url = "url5",
+                    favorite = false,
+                ).also {
+                    it.myPlant = pastPlant
+                },
+            )
 
             val recentImage =
                 imageRepository.save(
@@ -305,31 +378,13 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     it.myPlant = recentPlant
                 },
             )
-
-            val pastImage =
-                imageRepository.save(
-                    Image(
-                        url = "url4",
-                        favorite = true,
-                    ).also {
-                        it.myPlant = pastPlant
-                    },
-                )
-
-            imageRepository.save(
-                Image(
-                    url = "url5",
-                    favorite = false,
-                ).also {
-                    it.myPlant = pastPlant
-                },
-            )
             context("식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
                         now = DATE_TIME,
                         locationId = location.id,
                         sort = MyPlantQueryCreteria.WateredDesc,
+                        user = user,
                     )
 
                 it("식물 정보와 인삿말과 imageUrl이 잘 조회된다.") {
@@ -342,42 +397,76 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
             }
         }
         describe("오래된 물주기순 식물 전체 조회") {
-            val location =
-                locationRepository.save(
-                    Location(
-                        name = "장소명",
+            val user =
+                userRepository.save(
+                    User(
+                        email = "email",
+                        nickname = "nickname",
+                        alarmTime = AlarmTime.TIME_12_13,
+                        nx = 100,
+                        ny = 100,
+                        id = 1,
                     ),
                 )
 
-            val recentPlant =
-                myPlantRepository.save(
-                    MyPlant(
-                        scientificName = "학명1",
-                        nickname = "별명1",
-                        startDate = DATE_TIME,
-                        lastWateredDate = DATE_TIME.minusDays(5),
-                        lastFertilizerDate = DATE_TIME,
-                        lastHealthCheckDate = DATE_TIME,
-                        alarm = Alarm(),
-                    ).also {
-                        it.location = location
-                    },
+            val location =
+                locationRepository.save(
+                    Location(name = "장소명")
+                        .also {
+                            it.user = user
+                        },
                 )
 
             val pastPlant =
                 myPlantRepository.save(
                     MyPlant(
-                        scientificName = "학명2",
-                        nickname = "별명2",
+                        scientificName = "학명1",
+                        nickname = "별명1",
                         startDate = DATE_TIME,
-                        lastWateredDate = DATE_TIME.minusDays(10),
+                        lastWateredDate = DATE_TIME.minusDays(1),
                         lastFertilizerDate = DATE_TIME,
                         lastHealthCheckDate = DATE_TIME,
                         alarm = Alarm(),
                     ).also {
                         it.location = location
+                        it.user = user
                     },
                 )
+
+            val recentPlant =
+                myPlantRepository.save(
+                    MyPlant(
+                        scientificName = "학명2",
+                        nickname = "별명2",
+                        startDate = DATE_TIME,
+                        lastWateredDate = DATE_TIME,
+                        lastFertilizerDate = DATE_TIME,
+                        lastHealthCheckDate = DATE_TIME,
+                        alarm = Alarm(),
+                    ).also {
+                        it.location = location
+                        it.user = user
+                    },
+                )
+
+            val pastImage =
+                imageRepository.save(
+                    Image(
+                        url = "url4",
+                        favorite = true,
+                    ).also {
+                        it.myPlant = pastPlant
+                    },
+                )
+
+            imageRepository.save(
+                Image(
+                    url = "url5",
+                    favorite = false,
+                ).also {
+                    it.myPlant = pastPlant
+                },
+            )
 
             val recentImage =
                 imageRepository.save(
@@ -406,31 +495,13 @@ class MyPlantServiceIntegrationTest : DescribeSpec() {
                     it.myPlant = recentPlant
                 },
             )
-
-            val pastImage =
-                imageRepository.save(
-                    Image(
-                        url = "url4",
-                        favorite = true,
-                    ).also {
-                        it.myPlant = pastPlant
-                    },
-                )
-
-            imageRepository.save(
-                Image(
-                    url = "url5",
-                    favorite = false,
-                ).also {
-                    it.myPlant = pastPlant
-                },
-            )
             context("식물 전체 조회를 하면") {
                 val result =
                     myPlantService.findAllMyPlant(
                         now = DATE_TIME,
                         locationId = location.id,
                         sort = MyPlantQueryCreteria.WateredAsc,
+                        user = user,
                     )
 
                 it("식물 정보와 인삿말과 imageUrl이 잘 조회된다.") {
