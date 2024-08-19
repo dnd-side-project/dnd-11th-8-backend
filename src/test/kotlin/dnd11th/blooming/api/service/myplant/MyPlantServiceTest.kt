@@ -12,6 +12,7 @@ import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.entity.plant.Difficulty
 import dnd11th.blooming.domain.entity.plant.Fertilizer
+import dnd11th.blooming.domain.entity.plant.GrowLocation
 import dnd11th.blooming.domain.entity.plant.GrowTemperature
 import dnd11th.blooming.domain.entity.plant.Humidity
 import dnd11th.blooming.domain.entity.plant.Light
@@ -542,7 +543,7 @@ class MyPlantServiceTest : DescribeSpec(
                 Fertilizer.NOT_VERY_DEMANDING,
                 Humidity.HUMIDITY_0_40,
                 "",
-                "",
+                GrowLocation.VERANDA,
                 "",
             )
 
