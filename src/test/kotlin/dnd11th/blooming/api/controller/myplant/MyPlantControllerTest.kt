@@ -1,7 +1,5 @@
 package dnd11th.blooming.api.controller.myplant
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.dto.image.ImageResponse
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
@@ -9,41 +7,21 @@ import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
-import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.common.jwt.JwtProvider
-import io.kotest.core.spec.style.DescribeSpec
+import dnd11th.blooming.support.WebMvcDescribeSpec
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
 import org.hamcrest.CoreMatchers.equalTo
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import java.time.LocalDate
 
-@WebMvcTest(MyPlantController::class)
-@ActiveProfiles("test")
-class MyPlantControllerTest : DescribeSpec() {
-    @MockkBean
-    private lateinit var myPlantService: MyPlantService
-
-    @MockkBean
-    private lateinit var jwtProvider: JwtProvider
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    private lateinit var objectMapper: ObjectMapper
-
+class MyPlantControllerTest : WebMvcDescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {

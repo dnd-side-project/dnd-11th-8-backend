@@ -2,6 +2,7 @@ package dnd11th.blooming.domain.repository
 
 import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.entity.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -30,12 +31,5 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
         @Param("locationId") locationId: Long,
     )
 
-	/*
-	@Query("SELECT b FROM B b WHERE b.c.id = :cId")
-    List<B> findByCId(@Param("cId") Long cId);
-
-    @Modifying
-    @Query("DELETE FROM B b WHERE b.c.id = :cId")
-    void deleteByCId(@Param("cId") Long cId);
-	 */
+    fun countByUser(user: User): Int
 }

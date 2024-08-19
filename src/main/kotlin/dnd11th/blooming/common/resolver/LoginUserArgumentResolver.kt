@@ -1,8 +1,11 @@
 package dnd11th.blooming.common.resolver
 
 import dnd11th.blooming.common.annotation.LoginUser
+import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.entity.user.UserClaims
+import dnd11th.blooming.domain.repository.user.UserRepository
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.support.WebDataBinderFactory
@@ -12,7 +15,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
 @Component
-class LoginUserArgumentResolver : HandlerMethodArgumentResolver {
+class LoginUserArgumentResolver(
+    private val userRepository: UserRepository,
+) : HandlerMethodArgumentResolver {
     companion object {
         private const val ATTRIBUTE_KEY = "claims"
     }
@@ -31,6 +36,8 @@ class LoginUserArgumentResolver : HandlerMethodArgumentResolver {
         val value =
             webRequest.getAttribute(ATTRIBUTE_KEY, RequestAttributes.SCOPE_REQUEST)
                 ?: throw IllegalArgumentException()
-        return value as UserClaims
+        val userClaims: UserClaims = value as UserClaims
+        return userRepository.findById(userClaims.id as Long)
+            .orElseThrow { NotFoundException(ErrorType.USER_NOT_FOUND) }
     }
 }

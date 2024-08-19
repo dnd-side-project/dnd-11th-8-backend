@@ -1,31 +1,13 @@
 package dnd11th.blooming.api.controller.home
 
-import com.ninjasquad.springmockk.MockkBean
 import dnd11th.blooming.api.dto.home.HomeResponse
 import dnd11th.blooming.api.dto.home.MyPlantHomeResponse
-import dnd11th.blooming.api.service.home.HomeService
-import dnd11th.blooming.common.jwt.JwtProvider
-import io.kotest.core.spec.style.DescribeSpec
+import dnd11th.blooming.support.WebMvcDescribeSpec
 import io.mockk.every
 import org.hamcrest.CoreMatchers.equalTo
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
-@WebMvcTest(HomeController::class)
-@ActiveProfiles("test")
-class HomeControllerTest : DescribeSpec() {
-    @MockkBean
-    private lateinit var homeService: HomeService
-
-    @MockkBean
-    private lateinit var jwtProvider: JwtProvider
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
-
+class HomeControllerTest : WebMvcDescribeSpec() {
     init {
         describe("홈 화면") {
             every { homeService.getHome(any()) } returns
