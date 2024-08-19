@@ -5,6 +5,7 @@ import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
 import dnd11th.blooming.api.dto.location.MyPlantExistInLocationResponse
+import dnd11th.blooming.common.exception.BadRequestException
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
@@ -26,6 +27,8 @@ class LocationService(
         dto: LocationCreateDto,
         user: User,
     ): LocationSaveResponse {
+        if (locationRepository.countByUser(user) > 3) throw BadRequestException(ErrorType.LOCATION_COUNT_EXCEED)
+
         val location = Location.createLocation(dto, user)
 
         val savedLocation = locationRepository.save(location)
