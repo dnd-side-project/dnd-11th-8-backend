@@ -11,14 +11,14 @@ import java.time.LocalDate
     description = "내 식물 저장 요청",
 )
 data class MyPlantSaveRequest(
+    @field:Schema(description = "식물 학명", example = "몬스테라 델리오사")
+    @field:NotBlank(message = "식물 학명은 필수입니다.")
+    val scientificName: String?,
     @field:Schema(description = "식물 ID", example = "3")
-    @field:NotNull(message = "식물 종류는 필수값입니다.")
     val plantId: Long?,
-    @field:Schema(description = "식물 별명", example = "쫑쫑이")
-    @field:NotBlank(message = "식물 별명은 필수값입니다.")
+    @field:Schema(description = "내 식물 별명", example = "쫑쫑이")
     val nickname: String?,
     @field:Schema(description = "위치 ID", example = "4")
-    @field:NotNull(message = "위치는 필수값입니다.")
     val locationId: Long?,
     @field:Schema(description = "키우기 시작한 날짜", example = "2024-05-17")
     @field:PastOrPresent(message = "키우기 시작한 날짜는 미래일 수 없습니다.")
@@ -45,8 +45,10 @@ data class MyPlantSaveRequest(
 ) {
     fun toMyPlantCreateDto(): MyPlantCreateDto =
         MyPlantCreateDto(
-            plantId = plantId!!,
-            nickname = nickname!!,
+            nickname = nickname,
+            scientificName = scientificName!!,
+            plantId = plantId,
+            locationId = locationId,
             startDate = startDate ?: LocalDate.now(),
             lastWateredDate = lastWateredDate,
             lastFertilizerDate = lastFertilizerDate,

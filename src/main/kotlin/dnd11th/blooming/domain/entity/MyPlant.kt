@@ -97,13 +97,13 @@ class MyPlant(
     companion object {
         fun createMyPlant(
             dto: MyPlantCreateDto,
-            location: Location,
-            plant: Plant,
+            location: Location?,
+            plant: Plant?,
             user: User,
         ): MyPlant =
             MyPlant(
-                scientificName = plant.korName,
-                nickname = dto.nickname,
+                scientificName = plant?.korName ?: dto.scientificName, // plant가 없으면 scientificName 사용
+                nickname = dto.nickname ?: dto.scientificName, // nickname이 없으면 scientificName 사용
                 startDate = dto.startDate,
                 lastWateredDate = dto.lastWateredDate,
                 lastFertilizerDate = dto.lastFertilizerDate,

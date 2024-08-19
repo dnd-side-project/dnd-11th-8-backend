@@ -35,7 +35,7 @@ class MyPlantController(
     override fun saveMyPlant(
         @RequestBody @Valid request: MyPlantSaveRequest,
         @LoginUser user: User,
-    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request.toMyPlantCreateDto(), request.locationId!!, user)
+    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request.toMyPlantCreateDto(), user)
 
     @Secured
     @GetMapping

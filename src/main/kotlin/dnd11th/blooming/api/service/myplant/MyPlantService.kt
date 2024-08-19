@@ -9,7 +9,9 @@ import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.entity.plant.Plant
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
@@ -31,18 +33,10 @@ class MyPlantService(
     @Transactional
     fun saveMyPlant(
         dto: MyPlantCreateDto,
-        locationId: Long,
         user: User,
     ): MyPlantSaveResponse {
-        val location =
-            locationRepository
-                .findByIdAndUser(locationId, user)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
-
-        val plant =
-            plantRepository
-                .findByIdOrNull(dto.plantId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_PLANT)
+        val location: Location? = dto.locationId?.let { locationRepository.findByIdAndUser(it, user) }
+        val plant: Plant? = dto.plantId?.let { plantRepository.findByIdOrNull(it) }
 
         val myPlant = MyPlant.createMyPlant(dto, location, plant, user)
 
