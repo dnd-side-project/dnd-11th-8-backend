@@ -1,33 +1,33 @@
 package dnd11th.blooming.domain.entity.plant
 
 enum class Water(
-    val description: String,
-    val waterPerWeek: String,
     val periodDay: Int,
+    val waterPerWeek: Int,
+    val description: String,
     val apiName: String,
 ) {
     WET(
-        "흙을 항상 축축하게 유지",
-        "일주일에 3번",
         2,
+        3,
+        "흙을 항상 축축하게 유지",
         "흙을 항상 축축하게 유지함(물에 잠김)",
     ),
     MOIST(
-        "흙을 촉촉하게 유지",
-        "일주일에 2번",
         3,
+        2,
+        "흙을 촉촉하게 유지",
         "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
     ),
     SURFACE_DRY(
-        "흙 표면이 말랐을 때 충분히 관수",
-        "일주일에 1번",
         5,
+        1,
+        "흙 표면이 말랐을 때 충분히 관수",
         "토양 표면이 말랐을때 충분히 관수함",
     ),
     DRY(
-        "흙 대부분이 말랐을 때 충분히 관수",
-        "일주일에 1번",
         7,
+        1,
+        "흙 대부분이 말랐을 때 충분히 관수",
         "화분 흙 대부분이 말랐을때 충분히 관수함",
     ),
 }
