@@ -29,10 +29,15 @@ class Location(
     }
 
     companion object {
-        fun createLocation(dto: LocationCreateDto): Location =
+        fun createLocation(
+            dto: LocationCreateDto,
+            user: User,
+        ): Location =
             Location(
                 name = dto.name,
-            )
+            ).also {
+                it.user = user
+            }
 
         fun createDefaultLocations(user: User): List<Location> =
             listOf(

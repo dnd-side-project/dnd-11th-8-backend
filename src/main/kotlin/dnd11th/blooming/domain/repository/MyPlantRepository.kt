@@ -24,18 +24,18 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
 
     fun existsByLocationId(locationId: Long): Boolean
 
-    fun findAllByLocationId(locationId: Long): List<MyPlant>
+    fun findAllByLocation(location: Location): List<MyPlant>
 
     fun findAllByUser(user: User): List<MyPlant>
 
     @Modifying
     @Query(
         """
-		DELETE FROM MyPlant mp where mp.location.id = :locationId
+		DELETE FROM MyPlant mp where mp.location = :location
 	""",
     )
-    fun deleteAllByLocationId(
-        @Param("locationId") locationId: Long,
+    fun deleteAllByLocation(
+        @Param("location") location: Location,
     )
 
     fun countByUser(user: User): Int

@@ -8,8 +8,10 @@ import dnd11th.blooming.api.dto.location.MyPlantExistInLocationResponse
 import dnd11th.blooming.common.annotation.ApiErrorResponse
 import dnd11th.blooming.common.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.domain.entity.user.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -22,11 +24,16 @@ interface LocationApi {
     fun saveLocation(
         @RequestBody(description = "위치 저장 요청", required = true)
         request: LocationSaveRequest,
+        @Schema(hidden = true)
+        user: User,
     ): LocationSaveResponse
 
     @Operation(summary = "전체 위치들을 조회하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "위치 전체 조회 성공")
-    fun findAllLocation(): List<LocationResponse>
+    fun findAllLocation(
+        @Schema(hidden = true)
+        user: User,
+    ): List<LocationResponse>
 
     @Operation(summary = "위치를 수정하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "위치 수정 성공")
@@ -41,6 +48,8 @@ interface LocationApi {
         locationId: Long,
         @RequestBody(description = "이미지 수정 요청", required = true)
         request: LocationModifyRequest,
+        @Schema(hidden = true)
+        user: User,
     ): LocationResponse
 
     @Operation(summary = "위치에 식물이 존재하는지 조회하는 API 입니다.")
@@ -48,6 +57,8 @@ interface LocationApi {
     fun myPlantExistInLocation(
         @Parameter(description = "위치 ID", required = true)
         locationId: Long,
+        @Schema(hidden = true)
+        user: User,
     ): MyPlantExistInLocationResponse
 
     @Operation(summary = "위치를 삭제하는 API 입니다.")
@@ -56,5 +67,7 @@ interface LocationApi {
     fun deleteLocation(
         @Parameter(description = "위치 ID", required = true)
         locationId: Long,
+        @Schema(hidden = true)
+        user: User,
     )
 }
