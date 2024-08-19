@@ -19,7 +19,7 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
 
     // Location
     NOT_FOUND_LOCATION(HttpStatus.NOT_FOUND, "존재하지 않는 위치입니다.", LogLevel.DEBUG),
-    LOCATION_COUNT_EXCEED(HttpStatus.BAD_REQUEST, "위치는 최대 3개까지만 등록가능합니다.", LogLevel.DEBUG),
+    LOCATION_COUNT_EXCEED(HttpStatus.BAD_REQUEST, "위치는 최대 3개까지만 등록 가능합니다.", LogLevel.DEBUG),
 
     // Auth
     INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다", LogLevel.DEBUG),
