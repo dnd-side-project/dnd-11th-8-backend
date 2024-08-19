@@ -20,19 +20,28 @@ class UserProfileService(
     }
 
     @Transactional
-    fun updateNickname(user: User, nickname: String) {
+    fun updateNickname(
+        user: User,
+        nickname: String
+    ) {
         user.updateNickname(nickname)
         userRepository.save(user)
     }
 
     @Transactional
-    fun updateAlarmStatus(user: User, alarmStatus: Boolean) {
+    fun updateAlarmStatus(
+        user: User,
+        alarmStatus: Boolean
+    ) {
         user.updateAlarmStatus(alarmStatus)
         userRepository.save(user)
     }
 
     @Transactional
-    fun updateAlarmTime(user: User, alarmTime: AlarmTime) {
+    fun updateAlarmTime(
+        user: User,
+        alarmTime: AlarmTime
+    ) {
         user.updateAlarmTime(alarmTime)
         userRepository.save(user)
     }
