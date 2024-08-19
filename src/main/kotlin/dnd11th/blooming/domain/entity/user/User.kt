@@ -59,4 +59,8 @@ class User(
     fun updateNickname(nickname: String) {
         this.nickname = nickname
     }
+
+    fun updateAlarmStatus(status: Boolean) {
+        this.alarmStatus = status
+    }
 }

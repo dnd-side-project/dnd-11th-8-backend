@@ -23,4 +23,10 @@ class UserProfileService(
         user.updateNickname(nickname)
         userRepository.save(user)
     }
+
+    @Transactional
+    fun updateAlarmStatus(user: User, alarmStatus: Boolean) {
+        user.updateAlarmStatus(alarmStatus)
+        userRepository.save(user)
+    }
 }

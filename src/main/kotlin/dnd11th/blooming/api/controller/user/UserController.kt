@@ -53,4 +53,13 @@ class UserController(
     ) {
         userProfileService.updateNickname(user, updateNickName.nickname)
     }
+
+    @Secured
+    @PatchMapping("/my/alarm")
+    fun updateAlarmStatus(
+        @LoginUser user: User,
+        @RequestBody updateAlarmStatus: MyProfileUpdateRequest.AlarmStatus
+    ) {
+        userProfileService.updateAlarmStatus(user, updateAlarmStatus.alarmStatus)
+    }
 }
