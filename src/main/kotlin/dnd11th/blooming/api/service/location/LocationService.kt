@@ -27,7 +27,7 @@ class LocationService(
         dto: LocationCreateDto,
         user: User,
     ): LocationSaveResponse {
-        if (locationRepository.countByUser(user) > 3) throw BadRequestException(ErrorType.LOCATION_COUNT_EXCEED)
+        if (locationRepository.countByUser(user) >= 3) throw BadRequestException(ErrorType.LOCATION_COUNT_EXCEED)
 
         val location = Location.createLocation(dto, user)
 
