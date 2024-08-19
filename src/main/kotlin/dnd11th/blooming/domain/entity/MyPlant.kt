@@ -1,6 +1,7 @@
 package dnd11th.blooming.domain.entity
 
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
+import dnd11th.blooming.domain.entity.plant.Plant
 import dnd11th.blooming.domain.entity.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
@@ -21,11 +22,13 @@ class MyPlant(
     @Column
     var nickname: String,
     @Column
-    var startDate: LocalDate = LocalDate.now(),
+    var startDate: LocalDate,
     @Column
-    var lastWateredDate: LocalDate = LocalDate.now(),
+    var lastWateredDate: LocalDate?,
     @Column
-    var lastFertilizerDate: LocalDate = LocalDate.now(),
+    var lastFertilizerDate: LocalDate?,
+    @Column
+    var lastHealthCheckDate: LocalDate,
     @Embedded
     var alarm: Alarm,
 ) : BaseEntity() {
@@ -38,8 +41,28 @@ class MyPlant(
     var user: User? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plant_id")
+    var plant: Plant? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     var location: Location? = null
+
+    fun getLocationName(): String? {
+        return location?.name
+    }
+
+    fun getDateSinceLastWater(now: LocalDate): Int? {
+        return lastWateredDate?.let { Period.between(lastWateredDate, now).days }
+    }
+
+    fun getDateSinceLastFertilizer(now: LocalDate): Int? {
+        return lastFertilizerDate?.let { Period.between(lastFertilizerDate, now).days }
+    }
+
+    fun getDateSinceLastHealthCheck(now: LocalDate): Int {
+        return Period.between(lastHealthCheckDate, now).days
+    }
 
     fun modify(
         nickname: String?,
@@ -59,28 +82,6 @@ class MyPlant(
         this.alarm = alarm
     }
 
-    fun getWaterRemainDay(now: LocalDate): Int? {
-        if (!alarm.waterAlarm) return null
-
-        return alarm.waterPeriod?.let { waterPeriod ->
-            Period.between(now, lastWateredDate).days + waterPeriod
-        }
-    }
-
-    fun getFerilizerRemainDate(now: LocalDate): Int? {
-        if (!alarm.fertilizerAlarm) return null
-
-        return alarm.fertilizerPeriod?.let { fertilizerPeriod ->
-            Period.between(now, lastFertilizerDate).days + fertilizerPeriod
-        }
-    }
-
-    fun getLocationName(): String? {
-        return location?.let { location ->
-            location.name
-        }
-    }
-
     fun doWater(now: LocalDate) {
         lastWateredDate = now
     }
@@ -89,22 +90,23 @@ class MyPlant(
         lastFertilizerDate = now
     }
 
-    fun modifyHealthCheck(healthCheckAlarm: Boolean) {
-        this.alarm.healthCheckAlarm = healthCheckAlarm
+    fun doHealthCheck(now: LocalDate) {
+        lastHealthCheckDate = now
     }
 
     companion object {
         fun createMyPlant(
             dto: MyPlantCreateDto,
             location: Location,
-            plant: String,
+            plant: Plant,
         ): MyPlant =
             MyPlant(
-                scientificName = plant,
+                scientificName = plant.korName,
                 nickname = dto.nickname,
                 startDate = dto.startDate,
                 lastWateredDate = dto.lastWateredDate,
                 lastFertilizerDate = dto.lastFertilizerDate,
+                lastHealthCheckDate = LocalDate.now(),
                 alarm =
                     Alarm(
                         waterAlarm = dto.waterAlarm,
@@ -115,10 +117,9 @@ class MyPlant(
                     ),
             ).also {
                 it.location = location
-                // it.plant = plant
+                it.plant = plant
                 // it.user = user
                 // TODO : 유저와 매핑 필요
-                // TODO : 식물가이드와 매핑 필요
             }
     }
 }

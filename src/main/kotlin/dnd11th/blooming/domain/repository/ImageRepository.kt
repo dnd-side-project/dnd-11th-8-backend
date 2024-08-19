@@ -37,4 +37,14 @@ interface ImageRepository : JpaRepository<Image, Long> {
     fun deleteAllInBatchByMyPlant(
         @Param("myPlant") myPlant: MyPlant,
     )
+
+    @Modifying
+    @Query(
+        """
+	DELETE FROM Image i WHERE i.myPlant IN :myPlants
+	""",
+    )
+    fun deleteAllByMyPlantIn(
+        @Param("myPlants") myPlants: List<MyPlant>,
+    )
 }

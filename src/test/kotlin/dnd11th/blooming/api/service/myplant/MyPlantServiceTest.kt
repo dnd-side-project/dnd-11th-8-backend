@@ -2,7 +2,6 @@ package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
-import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantIdWithImageUrl
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.common.exception.ErrorType
@@ -11,9 +10,20 @@ import dnd11th.blooming.domain.entity.Alarm
 import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.entity.plant.Difficulty
+import dnd11th.blooming.domain.entity.plant.Fertilizer
+import dnd11th.blooming.domain.entity.plant.GrowLocation
+import dnd11th.blooming.domain.entity.plant.GrowTemperature
+import dnd11th.blooming.domain.entity.plant.Humidity
+import dnd11th.blooming.domain.entity.plant.Light
+import dnd11th.blooming.domain.entity.plant.LowestTemperature
+import dnd11th.blooming.domain.entity.plant.Plant
+import dnd11th.blooming.domain.entity.plant.Toxicity
+import dnd11th.blooming.domain.entity.plant.Water
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
+import dnd11th.blooming.domain.repository.PlantRepository
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -28,19 +38,30 @@ import java.time.LocalDate
 class MyPlantServiceTest : DescribeSpec(
     {
         val myPlantRepsitory = mockk<MyPlantRepository>()
+        val plantRepository = mockk<PlantRepository>()
         val locationRepository = mockk<LocationRepository>()
         val imageRepository = mockk<ImageRepository>()
         val myPlantMessageFactory = mockk<MyPlantMessageFactory>()
         val myPlantService =
-            MyPlantService(myPlantRepsitory, locationRepository, myPlantMessageFactory, imageRepository)
+            MyPlantService(
+                myPlantRepsitory,
+                plantRepository,
+                locationRepository,
+                myPlantMessageFactory,
+                imageRepository,
+            )
 
         describe("내 식물 저장") {
+            every { plantRepository.findByIdOrNull(PLANT_ID) } returns
+                PLANT
             every { myPlantRepsitory.save(any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = MYPLANT_ID
@@ -51,6 +72,7 @@ class MyPlantServiceTest : DescribeSpec(
                 val request =
                     MyPlantCreateDto(
                         nickname = NICKNAME,
+                        plantId = PLANT_ID,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -74,8 +96,10 @@ class MyPlantServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "병아리눈물",
                     nickname = "식물1",
-                    lastWateredDate = LocalDate.of(2024, 5, 16),
-                    lastFertilizerDate = LocalDate.of(2024, 5, 16),
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = 1
@@ -85,8 +109,10 @@ class MyPlantServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "몬스테라 델리오사",
                     nickname = "식물2",
-                    lastWateredDate = LocalDate.of(2024, 5, 17),
-                    lastFertilizerDate = LocalDate.of(2024, 5, 17),
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = 2
@@ -96,8 +122,10 @@ class MyPlantServiceTest : DescribeSpec(
                 MyPlant(
                     scientificName = "선인장",
                     nickname = "식물3",
-                    lastWateredDate = LocalDate.of(2024, 5, 15),
-                    lastFertilizerDate = LocalDate.of(2024, 5, 15),
+                    startDate = START_DATE,
+                    lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = 3
@@ -132,22 +160,25 @@ class MyPlantServiceTest : DescribeSpec(
                     response[0].nickname shouldBe "식물1"
                     response[0].imageUrl shouldBe "url1"
                     response[0].scientificName shouldBe "병아리눈물"
-                    response[0].waterRemainDay shouldBe 2
-                    response[0].fertilizerRemainDay shouldBe 29
+                    response[0].dateSinceLastWater shouldBe 1
+                    response[0].dateSinceLastFertilizer shouldBe 1
+                    response[0].dateSinceLastHealthCheck shouldBe 1
 
                     response[1].myPlantId shouldBe 2
                     response[1].nickname shouldBe "식물2"
                     response[1].imageUrl shouldBe "url2"
                     response[1].scientificName shouldBe "몬스테라 델리오사"
-                    response[1].waterRemainDay shouldBe 3
-                    response[1].fertilizerRemainDay shouldBe 30
+                    response[0].dateSinceLastWater shouldBe 1
+                    response[0].dateSinceLastFertilizer shouldBe 1
+                    response[0].dateSinceLastHealthCheck shouldBe 1
 
                     response[2].myPlantId shouldBe 3
                     response[2].nickname shouldBe "식물3"
                     response[2].imageUrl shouldBe "url3"
                     response[2].scientificName shouldBe "선인장"
-                    response[2].waterRemainDay shouldBe 1
-                    response[2].fertilizerRemainDay shouldBe 28
+                    response[0].dateSinceLastWater shouldBe 1
+                    response[0].dateSinceLastFertilizer shouldBe 1
+                    response[0].dateSinceLastHealthCheck shouldBe 1
                 }
             }
         }
@@ -159,6 +190,8 @@ class MyPlantServiceTest : DescribeSpec(
                     nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = MYPLANT_ID
@@ -220,6 +253,7 @@ class MyPlantServiceTest : DescribeSpec(
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
                     lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 )
             every { myPlantRepsitory.findByIdOrNull(not(eq(MYPLANT_ID))) } returns
@@ -284,6 +318,8 @@ class MyPlantServiceTest : DescribeSpec(
                     nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = MYPLANT_ID
@@ -315,6 +351,8 @@ class MyPlantServiceTest : DescribeSpec(
                     nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = MYPLANT_ID
@@ -347,6 +385,8 @@ class MyPlantServiceTest : DescribeSpec(
                     nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = MYPLANT_ID
@@ -372,39 +412,33 @@ class MyPlantServiceTest : DescribeSpec(
             }
         }
 
-        describe("내 식물 건강확인 알림 변경") {
+        describe("내 식물 눈길주기") {
             every { myPlantRepsitory.findByIdOrNull(MYPLANT_ID) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = MYPLANT_ID
                 }
             every { myPlantRepsitory.findByIdOrNull(not(eq(MYPLANT_ID))) } returns
                 null
-            context("존재하는 내 식물 ID로 내 식물 비료주기 요청하면") {
-                val request =
-                    MyPlantHealthCheckRequest(
-                        healthCheck = true,
-                    )
+            context("존재하는 내 식물 ID로 내 식물 눈길주기 요청하면") {
                 it("정상 흐름이 반환된다.") {
                     shouldNotThrowAny {
-                        myPlantService.modifyMyPlantHealthCheck(MYPLANT_ID, request)
+                        myPlantService.healthCheckMyPlant(MYPLANT_ID, CURRENT_DAY)
                     }
                 }
             }
             context("존재하지 않는 내 식물 ID로 내 식물 비료주기 요청하면") {
-                val request =
-                    MyPlantHealthCheckRequest(
-                        healthCheck = true,
-                    )
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<NotFoundException> {
-                            myPlantService.modifyMyPlantHealthCheck(MYPLANT_ID2, request)
+                            myPlantService.healthCheckMyPlant(MYPLANT_ID2, CURRENT_DAY)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
@@ -419,6 +453,8 @@ class MyPlantServiceTest : DescribeSpec(
                     nickname = NICKNAME,
                     startDate = START_DATE,
                     lastWateredDate = LAST_WATERED_DATE,
+                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                    lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 ).apply {
                     id = MYPLANT_ID
@@ -472,6 +508,7 @@ class MyPlantServiceTest : DescribeSpec(
         val START_DATE: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_WATERED_DATE: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_FERTILIZER_DATE: LocalDate = CURRENT_DAY.minusDays(1)
+        val LAST_HEALTHCHECK_DATE: LocalDate = CURRENT_DAY.minusDays(1)
         const val MYPLANT_ID2 = 2L
 
         const val SCIENTIFIC_NAME2 = "병아리 눈물"
@@ -489,6 +526,26 @@ class MyPlantServiceTest : DescribeSpec(
 
         val ALARM: Alarm =
             Alarm(WATER_ALARM, WATER_PERIOD, FERTILIZER_ALARM, FERTILIZER_PERIOD, HEALTHCHECK_ALARM)
+
+        val PLANT: Plant =
+            Plant(
+                "",
+                "",
+                Water.MOIST,
+                Water.MOIST,
+                100,
+                100,
+                Light.MEDIUM,
+                Difficulty.HIGH,
+                GrowTemperature.GROW_TEMPERATURE_16_20,
+                LowestTemperature.LOWEST_TEMPERATURE_13,
+                Toxicity.EXISTS,
+                Fertilizer.NOT_VERY_DEMANDING,
+                Humidity.HUMIDITY_0_40,
+                "",
+                GrowLocation.VERANDA,
+                "",
+            )
 
         val LOCATION1: Location =
             Location(LOCATION_NAME)

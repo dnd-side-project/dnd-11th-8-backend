@@ -15,16 +15,12 @@ data class MyPlantHomeResponse(
     val nickname: String,
     @field:Schema(description = "내 식물 학명", example = "몬스테라 델리오사")
     val scientificName: String,
-    @field:Schema(description = "물주기 알림 여부", example = "true")
-    val waterAlarm: Boolean,
-    @field:Schema(description = "다음 물주기까지 남은 날짜", example = "2")
-    val waterRemainDay: Int?,
-    @field:Schema(description = "비료주기 알림 여부", example = "false")
-    val fertilizerAlarm: Boolean,
-    @field:Schema(description = "다음 비료주기까지 남은 날짜", example = "30")
-    val fertilizerRemainDay: Int?,
-    @field:Schema(description = "건강확인 알림 여부", example = "true")
-    val healthCheckAlarm: Boolean,
+    @field:Schema(description = "마지막 물주기로부터 지난 날짜", example = "2")
+    val dateSinceLastWater: Int?,
+    @field:Schema(description = "마지막 비료주기로부터 지난 날짜", example = "30")
+    val dateSinceLastFertilizer: Int?,
+    @field:Schema(description = "마지막 눈길주기로부터 지난 날짜", example = "30")
+    val dateSinceLasthealthCheck: Int,
 ) {
     companion object {
         fun of(
@@ -35,11 +31,9 @@ data class MyPlantHomeResponse(
                 myPlantId = myPlant.id,
                 nickname = myPlant.nickname,
                 scientificName = myPlant.scientificName,
-                waterAlarm = myPlant.alarm.waterAlarm,
-                waterRemainDay = myPlant.getWaterRemainDay(now),
-                fertilizerAlarm = myPlant.alarm.fertilizerAlarm,
-                fertilizerRemainDay = myPlant.getFerilizerRemainDate(now),
-                healthCheckAlarm = myPlant.alarm.healthCheckAlarm,
+                dateSinceLastWater = myPlant.getDateSinceLastWater(now),
+                dateSinceLastFertilizer = myPlant.getDateSinceLastFertilizer(now),
+                dateSinceLasthealthCheck = myPlant.getDateSinceLastHealthCheck(now),
             )
     }
 }

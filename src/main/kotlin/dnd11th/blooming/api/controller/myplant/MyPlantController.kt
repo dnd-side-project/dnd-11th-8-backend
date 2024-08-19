@@ -3,7 +3,6 @@ package dnd11th.blooming.api.controller.myplant
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDirectionParam
-import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
 @RestController
-@RequestMapping("/api/v1/plants")
+@RequestMapping("/api/v1/myplants")
 class MyPlantController(
     private val myPlantService: MyPlantService,
 ) : MyPlantApi {
@@ -67,11 +66,10 @@ class MyPlantController(
         @PathVariable myPlantId: Long,
     ) = myPlantService.fertilizerMyPlant(myPlantId, LocalDate.now())
 
-    @PatchMapping("/{myPlantId}/healthcheck")
-    override fun modifyMyPlantHealthCheck(
+    @PostMapping("/{myPlantId}/healthcheck")
+    override fun healthCheckMyPlant(
         @PathVariable myPlantId: Long,
-        @RequestBody @Valid request: MyPlantHealthCheckRequest,
-    ) = myPlantService.modifyMyPlantHealthCheck(myPlantId, request)
+    ) = myPlantService.healthCheckMyPlant(myPlantId, LocalDate.now())
 
     @PatchMapping("/{myPlantId}/alarm")
     override fun modifyMyPlantAlarm(

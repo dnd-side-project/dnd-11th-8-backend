@@ -3,7 +3,6 @@ package dnd11th.blooming.api.controller.myplant
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDirectionParam
-import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
@@ -95,24 +94,18 @@ interface MyPlantApi {
 
     @Operation(summary = "내 식물을 비료를 주는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "내 식물 비료주기 성공")
+    @ApiErrorResponse(ErrorType.NOT_FOUND_MYPLANT, "id에 해당하는 내 식물을 찾지 못했을 때 예외입니다.")
     fun fertilizerMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
         myPlantId: Long,
     )
 
-    @Operation(summary = "내 식물의 건강확인 알림을 변경하는 API 입니다.")
-    @ApiResponse(responseCode = "200", description = "내 식물 건강확인 알림 수정 성공")
-    @ApiErrorResponses(
-        [
-            ApiErrorResponse(ErrorType.NOT_FOUND_MYPLANT, "id에 해당하는 내 식물을 찾지 못했을 때 예외입니다."),
-            ApiErrorResponse(ErrorType.BAD_REQUEST, "요청의 healthCheck가 null일 때 에러입니다."),
-        ],
-    )
-    fun modifyMyPlantHealthCheck(
+    @Operation(summary = "내 식물을 살펴보기를 하는 API 입니다.")
+    @ApiResponse(responseCode = "200", description = "내 식물 살펴보기 성공")
+    @ApiErrorResponse(ErrorType.NOT_FOUND_MYPLANT, "id에 해당하는 내 식물을 찾지 못했을 때 예외입니다.")
+    fun healthCheckMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
         myPlantId: Long,
-        @RequestBody(description = "이미지 건강확인 수정 요청", required = true)
-        request: MyPlantHealthCheckRequest,
     )
 
     @Operation(summary = "내 식물의 알림을 수정하는 API 입니다.")

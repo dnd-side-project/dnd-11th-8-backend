@@ -3,10 +3,11 @@ package dnd11th.blooming.api.dto.myplant
 import java.time.LocalDate
 
 data class MyPlantCreateDto(
+    val plantId: Long,
     val nickname: String,
     val startDate: LocalDate,
-    val lastWateredDate: LocalDate,
-    val lastFertilizerDate: LocalDate,
+    val lastWateredDate: LocalDate?,
+    val lastFertilizerDate: LocalDate?,
     val waterAlarm: Boolean,
     val waterPeriod: Int?,
     val fertilizerAlarm: Boolean,

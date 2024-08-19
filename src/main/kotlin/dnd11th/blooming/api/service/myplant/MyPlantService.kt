@@ -3,7 +3,6 @@ package dnd11th.blooming.api.service.myplant
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantHealthCheckRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
@@ -14,6 +13,7 @@ import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
+import dnd11th.blooming.domain.repository.PlantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,6 +22,7 @@ import java.time.LocalDate
 @Service
 class MyPlantService(
     private val myPlantRepository: MyPlantRepository,
+    private val plantRepository: PlantRepository,
     private val locationRepository: LocationRepository,
     private val myPlantMessageFactory: MyPlantMessageFactory,
     private val imageRepository: ImageRepository,
@@ -36,12 +37,13 @@ class MyPlantService(
                 .findByIdOrNull(locationId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
-        // TODO : 식물 가이드 데이터 가져오기 필요
-        val plant = "몬스테라 델리오사"
+        val plant =
+            plantRepository
+                .findByIdOrNull(dto.plantId)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_PLANT)
 
         val myPlant =
             MyPlant.createMyPlant(dto, location, plant)
-
         val savedPlant = myPlantRepository.save(myPlant)
 
         return MyPlantSaveResponse.from(savedPlant)
@@ -147,15 +149,15 @@ class MyPlantService(
     }
 
     @Transactional
-    fun modifyMyPlantHealthCheck(
+    fun healthCheckMyPlant(
         myPlantId: Long,
-        request: MyPlantHealthCheckRequest,
+        now: LocalDate,
     ) {
         val myPlant =
             myPlantRepository.findByIdOrNull(myPlantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        myPlant.modifyHealthCheck(request.healthCheck!!)
+        myPlant.doHealthCheck(now)
     }
 
     private fun findSortedMyPlantsWithImage(
