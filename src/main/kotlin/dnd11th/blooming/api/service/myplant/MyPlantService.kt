@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
@@ -160,12 +161,14 @@ class MyPlantService(
         myPlantId: Long,
         now: LocalDate,
         user: User,
-    ) {
+    ): HealthCheckResponse {
         val myPlant =
             myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         myPlant.doHealthCheck(now)
+
+        return HealthCheckResponse(myPlantMessageFactory.createHealthCheckMessage())
     }
 
     private fun findSortedMyPlantsWithImage(

@@ -13,6 +13,16 @@ class MyPlantMessageFactory {
             listOf(
                 "%s님 좋아요!\n초보식집사로서 멋진 데뷔네요.",
             )
+        private val healthCheckMessageList =
+            listOf(
+                "환기는 시켜주셨나요?",
+                "식물에 붙은 먼지는 잘 털어 주셨나요?",
+                "애정있게 쳐다보셨나요?",
+                "잎의 색이 건강해보이나요?",
+                "흙의 상태를 점검하셨나요?",
+                "식물이 자라는 방향을 바꿔 주셨나요?",
+                "해충이 없는지 확인하셨나요?",
+            )
     }
 
     fun createGreetingMessage(username: String): String {
@@ -47,5 +57,9 @@ class MyPlantMessageFactory {
         }
 
         return "${monthsPeriod}개월 이내"
+    }
+
+    fun createHealthCheckMessage(): String {
+        return healthCheckMessageList.random()
     }
 }

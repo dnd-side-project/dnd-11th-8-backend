@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.controller.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDirectionParam
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
@@ -124,7 +125,7 @@ interface MyPlantApi {
         myPlantId: Long,
         @Schema(hidden = true)
         user: User,
-    )
+    ): HealthCheckResponse
 
     @Operation(summary = "내 식물의 알림을 수정하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "내 식물 알림 수정 성공")

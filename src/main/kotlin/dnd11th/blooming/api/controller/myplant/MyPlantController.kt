@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.controller.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDirectionParam
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
@@ -88,7 +89,7 @@ class MyPlantController(
     override fun healthCheckMyPlant(
         @PathVariable myPlantId: Long,
         @LoginUser user: User,
-    ) = myPlantService.healthCheckMyPlant(myPlantId, LocalDate.now(), user)
+    ): HealthCheckResponse = myPlantService.healthCheckMyPlant(myPlantId, LocalDate.now(), user)
 
     @Secured
     @PatchMapping("/{myPlantId}/alarm")
