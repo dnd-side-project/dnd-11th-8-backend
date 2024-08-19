@@ -55,4 +55,16 @@ class User(
             return User(email, nickname, alarmTime, nx, ny)
         }
     }
+
+    fun updateNickname(nickname: String) {
+        this.nickname = nickname
+    }
+
+    fun updateAlarmStatus(status: Boolean) {
+        this.alarmStatus = status
+    }
+
+    fun updateAlarmTime(alarmTime: AlarmTime) {
+        this.alarmTime = alarmTime
+    }
 }
