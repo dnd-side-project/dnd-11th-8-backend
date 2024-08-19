@@ -22,7 +22,7 @@ class UserProfileService(
     @Transactional
     fun updateNickname(
         user: User,
-        nickname: String
+        nickname: String,
     ) {
         user.updateNickname(nickname)
         userRepository.save(user)
@@ -31,7 +31,7 @@ class UserProfileService(
     @Transactional
     fun updateAlarmStatus(
         user: User,
-        alarmStatus: Boolean
+        alarmStatus: Boolean,
     ) {
         user.updateAlarmStatus(alarmStatus)
         userRepository.save(user)
@@ -40,7 +40,7 @@ class UserProfileService(
     @Transactional
     fun updateAlarmTime(
         user: User,
-        alarmTime: AlarmTime
+        alarmTime: AlarmTime,
     ) {
         user.updateAlarmTime(alarmTime)
         userRepository.save(user)

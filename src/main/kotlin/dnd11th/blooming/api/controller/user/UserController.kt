@@ -50,7 +50,7 @@ class UserController(
     @PatchMapping("/my/nickname")
     fun updateNickname(
         @LoginUser user: User,
-        @RequestBody updateNickName: MyProfileUpdateRequest.Nickname
+        @RequestBody updateNickName: MyProfileUpdateRequest.Nickname,
     ) {
         userProfileService.updateNickname(user, updateNickName.nickname)
     }
@@ -59,7 +59,7 @@ class UserController(
     @PatchMapping("/my/alarm")
     fun updateAlarmStatus(
         @LoginUser user: User,
-        @RequestBody updateAlarmStatus: MyProfileUpdateRequest.AlarmStatus
+        @RequestBody updateAlarmStatus: MyProfileUpdateRequest.AlarmStatus,
     ) {
         userProfileService.updateAlarmStatus(user, updateAlarmStatus.alarmStatus)
     }
@@ -68,7 +68,7 @@ class UserController(
     @PatchMapping("/my/alarm-time")
     fun updateAlarmTime(
         @LoginUser user: User,
-        @RequestBody updateAlarmTime: MyProfileUpdateRequest.AlarmTime
+        @RequestBody updateAlarmTime: MyProfileUpdateRequest.AlarmTime,
     ) {
         userProfileService.updateAlarmTime(user, AlarmTime.from(updateAlarmTime.alarmTime))
     }
