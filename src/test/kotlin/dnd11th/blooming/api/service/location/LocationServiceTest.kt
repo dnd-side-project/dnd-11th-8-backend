@@ -2,6 +2,7 @@ package dnd11th.blooming.api.service.location
 
 import dnd11th.blooming.api.dto.location.LocationCreateDto
 import dnd11th.blooming.api.dto.location.LocationModifyRequest
+import dnd11th.blooming.common.exception.BadRequestException
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
@@ -33,7 +34,10 @@ class LocationServiceTest : DescribeSpec(
                 ).apply {
                     id = LOCATION_ID
                 }
+
             context("name이 전달되면") {
+                every { locationRepository.countByUser(USER) } returns
+                    2
                 val request =
                     LocationCreateDto(
                         name = "거실",
@@ -43,6 +47,23 @@ class LocationServiceTest : DescribeSpec(
 
                     response.id shouldBe LOCATION_ID
                     response.name shouldBe LOCATION_NAME
+                }
+            }
+            context("위치를 4개 이상 저장하려고 하면") {
+                every { locationRepository.countByUser(USER) } returns
+                    3
+                val request =
+                    LocationCreateDto(
+                        name = "거실",
+                    )
+                it("예외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<BadRequestException> {
+                            locationService.saveLocation(request, USER)
+                        }
+
+                    exception.errorType shouldBe ErrorType.LOCATION_COUNT_EXCEED
+                    exception.message shouldBe "위치는 최대 3개까지만 등록 가능합니다."
                 }
             }
         }

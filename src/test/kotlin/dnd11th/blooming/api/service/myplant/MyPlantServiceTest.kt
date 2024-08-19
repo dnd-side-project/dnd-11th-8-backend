@@ -73,8 +73,10 @@ class MyPlantServiceTest : DescribeSpec(
             context("정상 요청으로 내 식물을 저장하면") {
                 val request =
                     MyPlantCreateDto(
+                        scientificName = SCIENTIFIC_NAME,
                         nickname = NICKNAME,
                         plantId = PLANT_ID,
+                        locationId = LOCATION_ID,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -85,7 +87,7 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("정상적으로 저장되고 예외가 발생하면 안된다.") {
-                    val result = myPlantService.saveMyPlant(request, LOCATION_ID, USER)
+                    val result = myPlantService.saveMyPlant(request, USER)
 
                     result.myPlantId shouldBe MYPLANT_ID
                     result.message shouldBe "등록 되었습니다."
@@ -227,7 +229,7 @@ class MyPlantServiceTest : DescribeSpec(
                     val response = myPlantService.findMyPlantDetail(MYPLANT_ID, CURRENT_DAY, USER)
                     response.nickname shouldBe NICKNAME
                     response.scientificName shouldBe SCIENTIFIC_NAME
-                    response.startDate shouldBe START_DATE
+                    response.withDays shouldBe 1
                     response.lastWateredTitle shouldBe WATERED_TITLE
                     response.lastWateredInfo shouldBe WATERED_INFO
                     response.lastFertilizerTitle shouldBe FERTILIZER_TITLE
@@ -431,11 +433,13 @@ class MyPlantServiceTest : DescribeSpec(
                 }
             every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
+            every { myPlantMessageFactory.createHealthCheckMessage() } returns
+                "팁"
             context("존재하는 내 식물 ID로 내 식물 눈길주기 요청하면") {
                 it("정상 흐름이 반환된다.") {
-                    shouldNotThrowAny {
-                        myPlantService.healthCheckMyPlant(MYPLANT_ID, CURRENT_DAY, USER)
-                    }
+                    val result = myPlantService.healthCheckMyPlant(MYPLANT_ID, CURRENT_DAY, USER)
+
+                    result.tipMessage shouldBe "팁"
                 }
             }
             context("존재하지 않는 내 식물 ID로 내 식물 비료주기 요청하면") {
