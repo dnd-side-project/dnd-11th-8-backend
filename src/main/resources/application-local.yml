@@ -27,10 +27,10 @@ auth:
   jwt:
     access:
       secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
-      expiry: 1000000000
+      expiry: 604800000
     refresh:
-      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
-      expiry: 1000000000
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffeed
+      expiry: 15552000000
   oidc:
     provider:
       kakao:

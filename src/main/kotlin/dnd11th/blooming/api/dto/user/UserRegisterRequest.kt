@@ -4,6 +4,10 @@ import dnd11th.blooming.domain.entity.user.AlarmTime
 import dnd11th.blooming.domain.entity.user.UserRegisterInfo
 import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(
+    name = "User Register Request",
+    description = "사용자 등록 요청",
+)
 data class UserRegisterRequest(
     @field:Schema(description = "닉네임", example = "스탑환")
     val nickname: String,
