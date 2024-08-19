@@ -9,6 +9,7 @@ import dnd11th.blooming.api.service.user.UserRegisterService
 import dnd11th.blooming.common.annotation.LoginUser
 import dnd11th.blooming.common.annotation.PendingUser
 import dnd11th.blooming.common.annotation.Secured
+import dnd11th.blooming.domain.entity.user.AlarmTime
 import dnd11th.blooming.domain.entity.user.OauthProvider
 import dnd11th.blooming.domain.entity.user.RegisterClaims
 import dnd11th.blooming.domain.entity.user.User
@@ -61,5 +62,14 @@ class UserController(
         @RequestBody updateAlarmStatus: MyProfileUpdateRequest.AlarmStatus
     ) {
         userProfileService.updateAlarmStatus(user, updateAlarmStatus.alarmStatus)
+    }
+
+    @Secured
+    @PatchMapping("/my/alarm-time")
+    fun updateAlarmTime(
+        @LoginUser user: User,
+        @RequestBody updateAlarmTime: MyProfileUpdateRequest.AlarmTime
+    ) {
+        userProfileService.updateAlarmTime(user, AlarmTime.from(updateAlarmTime.alarmTime))
     }
 }

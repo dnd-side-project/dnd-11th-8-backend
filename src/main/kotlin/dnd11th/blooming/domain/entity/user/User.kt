@@ -63,4 +63,8 @@ class User(
     fun updateAlarmStatus(status: Boolean) {
         this.alarmStatus = status
     }
+
+    fun updateAlarmTime(alarmTime: AlarmTime) {
+        this.alarmTime = alarmTime
+    }
 }

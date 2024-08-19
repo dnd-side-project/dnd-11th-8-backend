@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.service.user
 
 import dnd11th.blooming.api.dto.user.MyProfileResponse
+import dnd11th.blooming.domain.entity.user.AlarmTime
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.MyPlantRepository
 import dnd11th.blooming.domain.repository.user.UserRepository
@@ -27,6 +28,12 @@ class UserProfileService(
     @Transactional
     fun updateAlarmStatus(user: User, alarmStatus: Boolean) {
         user.updateAlarmStatus(alarmStatus)
+        userRepository.save(user)
+    }
+
+    @Transactional
+    fun updateAlarmTime(user: User, alarmTime: AlarmTime) {
+        user.updateAlarmTime(alarmTime)
         userRepository.save(user)
     }
 }
