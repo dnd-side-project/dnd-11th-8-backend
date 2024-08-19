@@ -17,6 +17,11 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
 
     fun findAllByLocationOrderByLastWateredDateDesc(location: Location?): List<MyPlant>
 
+    fun findByIdAndUser(
+        id: Long,
+        user: User,
+    ): MyPlant?
+
     fun existsByLocationId(locationId: Long): Boolean
 
     fun findAllByLocationId(locationId: Long): List<MyPlant>
