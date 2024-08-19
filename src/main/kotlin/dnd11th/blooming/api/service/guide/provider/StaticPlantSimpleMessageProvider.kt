@@ -109,7 +109,7 @@ class StaticPlantSimpleMessageProvider {
     }
 
     private fun makeSimpleLocationDescription(plant: Plant): String {
-        return plant.location
+        return plant.location.description
     }
 
     private fun makeSimpleSizeDescription(plant: Plant): String {

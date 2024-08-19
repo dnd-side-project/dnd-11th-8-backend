@@ -49,7 +49,7 @@ class Plant(
     @Column
     var pests: String,
     @Column
-    var location: String,
+    var location: GrowLocation,
     @Column
     var imageUrl: String,
 ) : BaseEntity() {
