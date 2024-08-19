@@ -127,7 +127,7 @@ class StaticPlantSimpleMessageProvider {
     }
 
     private fun makeSimpleTemperatureDescription(plant: Plant): String {
-        val growTemperatureDescription = "${plant.growTemperature.displayName}사이"
+        val growTemperatureDescription = "${plant.growTemperature.lowTemperature}~${plant.growTemperature.hightTemperature}사이"
         val lowestTemperature = "${plant.lowestTemperature.displayName} 이하는 주의할 것"
 
         return "${growTemperatureDescription}\n$lowestTemperature"
