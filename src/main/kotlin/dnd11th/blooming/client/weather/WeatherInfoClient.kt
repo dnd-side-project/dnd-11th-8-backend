@@ -1,6 +1,5 @@
 package dnd11th.blooming.client.weather
 
-import dnd11th.blooming.client.dto.WeatherResponse
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam

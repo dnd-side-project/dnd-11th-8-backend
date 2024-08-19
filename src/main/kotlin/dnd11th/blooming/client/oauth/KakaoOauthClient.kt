@@ -1,6 +1,5 @@
 package dnd11th.blooming.client.oauth
 
-import dnd11th.blooming.client.dto.OidcPublicKeys
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
 

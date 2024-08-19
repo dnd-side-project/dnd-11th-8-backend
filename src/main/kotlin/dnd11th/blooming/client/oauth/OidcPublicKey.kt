@@ -1,4 +1,4 @@
-package dnd11th.blooming.client.dto
+package dnd11th.blooming.client.oauth
 
 data class OidcPublicKey(
     val kty: String,

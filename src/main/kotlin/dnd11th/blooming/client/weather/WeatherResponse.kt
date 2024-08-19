@@ -1,4 +1,4 @@
-package dnd11th.blooming.client.dto
+package dnd11th.blooming.client.weather
 
 import dnd11th.blooming.common.exception.ClientCallException
 import dnd11th.blooming.common.exception.ErrorType

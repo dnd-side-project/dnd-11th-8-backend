@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.service.user.oauth
 
-import dnd11th.blooming.client.dto.OidcPublicKeys
+import dnd11th.blooming.client.oauth.OidcPublicKeys
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 import java.security.KeyFactory

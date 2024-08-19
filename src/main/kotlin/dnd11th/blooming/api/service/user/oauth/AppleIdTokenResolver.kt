@@ -1,8 +1,8 @@
 package dnd11th.blooming.api.service.user.oauth
 
 import dnd11th.blooming.api.service.user.oauth.property.AppleOauthProperties
-import dnd11th.blooming.client.dto.OidcPublicKeys
 import dnd11th.blooming.client.oauth.AppleOauthClient
+import dnd11th.blooming.client.oauth.OidcPublicKeys
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.UnAuthorizedException
 import dnd11th.blooming.domain.entity.user.OidcUser
