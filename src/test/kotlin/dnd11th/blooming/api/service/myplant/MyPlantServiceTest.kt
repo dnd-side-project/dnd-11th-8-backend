@@ -4,6 +4,7 @@ import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.api.dto.myplant.MyPlantIdWithImageUrl
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Alarm
@@ -135,14 +136,34 @@ class MyPlantServiceTest : DescribeSpec(
                     id = 3
                     location = LOCATION2
                 }
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByCreatedDateDesc(any(), any()) } returns
-                listOf(myPlant1, myPlant2, myPlant3)
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByCreatedDateAsc(any(), any()) } returns
-                listOf(myPlant3, myPlant2, myPlant1)
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByLastWateredDateDesc(any(), any()) } returns
-                listOf(myPlant3, myPlant1, myPlant2)
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByLastWateredDateAsc(any(), any()) } returns
-                listOf(myPlant2, myPlant1, myPlant3)
+            every {
+                myPlantRepsitory.findAllByLocationAndUserOrderBy(
+                    any(),
+                    any(),
+                    MyPlantQueryCreteria.CreatedDesc,
+                )
+            } returns listOf(myPlant1, myPlant2, myPlant3)
+            every {
+                myPlantRepsitory.findAllByLocationAndUserOrderBy(
+                    any(),
+                    any(),
+                    MyPlantQueryCreteria.CreatedAsc,
+                )
+            } returns listOf(myPlant3, myPlant2, myPlant1)
+            every {
+                myPlantRepsitory.findAllByLocationAndUserOrderBy(
+                    any(),
+                    any(),
+                    MyPlantQueryCreteria.WateredDesc,
+                )
+            } returns listOf(myPlant3, myPlant1, myPlant2)
+            every {
+                myPlantRepsitory.findAllByLocationAndUserOrderBy(
+                    any(),
+                    any(),
+                    MyPlantQueryCreteria.WateredAsc,
+                )
+            } returns listOf(myPlant2, myPlant1, myPlant3)
             every { imageRepository.findFavoriteImagesForMyPlants(any()) } returns
                 listOf(
                     MyPlantIdWithImageUrl("url1", 1),
@@ -153,8 +174,6 @@ class MyPlantServiceTest : DescribeSpec(
                 null
             every { locationRepository.findByIdOrNull(LOCATION_ID) } returns
                 LOCATION1
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByCreatedDateDesc(LOCATION1, any()) } returns
-                listOf(myPlant1, myPlant2)
             context("내 식물을 최근 등록순으로 전체 조회하면") {
                 it("내 식물 리스트가 조회되어야 한다.") {
                     val response = myPlantService.findAllMyPlant(CURRENT_DAY, user = USER)

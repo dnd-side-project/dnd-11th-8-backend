@@ -164,11 +164,13 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         images =
                             listOf(
                                 ImageResponse(
+                                    imageId = IMAGE_ID,
                                     imageUrl = "url1",
                                     favorite = true,
                                     createdDate = CURRENT_DAY,
                                 ),
                                 ImageResponse(
+                                    imageId = IMAGE_ID,
                                     imageUrl = "url2",
                                     favorite = false,
                                     createdDate = CURRENT_DAY,
@@ -197,7 +199,9 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                             jsonPath("$.fertilizerPeriod", equalTo(FERTILIZER_PERIOD))
                             jsonPath("$.healthCheckAlarm", equalTo(HEALTHCHECK_ALARM))
                             jsonPath("$.images.size()", equalTo(2))
+                            jsonPath("$.images[0].imageId", equalTo(IMAGE_ID.toInt()))
                             jsonPath("$.images[0].imageUrl", equalTo("url1"))
+                            jsonPath("$.images[1].imageId", equalTo(IMAGE_ID.toInt()))
                             jsonPath("$.images[1].imageUrl", equalTo("url2"))
                         }.andDo { print() }
                 }
@@ -424,6 +428,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         val CURRENT_DAY: LocalDate = LocalDate.now()
 
         const val PLANT_ID = 1L
+        const val IMAGE_ID = 1L
         const val IMAGE_URL = "http://"
 
         const val MYPLANT_ID = 1L

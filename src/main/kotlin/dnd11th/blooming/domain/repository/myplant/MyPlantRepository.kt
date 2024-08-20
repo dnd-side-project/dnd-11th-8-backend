@@ -16,12 +16,6 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantCustomReposit
 
     fun findAllByUser(user: User): List<MyPlant>
 
-    @Modifying
-    @Query(
-        """
-		DELETE FROM MyPlant mp where mp.location = :location
-	""",
-    )
     fun countByUser(user: User): Int
 
     @Modifying
