@@ -9,32 +9,10 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantCustomRepository {
-    fun findAllByLocationAndUserOrderByCreatedDateAsc(
-        location: Location?,
-        user: User,
-    ): List<MyPlant>
-
-    fun findAllByLocationAndUserOrderByCreatedDateDesc(
-        location: Location?,
-        user: User,
-    ): List<MyPlant>
-
-    fun findAllByLocationAndUserOrderByLastWateredDateAsc(
-        location: Location?,
-        user: User,
-    ): List<MyPlant>
-
-    fun findAllByLocationAndUserOrderByLastWateredDateDesc(
-        location: Location?,
-        user: User,
-    ): List<MyPlant>
-
     fun findByIdAndUser(
         id: Long,
         user: User,
     ): MyPlant?
-
-    fun findAllByLocation(location: Location): List<MyPlant>
 
     fun findAllByUser(user: User): List<MyPlant>
 
@@ -44,10 +22,6 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantCustomReposit
 		DELETE FROM MyPlant mp where mp.location = :location
 	""",
     )
-    fun deleteAllByLocation(
-        @Param("location") location: Location,
-    )
-
     fun countByUser(user: User): Int
 
     @Modifying

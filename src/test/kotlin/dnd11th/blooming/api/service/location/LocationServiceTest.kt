@@ -25,7 +25,7 @@ class LocationServiceTest : DescribeSpec(
         val myPlantRepository = mockk<MyPlantRepository>()
         val imageRepository = mockk<ImageRepository>()
 
-        val locationService = LocationService(locationRepository, myPlantRepository, imageRepository)
+        val locationService = LocationService(locationRepository, myPlantRepository)
 
         describe("위치 저장") {
             every { locationRepository.save(any()) } returns
@@ -138,11 +138,8 @@ class LocationServiceTest : DescribeSpec(
                 LOCATION
             every { locationRepository.findByIdAndUser(not(eq(LOCATION_ID)), USER) } returns
                 null
-            every { myPlantRepository.findAllByLocation(LOCATION) } returns
-                listOf()
-            every { myPlantRepository.deleteAllByLocation(LOCATION) } just runs
-            every { imageRepository.deleteAllByMyPlantIn(any()) } just runs
             every { locationRepository.delete(LOCATION) } just runs
+            every { myPlantRepository.nullifyLocationByLocation(LOCATION) } just runs
             context("존재하는 ID의 위치를 삭제하면") {
                 it("위치가 삭제되어야 한다.") {
                     locationService.deleteLocation(LOCATION_ID, USER)
