@@ -8,10 +8,10 @@ import dnd11th.blooming.api.dto.location.MyPlantExistInLocationResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
+import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,17 +22,21 @@ class LocationService(
     private val imageRepository: ImageRepository,
 ) {
     @Transactional
-    fun saveLocation(dto: LocationCreateDto): LocationSaveResponse {
-        // TODO : 유저와 매핑 필요
+    fun saveLocation(
+        dto: LocationCreateDto,
+        user: User,
+    ): LocationSaveResponse {
+        val location = Location.createLocation(dto, user)
 
-        val location = Location.createLocation(dto)
+        val savedLocation = locationRepository.save(location)
 
-        return LocationSaveResponse.from(locationRepository.save(location))
+        return LocationSaveResponse.from(savedLocation)
     }
 
     @Transactional(readOnly = true)
-    fun findAllLocation(): List<LocationResponse> {
-        val locations = locationRepository.findAll()
+    fun findAllLocation(user: User): List<LocationResponse> {
+        val locations = locationRepository.findAllByUser(user)
+
         return LocationResponse.fromList(locations)
     }
 
@@ -40,9 +44,10 @@ class LocationService(
     fun modifyLocation(
         locationId: Long,
         request: LocationModifyRequest,
+        user: User,
     ): LocationResponse {
         val location =
-            locationRepository.findByIdOrNull(locationId)
+            locationRepository.findByIdAndUser(locationId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
         location.modifyName(request.name!!)
@@ -51,21 +56,28 @@ class LocationService(
     }
 
     @Transactional(readOnly = true)
-    fun myPlantExistInLocation(locationId: Long): MyPlantExistInLocationResponse {
+    fun myPlantExistInLocation(
+        locationId: Long,
+        user: User,
+    ): MyPlantExistInLocationResponse {
         val isExist = myPlantRepository.existsByLocationId(locationId)
+
         return MyPlantExistInLocationResponse(isExist)
     }
 
     @Transactional
-    fun deleteLocation(locationId: Long) {
-        if (!locationRepository.existsById(locationId)) {
-            throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
-        }
+    fun deleteLocation(
+        locationId: Long,
+        user: User,
+    ) {
+        val location =
+            locationRepository.findByIdAndUser(locationId, user)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
-        val myPlants = myPlantRepository.findAllByLocationId(locationId)
+        val myPlants = myPlantRepository.findAllByLocation(location)
 
         imageRepository.deleteAllByMyPlantIn(myPlants)
-        myPlantRepository.deleteAllByLocationId(locationId)
-        locationRepository.deleteById(locationId)
+        myPlantRepository.deleteAllByLocation(location)
+        locationRepository.delete(location)
     }
 }

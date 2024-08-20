@@ -3,6 +3,7 @@ package dnd11th.blooming.domain.repository
 import dnd11th.blooming.api.dto.myplant.MyPlantIdWithImageUrl
 import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.entity.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -47,4 +48,14 @@ interface ImageRepository : JpaRepository<Image, Long> {
     fun deleteAllByMyPlantIn(
         @Param("myPlants") myPlants: List<MyPlant>,
     )
+
+    @Query(
+        """
+	SELECT i from Image i WHERE i.id = :imageId and i.myPlant.user = :user
+	""",
+    )
+    fun findByIdAndUser(
+        @Param("imageId") imageId: Long,
+        @Param("user") user: User,
+    ): Image?
 }

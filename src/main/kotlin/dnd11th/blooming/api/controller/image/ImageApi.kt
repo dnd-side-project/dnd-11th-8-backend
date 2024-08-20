@@ -5,8 +5,10 @@ import dnd11th.blooming.api.dto.image.ImageSaveRequest
 import dnd11th.blooming.common.annotation.ApiErrorResponse
 import dnd11th.blooming.common.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.domain.entity.user.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -21,6 +23,8 @@ interface ImageApi {
         myPlantId: Long,
         @RequestBody(description = "이미지 저장 요청", required = true)
         request: ImageSaveRequest,
+        @Schema(hidden = true)
+        user: User,
     )
 
     @Operation(summary = "이미지의 즐겨찾기를 수정하는 API 입니다.")
@@ -36,6 +40,8 @@ interface ImageApi {
         imageId: Long,
         @RequestBody(description = "이미지 즐겨찾기 요청", required = true)
         request: ImageFavoriteModifyRequest,
+        @Schema(hidden = true)
+        user: User,
     )
 
     @Operation(summary = "이미지를 삭제하는 API 입니다.")
@@ -44,5 +50,7 @@ interface ImageApi {
     fun deleteImage(
         @Parameter(description = "이미지 ID", required = true)
         imageId: Long,
+        @Schema(hidden = true)
+        user: User,
     )
 }

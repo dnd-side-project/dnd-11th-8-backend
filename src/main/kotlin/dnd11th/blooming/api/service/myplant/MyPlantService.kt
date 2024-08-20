@@ -10,6 +10,7 @@ import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.MyPlantRepository
@@ -31,10 +32,11 @@ class MyPlantService(
     fun saveMyPlant(
         dto: MyPlantCreateDto,
         locationId: Long,
+        user: User,
     ): MyPlantSaveResponse {
         val location =
             locationRepository
-                .findByIdOrNull(locationId)
+                .findByIdAndUser(locationId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
         val plant =
@@ -42,8 +44,8 @@ class MyPlantService(
                 .findByIdOrNull(dto.plantId)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_PLANT)
 
-        val myPlant =
-            MyPlant.createMyPlant(dto, location, plant)
+        val myPlant = MyPlant.createMyPlant(dto, location, plant, user)
+
         val savedPlant = myPlantRepository.save(myPlant)
 
         return MyPlantSaveResponse.from(savedPlant)
@@ -54,8 +56,9 @@ class MyPlantService(
         now: LocalDate,
         locationId: Long? = null,
         sort: MyPlantQueryCreteria = MyPlantQueryCreteria.CreatedDesc,
+        user: User,
     ): List<MyPlantResponse> {
-        val myPlantWithUrlList = findSortedMyPlantsWithImage(locationId, sort)
+        val myPlantWithUrlList = findSortedMyPlantsWithImage(locationId, user, sort)
 
         return myPlantWithUrlList.stream().map { myPlantAndImageUrl ->
             MyPlantResponse.of(
@@ -70,9 +73,10 @@ class MyPlantService(
     fun findMyPlantDetail(
         myPlantId: Long,
         now: LocalDate,
+        user: User,
     ): MyPlantDetailResponse {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         val myPlantImages = imageRepository.findAllByMyPlant(myPlant)
@@ -84,18 +88,21 @@ class MyPlantService(
     fun modifyMyPlant(
         myPlantId: Long,
         request: MyPlantModifyRequest,
+        user: User,
     ) {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
+
+        val location =
+            request.locationId?.let {
+                locationRepository.findByIdAndUser(request.locationId, user)
+                    ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
+            }
 
         myPlant.modify(
             nickname = request.nickname,
-            location =
-                request.locationId?.let {
-                    locationRepository.findByIdOrNull(request.locationId)
-                        ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
-                },
+            location = location,
             startDate = request.startDate,
             lastWateredDate = request.lastWateredDate,
             lastFertilizerDate = request.lastFertilizerDate,
@@ -103,9 +110,12 @@ class MyPlantService(
     }
 
     @Transactional
-    fun deleteMyPlant(myPlantId: Long) {
+    fun deleteMyPlant(
+        myPlantId: Long,
+        user: User,
+    ) {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         imageRepository.deleteAllInBatchByMyPlant(myPlant)
@@ -116,9 +126,10 @@ class MyPlantService(
     fun modifyMyPlantAlarm(
         myPlantId: Long,
         request: AlarmModifyRequest,
+        user: User,
     ) {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         myPlant.modifyAlarm(request.toAlarm())
@@ -128,9 +139,10 @@ class MyPlantService(
     fun waterMyPlant(
         myPlantId: Long,
         now: LocalDate,
+        user: User,
     ) {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         myPlant.doWater(now)
@@ -140,9 +152,10 @@ class MyPlantService(
     fun fertilizerMyPlant(
         myPlantId: Long,
         now: LocalDate,
+        user: User,
     ) {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         myPlant.doFertilizer(now)
@@ -152,9 +165,10 @@ class MyPlantService(
     fun healthCheckMyPlant(
         myPlantId: Long,
         now: LocalDate,
+        user: User,
     ) {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         myPlant.doHealthCheck(now)
@@ -162,22 +176,21 @@ class MyPlantService(
 
     private fun findSortedMyPlantsWithImage(
         locationId: Long?,
+        user: User,
         sort: MyPlantQueryCreteria,
     ): List<Pair<MyPlant, String>> {
-        val location = locationId?.let { locationRepository.findByIdOrNull(locationId) }
+        val location = locationId?.let { locationRepository.findByIdAndUser(locationId, user) }
 
         val sortedMyPlantList =
             when (sort) {
-                MyPlantQueryCreteria.CreatedDesc -> myPlantRepository.findAllByLocationOrderByCreatedDateDesc(location)
-                MyPlantQueryCreteria.CreatedAsc -> myPlantRepository.findAllByLocationOrderByCreatedDateAsc(location)
+                MyPlantQueryCreteria.CreatedDesc ->
+                    myPlantRepository.findAllByLocationAndUserOrderByCreatedDateDesc(location, user)
+                MyPlantQueryCreteria.CreatedAsc ->
+                    myPlantRepository.findAllByLocationAndUserOrderByCreatedDateAsc(location, user)
                 MyPlantQueryCreteria.WateredDesc ->
-                    myPlantRepository.findAllByLocationOrderByLastWateredDateDesc(
-                        location,
-                    )
+                    myPlantRepository.findAllByLocationAndUserOrderByLastWateredDateDesc(location, user)
                 MyPlantQueryCreteria.WateredAsc ->
-                    myPlantRepository.findAllByLocationOrderByLastWateredDateAsc(
-                        location,
-                    )
+                    myPlantRepository.findAllByLocationAndUserOrderByLastWateredDateAsc(location, user)
             }
 
         val urlMap =

@@ -5,6 +5,8 @@ import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
 import dnd11th.blooming.api.service.myplant.MyPlantServiceTest.Companion.ALARM
 import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.entity.user.AlarmTime
+import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.MyPlantRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
@@ -20,6 +22,14 @@ class HomeServiceTest : DescribeSpec(
         val homeService = HomeService(myPlantRepository, messageFactory)
 
         describe("홈 화면") {
+            val user =
+                User(
+                    "email",
+                    "nickname",
+                    AlarmTime.TIME_12_13,
+                    100,
+                    100,
+                )
             val plant1 =
                 MyPlant(
                     scientificName = "병아리눈물",
@@ -61,11 +71,11 @@ class HomeServiceTest : DescribeSpec(
                 }
             every { messageFactory.createGreetingMessage(any()) } returns
                 "안녕하세요."
-            every { myPlantRepository.findAll() } returns
+            every { myPlantRepository.findAllByUser(any()) } returns
                 listOf(plant1, plant2, plant3)
             context("홈 화면") {
                 it("인삿말과 내 식물 정보를 볼 수 있다.") {
-                    val result = homeService.getHome(CURRENT_DAY)
+                    val result = homeService.getHome(user, CURRENT_DAY)
 
                     result.greetingMessage shouldBe "안녕하세요."
                     result.myPlantInfo shouldContainExactlyInAnyOrder
