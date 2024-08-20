@@ -24,7 +24,11 @@ class LocationService(
         dto: LocationCreateDto,
         user: User,
     ): LocationSaveResponse {
-        if (locationRepository.countByUser(user) >= 3) throw BadRequestException(ErrorType.LOCATION_COUNT_EXCEED)
+        if (locationRepository.countByUser(user) >= MAX_LOCATION_LIMIT) {
+            throw BadRequestException(
+                ErrorType.LOCATION_COUNT_EXCEED,
+            )
+        }
 
         val location = Location.createLocation(dto, user)
 
@@ -67,5 +71,9 @@ class LocationService(
         myPlantRepository.nullifyLocationByLocation(location)
 
         locationRepository.delete(location)
+    }
+
+    companion object {
+        const val MAX_LOCATION_LIMIT = 3
     }
 }
