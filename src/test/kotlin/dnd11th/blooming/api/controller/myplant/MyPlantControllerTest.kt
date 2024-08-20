@@ -29,6 +29,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                 every { myPlantService.saveMyPlant(any(), any()) } returns
                     MyPlantSaveResponse(
                         myPlantId = MYPLANT_ID,
+                        message = "등록 되었습니다.",
                     )
             }
             context("정상적인 요청으로 저장하면") {

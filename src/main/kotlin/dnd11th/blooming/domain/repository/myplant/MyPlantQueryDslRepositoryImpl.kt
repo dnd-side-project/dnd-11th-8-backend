@@ -29,11 +29,11 @@ class MyPlantQueryDslRepositoryImpl(
                 },
             )
             .orderBy(
-                myPlant.location.isNull.desc(),
                 when (order) {
-                    MyPlantQueryCreteria.CreatedDesc, MyPlantQueryCreteria.NoLocation -> myPlant.createdDate.desc()
+                    MyPlantQueryCreteria.CreatedDesc -> myPlant.createdDate.desc()
                     MyPlantQueryCreteria.CreatedAsc -> myPlant.createdDate.asc()
-                },
+                    else -> myPlant.createdDate.desc()
+                }.nullsFirst(),
             )
             .fetch()
     }

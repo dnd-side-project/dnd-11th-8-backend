@@ -55,6 +55,8 @@ class MyPlantServiceTest : DescribeSpec(
             )
 
         describe("내 식물 저장") {
+            every { myPlantMessageFactory.createSaveMessage() } returns
+                "등록 되었습니다."
             every { plantRepository.findByIdOrNull(PLANT_ID) } returns
                 PLANT
             every { myPlantRepsitory.save(any()) } returns
@@ -134,7 +136,7 @@ class MyPlantServiceTest : DescribeSpec(
                     alarm = ALARM,
                 ).apply {
                     id = 3
-                    location = LOCATION2
+                    location = null
                 }
             every {
                 myPlantRepsitory.findAllByLocationAndUserOrderBy(
@@ -154,16 +156,9 @@ class MyPlantServiceTest : DescribeSpec(
                 myPlantRepsitory.findAllByLocationAndUserOrderBy(
                     any(),
                     any(),
-                    MyPlantQueryCreteria.WateredDesc,
+                    MyPlantQueryCreteria.NoLocation,
                 )
-            } returns listOf(myPlant3, myPlant1, myPlant2)
-            every {
-                myPlantRepsitory.findAllByLocationAndUserOrderBy(
-                    any(),
-                    any(),
-                    MyPlantQueryCreteria.WateredAsc,
-                )
-            } returns listOf(myPlant2, myPlant1, myPlant3)
+            } returns listOf(myPlant1, myPlant2)
             every { imageRepository.findFavoriteImagesForMyPlants(any()) } returns
                 listOf(
                     MyPlantIdWithImageUrl("url1", 1),
@@ -176,7 +171,11 @@ class MyPlantServiceTest : DescribeSpec(
                 LOCATION1
             context("내 식물을 최근 등록순으로 전체 조회하면") {
                 it("내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, user = USER)
+                    val response =
+                        myPlantService.findAllMyPlant(
+                            CURRENT_DAY,
+                            user = USER,
+                        )
                     response.size shouldBe 3
 
                     response[0].myPlantId shouldBe 1

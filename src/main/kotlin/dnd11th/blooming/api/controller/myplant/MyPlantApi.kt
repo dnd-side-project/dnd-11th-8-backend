@@ -48,7 +48,7 @@ interface MyPlantApi {
         @Parameter(description = "위치 ID", required = false)
         locationId: Long?,
         @Parameter(description = "정렬", required = false)
-        direction: String,
+        sort: String,
         @Schema(hidden = true)
         user: User,
     ): List<MyPlantResponse>
