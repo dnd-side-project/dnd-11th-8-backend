@@ -30,14 +30,13 @@ data class MyPlantResponse(
         fun of(
             myPlant: MyPlant,
             imageUrl: String?,
-            defaultImageUrl: String,
             now: LocalDate,
         ): MyPlantResponse =
             MyPlantResponse(
                 myPlantId = myPlant.id,
                 nickname = myPlant.nickname,
                 haveLocation = myPlant.location != null,
-                imageUrl = imageUrl ?: defaultImageUrl,
+                imageUrl = imageUrl ?: myPlant.plantImageUrl,
                 scientificName = myPlant.scientificName,
                 dateSinceLastWater = myPlant.getDateSinceLastWater(now),
                 dateSinceLastFertilizer = myPlant.getDateSinceLastFertilizer(now),

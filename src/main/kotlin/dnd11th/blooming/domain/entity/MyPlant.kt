@@ -36,6 +36,10 @@ class MyPlant(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
+    @Column
+    var plantImageUrl: String = "블루밍 대표 이미지"
+    // TODO : 블루밍 대표 이미지 넣기
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     var user: User? = null
@@ -122,6 +126,7 @@ class MyPlant(
                 it.location = location
                 it.plant = plant
                 it.user = user
+                plant?.let { plant -> it.plantImageUrl = plant.imageUrl }
             }
     }
 }

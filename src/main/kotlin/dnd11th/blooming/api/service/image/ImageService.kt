@@ -27,6 +27,8 @@ class ImageService(
 
         val image = Image.createImage(dto, myPlant)
 
+        myPlant.plantImageUrl = image.url
+
         imageRepository.save(image)
     }
 

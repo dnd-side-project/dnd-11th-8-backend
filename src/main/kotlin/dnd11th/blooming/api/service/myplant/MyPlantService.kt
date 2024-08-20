@@ -56,12 +56,10 @@ class MyPlantService(
     ): List<MyPlantResponse> {
         val myPlantsWithImageUrl = findSortedMyPlantsWithImage(locationId, user, sort)
 
-        // TODO : 디폴트 이미지 url 넣어야 함
         return myPlantsWithImageUrl.stream().map { myPlantAndImageUrl ->
             MyPlantResponse.of(
                 myPlantAndImageUrl.myPlant,
                 myPlantAndImageUrl.imageUrl,
-                "url",
                 now,
             )
         }.toList()
