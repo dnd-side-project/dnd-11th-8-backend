@@ -4,7 +4,7 @@ import dnd11th.blooming.api.dto.home.HomeResponse
 import dnd11th.blooming.api.dto.home.MyPlantHomeResponse
 import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
 import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.MyPlantRepository
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 

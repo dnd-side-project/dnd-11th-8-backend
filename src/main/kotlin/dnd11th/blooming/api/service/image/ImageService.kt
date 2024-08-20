@@ -6,7 +6,7 @@ import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
-import dnd11th.blooming.domain.repository.MyPlantRepository
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

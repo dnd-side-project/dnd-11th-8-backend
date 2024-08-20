@@ -102,8 +102,10 @@ class MyPlant(
             user: User,
         ): MyPlant =
             MyPlant(
-                scientificName = plant?.korName ?: dto.scientificName, // plant가 없으면 scientificName 사용
-                nickname = dto.nickname ?: dto.scientificName, // nickname이 없으면 scientificName 사용
+                // plant가 없으면 scientificName 사용
+                scientificName = plant?.korName ?: dto.scientificName,
+                // nickname이 없으면 scientificName 사용
+                nickname = dto.nickname ?: dto.scientificName,
                 startDate = dto.startDate,
                 lastWateredDate = dto.lastWateredDate,
                 lastFertilizerDate = dto.lastFertilizerDate,

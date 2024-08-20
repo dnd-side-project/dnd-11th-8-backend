@@ -9,7 +9,7 @@ import dnd11th.blooming.domain.entity.user.AlarmTime
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
-import dnd11th.blooming.domain.repository.MyPlantRepository
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import dnd11th.blooming.domain.repository.user.UserRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe

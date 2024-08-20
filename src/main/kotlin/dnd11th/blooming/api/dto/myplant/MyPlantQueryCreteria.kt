@@ -1,13 +1,11 @@
 package dnd11th.blooming.api.dto.myplant
 
-sealed class MyPlantQueryCreteria {
-    data object CreatedDesc : MyPlantQueryCreteria()
-
-    data object CreatedAsc : MyPlantQueryCreteria()
-
-    data object WateredDesc : MyPlantQueryCreteria()
-
-    data object WateredAsc : MyPlantQueryCreteria()
+enum class MyPlantQueryCreteria {
+    CreatedDesc,
+    CreatedAsc,
+    WateredDesc,
+    WateredAsc,
+    ;
 
     companion object {
         fun from(

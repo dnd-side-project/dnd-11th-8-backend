@@ -16,8 +16,8 @@ import dnd11th.blooming.domain.entity.plant.Plant
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
-import dnd11th.blooming.domain.repository.MyPlantRepository
 import dnd11th.blooming.domain.repository.PlantRepository
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -180,17 +180,7 @@ class MyPlantService(
     ): List<Pair<MyPlant, String?>> {
         val location = locationId?.let { locationRepository.findByIdAndUser(locationId, user) }
 
-        val sortedMyPlantList =
-            when (sort) {
-                MyPlantQueryCreteria.CreatedDesc ->
-                    myPlantRepository.findAllByLocationAndUserOrderByCreatedDateDesc(location, user)
-                MyPlantQueryCreteria.CreatedAsc ->
-                    myPlantRepository.findAllByLocationAndUserOrderByCreatedDateAsc(location, user)
-                MyPlantQueryCreteria.WateredDesc ->
-                    myPlantRepository.findAllByLocationAndUserOrderByLastWateredDateDesc(location, user)
-                MyPlantQueryCreteria.WateredAsc ->
-                    myPlantRepository.findAllByLocationAndUserOrderByLastWateredDateAsc(location, user)
-            }
+        val sortedMyPlantList = myPlantRepository.findAllByLocationAndUserOrderBy(location, user, sort)
 
         val urlMap =
             imageRepository.findFavoriteImagesForMyPlants(sortedMyPlantList)

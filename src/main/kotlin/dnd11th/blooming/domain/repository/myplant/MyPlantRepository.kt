@@ -1,4 +1,4 @@
-package dnd11th.blooming.domain.repository
+package dnd11th.blooming.domain.repository.myplant
 
 import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface MyPlantRepository : JpaRepository<MyPlant, Long> {
+interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantCustomRepository {
     fun findAllByLocationAndUserOrderByCreatedDateAsc(
         location: Location?,
         user: User,
