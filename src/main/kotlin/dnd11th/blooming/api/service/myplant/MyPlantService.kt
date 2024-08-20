@@ -43,7 +43,7 @@ class MyPlantService(
 
         val savedPlant = myPlantRepository.save(myPlant)
 
-        return MyPlantSaveResponse.from(savedPlant)
+        return MyPlantSaveResponse.from(savedPlant, myPlantMessageFactory)
     }
 
     @Transactional(readOnly = true)

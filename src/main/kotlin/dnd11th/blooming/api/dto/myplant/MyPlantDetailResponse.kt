@@ -61,12 +61,12 @@ data class MyPlantDetailResponse(
                 lastWateredInfo =
                     myPlant.lastWateredDate?.let {
                         messageFactory.createWateredInfo(it, now)
-                    } ?: "기록없음",
+                    } ?: messageFactory.createLastWateredDateNotExistMessage(),
                 lastFertilizerTitle = messageFactory.createFertilizerTitle(),
                 lastFertilizerInfo =
                     myPlant.lastFertilizerDate?.let {
                         messageFactory.createFertilizerInfo(it, now)
-                    } ?: "기록없음",
+                    } ?: messageFactory.createLastFertilizerDateNotExistMessage(),
                 waterAlarm = myPlant.alarm.waterAlarm,
                 waterPeriod = myPlant.alarm.waterPeriod,
                 fertilizerAlarm = myPlant.alarm.fertilizerAlarm,

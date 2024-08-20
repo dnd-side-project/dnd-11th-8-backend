@@ -9,6 +9,8 @@ class MyPlantMessageFactory {
     companion object {
         private const val WATER_TITLE = "마지막으로 물 준 날"
         private const val FERTILIZER_TITLE = "비료주기"
+        private const val SAVED_MESSAGE = "등록 되었습니다."
+        private const val NOT_EXIST_MESSAGE = "기록없음"
         private val greetingMessageList =
             listOf(
                 "%s님 좋아요!\n초보식집사로서 멋진 데뷔네요.",
@@ -62,4 +64,10 @@ class MyPlantMessageFactory {
     fun createHealthCheckMessage(): String {
         return healthCheckMessageList.random()
     }
+
+    fun createSaveMessage(): String = SAVED_MESSAGE
+
+    fun createLastWateredDateNotExistMessage(): String = NOT_EXIST_MESSAGE
+
+    fun createLastFertilizerDateNotExistMessage(): String = NOT_EXIST_MESSAGE
 }
