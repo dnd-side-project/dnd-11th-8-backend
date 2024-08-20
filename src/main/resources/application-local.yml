@@ -40,6 +40,8 @@ auth:
         iss: https://appleid.apple.com
         aud: ${APPLE_CLIENT_ID}
 
-
 weather:
   serviceKey: ${OPEN_API_SERVICE_KEY}
+
+fcm:
+  key: ./firebase/blooming-firebase-adminsdk.json
