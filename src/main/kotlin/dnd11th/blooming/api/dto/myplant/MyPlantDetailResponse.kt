@@ -58,15 +58,9 @@ data class MyPlantDetailResponse(
                 location = myPlant.getLocationName(),
                 withDays = Period.between(myPlant.startDate, now).days,
                 lastWateredTitle = messageFactory.createWateredTitle(),
-                lastWateredInfo =
-                    myPlant.lastWateredDate?.let {
-                        messageFactory.createWateredInfo(it, now)
-                    } ?: messageFactory.createLastWateredDateNotExistMessage(),
+                lastWateredInfo = messageFactory.createWateredInfo(myPlant.lastWateredDate, now),
                 lastFertilizerTitle = messageFactory.createFertilizerTitle(),
-                lastFertilizerInfo =
-                    myPlant.lastFertilizerDate?.let {
-                        messageFactory.createFertilizerInfo(it, now)
-                    } ?: messageFactory.createLastFertilizerDateNotExistMessage(),
+                lastFertilizerInfo = messageFactory.createFertilizerInfo(myPlant.lastFertilizerDate, now),
                 waterAlarm = myPlant.alarm.waterAlarm,
                 waterPeriod = myPlant.alarm.waterPeriod,
                 fertilizerAlarm = myPlant.alarm.fertilizerAlarm,

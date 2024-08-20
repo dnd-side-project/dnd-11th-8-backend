@@ -34,9 +34,11 @@ class MyPlantMessageFactory {
     fun createWateredTitle(): String = WATER_TITLE
 
     fun createWateredInfo(
-        wateredDate: LocalDate,
+        wateredDate: LocalDate?,
         now: LocalDate,
     ): String {
+        wateredDate ?: return NOT_EXIST_MESSAGE
+
         val daysPeriod = Period.between(wateredDate, now).days
 
         if (daysPeriod <= 0) {
@@ -49,9 +51,11 @@ class MyPlantMessageFactory {
     fun createFertilizerTitle(): String = FERTILIZER_TITLE
 
     fun createFertilizerInfo(
-        fertilizerDate: LocalDate,
+        fertilizerDate: LocalDate?,
         now: LocalDate,
     ): String {
+        fertilizerDate ?: return NOT_EXIST_MESSAGE
+
         val monthsPeriod = Period.between(fertilizerDate, now).months
 
         if (monthsPeriod <= 0) {
@@ -66,8 +70,4 @@ class MyPlantMessageFactory {
     }
 
     fun createSaveMessage(): String = SAVED_MESSAGE
-
-    fun createLastWateredDateNotExistMessage(): String = NOT_EXIST_MESSAGE
-
-    fun createLastFertilizerDateNotExistMessage(): String = NOT_EXIST_MESSAGE
 }
