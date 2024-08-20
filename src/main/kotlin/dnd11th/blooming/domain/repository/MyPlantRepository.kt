@@ -34,8 +34,6 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
         user: User,
     ): MyPlant?
 
-    fun existsByLocationId(locationId: Long): Boolean
-
     fun findAllByLocation(location: Location): List<MyPlant>
 
     fun findAllByUser(user: User): List<MyPlant>
@@ -51,4 +49,10 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
     )
 
     fun countByUser(user: User): Int
+
+    @Modifying
+    @Query("UPDATE MyPlant p SET p.location = NULL WHERE p.location = :location")
+    fun nullifyLocationByLocation(
+        @Param("location") location: Location,
+    )
 }
