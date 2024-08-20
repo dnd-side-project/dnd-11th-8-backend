@@ -9,6 +9,8 @@ import java.time.LocalDate
     description = "이미지 응답",
 )
 data class ImageResponse(
+    @field:Schema(description = "이미지 ID", example = "1")
+    val imageId: Long?,
     @field:Schema(description = "이미지 URL", example = "image.com/17")
     val imageUrl: String,
     @field:Schema(description = "즐겨찾기 여부", example = "true")
@@ -19,6 +21,7 @@ data class ImageResponse(
     companion object {
         fun from(image: Image): ImageResponse =
             ImageResponse(
+                imageId = image.id,
                 imageUrl = image.url,
                 favorite = image.favorite,
                 createdDate = image.createdDate.toLocalDate(),
