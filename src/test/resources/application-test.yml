@@ -36,3 +36,6 @@ auth:
 
 weather:
   serviceKey: serviceKey
+
+fcm:
+  key: ./firebase/blooming-firebase-adminsdk.json
