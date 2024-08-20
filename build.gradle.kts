@@ -1,8 +1,9 @@
 plugins {
     id("org.springframework.boot") version "3.3.1"
     id("io.spring.dependency-management") version "1.1.5"
-    kotlin("plugin.jpa") version "1.9.24"
     kotlin("jvm") version "1.9.24"
+    kotlin("kapt") version "1.5.0"
+    kotlin("plugin.jpa") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
 
     // Ktlint
@@ -40,6 +41,14 @@ dependencies {
     // Validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
+    // QueryDSL
+    implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+    implementation("com.querydsl:querydsl-apt:5.1.0:jakarta")
+    implementation("jakarta.persistence:jakarta.persistence-api")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+
     // Configuration
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
@@ -60,6 +69,7 @@ dependencies {
     // Mockk
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
+    // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -73,4 +83,10 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        java.srcDir("${layout.buildDirectory}/generated/source/kapt/main")
+    }
 }
