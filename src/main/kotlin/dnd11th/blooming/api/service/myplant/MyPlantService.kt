@@ -55,10 +55,12 @@ class MyPlantService(
     ): List<MyPlantResponse> {
         val myPlantWithUrlList = findSortedMyPlantsWithImage(locationId, user, sort)
 
+        // TODO : 디폴트 이미지 url 넣어야 함
         return myPlantWithUrlList.stream().map { myPlantAndImageUrl ->
             MyPlantResponse.of(
                 myPlantAndImageUrl.first,
                 myPlantAndImageUrl.second,
+                "url",
                 now,
             )
         }.toList()
@@ -175,7 +177,7 @@ class MyPlantService(
         locationId: Long?,
         user: User,
         sort: MyPlantQueryCreteria,
-    ): List<Pair<MyPlant, String>> {
+    ): List<Pair<MyPlant, String?>> {
         val location = locationId?.let { locationRepository.findByIdAndUser(locationId, user) }
 
         val sortedMyPlantList =
@@ -195,11 +197,7 @@ class MyPlantService(
                 .associate { it.myPlantId to it.imageUrl }
 
         return sortedMyPlantList.map { myPlant ->
-            myPlant to
-                (
-                    urlMap[myPlant.id]
-                        ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
-                )
+            myPlant to urlMap[myPlant.id]
         }
     }
 }

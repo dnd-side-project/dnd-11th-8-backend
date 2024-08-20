@@ -29,14 +29,15 @@ data class MyPlantResponse(
     companion object {
         fun of(
             myPlant: MyPlant,
-            imageUrl: String,
+            imageUrl: String?,
+            defaultImageUrl: String,
             now: LocalDate,
         ): MyPlantResponse =
             MyPlantResponse(
                 myPlantId = myPlant.id,
                 nickname = myPlant.nickname,
                 haveLocation = myPlant.location != null,
-                imageUrl = imageUrl,
+                imageUrl = imageUrl ?: defaultImageUrl,
                 scientificName = myPlant.scientificName,
                 dateSinceLastWater = myPlant.getDateSinceLastWater(now),
                 dateSinceLastFertilizer = myPlant.getDateSinceLastFertilizer(now),
