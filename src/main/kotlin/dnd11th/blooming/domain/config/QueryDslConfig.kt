@@ -1,4 +1,4 @@
-package dnd11th.blooming.client.config
+package dnd11th.blooming.domain.config
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
