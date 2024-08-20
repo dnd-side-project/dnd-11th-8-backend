@@ -5,7 +5,7 @@ import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.entity.user.User
 
-interface MyPlantCustomRepository {
+interface MyPlantQueryDslRepository {
     fun findAllByLocationAndUserOrderBy(
         location: Location?,
         user: User,

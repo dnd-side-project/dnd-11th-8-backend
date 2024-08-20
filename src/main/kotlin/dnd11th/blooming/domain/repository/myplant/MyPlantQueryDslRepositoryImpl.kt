@@ -9,9 +9,9 @@ import dnd11th.blooming.domain.entity.user.User
 import org.springframework.stereotype.Repository
 
 @Repository
-class MyPlantCustomRepositoryImpl(
+class MyPlantQueryDslRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
-) : MyPlantCustomRepository {
+) : MyPlantQueryDslRepository {
     override fun findAllByLocationAndUserOrderBy(
         location: Location?,
         user: User,
