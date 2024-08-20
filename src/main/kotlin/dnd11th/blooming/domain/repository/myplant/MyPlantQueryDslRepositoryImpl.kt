@@ -23,14 +23,16 @@ class MyPlantQueryDslRepositoryImpl(
             .selectFrom(myPlant)
             .where(
                 myPlant.user.eq(user),
-                location?.let { myPlant.location.eq(it) },
+                when (order) {
+                    MyPlantQueryCreteria.NoLocation -> myPlant.location.isNull
+                    else -> location?.let { myPlant.location.eq(it) }
+                },
             )
             .orderBy(
+                myPlant.location.isNull.desc(),
                 when (order) {
-                    MyPlantQueryCreteria.CreatedDesc -> myPlant.createdDate.desc()
+                    MyPlantQueryCreteria.CreatedDesc, MyPlantQueryCreteria.NoLocation -> myPlant.createdDate.desc()
                     MyPlantQueryCreteria.CreatedAsc -> myPlant.createdDate.asc()
-                    MyPlantQueryCreteria.WateredDesc -> myPlant.lastWateredDate.desc()
-                    MyPlantQueryCreteria.WateredAsc -> myPlant.lastWateredDate.asc()
                 },
             )
             .fetch()

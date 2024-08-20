@@ -3,12 +3,10 @@ package dnd11th.blooming.api.controller.myplant
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantDirectionParam
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantSortParam
 import dnd11th.blooming.common.annotation.ApiErrorResponse
 import dnd11th.blooming.common.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
@@ -49,10 +47,8 @@ interface MyPlantApi {
     fun findAllMyPlant(
         @Parameter(description = "위치 ID", required = false)
         locationId: Long?,
-        @Parameter(description = "정렬 기준", required = false)
-        sort: MyPlantSortParam,
-        @Parameter(description = "정렬 순서", required = false)
-        direction: MyPlantDirectionParam,
+        @Parameter(description = "정렬", required = false)
+        direction: String,
         @Schema(hidden = true)
         user: User,
     ): List<MyPlantResponse>
