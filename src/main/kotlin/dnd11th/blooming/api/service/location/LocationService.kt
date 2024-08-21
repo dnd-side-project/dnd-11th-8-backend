@@ -4,14 +4,13 @@ import dnd11th.blooming.api.dto.location.LocationCreateDto
 import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
-import dnd11th.blooming.api.dto.location.MyPlantExistInLocationResponse
+import dnd11th.blooming.common.exception.BadRequestException
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
-import dnd11th.blooming.domain.repository.ImageRepository
+import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.LocationRepository
-import dnd11th.blooming.domain.repository.MyPlantRepository
-import org.springframework.data.repository.findByIdOrNull
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,20 +18,29 @@ import org.springframework.transaction.annotation.Transactional
 class LocationService(
     private val locationRepository: LocationRepository,
     private val myPlantRepository: MyPlantRepository,
-    private val imageRepository: ImageRepository,
 ) {
     @Transactional
-    fun saveLocation(dto: LocationCreateDto): LocationSaveResponse {
-        // TODO : 유저와 매핑 필요
+    fun saveLocation(
+        dto: LocationCreateDto,
+        user: User,
+    ): LocationSaveResponse {
+        if (locationRepository.countByUser(user) >= MAX_LOCATION_LIMIT) {
+            throw BadRequestException(
+                ErrorType.LOCATION_COUNT_EXCEED,
+            )
+        }
 
-        val location = Location.createLocation(dto)
+        val location = Location.createLocation(dto, user)
 
-        return LocationSaveResponse.from(locationRepository.save(location))
+        val savedLocation = locationRepository.save(location)
+
+        return LocationSaveResponse.from(savedLocation)
     }
 
     @Transactional(readOnly = true)
-    fun findAllLocation(): List<LocationResponse> {
-        val locations = locationRepository.findAll()
+    fun findAllLocation(user: User): List<LocationResponse> {
+        val locations = locationRepository.findAllByUser(user)
+
         return LocationResponse.fromList(locations)
     }
 
@@ -40,9 +48,10 @@ class LocationService(
     fun modifyLocation(
         locationId: Long,
         request: LocationModifyRequest,
+        user: User,
     ): LocationResponse {
         val location =
-            locationRepository.findByIdOrNull(locationId)
+            locationRepository.findByIdAndUser(locationId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
 
         location.modifyName(request.name!!)
@@ -50,22 +59,21 @@ class LocationService(
         return LocationResponse.from(location)
     }
 
-    @Transactional(readOnly = true)
-    fun myPlantExistInLocation(locationId: Long): MyPlantExistInLocationResponse {
-        val isExist = myPlantRepository.existsByLocationId(locationId)
-        return MyPlantExistInLocationResponse(isExist)
+    @Transactional
+    fun deleteLocation(
+        locationId: Long,
+        user: User,
+    ) {
+        val location =
+            locationRepository.findByIdAndUser(locationId, user)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
+
+        myPlantRepository.nullifyLocationByLocation(location)
+
+        locationRepository.delete(location)
     }
 
-    @Transactional
-    fun deleteLocation(locationId: Long) {
-        if (!locationRepository.existsById(locationId)) {
-            throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
-        }
-
-        val myPlants = myPlantRepository.findAllByLocationId(locationId)
-
-        imageRepository.deleteAllByMyPlantIn(myPlants)
-        myPlantRepository.deleteAllByLocationId(locationId)
-        locationRepository.deleteById(locationId)
+    companion object {
+        const val MAX_LOCATION_LIMIT = 3
     }
 }

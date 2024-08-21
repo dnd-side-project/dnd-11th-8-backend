@@ -1,18 +1,19 @@
 package dnd11th.blooming.api.controller.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantDirectionParam
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantSortParam
 import dnd11th.blooming.common.annotation.ApiErrorResponse
 import dnd11th.blooming.common.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.domain.entity.user.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -37,6 +38,8 @@ interface MyPlantApi {
     fun saveMyPlant(
         @RequestBody(description = "내 식물 저장 요청", required = true)
         request: MyPlantSaveRequest,
+        @Schema(hidden = true)
+        user: User,
     ): MyPlantSaveResponse
 
     @Operation(summary = "내 전체 식물들을 조회하는 API 입니다.")
@@ -44,10 +47,10 @@ interface MyPlantApi {
     fun findAllMyPlant(
         @Parameter(description = "위치 ID", required = false)
         locationId: Long?,
-        @Parameter(description = "정렬 기준", required = false)
-        sort: MyPlantSortParam,
-        @Parameter(description = "정렬 순서", required = false)
-        direction: MyPlantDirectionParam,
+        @Parameter(description = "정렬", required = false)
+        sort: String,
+        @Schema(hidden = true)
+        user: User,
     ): List<MyPlantResponse>
 
     @Operation(summary = "내 식물의 상세정보를 조회하는 API 입니다.")
@@ -56,6 +59,8 @@ interface MyPlantApi {
     fun findMyPlantDetail(
         @Parameter(description = "내 식물 ID", required = true)
         myPlantId: Long,
+        @Schema(hidden = true)
+        user: User,
     ): MyPlantDetailResponse
 
     @Operation(summary = "내 식물을 수정하는 API 입니다.")
@@ -74,6 +79,8 @@ interface MyPlantApi {
         myPlantId: Long,
         @RequestBody(description = "내 식물 수정 요청", required = true)
         request: MyPlantModifyRequest,
+        @Schema(hidden = true)
+        user: User,
     )
 
     @Operation(summary = "내 식물을 삭제하는 API 입니다.")
@@ -82,6 +89,8 @@ interface MyPlantApi {
     fun deleteMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
         myPlantId: Long,
+        @Schema(hidden = true)
+        user: User,
     )
 
     @Operation(summary = "내 식물에 물을 주는 API 입니다.")
@@ -90,6 +99,8 @@ interface MyPlantApi {
     fun waterMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
         myPlantId: Long,
+        @Schema(hidden = true)
+        user: User,
     )
 
     @Operation(summary = "내 식물을 비료를 주는 API 입니다.")
@@ -98,6 +109,8 @@ interface MyPlantApi {
     fun fertilizerMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
         myPlantId: Long,
+        @Schema(hidden = true)
+        user: User,
     )
 
     @Operation(summary = "내 식물을 살펴보기를 하는 API 입니다.")
@@ -106,7 +119,9 @@ interface MyPlantApi {
     fun healthCheckMyPlant(
         @Parameter(description = "내 식물 ID", required = true)
         myPlantId: Long,
-    )
+        @Schema(hidden = true)
+        user: User,
+    ): HealthCheckResponse
 
     @Operation(summary = "내 식물의 알림을 수정하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "내 식물 알림 수정 성공")
@@ -123,5 +138,7 @@ interface MyPlantApi {
         myPlantId: Long,
         @RequestBody(description = "이미지 저장 요청", required = true)
         request: AlarmModifyRequest,
+        @Schema(hidden = true)
+        user: User,
     )
 }

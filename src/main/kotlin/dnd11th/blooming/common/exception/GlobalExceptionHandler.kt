@@ -1,5 +1,6 @@
 package dnd11th.blooming.common.exception
 
+import dnd11th.blooming.common.util.Logger.Companion.log
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.FieldError
@@ -13,9 +14,15 @@ class GlobalExceptionHandler {
     fun handleMyException(exception: MyException): ResponseEntity<ErrorResponse> {
         val errorType = exception.errorType
         when (errorType.logLevel) {
-            LogLevel.ERROR -> {}
-            LogLevel.WARN -> {}
-            else -> {}
+            LogLevel.ERROR -> {
+                log.error { "${"Blooming Exception : {}"} ${errorType.message} $exception" }
+            }
+            LogLevel.WARN -> {
+                log.warn { "${"Blooming Exception : {}"} ${errorType.message} $exception" }
+            }
+            else -> {
+                log.info { "${"Blooming Exception : {}"} ${errorType.message} $exception" }
+            }
         }
         return ResponseEntity
             .status(errorType.status)

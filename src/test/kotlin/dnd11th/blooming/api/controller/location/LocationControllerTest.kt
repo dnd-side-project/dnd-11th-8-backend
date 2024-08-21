@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.post
 class LocationControllerTest : WebMvcDescribeSpec() {
     init {
         describe("위치 저장") {
-            every { locationService.saveLocation(any()) } returns
+            every { locationService.saveLocation(any(), any()) } returns
                 LocationSaveResponse(
                     id = LOCATION_ID,
                     name = LOCATION_NAME,
@@ -46,7 +46,7 @@ class LocationControllerTest : WebMvcDescribeSpec() {
         }
 
         describe("위치 전체 조회") {
-            every { locationService.findAllLocation() } returns
+            every { locationService.findAllLocation(any()) } returns
                 listOf(
                     LocationResponse(
                         id = LOCATION_ID,
@@ -74,12 +74,12 @@ class LocationControllerTest : WebMvcDescribeSpec() {
 
         describe("위치 수정") {
             beforeTest {
-                every { locationService.modifyLocation(LOCATION_ID, any()) } returns
+                every { locationService.modifyLocation(LOCATION_ID, any(), any()) } returns
                     LocationResponse(
                         id = LOCATION_ID,
                         name = LOCATION_NAME2,
                     )
-                every { locationService.modifyLocation(not(eq(LOCATION_ID)), any()) } throws
+                every { locationService.modifyLocation(not(eq(LOCATION_ID)), any(), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_LOCATION)
             }
             context("존재하는 위치로 위치 수정 요청을 전달하면") {
@@ -122,8 +122,8 @@ class LocationControllerTest : WebMvcDescribeSpec() {
 
         describe("위치 삭제") {
             beforeTest {
-                every { locationService.deleteLocation(LOCATION_ID) } just runs
-                every { locationService.deleteLocation(not(eq(LOCATION_ID))) } throws
+                every { locationService.deleteLocation(LOCATION_ID, any()) } just runs
+                every { locationService.deleteLocation(not(eq(LOCATION_ID)), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_LOCATION)
             }
             context("존재하는 위치로 위치 삭제 요청을 전달하면") {

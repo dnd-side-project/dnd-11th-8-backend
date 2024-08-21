@@ -4,9 +4,9 @@ import dnd11th.blooming.api.dto.image.ImageCreateDto
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Image
+import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
-import dnd11th.blooming.domain.repository.MyPlantRepository
-import org.springframework.data.repository.findByIdOrNull
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,12 +19,15 @@ class ImageService(
     fun saveImage(
         myPlantId: Long,
         dto: ImageCreateDto,
+        user: User,
     ) {
         val myPlant =
-            myPlantRepository.findByIdOrNull(myPlantId)
+            myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         val image = Image.createImage(dto, myPlant)
+
+        myPlant.plantImageUrl = image.url
 
         imageRepository.save(image)
     }
@@ -33,20 +36,24 @@ class ImageService(
     fun modifyFavorite(
         imageId: Long,
         favorite: Boolean,
+        user: User,
     ) {
         val image =
-            imageRepository.findByIdOrNull(imageId)
+            imageRepository.findByIdAndUser(imageId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
 
         image.modifyFavorite(favorite)
     }
 
     @Transactional
-    fun deleteImage(imageId: Long) {
-        if (imageRepository.existsById(imageId)) {
-            throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
-        }
+    fun deleteImage(
+        imageId: Long,
+        user: User,
+    ) {
+        val image =
+            imageRepository.findByIdAndUser(imageId, user)
+                ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
 
-        imageRepository.deleteById(imageId)
+        imageRepository.delete(image)
     }
 }

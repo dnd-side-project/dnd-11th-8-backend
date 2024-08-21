@@ -36,6 +36,10 @@ class MyPlant(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
+    @Column
+    var plantImageUrl: String = "블루밍 대표 이미지"
+    // TODO : 블루밍 대표 이미지 넣기
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     var user: User? = null
@@ -97,12 +101,15 @@ class MyPlant(
     companion object {
         fun createMyPlant(
             dto: MyPlantCreateDto,
-            location: Location,
-            plant: Plant,
+            location: Location?,
+            plant: Plant?,
+            user: User,
         ): MyPlant =
             MyPlant(
-                scientificName = plant.korName,
-                nickname = dto.nickname,
+                // plant가 없으면 scientificName 사용
+                scientificName = plant?.korName ?: dto.scientificName,
+                // nickname이 없으면 scientificName 사용
+                nickname = dto.nickname ?: dto.scientificName,
                 startDate = dto.startDate,
                 lastWateredDate = dto.lastWateredDate,
                 lastFertilizerDate = dto.lastFertilizerDate,
@@ -118,8 +125,8 @@ class MyPlant(
             ).also {
                 it.location = location
                 it.plant = plant
-                // it.user = user
-                // TODO : 유저와 매핑 필요
+                it.user = user
+                plant?.let { plant -> it.plantImageUrl = plant.imageUrl }
             }
     }
 }

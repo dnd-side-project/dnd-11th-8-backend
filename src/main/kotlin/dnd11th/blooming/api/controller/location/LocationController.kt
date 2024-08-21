@@ -4,8 +4,10 @@ import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
-import dnd11th.blooming.api.dto.location.MyPlantExistInLocationResponse
 import dnd11th.blooming.api.service.location.LocationService
+import dnd11th.blooming.common.annotation.LoginUser
+import dnd11th.blooming.common.annotation.Secured
+import dnd11th.blooming.domain.entity.user.User
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,27 +23,31 @@ import org.springframework.web.bind.annotation.RestController
 class LocationController(
     private val locationService: LocationService,
 ) : LocationApi {
+    @Secured
     @PostMapping
     override fun saveLocation(
         @RequestBody @Valid request: LocationSaveRequest,
-    ): LocationSaveResponse = locationService.saveLocation(request.toLocationCreateDto())
+        @LoginUser user: User,
+    ): LocationSaveResponse = locationService.saveLocation(request.toLocationCreateDto(), user)
 
+    @Secured
     @GetMapping
-    override fun findAllLocation(): List<LocationResponse> = locationService.findAllLocation()
+    override fun findAllLocation(
+        @LoginUser user: User,
+    ): List<LocationResponse> = locationService.findAllLocation(user)
 
+    @Secured
     @PatchMapping("/{locationId}")
     override fun modifyLocation(
         @PathVariable locationId: Long,
         @RequestBody @Valid request: LocationModifyRequest,
-    ): LocationResponse = locationService.modifyLocation(locationId, request)
+        @LoginUser user: User,
+    ): LocationResponse = locationService.modifyLocation(locationId, request, user)
 
-    @GetMapping("/{locationId}")
-    override fun myPlantExistInLocation(
-        @PathVariable locationId: Long,
-    ): MyPlantExistInLocationResponse = locationService.myPlantExistInLocation(locationId)
-
+    @Secured
     @DeleteMapping("/{locationId}")
     override fun deleteLocation(
         @PathVariable locationId: Long,
-    ) = locationService.deleteLocation(locationId)
+        @LoginUser user: User,
+    ) = locationService.deleteLocation(locationId, user)
 }

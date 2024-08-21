@@ -3,7 +3,8 @@ package dnd11th.blooming.api.service.home
 import dnd11th.blooming.api.dto.home.HomeResponse
 import dnd11th.blooming.api.dto.home.MyPlantHomeResponse
 import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
-import dnd11th.blooming.domain.repository.MyPlantRepository
+import dnd11th.blooming.domain.entity.user.User
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -12,13 +13,15 @@ class HomeService(
     private val myPlantRepository: MyPlantRepository,
     private val myPlantMessageFactory: MyPlantMessageFactory,
 ) {
-    fun getHome(now: LocalDate): HomeResponse {
+    fun getHome(
+        user: User,
+        now: LocalDate,
+    ): HomeResponse {
         val myPlantHomeResponses =
-            myPlantRepository.findAll().stream()
+            myPlantRepository.findAllByUser(user).stream()
                 .map { myPlant -> MyPlantHomeResponse.of(myPlant, now) }
                 .toList()
-        // TODO : username 찾아와야함
-        val message = myPlantMessageFactory.createGreetingMessage("테스트유저")
+        val message = myPlantMessageFactory.createGreetingMessage(user.nickname)
 
         return HomeResponse.from(message, myPlantHomeResponses)
     }

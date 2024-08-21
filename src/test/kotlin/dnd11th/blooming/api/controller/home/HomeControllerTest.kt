@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.get
 class HomeControllerTest : WebMvcDescribeSpec() {
     init {
         describe("홈 화면") {
-            every { homeService.getHome(any()) } returns
+            every { homeService.getHome(any(), any()) } returns
                 HomeResponse(
                     "안녕하세요.",
                     listOf(
