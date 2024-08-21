@@ -562,7 +562,7 @@ class MyPlantServiceTest : DescribeSpec(
                 GrowTemperature.GROW_TEMPERATURE_16_20,
                 LowestTemperature.LOWEST_TEMPERATURE_13,
                 Toxicity.EXISTS,
-                Fertilizer.NOT_VERY_DEMANDING,
+                Fertilizer.LOW_DEMAND,
                 Humidity.HUMIDITY_0_40,
                 "",
                 GrowLocation.VERANDA,

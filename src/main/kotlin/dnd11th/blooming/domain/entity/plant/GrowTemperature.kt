@@ -2,14 +2,14 @@ package dnd11th.blooming.domain.entity.plant
 
 enum class GrowTemperature(
     val lowTemperature: Int,
-    val hightTemperature: Int,
+    val highTemperature: Int,
 ) {
     GROW_TEMPERATURE_16_20(
         16,
         20,
     ),
     GROW_TEMPERATURE_21_25(
-        16,
-        20,
+        21,
+        25,
     ),
 }

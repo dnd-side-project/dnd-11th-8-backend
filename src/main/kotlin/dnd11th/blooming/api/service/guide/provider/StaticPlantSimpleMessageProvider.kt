@@ -129,7 +129,7 @@ class StaticPlantSimpleMessageProvider {
     private fun makeSimpleTemperatureDescription(plant: Plant): String {
         val growTemperatureDescription =
             "${plant.growTemperature.lowTemperature}" +
-                "~${plant.growTemperature.hightTemperature}사이"
+                "~${plant.growTemperature.highTemperature}사이"
         val lowestTemperature = "${plant.lowestTemperature.temperature}도 이하는 주의할 것"
 
         return "${growTemperatureDescription}\n$lowestTemperature"
@@ -137,8 +137,8 @@ class StaticPlantSimpleMessageProvider {
 
     private fun makeSimpleFertilizerDescription(plant: Plant): String {
         return when (plant.fertilizer) {
-            Fertilizer.DEMANDING -> "봄, 여름에 2~4주 간격으로 주기"
-            Fertilizer.NOT_VERY_DEMANDING -> "봄, 여름에 4~8주 간격으로 주기"
+            Fertilizer.DEMAND -> "봄, 여름에 2~4주 간격으로 주기"
+            Fertilizer.LOW_DEMAND -> "봄, 여름에 4~8주 간격으로 주기"
         }
     }
 }
