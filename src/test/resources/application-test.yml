@@ -36,3 +36,8 @@ auth:
 
 weather:
   serviceKey: serviceKey
+
+cors:
+  allowed-origin:
+    - http://localhost:5173/
+  max-age: 3600

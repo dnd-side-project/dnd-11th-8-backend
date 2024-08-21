@@ -39,5 +39,11 @@ auth:
         iss: https://appleid.apple.com
         aud: ${APPLE_CLIENT_ID}
 
+cors:
+  allowed-origin:
+    - https://dnd-11th-8-frontend.vercel.app/
+    - http://localhost:5173/
+  max-age: 3600
+
 weather:
   serviceKey: ${OPEN_API_SERVICE_KEY}
