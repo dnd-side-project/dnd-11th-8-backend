@@ -16,6 +16,7 @@ class AuthInterceptor(
         private const val HEADER_AUTHORIZATION = "Authorization"
         private const val TOKEN_PREFIX = "Bearer "
         private const val ATTRIBUTE_KEY = "claims"
+        private const val OPTIONS = "OPTIONS"
     }
 
     override fun preHandle(
@@ -23,11 +24,16 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any,
     ): Boolean {
+        if (isPreflight(request)) return true
         if (handler !is HandlerMethod) {
             return super.preHandle(request, response, handler)
         }
         if (isSecured(handler)) processAuthenticate(request)
         return super.preHandle(request, response, handler)
+    }
+
+    private fun isPreflight(request: HttpServletRequest): Boolean {
+        return request.method == OPTIONS
     }
 
     private fun isSecured(handler: Any): Boolean {
