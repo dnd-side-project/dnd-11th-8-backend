@@ -47,3 +47,6 @@ cors:
 
 weather:
   serviceKey: ${OPEN_API_SERVICE_KEY}
+
+fcm:
+  key: ./firebase/blooming-firebase-adminsdk.json

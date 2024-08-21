@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.weather
 
-import dnd11th.blooming.client.dto.WeatherItem
 import dnd11th.blooming.client.weather.WeatherInfoClient
+import dnd11th.blooming.client.weather.WeatherItem
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.user.User

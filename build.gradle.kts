@@ -5,8 +5,6 @@ plugins {
     kotlin("kapt") version "1.5.0"
     kotlin("plugin.jpa") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
-
-    // Ktlint
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
@@ -60,6 +58,7 @@ dependencies {
 
     // Client
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.3")
+    implementation("com.google.firebase:firebase-admin:9.2.0")
 
     // Kotest
     testImplementation("io.kotest:kotest-runner-junit5:5.9.1")

@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### File ###
+src/main/resources/firebase
