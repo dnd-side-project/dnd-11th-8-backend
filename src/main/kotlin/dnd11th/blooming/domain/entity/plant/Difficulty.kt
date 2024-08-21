@@ -16,4 +16,8 @@ enum class Difficulty(
         "고수식집사",
         "필요함",
     ),
+    VERY_HIGH(
+        "고수식집사",
+        "특별 관리 요구",
+    ),
 }
