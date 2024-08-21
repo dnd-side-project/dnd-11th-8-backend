@@ -31,13 +31,16 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Create firebase directory
+        run: mkdir ./src/main/resources/firebase/
+
       - name: Create Firebase Admin SDK JSON file
         id: create-json
         uses: jsdaniell/create-json@v1.2.3
         with:
           name: "blooming-firebase-adminsdk.json"
           json: ${{ secrets.FIREBASE_ADMIN_SDK_JSON }}
-          dir: 'src/main/resources/firebase'
+          dir: './src/main/resources/firebase/'
 
       - name: Build with Gradle
         run: ./gradlew clean build -x test
