@@ -35,6 +35,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("com.h2database:h2")
 
