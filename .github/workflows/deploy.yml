@@ -37,7 +37,7 @@ jobs:
         with:
           name: "blooming-firebase-adminsdk.json"
           json: ${{ secrets.FIREBASE_ADMIN_SDK_JSON }}
-          dir: 'src/main/resources/firebase'
+          dir: 'src/main/resources/firebase/'
 
       - name: Build with Gradle
         run: ./gradlew clean build -x test
