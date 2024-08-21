@@ -4,7 +4,6 @@ import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
-import dnd11th.blooming.api.dto.location.MyPlantExistInLocationResponse
 import dnd11th.blooming.api.service.location.LocationService
 import dnd11th.blooming.common.annotation.LoginUser
 import dnd11th.blooming.common.annotation.Secured
@@ -44,13 +43,6 @@ class LocationController(
         @RequestBody @Valid request: LocationModifyRequest,
         @LoginUser user: User,
     ): LocationResponse = locationService.modifyLocation(locationId, request, user)
-
-    @Secured
-    @GetMapping("/{locationId}")
-    override fun myPlantExistInLocation(
-        @PathVariable locationId: Long,
-        @LoginUser user: User,
-    ): MyPlantExistInLocationResponse = locationService.myPlantExistInLocation(locationId, user)
 
     @Secured
     @DeleteMapping("/{locationId}")

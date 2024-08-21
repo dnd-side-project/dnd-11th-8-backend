@@ -2,6 +2,7 @@ package dnd11th.blooming.api.controller.myplant
 
 import dnd11th.blooming.api.dto.image.ImageResponse
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
@@ -25,9 +26,10 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {
-                every { myPlantService.saveMyPlant(any(), any(), any()) } returns
+                every { myPlantService.saveMyPlant(any(), any()) } returns
                     MyPlantSaveResponse(
                         myPlantId = MYPLANT_ID,
+                        message = "등록 되었습니다.",
                     )
             }
             context("정상적인 요청으로 저장하면") {
@@ -35,6 +37,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
                             plantId = PLANT_ID,
+                            scientificName = SCIENTIFIC_NAME,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
@@ -66,6 +69,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID,
                         nickname = NICKNAME,
+                        haveLocation = true,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME,
                         dateSinceLastWater = DATE_SINCE_LAST_WATER,
@@ -75,6 +79,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID2,
                         nickname = NICKNAME2,
+                        haveLocation = true,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME2,
                         dateSinceLastWater = DATE_SINCE_LAST_WATER,
@@ -90,12 +95,16 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                             jsonPath("$.size()", equalTo(2))
                             jsonPath("$[0].myPlantId", equalTo(MYPLANT_ID.toInt()))
                             jsonPath("$[0].nickname", equalTo(NICKNAME))
+                            jsonPath("$[0].haveLocation", equalTo(true))
+                            jsonPath("$[0].imageUrl", equalTo(IMAGE_URL))
                             jsonPath("$[0].scientificName", equalTo(SCIENTIFIC_NAME))
                             jsonPath("$[0].dateSinceLastWater", equalTo(DATE_SINCE_LAST_WATER))
                             jsonPath("$[0].dateSinceLastFertilizer", equalTo(DATE_SINCE_LAST_FERTILIZER))
                             jsonPath("$[0].dateSinceLastHealthCheck", equalTo(DATE_SINCE_LAST_HEALTHCHECK))
                             jsonPath("$[1].myPlantId", equalTo(MYPLANT_ID2.toInt()))
                             jsonPath("$[1].nickname", equalTo(NICKNAME2))
+                            jsonPath("$[0].haveLocation", equalTo(true))
+                            jsonPath("$[0].imageUrl", equalTo(IMAGE_URL))
                             jsonPath("$[1].scientificName", equalTo(SCIENTIFIC_NAME2))
                             jsonPath("$[1].dateSinceLastWater", equalTo(DATE_SINCE_LAST_WATER))
                             jsonPath("$[1].dateSinceLastFertilizer", equalTo(DATE_SINCE_LAST_FERTILIZER))
@@ -108,6 +117,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID,
                         nickname = NICKNAME,
+                        haveLocation = true,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME,
                         dateSinceLastWater = DATE_SINCE_LAST_WATER,
@@ -142,7 +152,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         scientificName = SCIENTIFIC_NAME,
                         plantId = PLANT_ID,
                         location = LOCATION_NAME,
-                        startDate = START_DATE,
+                        withDays = WITH_DAYS,
                         lastWateredTitle = LAST_WATERED_TITLE,
                         lastWateredInfo = LAST_WATERED_INFO,
                         lastFertilizerTitle = LAST_FERTILIZER_TITLE,
@@ -155,11 +165,13 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         images =
                             listOf(
                                 ImageResponse(
+                                    imageId = IMAGE_ID,
                                     imageUrl = "url1",
                                     favorite = true,
                                     createdDate = CURRENT_DAY,
                                 ),
                                 ImageResponse(
+                                    imageId = IMAGE_ID,
                                     imageUrl = "url2",
                                     favorite = false,
                                     createdDate = CURRENT_DAY,
@@ -177,7 +189,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                             jsonPath("$.nickname", equalTo(NICKNAME))
                             jsonPath("$.scientificName", equalTo(SCIENTIFIC_NAME))
                             jsonPath("$.location", equalTo(LOCATION_NAME))
-                            jsonPath("$.startDate", equalTo(START_DATE.toString()))
+                            jsonPath("$.withDays", equalTo(WITH_DAYS))
                             jsonPath("$.lastWateredTitle", equalTo(LAST_WATERED_TITLE))
                             jsonPath("$.lastWateredInfo", equalTo(LAST_WATERED_INFO))
                             jsonPath("$.lastFertilizerTitle", equalTo(LAST_FERTILIZER_TITLE))
@@ -188,7 +200,9 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                             jsonPath("$.fertilizerPeriod", equalTo(FERTILIZER_PERIOD))
                             jsonPath("$.healthCheckAlarm", equalTo(HEALTHCHECK_ALARM))
                             jsonPath("$.images.size()", equalTo(2))
+                            jsonPath("$.images[0].imageId", equalTo(IMAGE_ID.toInt()))
                             jsonPath("$.images[0].imageUrl", equalTo("url1"))
+                            jsonPath("$.images[1].imageId", equalTo(IMAGE_ID.toInt()))
                             jsonPath("$.images[1].imageUrl", equalTo("url2"))
                         }.andDo { print() }
                 }
@@ -344,13 +358,15 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물 눈길주기") {
             beforeTest {
-                every { myPlantService.healthCheckMyPlant(any(), any(), any()) } just runs
+                every { myPlantService.healthCheckMyPlant(any(), any(), any()) } returns
+                    HealthCheckResponse("팁")
             }
             context("눈길주기 요청을 하면") {
                 it("정상 흐름이 반환된다.") {
                     mockMvc.post("/api/v1/myplants/$MYPLANT_ID/healthcheck")
                         .andExpectAll {
                             status { isOk() }
+                            jsonPath("$.tipMessage", equalTo("팁"))
                         }.andDo { print() }
                 }
             }
@@ -413,6 +429,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         val CURRENT_DAY: LocalDate = LocalDate.now()
 
         const val PLANT_ID = 1L
+        const val IMAGE_ID = 1L
         const val IMAGE_URL = "http://"
 
         const val MYPLANT_ID = 1L
@@ -421,6 +438,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         const val LOCATION_ID = 100L
         const val LOCATION_NAME = "거실"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
+        val WITH_DAYS = 234
         val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
         val LAST_FERTILIZER_DATE: LocalDate = LocalDate.of(2024, 6, 15)
         val LAST_HEALTHCHECK_DATE: LocalDate = LocalDate.of(2024, 6, 15)

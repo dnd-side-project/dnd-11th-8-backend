@@ -1,14 +1,13 @@
 package dnd11th.blooming.api.controller.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantDirectionParam
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
-import dnd11th.blooming.api.dto.myplant.MyPlantSortParam
 import dnd11th.blooming.api.service.myplant.MyPlantService
 import dnd11th.blooming.common.annotation.LoginUser
 import dnd11th.blooming.common.annotation.Secured
@@ -35,17 +34,16 @@ class MyPlantController(
     override fun saveMyPlant(
         @RequestBody @Valid request: MyPlantSaveRequest,
         @LoginUser user: User,
-    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request.toMyPlantCreateDto(), request.locationId!!, user)
+    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request.toMyPlantCreateDto(), user)
 
     @Secured
     @GetMapping
     override fun findAllMyPlant(
         @RequestParam locationId: Long?,
-        @RequestParam(defaultValue = "CREATED") sort: MyPlantSortParam,
-        @RequestParam(defaultValue = "DESC") direction: MyPlantDirectionParam,
+        @RequestParam(defaultValue = "created_desc") sort: String,
         @LoginUser user: User,
     ): List<MyPlantResponse> =
-        myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort, direction), user)
+        myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort), user)
 
     @Secured
     @GetMapping("/{myPlantId}")
@@ -88,7 +86,7 @@ class MyPlantController(
     override fun healthCheckMyPlant(
         @PathVariable myPlantId: Long,
         @LoginUser user: User,
-    ) = myPlantService.healthCheckMyPlant(myPlantId, LocalDate.now(), user)
+    ): HealthCheckResponse = myPlantService.healthCheckMyPlant(myPlantId, LocalDate.now(), user)
 
     @Secured
     @PatchMapping("/{myPlantId}/alarm")

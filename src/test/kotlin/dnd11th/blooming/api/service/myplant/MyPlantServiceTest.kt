@@ -4,6 +4,7 @@ import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.api.dto.myplant.MyPlantIdWithImageUrl
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
+import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Alarm
@@ -24,8 +25,8 @@ import dnd11th.blooming.domain.entity.user.AlarmTime
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
-import dnd11th.blooming.domain.repository.MyPlantRepository
 import dnd11th.blooming.domain.repository.PlantRepository
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -54,6 +55,8 @@ class MyPlantServiceTest : DescribeSpec(
             )
 
         describe("내 식물 저장") {
+            every { myPlantMessageFactory.createSaveMessage() } returns
+                "등록 되었습니다."
             every { plantRepository.findByIdOrNull(PLANT_ID) } returns
                 PLANT
             every { myPlantRepsitory.save(any()) } returns
@@ -73,8 +76,10 @@ class MyPlantServiceTest : DescribeSpec(
             context("정상 요청으로 내 식물을 저장하면") {
                 val request =
                     MyPlantCreateDto(
+                        scientificName = SCIENTIFIC_NAME,
                         nickname = NICKNAME,
                         plantId = PLANT_ID,
+                        locationId = LOCATION_ID,
                         startDate = START_DATE,
                         lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerDate = LAST_FERTILIZER_DATE,
@@ -85,7 +90,7 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("정상적으로 저장되고 예외가 발생하면 안된다.") {
-                    val result = myPlantService.saveMyPlant(request, LOCATION_ID, USER)
+                    val result = myPlantService.saveMyPlant(request, USER)
 
                     result.myPlantId shouldBe MYPLANT_ID
                     result.message shouldBe "등록 되었습니다."
@@ -131,16 +136,29 @@ class MyPlantServiceTest : DescribeSpec(
                     alarm = ALARM,
                 ).apply {
                     id = 3
-                    location = LOCATION2
+                    location = null
                 }
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByCreatedDateDesc(any(), any()) } returns
-                listOf(myPlant1, myPlant2, myPlant3)
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByCreatedDateAsc(any(), any()) } returns
-                listOf(myPlant3, myPlant2, myPlant1)
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByLastWateredDateDesc(any(), any()) } returns
-                listOf(myPlant3, myPlant1, myPlant2)
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByLastWateredDateAsc(any(), any()) } returns
-                listOf(myPlant2, myPlant1, myPlant3)
+            every {
+                myPlantRepsitory.findAllByLocationAndUserOrderBy(
+                    any(),
+                    any(),
+                    MyPlantQueryCreteria.CreatedDesc,
+                )
+            } returns listOf(myPlant1, myPlant2, myPlant3)
+            every {
+                myPlantRepsitory.findAllByLocationAndUserOrderBy(
+                    any(),
+                    any(),
+                    MyPlantQueryCreteria.CreatedAsc,
+                )
+            } returns listOf(myPlant3, myPlant2, myPlant1)
+            every {
+                myPlantRepsitory.findAllByLocationAndUserOrderBy(
+                    any(),
+                    any(),
+                    MyPlantQueryCreteria.NoLocation,
+                )
+            } returns listOf(myPlant1, myPlant2)
             every { imageRepository.findFavoriteImagesForMyPlants(any()) } returns
                 listOf(
                     MyPlantIdWithImageUrl("url1", 1),
@@ -151,11 +169,13 @@ class MyPlantServiceTest : DescribeSpec(
                 null
             every { locationRepository.findByIdOrNull(LOCATION_ID) } returns
                 LOCATION1
-            every { myPlantRepsitory.findAllByLocationAndUserOrderByCreatedDateDesc(LOCATION1, any()) } returns
-                listOf(myPlant1, myPlant2)
             context("내 식물을 최근 등록순으로 전체 조회하면") {
                 it("내 식물 리스트가 조회되어야 한다.") {
-                    val response = myPlantService.findAllMyPlant(CURRENT_DAY, user = USER)
+                    val response =
+                        myPlantService.findAllMyPlant(
+                            CURRENT_DAY,
+                            user = USER,
+                        )
                     response.size shouldBe 3
 
                     response[0].myPlantId shouldBe 1
@@ -227,7 +247,7 @@ class MyPlantServiceTest : DescribeSpec(
                     val response = myPlantService.findMyPlantDetail(MYPLANT_ID, CURRENT_DAY, USER)
                     response.nickname shouldBe NICKNAME
                     response.scientificName shouldBe SCIENTIFIC_NAME
-                    response.startDate shouldBe START_DATE
+                    response.withDays shouldBe 1
                     response.lastWateredTitle shouldBe WATERED_TITLE
                     response.lastWateredInfo shouldBe WATERED_INFO
                     response.lastFertilizerTitle shouldBe FERTILIZER_TITLE
@@ -431,11 +451,13 @@ class MyPlantServiceTest : DescribeSpec(
                 }
             every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
+            every { myPlantMessageFactory.createHealthCheckMessage() } returns
+                "팁"
             context("존재하는 내 식물 ID로 내 식물 눈길주기 요청하면") {
                 it("정상 흐름이 반환된다.") {
-                    shouldNotThrowAny {
-                        myPlantService.healthCheckMyPlant(MYPLANT_ID, CURRENT_DAY, USER)
-                    }
+                    val result = myPlantService.healthCheckMyPlant(MYPLANT_ID, CURRENT_DAY, USER)
+
+                    result.tipMessage shouldBe "팁"
                 }
             }
             context("존재하지 않는 내 식물 ID로 내 식물 비료주기 요청하면") {

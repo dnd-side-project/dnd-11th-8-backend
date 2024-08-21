@@ -4,7 +4,6 @@ import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
-import dnd11th.blooming.api.dto.location.MyPlantExistInLocationResponse
 import dnd11th.blooming.common.annotation.ApiErrorResponse
 import dnd11th.blooming.common.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
@@ -51,15 +50,6 @@ interface LocationApi {
         @Schema(hidden = true)
         user: User,
     ): LocationResponse
-
-    @Operation(summary = "위치에 식물이 존재하는지 조회하는 API 입니다.")
-    @ApiResponse(responseCode = "200", description = "전체 조회 성공")
-    fun myPlantExistInLocation(
-        @Parameter(description = "위치 ID", required = true)
-        locationId: Long,
-        @Schema(hidden = true)
-        user: User,
-    ): MyPlantExistInLocationResponse
 
     @Operation(summary = "위치를 삭제하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "위치 삭제 성공")

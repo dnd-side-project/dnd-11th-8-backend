@@ -14,11 +14,42 @@ import java.time.LocalDate
 class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
     init {
         describe("내 식물 저장") {
-            context("식물종류를 전달하지 않으면") {
+            context("식물종류 이름을 전달하지 않으면") {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
-                            plantId = null,
+                            scientificName = null,
+                            plantId = PLANT_ID,
+                            nickname = NICKNAME,
+                            locationId = LOCATION_ID,
+                            startDate = START_DATE,
+                            lastWateredDate = LAST_WATERED_DATE,
+                            lastFertilizerDate = LAST_FERTILIZER_DATE,
+                            waterAlarm = WATER_ALARM,
+                            waterPeriod = WATER_PERIOD,
+                            fertilizerAlarm = FERTILIZER_ALARM,
+                            fertilizerPeriod = FERTILIZER_PERIOD,
+                            healthCheckAlarm = HEALTHCHECK_ALARM,
+                        ),
+                    )
+                it("예외 응답이 와야 한다.") {
+                    mockMvc.post("/api/v1/myplants") {
+                        contentType = MediaType.APPLICATION_JSON
+                        content = json
+                    }.andExpectAll {
+                        status { isBadRequest() }
+                        jsonPath("$.code", equalTo(ERROR_CODE))
+                        jsonPath("$.message", equalTo("식물 학명은 필수값입니다."))
+                    }.andDo { print() }
+                }
+            }
+
+            context("식물종류 비우고 전달하면 않으면") {
+                val json =
+                    objectMapper.writeValueAsString(
+                        MyPlantSaveRequest(
+                            scientificName = " ",
+                            plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
@@ -38,98 +69,16 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                     }.andExpectAll {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("식물 종류는 필수값입니다."))
+                        jsonPath("$.message", equalTo("식물 학명은 필수값입니다."))
                     }.andDo { print() }
                 }
             }
-            context("식물 별명을 전달하지 않으면") {
-                val json =
-                    objectMapper.writeValueAsString(
-                        MyPlantSaveRequest(
-                            plantId = PLANT_ID,
-                            nickname = null,
-                            locationId = LOCATION_ID,
-                            startDate = START_DATE,
-                            lastWateredDate = LAST_WATERED_DATE,
-                            lastFertilizerDate = LAST_FERTILIZER_DATE,
-                            waterAlarm = WATER_ALARM,
-                            waterPeriod = WATER_PERIOD,
-                            fertilizerAlarm = FERTILIZER_ALARM,
-                            fertilizerPeriod = FERTILIZER_PERIOD,
-                            healthCheckAlarm = HEALTHCHECK_ALARM,
-                        ),
-                    )
-                it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/myplants") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = json
-                    }.andExpectAll {
-                        status { isBadRequest() }
-                        jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("식물 별명은 필수값입니다."))
-                    }.andDo { print() }
-                }
-            }
-            context("식물 별명을 비우고 전달하면") {
-                val json =
-                    objectMapper.writeValueAsString(
-                        MyPlantSaveRequest(
-                            plantId = PLANT_ID,
-                            nickname = " ",
-                            locationId = LOCATION_ID,
-                            startDate = START_DATE,
-                            lastWateredDate = LAST_WATERED_DATE,
-                            lastFertilizerDate = LAST_FERTILIZER_DATE,
-                            waterAlarm = WATER_ALARM,
-                            waterPeriod = WATER_PERIOD,
-                            fertilizerAlarm = FERTILIZER_ALARM,
-                            fertilizerPeriod = FERTILIZER_PERIOD,
-                            healthCheckAlarm = HEALTHCHECK_ALARM,
-                        ),
-                    )
-                it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/myplants") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = json
-                    }.andExpectAll {
-                        status { isBadRequest() }
-                        jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("식물 별명은 필수값입니다."))
-                    }.andDo { print() }
-                }
-            }
-            context("식물위치를 전달하지 않으면") {
-                val json =
-                    objectMapper.writeValueAsString(
-                        MyPlantSaveRequest(
-                            plantId = PLANT_ID,
-                            nickname = NICKNAME,
-                            locationId = null,
-                            startDate = START_DATE,
-                            lastWateredDate = LAST_WATERED_DATE,
-                            lastFertilizerDate = LAST_FERTILIZER_DATE,
-                            waterAlarm = WATER_ALARM,
-                            waterPeriod = WATER_PERIOD,
-                            fertilizerAlarm = FERTILIZER_ALARM,
-                            fertilizerPeriod = FERTILIZER_PERIOD,
-                            healthCheckAlarm = HEALTHCHECK_ALARM,
-                        ),
-                    )
-                it("예외 응답이 와야 한다.") {
-                    mockMvc.post("/api/v1/myplants") {
-                        contentType = MediaType.APPLICATION_JSON
-                        content = json
-                    }.andExpectAll {
-                        status { isBadRequest() }
-                        jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("위치는 필수값입니다."))
-                    }.andDo { print() }
-                }
-            }
+
             context("키우기 시작한 날짜를 미래로 전달하면") {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
+                            scientificName = SCIENTIFIC_NAME,
                             plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
@@ -158,6 +107,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
+                            scientificName = SCIENTIFIC_NAME,
                             plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
@@ -186,6 +136,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
+                            scientificName = SCIENTIFIC_NAME,
                             plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
@@ -214,6 +165,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
+                            scientificName = SCIENTIFIC_NAME,
                             plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
@@ -242,6 +194,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
+                            scientificName = SCIENTIFIC_NAME,
                             plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
@@ -270,6 +223,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
+                            scientificName = SCIENTIFIC_NAME,
                             plantId = PLANT_ID,
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,

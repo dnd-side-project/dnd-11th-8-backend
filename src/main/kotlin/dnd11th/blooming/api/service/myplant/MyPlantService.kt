@@ -1,20 +1,24 @@
 package dnd11th.blooming.api.service.myplant
 
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
+import dnd11th.blooming.api.dto.myplant.MyPlantWithImageUrl
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.entity.plant.Plant
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
-import dnd11th.blooming.domain.repository.MyPlantRepository
 import dnd11th.blooming.domain.repository.PlantRepository
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -31,24 +35,16 @@ class MyPlantService(
     @Transactional
     fun saveMyPlant(
         dto: MyPlantCreateDto,
-        locationId: Long,
         user: User,
     ): MyPlantSaveResponse {
-        val location =
-            locationRepository
-                .findByIdAndUser(locationId, user)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_LOCATION)
-
-        val plant =
-            plantRepository
-                .findByIdOrNull(dto.plantId)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_PLANT)
+        val location: Location? = dto.locationId?.let { locationRepository.findByIdAndUser(it, user) }
+        val plant: Plant? = dto.plantId?.let { plantRepository.findByIdOrNull(it) }
 
         val myPlant = MyPlant.createMyPlant(dto, location, plant, user)
 
         val savedPlant = myPlantRepository.save(myPlant)
 
-        return MyPlantSaveResponse.from(savedPlant)
+        return MyPlantSaveResponse.from(savedPlant, myPlantMessageFactory)
     }
 
     @Transactional(readOnly = true)
@@ -58,12 +54,12 @@ class MyPlantService(
         sort: MyPlantQueryCreteria = MyPlantQueryCreteria.CreatedDesc,
         user: User,
     ): List<MyPlantResponse> {
-        val myPlantWithUrlList = findSortedMyPlantsWithImage(locationId, user, sort)
+        val myPlantsWithImageUrl = findSortedMyPlantsWithImage(locationId, user, sort)
 
-        return myPlantWithUrlList.stream().map { myPlantAndImageUrl ->
+        return myPlantsWithImageUrl.stream().map { myPlantAndImageUrl ->
             MyPlantResponse.of(
-                myPlantAndImageUrl.first,
-                myPlantAndImageUrl.second,
+                myPlantAndImageUrl.myPlant,
+                myPlantAndImageUrl.imageUrl,
                 now,
             )
         }.toList()
@@ -166,43 +162,32 @@ class MyPlantService(
         myPlantId: Long,
         now: LocalDate,
         user: User,
-    ) {
+    ): HealthCheckResponse {
         val myPlant =
             myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
         myPlant.doHealthCheck(now)
+
+        return HealthCheckResponse(myPlantMessageFactory.createHealthCheckMessage())
     }
 
     private fun findSortedMyPlantsWithImage(
         locationId: Long?,
         user: User,
         sort: MyPlantQueryCreteria,
-    ): List<Pair<MyPlant, String>> {
+    ): List<MyPlantWithImageUrl> {
         val location = locationId?.let { locationRepository.findByIdAndUser(locationId, user) }
 
-        val sortedMyPlantList =
-            when (sort) {
-                MyPlantQueryCreteria.CreatedDesc ->
-                    myPlantRepository.findAllByLocationAndUserOrderByCreatedDateDesc(location, user)
-                MyPlantQueryCreteria.CreatedAsc ->
-                    myPlantRepository.findAllByLocationAndUserOrderByCreatedDateAsc(location, user)
-                MyPlantQueryCreteria.WateredDesc ->
-                    myPlantRepository.findAllByLocationAndUserOrderByLastWateredDateDesc(location, user)
-                MyPlantQueryCreteria.WateredAsc ->
-                    myPlantRepository.findAllByLocationAndUserOrderByLastWateredDateAsc(location, user)
-            }
+        // 정렬된 MyPlant 리스트를 생성
+        val sortedMyPlants: List<MyPlant> = myPlantRepository.findAllByLocationAndUserOrderBy(location, user, sort)
 
-        val urlMap =
-            imageRepository.findFavoriteImagesForMyPlants(sortedMyPlantList)
+        // MyPlantId -> imageUrl 맵을 생성
+        val urlMap: Map<Long, String> =
+            imageRepository.findFavoriteImagesForMyPlants(sortedMyPlants)
                 .associate { it.myPlantId to it.imageUrl }
 
-        return sortedMyPlantList.map { myPlant ->
-            myPlant to
-                (
-                    urlMap[myPlant.id]
-                        ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
-                )
-        }
+        // 정렬된 MyPlant 리스트 기준으로 Map에서 imageUrl를 찾고, MyPlant-ImageUrl 객체를 생성
+        return sortedMyPlants.map { myPlant -> MyPlantWithImageUrl(myPlant, urlMap[myPlant.id]) }
     }
 }
