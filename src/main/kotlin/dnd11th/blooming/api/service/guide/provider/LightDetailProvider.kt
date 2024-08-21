@@ -32,7 +32,7 @@ class LightDetailProvider {
         val description =
             when (plant.light) {
                 Light.LOW, Light.LOW_MEDIUM, Light.LOW_MEDIUM_HIGH -> "빛을 많이 받지 않아도 괜찮습니다."
-                Light.MEDIUM, Light.MEDIUMT_HIGH -> "간접적인 밝은 빛을 가장 좋아합니다.\n단, 직사광선은 잎을 태울 수 있으므로 피하는 것이 좋아요."
+                Light.MEDIUM, Light.MEDIUM_HIGH -> "간접적인 밝은 빛을 가장 좋아합니다.\n단, 직사광선은 잎을 태울 수 있으므로 피하는 것이 좋아요."
                 Light.HIGH -> "직접적인 밝은 빛을 가장 좋아합니다."
             }
 
