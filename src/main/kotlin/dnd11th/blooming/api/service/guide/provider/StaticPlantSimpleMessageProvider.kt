@@ -137,8 +137,10 @@ class StaticPlantSimpleMessageProvider {
 
     private fun makeSimpleFertilizerDescription(plant: Plant): String {
         return when (plant.fertilizer) {
-            Fertilizer.DEMAND -> "봄, 여름에 2~4주 간격으로 주기"
+            Fertilizer.NOT_DEMAND -> "비료를 주지 않아도 괜찮습니다."
             Fertilizer.LOW_DEMAND -> "봄, 여름에 4~8주 간격으로 주기"
+            Fertilizer.DEMAND -> "봄, 여름에 2~4주 간격으로 주기"
+            Fertilizer.HIGH_DEMAND -> "봄, 여름에 2~3주 간격으로 주기"
         }
     }
 }
