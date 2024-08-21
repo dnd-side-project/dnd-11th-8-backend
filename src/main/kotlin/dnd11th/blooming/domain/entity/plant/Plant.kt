@@ -1,6 +1,5 @@
 package dnd11th.blooming.domain.entity.plant
 
-import dnd11th.blooming.domain.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -52,7 +51,7 @@ class Plant(
     var location: GrowLocation,
     @Column
     var imageUrl: String,
-) : BaseEntity() {
+) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
