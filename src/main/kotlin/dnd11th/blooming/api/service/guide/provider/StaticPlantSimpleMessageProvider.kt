@@ -97,8 +97,10 @@ class StaticPlantSimpleMessageProvider {
     ): String {
         val water =
             when (Season.getSeason(month)) {
+                Season.SPRING -> plant.springWater
+                Season.SUMMER -> plant.summerWater
+                Season.FALL -> plant.fallWater
                 Season.WINTER -> plant.winterWater
-                else -> plant.springSummerFallWater
             }
 
         return "${water.waterPerWeek},\n${water.description}할 것"
