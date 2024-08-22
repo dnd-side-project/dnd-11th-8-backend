@@ -16,7 +16,13 @@ class Plant(
     var engName: String,
     @Column
     @Enumerated(EnumType.STRING)
-    var springSummerFallWater: Water,
+    var springWater: Water,
+    @Column
+    @Enumerated(EnumType.STRING)
+    var summerWater: Water,
+    @Column
+    @Enumerated(EnumType.STRING)
+    var fallWater: Water,
     @Column
     @Enumerated(EnumType.STRING)
     var winterWater: Water,

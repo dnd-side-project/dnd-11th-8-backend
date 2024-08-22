@@ -25,8 +25,8 @@ class WaterDetailProvider {
     }
 
     private fun makeDetailSpringSummerFallDescription(plant: Plant): String {
-        val waterDescription = "${plant.springSummerFallWater.description}해주세요."
-        val perWeekDescription = "일주일에 ${plant.springSummerFallWater.waterPerWeek}번 정도가 적당해요."
+        val waterDescription = "${plant.summerWater.description}해주세요."
+        val perWeekDescription = "일주일에 ${plant.summerWater.waterPerWeek}번 정도가 적당해요."
         return "$waterDescription $perWeekDescription"
     }
 
