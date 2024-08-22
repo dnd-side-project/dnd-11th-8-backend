@@ -555,6 +555,8 @@ class MyPlantServiceTest : DescribeSpec(
                 "",
                 Water.MOIST,
                 Water.MOIST,
+                Water.MOIST,
+                Water.MOIST,
                 100,
                 100,
                 Light.MEDIUM,
