@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.PastOrPresent
+import org.hibernate.validator.constraints.Range
 import java.time.LocalDate
 
 @Schema(
@@ -23,12 +24,14 @@ data class MyPlantSaveRequest(
     @field:Schema(description = "키우기 시작한 날짜", example = "2024-05-17")
     @field:PastOrPresent(message = "키우기 시작한 날짜는 미래일 수 없습니다.")
     val startDate: LocalDate?,
-    @field:Schema(description = "마지막으로 물 준 날짜", example = "2024-05-17")
-    @field:PastOrPresent(message = "마지막으로 물 준 날짜는 미래일 수 없습니다.")
-    val lastWateredDate: LocalDate?,
-    @field:Schema(description = "마지막으로 비료 준 날짜", example = "2024-05-17")
-    @field:PastOrPresent(message = "마지막으로 비료 준 날짜는 미래일 수 없습니다.")
-    val lastFertilizerDate: LocalDate?,
+    @field:Schema(description = "마지막으로 물 준 날짜 선택지 번호", example = "3")
+    @field:NotNull(message = "마지막으로 물 준 날짜는 필수입니다.")
+    @field:Range(min = 1, max = 6, message = "1에서 6의 값을 입력하세요.")
+    val lastWateredDate: Int?,
+    @field:Schema(description = "마지막으로 비료 준 날짜 선택지 번호", example = "2")
+    @field:NotNull(message = "마지막으로 비료 준 날짜는 필수입니다.")
+    @field:Range(min = 1, max = 6, message = "1에서 6의 값을 입력하세요.")
+    val lastFertilizerDate: Int?,
     @field:NotNull(message = "물주기 알림 여부는 필수값입니다.")
     @field:Schema(description = "물주기 알림 여부", example = "true")
     val waterAlarm: Boolean?,
@@ -50,8 +53,8 @@ data class MyPlantSaveRequest(
             plantId = plantId,
             locationId = locationId,
             startDate = startDate ?: LocalDate.now(),
-            lastWateredDate = lastWateredDate,
-            lastFertilizerDate = lastFertilizerDate,
+            lastWateredDate = lastWateredDate!!,
+            lastFertilizerDate = lastFertilizerDate!!,
             waterAlarm = waterAlarm!!,
             waterPeriod = waterPeriod,
             fertilizerAlarm = fertilizerAlarm!!,

@@ -34,7 +34,7 @@ class MyPlantController(
     override fun saveMyPlant(
         @RequestBody @Valid request: MyPlantSaveRequest,
         @LoginUser user: User,
-    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request.toMyPlantCreateDto(), user)
+    ): MyPlantSaveResponse = myPlantService.saveMyPlant(request.toMyPlantCreateDto(), user, LocalDate.now())
 
     @Secured
     @GetMapping
@@ -58,7 +58,7 @@ class MyPlantController(
         @PathVariable myPlantId: Long,
         @RequestBody @Valid request: MyPlantModifyRequest,
         @LoginUser user: User,
-    ) = myPlantService.modifyMyPlant(myPlantId, request, user)
+    ) = myPlantService.modifyMyPlant(myPlantId, request, user, LocalDate.now())
 
     @Secured
     @DeleteMapping("/{myPlantId}")

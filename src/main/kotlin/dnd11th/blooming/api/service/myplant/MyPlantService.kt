@@ -36,11 +36,12 @@ class MyPlantService(
     fun saveMyPlant(
         dto: MyPlantCreateDto,
         user: User,
+        now: LocalDate,
     ): MyPlantSaveResponse {
         val location: Location? = dto.locationId?.let { locationRepository.findByIdAndUser(it, user) }
         val plant: Plant? = dto.plantId?.let { plantRepository.findByIdOrNull(it) }
 
-        val myPlant = MyPlant.createMyPlant(dto, location, plant, user)
+        val myPlant = MyPlant.createMyPlant(dto, location, plant, user, now)
 
         val savedPlant = myPlantRepository.save(myPlant)
 
@@ -85,6 +86,7 @@ class MyPlantService(
         myPlantId: Long,
         request: MyPlantModifyRequest,
         user: User,
+        now: LocalDate,
     ) {
         val myPlant =
             myPlantRepository.findByIdAndUser(myPlantId, user)
@@ -102,6 +104,7 @@ class MyPlantService(
             startDate = request.startDate,
             lastWateredDate = request.lastWateredDate,
             lastFertilizerDate = request.lastFertilizerDate,
+            now = now,
         )
     }
 

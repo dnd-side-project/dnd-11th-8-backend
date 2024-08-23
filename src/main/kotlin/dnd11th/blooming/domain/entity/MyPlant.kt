@@ -72,14 +72,15 @@ class MyPlant(
         nickname: String?,
         location: Location?,
         startDate: LocalDate?,
-        lastWateredDate: LocalDate?,
-        lastFertilizerDate: LocalDate?,
+        lastWateredDate: Int?,
+        lastFertilizerDate: Int?,
+        now: LocalDate,
     ) {
         nickname?.let { this.nickname = nickname }
         location?. let { this.location = location }
         startDate?.let { this.startDate = startDate }
-        lastWateredDate?.let { this.lastWateredDate = lastWateredDate }
-        lastFertilizerDate?.let { this.lastFertilizerDate = lastFertilizerDate }
+        lastWateredDate?.let { this.lastWateredDate = selectLastDate(lastWateredDate, now) }
+        lastFertilizerDate?.let { this.lastFertilizerDate = selectLastDate(lastFertilizerDate, now) }
     }
 
     fun modifyAlarm(alarm: Alarm) {
@@ -104,6 +105,7 @@ class MyPlant(
             location: Location?,
             plant: Plant?,
             user: User,
+            now: LocalDate,
         ): MyPlant =
             MyPlant(
                 // plant가 없으면 scientificName 사용
@@ -111,8 +113,8 @@ class MyPlant(
                 // nickname이 없으면 scientificName 사용
                 nickname = dto.nickname ?: dto.scientificName,
                 startDate = dto.startDate,
-                lastWateredDate = dto.lastWateredDate,
-                lastFertilizerDate = dto.lastFertilizerDate,
+                lastWateredDate = selectLastDate(dto.lastWateredDate, now),
+                lastFertilizerDate = selectLastDate(dto.lastFertilizerDate, now),
                 lastHealthCheckDate = LocalDate.now(),
                 alarm =
                     Alarm(
@@ -128,5 +130,17 @@ class MyPlant(
                 it.user = user
                 plant?.let { plant -> it.plantImageUrl = plant.imageUrl }
             }
+
+        private fun selectLastDate(
+            number: Int,
+            now: LocalDate,
+        ) = when (number) {
+            1 -> now
+            2 -> now.minusDays(1)
+            3 -> now.minusDays(3)
+            4 -> now.minusDays(7)
+            5 -> now.minusDays(14)
+            else -> null
+        }
     }
 }

@@ -26,7 +26,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
     init {
         describe("내 식물 저장") {
             beforeTest {
-                every { myPlantService.saveMyPlant(any(), any()) } returns
+                every { myPlantService.saveMyPlant(any(), any(), any()) } returns
                     MyPlantSaveResponse(
                         myPlantId = MYPLANT_ID,
                         message = "등록 되었습니다.",
@@ -221,8 +221,8 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물 수정") {
             beforeTest {
-                every { myPlantService.modifyMyPlant(any(), any(), any()) } just runs
-                every { myPlantService.modifyMyPlant(not(eq(MYPLANT_ID)), any(), any()) } throws
+                every { myPlantService.modifyMyPlant(any(), any(), any(), any()) } just runs
+                every { myPlantService.modifyMyPlant(not(eq(MYPLANT_ID)), any(), any(), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
                 every {
                     myPlantService.modifyMyPlant(
@@ -230,6 +230,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         match {
                             it.locationId != LOCATION_ID
                         },
+                        any(),
                         any(),
                     )
                 } throws
@@ -438,9 +439,9 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         const val LOCATION_ID = 100L
         const val LOCATION_NAME = "거실"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
-        val WITH_DAYS = 234
-        val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
-        val LAST_FERTILIZER_DATE: LocalDate = LocalDate.of(2024, 6, 15)
+        const val WITH_DAYS = 234
+        const val LAST_WATERED_DATE = 1
+        const val LAST_FERTILIZER_DATE = 2
         val LAST_HEALTHCHECK_DATE: LocalDate = LocalDate.of(2024, 6, 15)
         const val DATE_SINCE_LAST_WATER = 3
         const val DATE_SINCE_LAST_FERTILIZER = 3

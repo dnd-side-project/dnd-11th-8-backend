@@ -103,7 +103,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                     }.andDo { print() }
                 }
             }
-            context("마지막으로 물 준 날짜를 미래로 전달하면") {
+            context("마지막으로 물 준 날짜를 0~6 이외의 값으로 전달하면") {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
@@ -112,7 +112,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
-                            lastWateredDate = FUTURE_DATE,
+                            lastWateredDate = 7,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
                             waterAlarm = WATER_ALARM,
                             waterPeriod = WATER_PERIOD,
@@ -128,11 +128,11 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                     }.andExpectAll {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("마지막으로 물 준 날짜는 미래일 수 없습니다."))
+                        jsonPath("$.message", equalTo("1에서 6의 값을 입력하세요."))
                     }.andDo { print() }
                 }
             }
-            context("마지막으로 비료 준 날짜를 미래로 전달하면") {
+            context("마지막으로 비료 준 날짜를 0~6 이외의 값으로 전달하면") {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantSaveRequest(
@@ -142,7 +142,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
-                            lastFertilizerDate = FUTURE_DATE,
+                            lastFertilizerDate = 7,
                             waterAlarm = WATER_ALARM,
                             waterPeriod = WATER_PERIOD,
                             fertilizerAlarm = FERTILIZER_ALARM,
@@ -157,7 +157,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                     }.andExpectAll {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("마지막으로 비료 준 날짜는 미래일 수 없습니다."))
+                        jsonPath("$.message", equalTo("1에서 6의 값을 입력하세요."))
                     }.andDo { print() }
                 }
             }
@@ -273,14 +273,14 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                     }.andDo { print() }
                 }
             }
-            context("마지막으로 물 준 날짜를 미래로 전달하면") {
+            context("마지막으로 물 준 날짜를 1~6 이외의 값으로 전달하면") {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
                             nickname = NICKNAME,
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
-                            lastWateredDate = FUTURE_DATE,
+                            lastWateredDate = 7,
                             lastFertilizerDate = LAST_FERTILIZER_DATE,
                         ),
                     )
@@ -291,11 +291,11 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                     }.andExpectAll {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("마지막으로 물 준 날짜는 미래일 수 없습니다."))
+                        jsonPath("$.message", equalTo("1에서 6의 값을 입력하세요."))
                     }.andDo { print() }
                 }
             }
-            context("마지막으로 비료 준 날짜를 미래로 전달하면") {
+            context("마지막으로 비료 준 날짜를 1~6 이외의 값으로 전달하면") {
                 val json =
                     objectMapper.writeValueAsString(
                         MyPlantModifyRequest(
@@ -303,7 +303,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                             locationId = LOCATION_ID,
                             startDate = START_DATE,
                             lastWateredDate = LAST_WATERED_DATE,
-                            lastFertilizerDate = FUTURE_DATE,
+                            lastFertilizerDate = 7,
                         ),
                     )
                 it("예외 응답이 와야 한다.") {
@@ -313,7 +313,7 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
                     }.andExpectAll {
                         status { isBadRequest() }
                         jsonPath("$.code", equalTo(ERROR_CODE))
-                        jsonPath("$.message", equalTo("마지막으로 비료 준 날짜는 미래일 수 없습니다."))
+                        jsonPath("$.message", equalTo("1에서 6의 값을 입력하세요."))
                     }.andDo { print() }
                 }
             }
@@ -398,8 +398,8 @@ class MyPlantControllerValidationTest : WebMvcDescribeSpec() {
         const val LOCATION_ID = 100L
         val FUTURE_DATE: LocalDate = LocalDate.now().plusDays(1)
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
-        val LAST_WATERED_DATE: LocalDate = LocalDate.of(2024, 6, 29)
-        val LAST_FERTILIZER_DATE: LocalDate = LocalDate.of(2024, 6, 15)
+        const val LAST_WATERED_DATE = 1
+        const val LAST_FERTILIZER_DATE = 2
         const val WATER_ALARM = true
         const val WATER_PERIOD = 3
         const val FERTILIZER_ALARM = false
