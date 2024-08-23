@@ -14,7 +14,6 @@ import dnd11th.blooming.support.WebMvcDescribeSpec
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
-import org.assertj.core.api.LocalDateAssert
 import org.hamcrest.CoreMatchers.equalTo
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.delete
@@ -156,10 +155,10 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         withDays = WITH_DAYS,
                         lastWateredTitle = LAST_WATERED_TITLE,
                         lastWateredInfo = LAST_WATERED_INFO,
-	                    lastWateredDate = LAST_WATERED_DATE,
+                        lastWateredDate = LAST_WATERED_DATE,
                         lastFertilizerTitle = LAST_FERTILIZER_TITLE,
                         lastFertilizerInfo = LAST_FERTILIZER_INFO,
-	                    lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
                         fertilizerAlarm = FERTILIZER_ALARM,
@@ -444,9 +443,9 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
         const val WITH_DAYS = 234
         const val LAST_WATERED_DATE_INT = 1
-	    val LAST_WATERED_DATE: LocalDate = CURRENT_DAY.minusDays(LAST_WATERED_DATE_INT.toLong())
-	    const val LAST_FERTILIZER_DATE_INT = 2
-	    val LAST_FERTILIZER_DATE: LocalDate = CURRENT_DAY.minusDays(LAST_FERTILIZER_DATE_INT.toLong())
+        val LAST_WATERED_DATE: LocalDate = CURRENT_DAY.minusDays(LAST_WATERED_DATE_INT.toLong())
+        const val LAST_FERTILIZER_DATE_INT = 2
+        val LAST_FERTILIZER_DATE: LocalDate = CURRENT_DAY.minusDays(LAST_FERTILIZER_DATE_INT.toLong())
         val LAST_HEALTHCHECK_DATE: LocalDate = LocalDate.of(2024, 6, 15)
         const val DATE_SINCE_LAST_WATER = 3
         const val DATE_SINCE_LAST_FERTILIZER = 3
