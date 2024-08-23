@@ -27,10 +27,14 @@ data class MyPlantDetailResponse(
     val lastWateredTitle: String,
     @field:Schema(description = "마지막으로 물 준 날짜 컴포넌트 내용", example = "2024-05-17\n17일전")
     val lastWateredInfo: String,
+    @field:Schema(description = "마지막으로 물 준 날짜", example = "2024-05-17")
+    val lastWateredDate: LocalDate?,
     @field:Schema(description = "마지막으로 비료 준 날짜 컴포넌트 제목", example = "비료주기")
     val lastFertilizerTitle: String,
-    @field:Schema(description = "마지막으로 물 준 날짜 컴포넌트 내용", example = "17일전")
+    @field:Schema(description = "마지막으로 비료 준 날짜 컴포넌트 내용", example = "17일전")
     val lastFertilizerInfo: String,
+    @field:Schema(description = "마지막으로 비료 준 날짜", example = "2024-05-17")
+    val lastFertilizerDate: LocalDate?,
     @field:Schema(description = "물주기 알림 여부", example = "true")
     val waterAlarm: Boolean,
     @field:Schema(description = "물주기 알림 주기", example = "4")
@@ -59,8 +63,10 @@ data class MyPlantDetailResponse(
                 withDays = Period.between(myPlant.startDate, now).days,
                 lastWateredTitle = messageFactory.createWateredTitle(),
                 lastWateredInfo = messageFactory.createWateredInfo(myPlant.lastWateredDate, now),
+                lastWateredDate = myPlant.lastWateredDate,
                 lastFertilizerTitle = messageFactory.createFertilizerTitle(),
                 lastFertilizerInfo = messageFactory.createFertilizerInfo(myPlant.lastFertilizerDate, now),
+                lastFertilizerDate = myPlant.lastFertilizerDate,
                 waterAlarm = myPlant.alarm.waterAlarm,
                 waterPeriod = myPlant.alarm.waterPeriod,
                 fertilizerAlarm = myPlant.alarm.fertilizerAlarm,
