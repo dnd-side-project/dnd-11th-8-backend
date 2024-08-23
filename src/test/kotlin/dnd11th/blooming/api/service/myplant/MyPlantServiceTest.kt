@@ -81,8 +81,8 @@ class MyPlantServiceTest : DescribeSpec(
                         plantId = PLANT_ID,
                         locationId = LOCATION_ID,
                         startDate = START_DATE,
-                        lastWateredDate = LAST_WATERED_DATE,
-                        lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        lastWateredDate = LAST_WATERED_DATE_INT,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE_INT,
                         waterAlarm = WATER_ALARM,
                         waterPeriod = WATER_PERIOD,
                         fertilizerAlarm = FERTILIZER_ALARM,
@@ -90,7 +90,7 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("정상적으로 저장되고 예외가 발생하면 안된다.") {
-                    val result = myPlantService.saveMyPlant(request, USER)
+                    val result = myPlantService.saveMyPlant(request, USER, CURRENT_DAY)
 
                     result.myPlantId shouldBe MYPLANT_ID
                     result.message shouldBe "등록 되었습니다."
@@ -294,11 +294,11 @@ class MyPlantServiceTest : DescribeSpec(
                         nickname = NICKNAME,
                         locationId = LOCATION_ID,
                         startDate = START_DATE,
-                        lastWateredDate = LAST_WATERED_DATE,
-                        lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        lastWateredDate = LAST_WATERED_DATE_INT,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE_INT,
                     )
                 it("정상 흐름을 반환해야 한다.") {
-                    myPlantService.modifyMyPlant(MYPLANT_ID, request, USER)
+                    myPlantService.modifyMyPlant(MYPLANT_ID, request, USER, CURRENT_DAY)
                 }
             }
             context("존재하지 않는 내 식물 ID로 수정하면") {
@@ -307,12 +307,19 @@ class MyPlantServiceTest : DescribeSpec(
                         nickname = NICKNAME,
                         locationId = LOCATION_ID,
                         startDate = START_DATE,
-                        lastWateredDate = LAST_WATERED_DATE,
-                        lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        lastWateredDate = LAST_WATERED_DATE_INT,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE_INT,
                     )
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
-                        shouldThrow<NotFoundException> { myPlantService.modifyMyPlant(MYPLANT_ID2, request, USER) }
+                        shouldThrow<NotFoundException> {
+                            myPlantService.modifyMyPlant(
+                                MYPLANT_ID2,
+                                request,
+                                USER,
+                                CURRENT_DAY,
+                            )
+                        }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT
                 }
@@ -323,12 +330,19 @@ class MyPlantServiceTest : DescribeSpec(
                         nickname = NICKNAME,
                         locationId = LOCATION_ID + 1,
                         startDate = START_DATE,
-                        lastWateredDate = LAST_WATERED_DATE,
-                        lastFertilizerDate = LAST_FERTILIZER_DATE,
+                        lastWateredDate = LAST_WATERED_DATE_INT,
+                        lastFertilizerDate = LAST_FERTILIZER_DATE_INT,
                     )
                 it("NotFoundException(NOT_FOUND_LOCATION_ID) 예외가 발생해야 한다.") {
                     val exception =
-                        shouldThrow<NotFoundException> { myPlantService.modifyMyPlant(MYPLANT_ID, request, USER) }
+                        shouldThrow<NotFoundException> {
+                            myPlantService.modifyMyPlant(
+                                MYPLANT_ID,
+                                request,
+                                USER,
+                                CURRENT_DAY,
+                            )
+                        }
                     exception.message shouldBe "존재하지 않는 위치입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_LOCATION
                 }
@@ -535,7 +549,9 @@ class MyPlantServiceTest : DescribeSpec(
 
         val START_DATE: LocalDate = CURRENT_DAY.minusDays(1)
         val LAST_WATERED_DATE: LocalDate = CURRENT_DAY.minusDays(1)
+        const val LAST_WATERED_DATE_INT = 1
         val LAST_FERTILIZER_DATE: LocalDate = CURRENT_DAY.minusDays(1)
+        const val LAST_FERTILIZER_DATE_INT = 1
         val LAST_HEALTHCHECK_DATE: LocalDate = CURRENT_DAY.minusDays(1)
 
         const val WATER_ALARM = true
