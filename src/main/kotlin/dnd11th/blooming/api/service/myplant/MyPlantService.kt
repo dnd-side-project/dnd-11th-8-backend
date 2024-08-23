@@ -86,6 +86,7 @@ class MyPlantService(
         myPlantId: Long,
         request: MyPlantModifyRequest,
         user: User,
+        now: LocalDate,
     ) {
         val myPlant =
             myPlantRepository.findByIdAndUser(myPlantId, user)
@@ -103,6 +104,7 @@ class MyPlantService(
             startDate = request.startDate,
             lastWateredDate = request.lastWateredDate,
             lastFertilizerDate = request.lastFertilizerDate,
+            now = now,
         )
     }
 

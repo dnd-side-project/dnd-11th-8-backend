@@ -72,14 +72,15 @@ class MyPlant(
         nickname: String?,
         location: Location?,
         startDate: LocalDate?,
-        lastWateredDate: LocalDate?,
-        lastFertilizerDate: LocalDate?,
+        lastWateredDate: Int?,
+        lastFertilizerDate: Int?,
+        now: LocalDate,
     ) {
         nickname?.let { this.nickname = nickname }
         location?. let { this.location = location }
         startDate?.let { this.startDate = startDate }
-        lastWateredDate?.let { this.lastWateredDate = lastWateredDate }
-        lastFertilizerDate?.let { this.lastFertilizerDate = lastFertilizerDate }
+        lastWateredDate?.let { this.lastWateredDate = selectLastDate(lastWateredDate, now) }
+        lastFertilizerDate?.let { this.lastFertilizerDate = selectLastDate(lastFertilizerDate, now) }
     }
 
     fun modifyAlarm(alarm: Alarm) {

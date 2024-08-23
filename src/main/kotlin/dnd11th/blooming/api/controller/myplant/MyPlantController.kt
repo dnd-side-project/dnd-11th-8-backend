@@ -58,7 +58,7 @@ class MyPlantController(
         @PathVariable myPlantId: Long,
         @RequestBody @Valid request: MyPlantModifyRequest,
         @LoginUser user: User,
-    ) = myPlantService.modifyMyPlant(myPlantId, request, user)
+    ) = myPlantService.modifyMyPlant(myPlantId, request, user, LocalDate.now())
 
     @Secured
     @DeleteMapping("/{myPlantId}")
