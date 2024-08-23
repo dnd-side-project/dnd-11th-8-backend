@@ -36,11 +36,12 @@ class MyPlantService(
     fun saveMyPlant(
         dto: MyPlantCreateDto,
         user: User,
+        now: LocalDate,
     ): MyPlantSaveResponse {
         val location: Location? = dto.locationId?.let { locationRepository.findByIdAndUser(it, user) }
         val plant: Plant? = dto.plantId?.let { plantRepository.findByIdOrNull(it) }
 
-        val myPlant = MyPlant.createMyPlant(dto, location, plant, user)
+        val myPlant = MyPlant.createMyPlant(dto, location, plant, user, now)
 
         val savedPlant = myPlantRepository.save(myPlant)
 
