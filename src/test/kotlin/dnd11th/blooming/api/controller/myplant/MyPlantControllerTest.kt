@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.controller.myplant
 
 import dnd11th.blooming.api.dto.image.ImageResponse
+import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
@@ -151,7 +152,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         nickname = NICKNAME,
                         scientificName = SCIENTIFIC_NAME,
                         plantId = PLANT_ID,
-                        location = LOCATION_NAME,
+                        location = LocationResponse(LOCATION_ID, LOCATION_NAME),
                         withDays = WITH_DAYS,
                         lastWateredTitle = LAST_WATERED_TITLE,
                         lastWateredInfo = LAST_WATERED_INFO,
@@ -190,7 +191,8 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                             status { isOk() }
                             jsonPath("$.nickname", equalTo(NICKNAME))
                             jsonPath("$.scientificName", equalTo(SCIENTIFIC_NAME))
-                            jsonPath("$.location", equalTo(LOCATION_NAME))
+                            jsonPath("$.location.id", equalTo(LOCATION_ID.toInt()))
+                            jsonPath("$.location.name", equalTo(LOCATION_NAME))
                             jsonPath("$.withDays", equalTo(WITH_DAYS))
                             jsonPath("$.lastWateredTitle", equalTo(LAST_WATERED_TITLE))
                             jsonPath("$.lastWateredInfo", equalTo(LAST_WATERED_INFO))

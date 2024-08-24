@@ -52,10 +52,6 @@ class MyPlant(
     @JoinColumn(name = "location_id")
     var location: Location? = null
 
-    fun getLocationName(): String? {
-        return location?.name
-    }
-
     fun getDateSinceLastWater(now: LocalDate): Int? {
         return lastWateredDate?.let { Period.between(lastWateredDate, now).days }
     }

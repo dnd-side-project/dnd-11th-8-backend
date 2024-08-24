@@ -1,6 +1,7 @@
 package dnd11th.blooming.api.dto.myplant
 
 import dnd11th.blooming.api.dto.image.ImageResponse
+import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
 import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.MyPlant
@@ -19,8 +20,8 @@ data class MyPlantDetailResponse(
     val scientificName: String,
     @field:Schema(description = "식물 ID", example = "7")
     val plantId: Long?,
-    @field:Schema(description = "내 식물 위치 이름", example = "베란다")
-    val location: String?,
+    @field:Schema(description = "내 식물 위치")
+    val location: LocationResponse?,
     @field:Schema(description = "함께한지 N일째", example = "13")
     val withDays: Int,
     @field:Schema(description = "마지막으로 물 준 날짜 컴포넌트 제목", example = "마지막으로 물 준 날")
@@ -59,7 +60,7 @@ data class MyPlantDetailResponse(
                 nickname = myPlant.nickname,
                 scientificName = myPlant.scientificName,
                 plantId = myPlant.plant?.id,
-                location = myPlant.getLocationName(),
+                location = myPlant.location?.let { LocationResponse.from(it) },
                 withDays = Period.between(myPlant.startDate, now).days,
                 lastWateredTitle = messageFactory.createWateredTitle(),
                 lastWateredInfo = messageFactory.createWateredInfo(myPlant.lastWateredDate, now),
