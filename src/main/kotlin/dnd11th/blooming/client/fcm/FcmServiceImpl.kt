@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class FcmServiceImpl : FcmService {
-    override fun sendNotification(pushNotification: PushNotification) {
+    override fun send(pushNotification: PushNotification) {
         val notification: Notification =
             Notification.builder()
                 .setTitle(pushNotification.title)
