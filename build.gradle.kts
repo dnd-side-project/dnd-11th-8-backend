@@ -37,6 +37,10 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("com.h2database:h2")
 
+    // Batch
+    implementation("org.springframework.boot:spring-boot-starter-batch")
+    implementation("org.springframework.boot:spring-boot-starter-quartz")
+
     // Validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
