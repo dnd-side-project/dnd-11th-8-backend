@@ -24,10 +24,14 @@ class LocationService(
         dto: LocationCreateDto,
         user: User,
     ): LocationSaveResponse {
-        if (locationRepository.countByUser(user) >= MAX_LOCATION_LIMIT) {
-            throw BadRequestException(
-                ErrorType.LOCATION_COUNT_EXCEED,
-            )
+        val locations = locationRepository.findAllByUser(user)
+
+        if (locations.size >= MAX_LOCATION_LIMIT) throw BadRequestException(ErrorType.LOCATION_COUNT_EXCEED)
+        if (locations.any { location ->
+                location.name == dto.name
+            }
+        ) {
+            throw BadRequestException(ErrorType.LOCATION_NAME_DUPLICATE)
         }
 
         val location = Location.createLocation(dto, user)
