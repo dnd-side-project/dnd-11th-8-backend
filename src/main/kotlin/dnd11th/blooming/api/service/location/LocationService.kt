@@ -26,13 +26,8 @@ class LocationService(
     ): LocationSaveResponse {
         val locations = locationRepository.findAllByUser(user)
 
-        if (locations.size >= MAX_LOCATION_LIMIT) throw BadRequestException(ErrorType.LOCATION_COUNT_EXCEED)
-        if (locations.any { location ->
-                location.name == dto.name
-            }
-        ) {
-            throw BadRequestException(ErrorType.LOCATION_NAME_DUPLICATE)
-        }
+        validateLocationSizeNotExceed(locations.size)
+        validateLocationNameUnique(locations, dto.name)
 
         val location = Location.createLocation(dto, user)
 
@@ -78,6 +73,22 @@ class LocationService(
     }
 
     companion object {
-        const val MAX_LOCATION_LIMIT = 3
+        private const val MAX_LOCATION_LIMIT = 3
+    }
+
+    private fun validateLocationNameUnique(
+        locations: List<Location>,
+        newLocationName: String,
+    ) {
+        if (locations.any { location ->
+                location.name == newLocationName
+            }
+        ) {
+            throw BadRequestException(ErrorType.LOCATION_NAME_DUPLICATE)
+        }
+    }
+
+    private fun validateLocationSizeNotExceed(locationsSize: Int) {
+        if (locationsSize >= MAX_LOCATION_LIMIT) throw BadRequestException(ErrorType.LOCATION_COUNT_EXCEED)
     }
 }
