@@ -19,7 +19,13 @@ import io.swagger.v3.oas.annotations.tags.Tag
 interface LocationApi {
     @Operation(summary = "위치를 저장하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "위치 저장 성공")
-    @ApiErrorResponse(errorType = ErrorType.BAD_REQUEST, description = "요청의 name이 null이거나 비어있을 때 에러입니다.")
+    @ApiErrorResponses(
+        [
+            ApiErrorResponse(ErrorType.BAD_REQUEST, "요청의 name이 null이거나 비어있을 때 에러입니다."),
+            ApiErrorResponse(ErrorType.LOCATION_COUNT_EXCEED, "위치의 개수가 3개가 넘었을 때 에러입니다."),
+            ApiErrorResponse(ErrorType.LOCATION_NAME_DUPLICATE, "위치의 이름이 중복되었을 때 에러입니다."),
+        ],
+    )
     fun saveLocation(
         @RequestBody(description = "위치 저장 요청", required = true)
         request: LocationSaveRequest,

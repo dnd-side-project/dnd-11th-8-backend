@@ -8,7 +8,6 @@ import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.Location
 import dnd11th.blooming.domain.entity.user.AlarmTime
 import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.ImageRepository
 import dnd11th.blooming.domain.repository.LocationRepository
 import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import io.kotest.assertions.throwables.shouldThrow
@@ -23,7 +22,6 @@ class LocationServiceTest : DescribeSpec(
     {
         val locationRepository = mockk<LocationRepository>()
         val myPlantRepository = mockk<MyPlantRepository>()
-        val imageRepository = mockk<ImageRepository>()
 
         val locationService = LocationService(locationRepository, myPlantRepository)
 
@@ -36,8 +34,8 @@ class LocationServiceTest : DescribeSpec(
                 }
 
             context("name이 전달되면") {
-                every { locationRepository.countByUser(USER) } returns
-                    2
+                every { locationRepository.findAllByUser(USER) } returns
+                    listOf(Location(name = LOCATION_NAME2))
                 val request =
                     LocationCreateDto(
                         name = "거실",
@@ -50,8 +48,12 @@ class LocationServiceTest : DescribeSpec(
                 }
             }
             context("위치를 4개 이상 저장하려고 하면") {
-                every { locationRepository.countByUser(USER) } returns
-                    3
+                every { locationRepository.findAllByUser(USER) } returns
+                    listOf(
+                        Location("1"),
+                        Location("2"),
+                        Location("3"),
+                    )
                 val request =
                     LocationCreateDto(
                         name = "거실",
@@ -64,6 +66,26 @@ class LocationServiceTest : DescribeSpec(
 
                     exception.errorType shouldBe ErrorType.LOCATION_COUNT_EXCEED
                     exception.message shouldBe "위치는 최대 3개까지만 등록 가능합니다."
+                }
+            }
+            context("중복된 위치명으로 저장하려고 하면") {
+                every { locationRepository.findAllByUser(USER) } returns
+                    listOf(
+                        Location(LOCATION_NAME),
+                        Location(LOCATION_NAME2),
+                    )
+                val request =
+                    LocationCreateDto(
+                        name = LOCATION_NAME,
+                    )
+                it("에외가 발생해야 한다.") {
+                    val exception =
+                        shouldThrow<BadRequestException> {
+                            locationService.saveLocation(request, USER)
+                        }
+
+                    exception.errorType shouldBe ErrorType.LOCATION_NAME_DUPLICATE
+                    exception.message shouldBe "이미 존재하는 위치명입니다."
                 }
             }
         }
