@@ -17,7 +17,6 @@ import org.springframework.transaction.PlatformTransactionManager
 
 @Configuration
 class PlantNotificationJobConfig(
-    private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     private val waterNotificationItemReader: ItemReader<UserPlantDto>,
     private val waterNotificationItemProcessor: ItemProcessor<UserPlantDto, PushNotification>,
@@ -28,16 +27,16 @@ class PlantNotificationJobConfig(
     }
 
     @Bean
-    fun notificationJob(): Job {
+    fun notificationJob(jobRepository: JobRepository): Job {
         return JobBuilder("notificationJob", jobRepository)
             .incrementer(RunIdIncrementer())
-            .start(waterNotificationStep())
+            .start(waterNotificationStep(jobRepository))
             .build()
     }
 
     @JobScope
     @Bean
-    fun waterNotificationStep(): Step {
+    fun waterNotificationStep(jobRepository: JobRepository): Step {
         return StepBuilder("waterNotificationStep", jobRepository)
             .chunk<UserPlantDto, PushNotification>(CHUNK_SIZE, transactionManager)
             .reader(waterNotificationItemReader)

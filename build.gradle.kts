@@ -40,6 +40,7 @@ dependencies {
     // Batch
     implementation("org.springframework.boot:spring-boot-starter-batch")
     implementation("org.springframework.boot:spring-boot-starter-quartz")
+    testImplementation("org.springframework.batch:spring-batch-test")
 
     // Validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
