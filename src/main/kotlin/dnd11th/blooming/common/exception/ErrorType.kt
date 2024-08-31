@@ -24,7 +24,8 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
 
     // Auth
     INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다", LogLevel.DEBUG),
-    INVALID_ID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 ID TOKEN입니다.", LogLevel.DEBUG),
+    INVALID_ID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 ID TOKEN입니다.", LogLevel.WARN),
+    INVALID_MATCHING_KEY(HttpStatus.BAD_GATEWAY, "응답값과 매칭되는 키가 존재하지 않습니다.", LogLevel.WARN),
 
     INVALID_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, "지원하지 않는 provider입니다", LogLevel.DEBUG),
 
@@ -32,7 +33,7 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않은 사용자입니다.", LogLevel.DEBUG),
 
     // OpenAPI
-    OPEN_API_CALL_EXCEPTION(HttpStatus.BAD_REQUEST, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
+    OPEN_API_CALL_EXCEPTION(HttpStatus.BAD_GATEWAY, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
 
     // REGION
     NOT_FOUND_REGION(HttpStatus.NOT_FOUND, "존재하지 않는 지역번호입니다.", LogLevel.DEBUG),

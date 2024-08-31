@@ -15,13 +15,13 @@ class GlobalExceptionHandler {
         val errorType = exception.errorType
         when (errorType.logLevel) {
             LogLevel.ERROR -> {
-                log.error { "${"Blooming Exception : {}"} ${errorType.message} $exception" }
+                log.error { "Blooming Exception: ${errorType.message}, Exception: $exception" }
             }
             LogLevel.WARN -> {
-                log.warn { "${"Blooming Exception : {}"} ${errorType.message} $exception" }
+                log.warn { "Blooming Exception: ${errorType.message}, Exception: $exception" }
             }
             else -> {
-                log.info { "${"Blooming Exception : {}"} ${errorType.message} $exception" }
+                log.info { "Blooming Exception: ${errorType.message}, Exception: $exception" }
             }
         }
         return ResponseEntity
