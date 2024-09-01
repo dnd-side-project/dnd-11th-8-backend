@@ -4,7 +4,7 @@ enum class GrowTemperature(
     val lowTemperature: Int,
     val highTemperature: Int,
 ) {
-    GROW_TEMPERATURE_10_25(
+    GROW_TEMPERATURE_10_15(
         10,
         15,
     ),
