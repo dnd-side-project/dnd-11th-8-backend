@@ -13,17 +13,7 @@ class DeviceTokenService(
         loginUser: User,
         token: String,
     ) {
-        val newToken: DeviceToken = DeviceToken(userId = loginUser.id!!, token = token)
+        val newToken = DeviceToken(userId = loginUser.id!!, token = token)
         deviceTokenRepository.save(newToken)
-    }
-
-    fun invalidToken(
-        loginUser: User,
-        token: String,
-    ) {
-        val deviceToken: DeviceToken =
-            deviceTokenRepository.findByTokenAndUserId(token, loginUser.id!!)
-                ?: throw IllegalArgumentException("device token invalid")
-        deviceToken.invalidToken()
     }
 }

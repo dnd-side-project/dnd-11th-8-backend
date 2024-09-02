@@ -11,17 +11,11 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "device_token")
 class DeviceToken(
-    @Column
+    @Column(unique = true)
     val token: String,
     @Column
     val userId: Long,
-    @Column
-    var active: Boolean = true,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-) : BaseEntity() {
-    fun invalidToken() {
-        this.active = false
-    }
-}
+) : BaseEntity()
