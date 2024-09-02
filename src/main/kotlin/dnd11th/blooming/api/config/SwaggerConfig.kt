@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SwaggerConfig {
     companion object {
-        const val AUTHORIZATION = "bearerToken"
+        const val AUTHORIZATION = "AccessToken"
     }
 
     @Bean
@@ -68,7 +68,7 @@ class SwaggerConfig {
         return Info()
             .title("\uD83C\uDF40Blomming\uD83C\uDF40")
             .description("API 명세서입니다")
-            .title("v0.0.1")
+            .version("v1.0.0")
     }
 
     private fun generateErrorResponse(

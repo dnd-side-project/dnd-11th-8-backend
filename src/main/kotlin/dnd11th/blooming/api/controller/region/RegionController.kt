@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/region")
 class RegionController(
     private val regionService: RegionService,
-) {
+) : RegionApi {
     @GetMapping
-    fun findRegion(
+    override fun findRegion(
         @RequestParam name: String,
     ): List<RegionResponse> {
         return regionService.findRegion(name)

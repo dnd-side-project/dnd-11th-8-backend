@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 
-@Tag(name = "1. [유저]")
+@Tag(name = "2. [유저]")
 interface DeviceTokenApi {
     @Operation(summary = "Device Token 등록 API")
     @ApiResponse(responseCode = "204", description = "Device Token 등록 성공")

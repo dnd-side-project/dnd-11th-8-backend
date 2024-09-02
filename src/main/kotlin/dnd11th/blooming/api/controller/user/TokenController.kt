@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/token")
 class TokenController(
     private val tokenService: TokenService,
-) {
+) : TokenApi {
     @PostMapping
-    fun reissueToken(
+    override fun reissueToken(
         @RequestBody tokenRequest: TokenRequest,
     ): TokenResponse {
         return tokenService.reissueToken(tokenRequest.refreshToken)

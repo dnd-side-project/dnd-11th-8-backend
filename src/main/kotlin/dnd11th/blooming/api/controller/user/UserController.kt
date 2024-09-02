@@ -40,7 +40,7 @@ class UserController(
 
     @Secured
     @GetMapping("/my")
-    fun findProfile(
+    override fun findProfile(
         @LoginUser user: User,
     ): MyProfileResponse {
         return userProfileService.findProfile(user)
@@ -48,7 +48,7 @@ class UserController(
 
     @Secured
     @PatchMapping("/my/nickname")
-    fun updateNickname(
+    override fun updateNickname(
         @LoginUser user: User,
         @RequestBody updateNickName: MyProfileUpdateRequest.Nickname,
     ) {
@@ -57,7 +57,7 @@ class UserController(
 
     @Secured
     @PatchMapping("/my/alarm")
-    fun updateAlarmStatus(
+    override fun updateAlarmStatus(
         @LoginUser user: User,
         @RequestBody updateAlarmStatus: MyProfileUpdateRequest.AlarmStatus,
     ) {
@@ -66,7 +66,7 @@ class UserController(
 
     @Secured
     @PatchMapping("/my/alarm-time")
-    fun updateAlarmTime(
+    override fun updateAlarmTime(
         @LoginUser user: User,
         @RequestBody updateAlarmTime: MyProfileUpdateRequest.AlarmTime,
     ) {

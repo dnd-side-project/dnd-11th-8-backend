@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 
-@Tag(name = "1. [유저]")
+@Tag(name = "1. [인증]")
 interface UserLoginApi {
     @Operation(summary = "소셜 로그인 API")
     @ApiResponses(
