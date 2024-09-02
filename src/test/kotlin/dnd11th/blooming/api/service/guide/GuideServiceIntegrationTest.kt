@@ -39,16 +39,48 @@ class GuideServiceIntegrationTest : DescribeSpec() {
                     makePlant("몬스테라", "monstera"),
                     makePlant("델리시오사몬스테라", "monstera"),
                     makePlant("델리시오사 몬스테라", "monstera"),
+                    makePlant("선인장", "suninjang"),
+                    makePlant("전혀 다른 식물", "kiki"),
                 ),
             )
-            context("한국 이름으로 식물을 검색하면") {
+            context("한글 이름으로 식물을 검색하면") {
                 val findPlantList = guideService.findPlantList("몬스테라")
                 it("제대로 모든 식물이 조회되어야 한다.") {
                     findPlantList.size shouldBe 5
                 }
             }
-            context("글자가 완성되지 않은 채 식물을 검색하면") {
+            context("초성만 적고 식물을 검색하면") {
                 val findPlantList = guideService.findPlantList("몬스테ㄹ")
+                it("제대로 모든 식물이 조회되어야 한다.") {
+                    findPlantList.size shouldBe 5
+                }
+            }
+            context("중성까지 적고 식물을 검색하면") {
+                val findPlantList = guideService.findPlantList("선인자")
+                it("제대로 모든 식물이 조회되어야 한다.") {
+                    findPlantList.size shouldBe 1
+                }
+            }
+            context("영어명으로 검색하면") {
+                val findPlantList = guideService.findPlantList("monstrera")
+                it("제대로 모든 식물이 조회되어야 한다.") {
+                    findPlantList.size shouldBe 5
+                }
+            }
+            context("영어명의 앞부분으로만 검색하면") {
+                val findPlantList = guideService.findPlantList("monst")
+                it("제대로 모든 식물이 조회되어야 한다.") {
+                    findPlantList.size shouldBe 5
+                }
+            }
+            context("영어명의 뒷부분으로만 검색하면") {
+                val findPlantList = guideService.findPlantList("era")
+                it("제대로 모든 식물이 조회되어야 한다.") {
+                    findPlantList.size shouldBe 5
+                }
+            }
+            context("영어명의 중간부분으로 검색하면") {
+                val findPlantList = guideService.findPlantList("stre")
                 it("제대로 모든 식물이 조회되어야 한다.") {
                     findPlantList.size shouldBe 5
                 }
