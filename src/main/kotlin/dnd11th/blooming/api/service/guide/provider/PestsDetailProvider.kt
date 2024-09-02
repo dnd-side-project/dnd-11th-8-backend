@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.guide.provider
 
 import dnd11th.blooming.api.dto.guide.DetailPestsResponse
-import dnd11th.blooming.common.util.HangulUtil.Companion.getEunOrNun
+import dnd11th.blooming.common.util.getEunOrNun
 import dnd11th.blooming.domain.entity.plant.Plant
 import org.springframework.stereotype.Component
 
@@ -19,7 +19,7 @@ class PestsDetailProvider {
     }
 
     private fun makeDetailPestsDescription(plant: Plant): String {
-        val eunOrNun = getEunOrNun(plant.korName)
+        val eunOrNun = plant.korName.getEunOrNun()
 
         return "${plant.korName}$eunOrNun ${plant.pests}등에 취약해요. 과습과 건조를 피하고, 환기를 하여 예방하세요."
     }

@@ -5,7 +5,7 @@ import dnd11th.blooming.api.dto.guide.PlantRecommendedPeriodResponse
 import dnd11th.blooming.api.dto.guide.PlantResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.common.util.HangulUtil
+import dnd11th.blooming.common.util.toHangulSearchPattern
 import dnd11th.blooming.domain.repository.PlantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -17,7 +17,7 @@ class GuideService(
     private val plantMessageFactory: PlantMessageFactory,
 ) {
     fun findPlantList(plantName: String): List<PlantResponse> {
-        val plantList = plantRepository.findByNameMatchesPattern(HangulUtil.getSearchPattern(plantName))
+        val plantList = plantRepository.findByNameMatchesPattern(plantName.toHangulSearchPattern())
 
         return PlantResponse.fromList(plantList)
     }

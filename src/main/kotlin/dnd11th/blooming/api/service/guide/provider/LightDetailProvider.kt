@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.guide.provider
 
 import dnd11th.blooming.api.dto.guide.DetailLightResponse
-import dnd11th.blooming.common.util.HangulUtil.Companion.getEunOrNun
+import dnd11th.blooming.common.util.getEunOrNun
 import dnd11th.blooming.domain.entity.plant.Light
 import dnd11th.blooming.domain.entity.plant.Plant
 import org.springframework.stereotype.Component
@@ -27,7 +27,7 @@ class LightDetailProvider {
     }
 
     private fun makeDetailLightAddition(plant: Plant): String {
-        val eunOrNun = getEunOrNun(plant.korName)
+        val eunOrNun = plant.korName.getEunOrNun()
 
         val description =
             when (plant.light) {
