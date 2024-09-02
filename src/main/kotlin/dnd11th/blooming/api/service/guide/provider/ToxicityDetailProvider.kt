@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.guide.provider
 
 import dnd11th.blooming.api.dto.guide.DetailToxicityResponse
-import dnd11th.blooming.common.util.KoreanUtil.Companion.getEunOrNun
+import dnd11th.blooming.common.util.HangulUtil.Companion.getEunOrNun
 import dnd11th.blooming.domain.entity.plant.Plant
 import dnd11th.blooming.domain.entity.plant.Toxicity
 import org.springframework.stereotype.Component

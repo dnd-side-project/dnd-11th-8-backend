@@ -1,6 +1,6 @@
 package dnd11th.blooming.common.util
 
-class KoreanUtil {
+class HangulUtil {
     companion object {
         fun getEunOrNun(str: String): String {
             return when (isKorStringEndsWithBatchim(str)) {
