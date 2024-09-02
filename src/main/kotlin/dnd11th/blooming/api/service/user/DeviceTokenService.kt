@@ -13,7 +13,7 @@ class DeviceTokenService(
         loginUser: User,
         token: String,
     ) {
-        val newToken = DeviceToken(userId = loginUser.id!!, token = token)
+        val newToken = DeviceToken.create(loginUser, token)
         deviceTokenRepository.save(newToken)
     }
 }
