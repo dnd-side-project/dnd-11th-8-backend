@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 
-@Tag(name = "5. [날씨 메시지]")
+@Tag(name = "8. [날씨 메시지]")
 interface WeatherMessageApi {
     @Operation(summary = "날씨 메시지를 조회하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "날씨 메시지 조회 성공")
