@@ -1,5 +1,6 @@
 package dnd11th.blooming.domain.entity.plant
 
+import dnd11th.blooming.common.util.toDecomposedHangul
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -61,4 +62,7 @@ class Plant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+    @Column
+    val decomposedKorName: String = korName.toDecomposedHangul()
 }

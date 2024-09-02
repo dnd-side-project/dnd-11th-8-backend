@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface PlantRepository : JpaRepository<Plant, Long> {
-    @Query("SELECT p FROM Plant p WHERE p.decomposedkorName LIKE :decomposedKorName")
+    @Query("SELECT p FROM Plant p WHERE p.decomposedKorName LIKE :decomposedKorName")
     fun findByNameMatchesPattern(
         @Param("decomposedKorName") decomposedKorName: String,
     ): List<Plant>
