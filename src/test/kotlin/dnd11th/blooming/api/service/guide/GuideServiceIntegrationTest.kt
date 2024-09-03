@@ -32,17 +32,20 @@ class GuideServiceIntegrationTest : DescribeSpec() {
         }
 
         describe("식물 종류 찾기") {
-            plantRepository.saveAll(
-                listOf(
-                    makePlant("몬스테라 델리시오사", "monstera"),
-                    makePlant("몬스테라델리시오사", "monstera"),
-                    makePlant("몬스테라", "monstera"),
-                    makePlant("델리시오사몬스테라", "monstera"),
-                    makePlant("델리시오사 몬스테라", "monstera"),
-                    makePlant("선인장", "suninjang"),
-                    makePlant("전혀 다른 식물", "kiki"),
-                ),
-            )
+            beforeTest {
+                plantRepository.saveAll(
+                    listOf(
+                        makePlant("몬스테라 델리시오사", "monstera"),
+                        makePlant("몬스테라델리시오사", "monstera"),
+                        makePlant("몬스테라", "monstera"),
+                        makePlant("델리시오사몬스테라", "monstera"),
+                        makePlant("델리시오사 몬스테라", "monstera"),
+                        makePlant("선인장", "suninjang"),
+                        makePlant("전혀 다른 식물", "kiki"),
+                    ),
+                )
+            }
+
             context("한글 이름으로 식물을 검색하면") {
                 val findPlantList = guideService.findPlantList("몬스테라")
                 it("제대로 모든 식물이 조회되어야 한다.") {
@@ -62,7 +65,7 @@ class GuideServiceIntegrationTest : DescribeSpec() {
                 }
             }
             context("영어명으로 검색하면") {
-                val findPlantList = guideService.findPlantList("monstrera")
+                val findPlantList = guideService.findPlantList("monstera")
                 it("제대로 모든 식물이 조회되어야 한다.") {
                     findPlantList.size shouldBe 5
                 }
@@ -80,7 +83,7 @@ class GuideServiceIntegrationTest : DescribeSpec() {
                 }
             }
             context("영어명의 중간부분으로 검색하면") {
-                val findPlantList = guideService.findPlantList("stre")
+                val findPlantList = guideService.findPlantList("ste")
                 it("제대로 모든 식물이 조회되어야 한다.") {
                     findPlantList.size shouldBe 5
                 }
