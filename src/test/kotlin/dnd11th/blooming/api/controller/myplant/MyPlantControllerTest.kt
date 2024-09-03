@@ -22,6 +22,8 @@ import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 class MyPlantControllerTest : WebMvcDescribeSpec() {
     init {
@@ -65,12 +67,13 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         }
 
         describe("내 식물 전체 조회") {
-            every { myPlantService.findAllMyPlant(any(), any(), any(), any()) } returns
+            every { myPlantService.findAllMyPlant(any(), any()) } returns
                 listOf(
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID,
                         nickname = NICKNAME,
-                        haveLocation = true,
+                        locationId = LOCATION_ID,
+                        registeredDateTime = REGISTERED_DATE,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME,
                         dateSinceLastWater = DATE_SINCE_LAST_WATER,
@@ -80,7 +83,8 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID2,
                         nickname = NICKNAME2,
-                        haveLocation = true,
+                        locationId = LOCATION_ID,
+                        registeredDateTime = REGISTERED_DATE,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME2,
                         dateSinceLastWater = DATE_SINCE_LAST_WATER,
@@ -96,7 +100,7 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                             jsonPath("$.size()", equalTo(2))
                             jsonPath("$[0].myPlantId", equalTo(MYPLANT_ID.toInt()))
                             jsonPath("$[0].nickname", equalTo(NICKNAME))
-                            jsonPath("$[0].haveLocation", equalTo(true))
+                            jsonPath("$[0].locationId", equalTo(LOCATION_ID.toInt()))
                             jsonPath("$[0].imageUrl", equalTo(IMAGE_URL))
                             jsonPath("$[0].scientificName", equalTo(SCIENTIFIC_NAME))
                             jsonPath("$[0].dateSinceLastWater", equalTo(DATE_SINCE_LAST_WATER))
@@ -104,8 +108,8 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                             jsonPath("$[0].dateSinceLastHealthCheck", equalTo(DATE_SINCE_LAST_HEALTHCHECK))
                             jsonPath("$[1].myPlantId", equalTo(MYPLANT_ID2.toInt()))
                             jsonPath("$[1].nickname", equalTo(NICKNAME2))
-                            jsonPath("$[0].haveLocation", equalTo(true))
-                            jsonPath("$[0].imageUrl", equalTo(IMAGE_URL))
+                            jsonPath("$[1].locationId", equalTo(LOCATION_ID.toInt()))
+                            jsonPath("$[1].imageUrl", equalTo(IMAGE_URL))
                             jsonPath("$[1].scientificName", equalTo(SCIENTIFIC_NAME2))
                             jsonPath("$[1].dateSinceLastWater", equalTo(DATE_SINCE_LAST_WATER))
                             jsonPath("$[1].dateSinceLastFertilizer", equalTo(DATE_SINCE_LAST_FERTILIZER))
@@ -113,12 +117,13 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
                         }.andDo { print() }
                 }
             }
-            every { myPlantService.findAllMyPlant(any(), LOCATION_ID, any(), any()) } returns
+            every { myPlantService.findAllMyPlant(any(), any()) } returns
                 listOf(
                     MyPlantResponse(
                         myPlantId = MYPLANT_ID,
                         nickname = NICKNAME,
-                        haveLocation = true,
+                        locationId = LOCATION_ID,
+                        registeredDateTime = REGISTERED_DATE,
                         imageUrl = IMAGE_URL,
                         scientificName = SCIENTIFIC_NAME,
                         dateSinceLastWater = DATE_SINCE_LAST_WATER,
@@ -443,12 +448,14 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         const val LOCATION_ID = 100L
         const val LOCATION_NAME = "거실"
         val START_DATE: LocalDate = LocalDate.of(2024, 4, 19)
+        val REGISTERED_DATE: LocalDateTime = LocalDateTime.of(START_DATE, LocalTime.NOON)
         const val WITH_DAYS = 234
         const val LAST_WATERED_DATE_INT = 1
         val LAST_WATERED_DATE: LocalDate = CURRENT_DAY.minusDays(LAST_WATERED_DATE_INT.toLong())
         const val LAST_FERTILIZER_DATE_INT = 2
         val LAST_FERTILIZER_DATE: LocalDate = CURRENT_DAY.minusDays(LAST_FERTILIZER_DATE_INT.toLong())
-        val LAST_HEALTHCHECK_DATE: LocalDate = LocalDate.of(2024, 6, 15)
+
+//        val LAST_HEALTHCHECK_DATE: LocalDate = LocalDate.of(2024, 6, 15)
         const val DATE_SINCE_LAST_WATER = 3
         const val DATE_SINCE_LAST_FERTILIZER = 3
         const val DATE_SINCE_LAST_HEALTHCHECK = 3
@@ -463,9 +470,9 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
         const val FERTILIZER_PERIOD = 30
         const val HEALTHCHECK_ALARM = true
 
-        val LAST_FERTILIZER_TITLE = "비료주기"
-        val LAST_FERTILIZER_INFO = "이번 달"
-        val LAST_WATERED_TITLE = "마지막으로 물 준 날"
-        val LAST_WATERED_INFO = "${LAST_WATERED_DATE_INT}\n1일전"
+        const val LAST_FERTILIZER_TITLE = "비료주기"
+        const val LAST_FERTILIZER_INFO = "이번 달"
+        const val LAST_WATERED_TITLE = "마지막으로 물 준 날"
+        const val LAST_WATERED_INFO = "${LAST_WATERED_DATE_INT}\n1일전"
     }
 }
