@@ -18,6 +18,11 @@ spring:
     open-in-view: false
     show-sql: true
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 springdoc:
   swagger-ui:
     path: /swagger-ui
