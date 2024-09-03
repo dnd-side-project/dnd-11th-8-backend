@@ -14,11 +14,6 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
         user: User,
     ): MyPlant?
 
-    @Query("SELECT p FROM MyPlant p JOIN FETCH p.location WHERE p.user = :user")
-    fun findAllByUserJoinFetchLocation(
-        @Param("user") user: User,
-    ): List<MyPlant>
-
     fun findAllByUser(user: User): List<MyPlant>
 
     fun countByUser(user: User): Int

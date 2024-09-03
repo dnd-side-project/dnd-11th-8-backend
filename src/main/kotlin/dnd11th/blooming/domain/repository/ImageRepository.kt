@@ -1,6 +1,6 @@
 package dnd11th.blooming.domain.repository
 
-import dnd11th.blooming.api.dto.myplant.MyPlantIdWithImageUrl
+import dnd11th.blooming.api.dto.myplant.MyPlantWithImageUrl
 import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.entity.user.User
@@ -14,9 +14,10 @@ interface ImageRepository : JpaRepository<Image, Long> {
 
     @Query(
         """
-    SELECT new dnd11th.blooming.api.dto.myplant.MyPlantIdWithImageUrl(i.url, mp.id)
+    SELECT new dnd11th.blooming.api.dto.myplant.MyPlantWithImageUrl(mp, i.url)
     FROM Image i
     JOIN i.myPlant mp
+	JOIN FETCH mp.location l
     WHERE mp IN :myPlants
     AND i.favorite = true
     AND i.id = (
@@ -27,7 +28,7 @@ interface ImageRepository : JpaRepository<Image, Long> {
     )
 	""",
     )
-    fun findFavoriteImagesForMyPlants(myPlants: List<MyPlant>): List<MyPlantIdWithImageUrl>
+    fun findFavoriteImagesForMyPlants(myPlants: List<MyPlant>): List<MyPlantWithImageUrl>
 
     @Modifying
     @Query(

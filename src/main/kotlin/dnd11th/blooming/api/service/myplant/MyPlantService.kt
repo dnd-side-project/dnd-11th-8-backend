@@ -168,16 +168,9 @@ class MyPlantService(
 
     private fun findMyPlantsWithFavoriteImageByUser(user: User): List<MyPlantWithImageUrl> {
         // user가 가지고 있는 MyPlant 리스트를 쿼리
-        val myPlants: List<MyPlant> = myPlantRepository.findAllByUserJoinFetchLocation(user)
+        val myPlants: List<MyPlant> = myPlantRepository.findAllByUser(user)
 
-        // MyPlantId -> imageUrl 맵을 생성
-        val urlMap: Map<Long, String> =
-            imageRepository.findFavoriteImagesForMyPlants(myPlants)
-                .associate { it.myPlantId to it.imageUrl }
-
-        // MyPlant 리스트 기준으로 Map에서 imageUrl를 찾고, MyPlant-ImageUrl 객체를 생성
-        return myPlants.map { myPlant ->
-            MyPlantWithImageUrl(myPlant, urlMap[myPlant.id])
-        }
+        // MyPlant-imageUrl을 Location을 페치조인하여 쿼리
+        return imageRepository.findFavoriteImagesForMyPlants(myPlants)
     }
 }
