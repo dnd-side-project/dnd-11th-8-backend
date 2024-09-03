@@ -54,14 +54,14 @@ class JwtProvider(
         return resolveToken(token, jwtProperties.refresh.secret)
     }
 
-    fun getExpiredIn(): Int {
+    fun getExpiredIn(): Long {
         val expiryInMillis: Long = jwtProperties.access.expiry
-        return (expiryInMillis / 1000).toInt()
+        return expiryInMillis / 1000
     }
 
-    fun getRefreshExpiredIn(): Int {
+    fun getRefreshExpiredIn(): Long {
         val expiryInMillis: Long = jwtProperties.refresh.expiry
-        return (expiryInMillis / 1000).toInt()
+        return expiryInMillis / 1000
     }
 
     private fun generateToken(
