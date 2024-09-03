@@ -3,6 +3,7 @@ package dnd11th.blooming.api.dto.myplant
 import dnd11th.blooming.domain.entity.MyPlant
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Schema(
     name = "MyPlant Response",
@@ -13,8 +14,10 @@ data class MyPlantResponse(
     val myPlantId: Long?,
     @field:Schema(description = "내 식물 별명", example = "쫑쫑이")
     val nickname: String,
-    @field:Schema(description = "위치 존재 여부", example = "1")
-    val haveLocation: Boolean,
+    @field:Schema(description = "위치 ID", example = "1")
+    val locationId: Long?,
+    @field:Schema(description = "등록 일자", example = "2024-09-03T14:30:45")
+    val registeredDateTime: LocalDateTime,
     @field:Schema(description = "이미지 URL", example = "image.com/7")
     val imageUrl: String,
     @field:Schema(description = "내 식물 학명", example = "몬스테라 델리오사")
@@ -35,7 +38,8 @@ data class MyPlantResponse(
             MyPlantResponse(
                 myPlantId = myPlant.id,
                 nickname = myPlant.nickname,
-                haveLocation = myPlant.location != null,
+                locationId = myPlant.location?.id,
+                registeredDateTime = myPlant.createdDate,
                 imageUrl = imageUrl ?: myPlant.plantImageUrl,
                 scientificName = myPlant.scientificName,
                 dateSinceLastWater = myPlant.getDateSinceLastWater(now),
