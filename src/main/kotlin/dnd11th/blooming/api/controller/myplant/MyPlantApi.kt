@@ -45,10 +45,6 @@ interface MyPlantApi {
     @Operation(summary = "내 전체 식물들을 조회하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "내 식물 전체 조회 성공")
     fun findAllMyPlant(
-        @Parameter(description = "위치 ID", required = false)
-        locationId: Long?,
-        @Parameter(description = "정렬", required = false)
-        sort: String,
         @Schema(hidden = true)
         user: User,
     ): List<MyPlantResponse>

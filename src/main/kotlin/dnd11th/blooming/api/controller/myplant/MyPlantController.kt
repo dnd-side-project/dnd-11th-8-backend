@@ -4,7 +4,6 @@ import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
 import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
-import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
@@ -39,10 +37,8 @@ class MyPlantController(
     @Secured
     @GetMapping
     override fun findAllMyPlant(
-        @RequestParam locationId: Long?,
-        @RequestParam(defaultValue = "created_desc") sort: String,
         @LoginUser user: User,
-    ): List<MyPlantResponse> = myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort), user)
+    ): List<MyPlantResponse> = myPlantService.findAllMyPlant(LocalDate.now(), user)
 
     @Secured
     @GetMapping("/{myPlantId}")
