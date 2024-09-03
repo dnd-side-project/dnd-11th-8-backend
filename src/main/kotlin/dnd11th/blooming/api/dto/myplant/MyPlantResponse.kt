@@ -46,5 +46,10 @@ data class MyPlantResponse(
                 dateSinceLastFertilizer = myPlant.getDateSinceLastFertilizer(now),
                 dateSinceLastHealthCheck = myPlant.getDateSinceLastHealthCheck(now),
             )
+
+        fun fromMyPlantWithImageUrlList(
+            myPlantWithImageUrlList: List<MyPlantWithImageUrl>,
+            now: LocalDate,
+        ): List<MyPlantResponse> = myPlantWithImageUrlList.map { dto -> of(dto.myPlant, dto.imageUrl, now) }
     }
 }

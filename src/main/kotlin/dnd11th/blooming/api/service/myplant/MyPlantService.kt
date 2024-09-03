@@ -5,7 +5,6 @@ import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
-import dnd11th.blooming.api.dto.myplant.MyPlantQueryCreteria
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantWithImageUrl
@@ -51,19 +50,11 @@ class MyPlantService(
     @Transactional(readOnly = true)
     fun findAllMyPlant(
         now: LocalDate,
-        locationId: Long? = null,
-        sort: MyPlantQueryCreteria = MyPlantQueryCreteria.CreatedDesc,
         user: User,
     ): List<MyPlantResponse> {
-        val myPlantsWithImageUrl = findSortedMyPlantsWithImage(locationId, user, sort)
+        val myPlants = findMyPlantsWithFavoriteImageByUser(user)
 
-        return myPlantsWithImageUrl.stream().map { myPlantAndImageUrl ->
-            MyPlantResponse.of(
-                myPlantAndImageUrl.myPlant,
-                myPlantAndImageUrl.imageUrl,
-                now,
-            )
-        }.toList()
+        return MyPlantResponse.fromMyPlantWithImageUrlList(myPlants, now)
     }
 
     @Transactional(readOnly = true)
