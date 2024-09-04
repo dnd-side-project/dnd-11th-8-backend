@@ -42,8 +42,7 @@ class MyPlantController(
         @RequestParam locationId: Long?,
         @RequestParam(defaultValue = "created_desc") sort: String,
         @LoginUser user: User,
-    ): List<MyPlantResponse> =
-        myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort), user)
+    ): List<MyPlantResponse> = myPlantService.findAllMyPlant(LocalDate.now(), locationId, MyPlantQueryCreteria.from(sort), user)
 
     @Secured
     @GetMapping("/{myPlantId}")
