@@ -1,4 +1,4 @@
-package dnd11th.blooming.domain.repository.refreshtoken
+package dnd11th.blooming.domain.repository.token
 
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.RedisException
@@ -11,24 +11,14 @@ import java.util.concurrent.TimeUnit
 class RefreshTokenCustomRepository(
     private val redisTemplate: RedisTemplate<String, Any>,
 ) : RefreshTokenRepository {
-    override fun findByToken(token: String): RefreshToken {
+    override fun findByToken(token: String): RefreshToken? {
         val key = makeKey(token)
         return redisTemplate.opsForValue().get(key) as? RefreshToken
-            ?: throw RedisException(ErrorType.NOT_FOUND_REDIS_KEY)
     }
 
     override fun save(refreshToken: RefreshToken) {
         val key = makeKey(refreshToken.token)
         redisTemplate.opsForValue().set(key, refreshToken.token, refreshToken.expiration, TimeUnit.SECONDS)
-    }
-
-    override fun update(refreshToken: RefreshToken) {
-        val key = makeKey(refreshToken.token)
-        if (redisTemplate.hasKey(key)) {
-            redisTemplate.opsForValue().set(key, refreshToken, refreshToken.expiration, TimeUnit.SECONDS)
-        } else {
-            throw RedisException(ErrorType.NOT_FOUND_REDIS_KEY)
-        }
     }
 
     override fun delete(refreshToken: RefreshToken) {

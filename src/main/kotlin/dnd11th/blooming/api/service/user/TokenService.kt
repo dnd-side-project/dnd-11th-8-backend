@@ -5,7 +5,7 @@ import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.UnAuthorizedException
 import dnd11th.blooming.common.jwt.JwtProvider
 import dnd11th.blooming.domain.entity.refreshtoken.RefreshToken
-import dnd11th.blooming.domain.repository.refreshtoken.RefreshTokenRepository
+import dnd11th.blooming.domain.repository.token.RefreshTokenRepository
 import org.springframework.stereotype.Service
 
 @Service
@@ -16,9 +16,7 @@ class TokenService(
     fun reissueToken(oldToken: String): TokenResponse {
         val userClaims = jwtProvider.resolveRefreshToken(oldToken)
         val storedToken: RefreshToken = refreshTokenRepository.findByToken(oldToken)
-        if (storedToken.checkInValid()) {
-            throw UnAuthorizedException(ErrorType.INVALID_REFRESH_TOKEN)
-        }
+            ?: throw UnAuthorizedException(ErrorType.INVALID_REFRESH_TOKEN)
         val accessToken = jwtProvider.generateAccessToken(userClaims.id, userClaims.email)
         val expireIn = jwtProvider.getExpiredIn()
         val refreshToken = jwtProvider.generateRefreshToken(userClaims.id, userClaims.email)
@@ -36,7 +34,6 @@ class TokenService(
     }
 
     private fun useStoredToken(storedToken: RefreshToken) {
-        storedToken.use()
-        refreshTokenRepository.update(storedToken)
+        refreshTokenRepository.delete(storedToken)
     }
 }
