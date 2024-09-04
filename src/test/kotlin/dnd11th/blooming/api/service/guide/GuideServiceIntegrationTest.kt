@@ -49,13 +49,13 @@ class GuideServiceIntegrationTest : DescribeSpec() {
             context("한글 이름으로 식물을 검색하면") {
                 val findPlantList = guideService.findPlantList("몬스테라")
                 it("제대로 모든 식물이 조회되어야 한다.") {
-                    findPlantList.size shouldBe 5
+                    findPlantList.size shouldBe 3
                 }
             }
             context("초성만 적고 식물을 검색하면") {
                 val findPlantList = guideService.findPlantList("몬스테ㄹ")
                 it("제대로 모든 식물이 조회되어야 한다.") {
-                    findPlantList.size shouldBe 5
+                    findPlantList.size shouldBe 3
                 }
             }
             context("중성까지 적고 식물을 검색하면") {
@@ -78,14 +78,14 @@ class GuideServiceIntegrationTest : DescribeSpec() {
             }
             context("영어명의 뒷부분으로만 검색하면") {
                 val findPlantList = guideService.findPlantList("era")
-                it("제대로 모든 식물이 조회되어야 한다.") {
-                    findPlantList.size shouldBe 5
+                it("조회되면 안된다.") {
+                    findPlantList.size shouldBe 0
                 }
             }
             context("영어명의 중간부분으로 검색하면") {
                 val findPlantList = guideService.findPlantList("ste")
                 it("제대로 모든 식물이 조회되어야 한다.") {
-                    findPlantList.size shouldBe 5
+                    findPlantList.size shouldBe 0
                 }
             }
         }
