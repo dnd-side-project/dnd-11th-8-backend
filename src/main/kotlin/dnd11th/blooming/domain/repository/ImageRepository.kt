@@ -18,17 +18,19 @@ interface ImageRepository : JpaRepository<Image, Long> {
     FROM Image i
     JOIN i.myPlant mp
 	JOIN FETCH mp.location l
-    WHERE mp IN :myPlants
+    WHERE mp.user = :user
     AND i.favorite = true
-    AND i.id = (
-        SELECT MIN(i2.id)
+    AND i.updatedDate = (
+        SELECT MAX(i2.updatedDate)
         FROM Image i2
         WHERE i2.myPlant = mp
         AND i2.favorite = true
     )
 	""",
     )
-    fun findFavoriteImagesForMyPlants(myPlants: List<MyPlant>): List<MyPlantWithImageUrl>
+    fun findMyPlantAndMostRecentFavoriteImageByUser(
+        @Param("user") user: User,
+    ): List<MyPlantWithImageUrl>
 
     @Modifying
     @Query(

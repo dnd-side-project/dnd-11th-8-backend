@@ -52,9 +52,9 @@ class MyPlantService(
         now: LocalDate,
         user: User,
     ): List<MyPlantResponse> {
-        val myPlants = findMyPlantsWithFavoriteImageByUser(user)
+        val myPlantsWithImageUrl: List<MyPlantWithImageUrl> = imageRepository.findMyPlantAndMostRecentFavoriteImageByUser(user)
 
-        return MyPlantResponse.fromMyPlantWithImageUrlList(myPlants, now)
+        return MyPlantResponse.fromMyPlantWithImageUrlList(myPlantsWithImageUrl, now)
     }
 
     @Transactional(readOnly = true)
@@ -164,13 +164,5 @@ class MyPlantService(
         myPlant.doHealthCheck(now)
 
         return HealthCheckResponse(myPlantMessageFactory.createHealthCheckMessage())
-    }
-
-    private fun findMyPlantsWithFavoriteImageByUser(user: User): List<MyPlantWithImageUrl> {
-        // user가 가지고 있는 MyPlant 리스트를 쿼리
-        val myPlants: List<MyPlant> = myPlantRepository.findAllByUser(user)
-
-        // MyPlant-imageUrl을 Location을 페치조인하여 쿼리
-        return imageRepository.findFavoriteImagesForMyPlants(myPlants)
     }
 }

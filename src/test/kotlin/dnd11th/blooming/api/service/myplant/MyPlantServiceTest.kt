@@ -139,7 +139,7 @@ class MyPlantServiceTest : DescribeSpec(
                 }
             every { myPlantRepsitory.findAllByUser(any()) } returns
                 listOf(myPlant1, myPlant2, myPlant3)
-            every { imageRepository.findFavoriteImagesForMyPlants(any()) } returns
+            every { imageRepository.findMyPlantAndMostRecentFavoriteImageByUser(any()) } returns
                 listOf(
                     MyPlantWithImageUrl(myPlant1, "url1"),
                     MyPlantWithImageUrl(myPlant2, "url2"),
