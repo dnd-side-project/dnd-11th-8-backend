@@ -5,7 +5,7 @@ import java.time.Instant
 
 @Component
 class SystemInstantHolder : InstantHolder {
-    override fun now(): Instant  {
+    override fun now(): Instant {
         return Instant.now()
     }
 }

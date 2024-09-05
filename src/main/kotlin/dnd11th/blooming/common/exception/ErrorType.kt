@@ -23,11 +23,11 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
     LOCATION_COUNT_EXCEED(HttpStatus.BAD_REQUEST, "위치는 최대 3개까지만 등록 가능합니다.", LogLevel.DEBUG),
 
     // Auth
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.", LogLevel.DEBUG),
     INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다", LogLevel.DEBUG),
     INVALID_ID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 ID TOKEN입니다.", LogLevel.WARN),
     INVALID_MATCHING_KEY(HttpStatus.BAD_GATEWAY, "응답값과 매칭되는 키가 존재하지 않습니다.", LogLevel.WARN),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 RefreshToken입니다.", LogLevel.DEBUG),
-
     INVALID_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, "지원하지 않는 provider입니다", LogLevel.DEBUG),
 
     // User

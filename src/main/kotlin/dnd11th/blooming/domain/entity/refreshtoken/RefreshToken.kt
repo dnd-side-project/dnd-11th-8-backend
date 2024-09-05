@@ -1,5 +1,7 @@
 package dnd11th.blooming.domain.entity.refreshtoken
 
+import java.time.Instant
+
 data class RefreshToken(
     val token: String,
     val userId: Long,
@@ -9,9 +11,10 @@ data class RefreshToken(
         fun create(
             token: String,
             userId: Long,
-            expiration: Long,
+            now: Instant,
+            expiry: Long,
         ): RefreshToken {
-            return RefreshToken(token, userId, expiration)
+            return RefreshToken(token, userId, expiry - now.epochSecond)
         }
     }
 }

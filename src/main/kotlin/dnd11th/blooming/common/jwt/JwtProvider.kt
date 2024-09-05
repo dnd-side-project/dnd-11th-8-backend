@@ -1,5 +1,7 @@
 package dnd11th.blooming.common.jwt
 
+import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.common.exception.UnAuthorizedException
 import dnd11th.blooming.domain.entity.user.OauthProvider
 import dnd11th.blooming.domain.entity.user.RegisterClaims
 import dnd11th.blooming.domain.entity.user.UserClaims
@@ -52,6 +54,12 @@ class JwtProvider(
 
     fun resolveRefreshToken(token: String?): UserClaims {
         return resolveToken(token, jwtProperties.refresh.secret)
+    }
+
+    fun getRefreshTokenExpiration(token: String): Long {
+        val secretKey: SecretKey = getSecretKey(jwtProperties.refresh.secret)
+        val claims: Claims = getClaims(token, secretKey)
+        return claims["exp"] as Long
     }
 
     fun getExpiredIn(): Long {
@@ -115,9 +123,9 @@ class JwtProvider(
         return try {
             Jwts.parser().verifyWith(key).build().parseSignedClaims(token).payload
         } catch (e: ExpiredJwtException) {
-            throw IllegalArgumentException()
-        } catch (e: JwtException) {
-            throw JwtException("Invalid Token {}")
+            throw UnAuthorizedException(ErrorType.TOKEN_EXPIRED)
+        } catch (e: Exception) {
+            throw UnAuthorizedException(ErrorType.INVALID_JWT_TOKEN)
         }
     }
 
