@@ -23,6 +23,7 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
     LOCATION_COUNT_EXCEED(HttpStatus.BAD_REQUEST, "위치는 최대 3개까지만 등록 가능합니다.", LogLevel.DEBUG),
 
     // Auth
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다.", LogLevel.DEBUG),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.", LogLevel.DEBUG),
     INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다", LogLevel.DEBUG),
     INVALID_ID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 ID TOKEN입니다.", LogLevel.WARN),
