@@ -55,6 +55,7 @@ class Plant(
     @Column
     var pests: String,
     @Column
+    @Enumerated(EnumType.STRING)
     var location: GrowLocation,
     @Column
     var imageUrl: String,
