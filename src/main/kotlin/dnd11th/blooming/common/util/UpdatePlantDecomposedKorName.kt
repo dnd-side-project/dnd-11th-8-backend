@@ -4,14 +4,10 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
 
-fun main() {
+fun decomposeKorName() {
     val url = System.getenv("DB_URL")
     val username = System.getenv("DB_USERNAME")
     val password = System.getenv("DB_PASSWORD")
-
-    if (url.isBlank() || username.isBlank() || password.isBlank()) {
-        throw IllegalStateException("데이터베이스 연결을 위한 환경변수를 설정해주세요.")
-    }
 
     var connection: Connection? = null
     var selectStatement: PreparedStatement? = null
