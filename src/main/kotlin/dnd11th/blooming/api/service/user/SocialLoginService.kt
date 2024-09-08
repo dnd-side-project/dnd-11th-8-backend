@@ -7,7 +7,6 @@ import dnd11th.blooming.domain.entity.refreshtoken.RefreshToken
 import dnd11th.blooming.domain.entity.user.OauthProvider
 import dnd11th.blooming.domain.entity.user.OidcUser
 import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.entity.user.UserOauthInfo
 import dnd11th.blooming.domain.repository.token.RefreshTokenRepository
 import dnd11th.blooming.domain.repository.user.UserOauthRepository
 import org.springframework.stereotype.Service
@@ -25,24 +24,44 @@ class SocialLoginService(
         provider: OauthProvider,
         idToken: String,
     ): SocialLoginResponse {
+        val oidcUser = resolveOidcUser(provider, idToken)
+
+        return userOauthRepository.findByEmailAndProvider(oidcUser.email, provider)
+            ?.let { userOauthInfo -> processExistingUser(userOauthInfo.user) }
+            ?: createPendingRegistrationResponse(oidcUser.email, provider)
+    }
+
+    private fun resolveOidcUser(
+        provider: OauthProvider,
+        idToken: String,
+    ): OidcUser {
         val openIdTokenResolver = openIdTokenResolverSelector.select(provider)
-        val oidcUser: OidcUser = openIdTokenResolver.resolveIdToken(idToken)
-        val userOauthInfo: UserOauthInfo =
-            userOauthRepository.findByEmailAndProvider(oidcUser.email, provider)
-                ?: return SocialLoginResponse.Pending(
-                    registerToken = jwtProvider.generateRegisterToken(oidcUser.email, provider),
-                )
+        return openIdTokenResolver.resolveIdToken(idToken)
+    }
 
-        val user: User = userOauthInfo.user
-        val refreshToken: String = jwtProvider.generateRefreshToken(user.id, user.email)
-        val refreshTokenExpiresIn: Long = jwtProvider.getRefreshExpiredIn()
-        refreshTokenRepository.save(RefreshToken.create(user.id!!, refreshToken, refreshTokenExpiresIn))
-
+    private fun processExistingUser(user: User): SocialLoginResponse.Success {
+        val refreshToken = generateAndSaveRefreshToken(user)
         return SocialLoginResponse.Success(
             accessToken = jwtProvider.generateAccessToken(user.id, user.email),
             expiresIn = jwtProvider.getExpiredIn(),
             refreshToken = refreshToken,
-            refreshTokenExpiresIn = refreshTokenExpiresIn,
+            refreshTokenExpiresIn = jwtProvider.getRefreshExpiredIn(),
         )
+    }
+
+    private fun createPendingRegistrationResponse(
+        email: String,
+        provider: OauthProvider,
+    ): SocialLoginResponse.Pending {
+        return SocialLoginResponse.Pending(
+            registerToken = jwtProvider.generateRegisterToken(email, provider),
+        )
+    }
+
+    private fun generateAndSaveRefreshToken(user: User): String {
+        val refreshToken = jwtProvider.generateRefreshToken(user.id, user.email)
+        val refreshTokenExpiresIn = jwtProvider.getRefreshExpiredIn()
+        refreshTokenRepository.save(RefreshToken.create(user.id!!, refreshToken, refreshTokenExpiresIn))
+        return refreshToken
     }
 }
