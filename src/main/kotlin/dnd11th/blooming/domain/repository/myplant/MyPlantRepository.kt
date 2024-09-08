@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantQueryDslRepository {
+interface MyPlantRepository : JpaRepository<MyPlant, Long> {
     fun findByIdAndUser(
         id: Long,
         user: User,
