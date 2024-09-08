@@ -36,7 +36,7 @@ class UserLoginController(
         @LoginUser user: User,
         @RequestBody tokenRequest: TokenRequest,
     ): ResponseEntity<Void> {
-        logoutService.logout(user, tokenRequest.refreshToken)
+        logoutService.logout(tokenRequest.refreshToken)
         return ResponseEntity.noContent().build()
     }
 }

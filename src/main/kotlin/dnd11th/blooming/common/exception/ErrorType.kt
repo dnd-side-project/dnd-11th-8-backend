@@ -30,6 +30,7 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
     INVALID_MATCHING_KEY(HttpStatus.BAD_GATEWAY, "응답값과 매칭되는 키가 존재하지 않습니다.", LogLevel.WARN),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 RefreshToken입니다.", LogLevel.DEBUG),
     INVALID_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, "지원하지 않는 provider입니다", LogLevel.DEBUG),
+    DUPLICATE_USER_LOGIN(HttpStatus.UNAUTHORIZED, "중복된 로그인이 감지되었습니다.", LogLevel.DEBUG),
 
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않은 사용자입니다.", LogLevel.DEBUG),

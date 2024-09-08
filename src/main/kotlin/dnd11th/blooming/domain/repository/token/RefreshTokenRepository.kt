@@ -2,8 +2,10 @@ package dnd11th.blooming.domain.repository.token
 
 import dnd11th.blooming.domain.entity.refreshtoken.RefreshToken
 
-interface BlackListRepository {
-    fun existsByToken(token: String): Boolean
+interface RefreshTokenRepository {
+    fun findByUserId(userId: Long): String?
 
     fun save(refreshToken: RefreshToken)
+
+    fun deleteByUserId(userId: Long)
 }

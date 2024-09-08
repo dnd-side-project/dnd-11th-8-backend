@@ -7,7 +7,6 @@ import dnd11th.blooming.domain.entity.user.RegisterClaims
 import dnd11th.blooming.domain.entity.user.UserClaims
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Component
