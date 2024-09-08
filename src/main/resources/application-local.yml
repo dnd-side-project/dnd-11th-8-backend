@@ -17,6 +17,11 @@ spring:
     defer-datasource-initialization: true
     open-in-view: false
     show-sql: true
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
 
 springdoc:
   swagger-ui:
