@@ -46,6 +46,7 @@ interface UserLoginApi {
     ): SocialLoginResponse
 
     @Operation(summary = "로그아웃 API")
+    @ApiResponse(responseCode = "204", description = "로그아웃 성공")
     fun logout(
         @Schema(hidden = true) user: User,
         tokenRequest: TokenRequest,
