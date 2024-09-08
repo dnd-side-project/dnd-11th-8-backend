@@ -17,6 +17,11 @@ spring:
     defer-datasource-initialization: true
     open-in-view: false
 
+  data:
+    redis:
+      host: blooming-redis
+      port: 6379
+
 springdoc:
   swagger-ui:
     path: /swagger-ui
