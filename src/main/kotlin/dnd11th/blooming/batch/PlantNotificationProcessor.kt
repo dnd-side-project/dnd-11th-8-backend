@@ -8,16 +8,11 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class PlantNotificationProcessor {
-    @StepScope
     @Bean
+    @StepScope
     fun waterNotificationItemProcessor(): ItemProcessor<UserPlantDto, PushNotification> {
         return ItemProcessor { userPlantDto ->
-            PushNotification(
-                myPlantId = userPlantDto.myPlantId,
-                title = "Blooming",
-                content = "물 줄 시간이에요",
-                token = "deviceToken",
-            )
+            PushNotification.create(userPlantDto)
         }
     }
 }

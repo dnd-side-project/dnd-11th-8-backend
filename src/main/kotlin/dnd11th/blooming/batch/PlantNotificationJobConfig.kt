@@ -16,27 +16,31 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
 
 @Configuration
-class PlantNotificationJobConfig(
-    private val transactionManager: PlatformTransactionManager,
-    private val waterNotificationItemReader: ItemReader<UserPlantDto>,
-    private val waterNotificationItemProcessor: ItemProcessor<UserPlantDto, PushNotification>,
-    private val waterNotificationItemWriter: ItemWriter<PushNotification>,
-) {
+class PlantNotificationJobConfig {
     companion object {
-        const val CHUNK_SIZE: Int = 10
+        const val CHUNK_SIZE: Int = 100
     }
 
     @Bean
-    fun notificationJob(jobRepository: JobRepository): Job {
+    fun notificationJob(
+        jobRepository: JobRepository,
+        waterNotificationStep: Step,
+    ): Job {
         return JobBuilder("notificationJob", jobRepository)
             .incrementer(RunIdIncrementer())
-            .start(waterNotificationStep(jobRepository))
+            .start(waterNotificationStep)
             .build()
     }
 
-    @JobScope
     @Bean
-    fun waterNotificationStep(jobRepository: JobRepository): Step {
+    @JobScope
+    fun waterNotificationStep(
+        jobRepository: JobRepository,
+        transactionManager: PlatformTransactionManager,
+        waterNotificationItemReader: ItemReader<UserPlantDto>,
+        waterNotificationItemProcessor: ItemProcessor<UserPlantDto, PushNotification>,
+        waterNotificationItemWriter: ItemWriter<PushNotification>,
+    ): Step {
         return StepBuilder("waterNotificationStep", jobRepository)
             .chunk<UserPlantDto, PushNotification>(CHUNK_SIZE, transactionManager)
             .reader(waterNotificationItemReader)

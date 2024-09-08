@@ -1,35 +1,27 @@
 package dnd11th.blooming.batch
 
-import jakarta.persistence.EntityManagerFactory
+import dnd11th.blooming.domain.entity.user.AlarmTime
+import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import org.springframework.batch.core.configuration.annotation.StepScope
-import org.springframework.batch.item.ItemReader
-import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.batch.item.support.ListItemReader
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.time.LocalTime
 
 @Configuration
 class PlantNotificationReader(
-    private val entityManagerFactory: EntityManagerFactory,
+    private val myPlantRepository: MyPlantRepository,
 ) {
-    @StepScope
     @Bean
-    fun waterNotificationItemReader(
-        @Value("#{jobParameters['alarmTime']}") alarmTime: String,
-    ): ItemReader<UserPlantDto> {
-        val query: String =
-            "SELECT new dnd11th.blooming.batch.UserPlantDTO" +
-                "(u.id, u.email, mp.id, mp.nickname, mp.lastWateredDate, mp.waterPeriod) " +
-                "FROM User u JOIN u.myPlants mp " +
-                "WHERE u.alarmStatus = true " +
-                "AND u.alarmTime = $alarmTime " +
-                "AND mp.waterAlarm = true " +
-                "AND DATEDIFF(CURRENT_DATE, mp.lastWateredDate) = mp.waterPeriod"
-        return JpaPagingItemReaderBuilder<UserPlantDto>()
-            .name("waterNotificationItemReader")
-            .entityManagerFactory(entityManagerFactory)
-            .queryString(query)
-            .pageSize(100)
-            .build()
+    @StepScope
+    fun waterNotificationItemReader(): ListItemReader<UserPlantDto> {
+        val now: LocalTime = LocalTime.now()
+        val alarmTime = AlarmTime.fromHour(now)
+
+        val userPlantByAlarmTime: List<UserPlantDto> =
+            myPlantRepository.findPlantsByAlarmTimeInBatch(
+                alarmTime,
+            )
+        return ListItemReader(userPlantByAlarmTime)
     }
 }

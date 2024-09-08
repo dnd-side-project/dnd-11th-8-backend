@@ -1,28 +1,30 @@
 package dnd11th.blooming.batch
 
-import dnd11th.blooming.domain.entity.user.AlarmTime
+import dnd11th.blooming.common.util.Logger.Companion.log
 import org.springframework.batch.core.Job
+import org.springframework.batch.core.JobParameters
 import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import java.time.LocalTime
+import org.springframework.util.StopWatch
+import java.util.concurrent.TimeUnit
 
 @Component
 class NotificationScheduler(
-    private val notificationJob: Job,
     private val jobLauncher: JobLauncher,
+    private val notificationJob: Job,
 ) {
-    @Scheduled(cron = "0 0 5-23 * * *")
+    @Scheduled(cron = "-1 -1 -1 * * *")
     fun run() {
-        val now: LocalTime = LocalTime.now()
-        val alarmTime = AlarmTime.fromHour(now)
-
-        val jobParameters =
+        val jobParameters: JobParameters =
             JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
-                .addString("alarmTime", alarmTime.name)
                 .toJobParameters()
+        val stopWatch = StopWatch()
+        stopWatch.start()
         jobLauncher.run(notificationJob, jobParameters)
+        stopWatch.stop()
+        log.info { stopWatch.getTotalTime(TimeUnit.MILLISECONDS) }
     }
 }
