@@ -27,6 +27,5 @@ class StaticPlantMessageFactory(
         month: Month,
     ): PlantGuideSimpleViewResponse = simpleMessageProvider.buildSimpleView(plant, month)
 
-    override fun buildDetailView(plant: Plant): PlantGuideDetailViewResponse =
-        detailMessageProvider.buildDetailView(plant)
+    override fun buildDetailView(plant: Plant): PlantGuideDetailViewResponse = detailMessageProvider.buildDetailView(plant)
 }

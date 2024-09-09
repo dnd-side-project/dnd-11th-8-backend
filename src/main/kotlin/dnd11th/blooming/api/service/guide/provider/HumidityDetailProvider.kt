@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.service.guide.provider
 
 import dnd11th.blooming.api.dto.guide.DetailHumidityResponse
-import dnd11th.blooming.common.util.KoreanUtil.Companion.getEunOrNun
+import dnd11th.blooming.common.util.getEunOrNun
 import dnd11th.blooming.domain.entity.plant.Plant
 import org.springframework.stereotype.Component
 
@@ -21,7 +21,7 @@ class HumidityDetailProvider {
     }
 
     private fun makeDetailHumidityDescription(plant: Plant): String {
-        val eunOrNun = getEunOrNun(plant.korName)
+        val eunOrNun = plant.korName.getEunOrNun()
 
         return "${plant.korName}$eunOrNun ${plant.humidity.humidityLevel}을 좋아해요.\n" +
             "${plant.humidity.displayName}의 습도가 가장 이상적이에요."

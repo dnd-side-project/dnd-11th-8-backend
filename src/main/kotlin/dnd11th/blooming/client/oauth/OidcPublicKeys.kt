@@ -1,5 +1,8 @@
 package dnd11th.blooming.client.oauth
 
+import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.common.exception.ExternalServerException
+
 data class OidcPublicKeys(
     val keys: List<OidcPublicKey>,
 ) {
@@ -8,6 +11,6 @@ data class OidcPublicKeys(
         alg: String,
     ): OidcPublicKey {
         return keys.firstOrNull { it.kid == kid && it.alg == alg }
-            ?: throw IllegalArgumentException("JWT 값의 kid 또는 alg 정보가 올바르지 않습니다.")
+            ?: throw ExternalServerException(ErrorType.INVALID_MATCHING_KEY)
     }
 }

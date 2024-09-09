@@ -19,20 +19,28 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
 
     // Location
     NOT_FOUND_LOCATION(HttpStatus.NOT_FOUND, "존재하지 않는 위치입니다.", LogLevel.DEBUG),
+    LOCATION_NAME_DUPLICATE(HttpStatus.NOT_FOUND, "이미 존재하는 위치명입니다.", LogLevel.DEBUG),
     LOCATION_COUNT_EXCEED(HttpStatus.BAD_REQUEST, "위치는 최대 3개까지만 등록 가능합니다.", LogLevel.DEBUG),
 
     // Auth
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다.", LogLevel.DEBUG),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.", LogLevel.DEBUG),
     INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다", LogLevel.DEBUG),
-    INVALID_ID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 ID TOKEN입니다.", LogLevel.DEBUG),
-
+    INVALID_ID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 ID TOKEN입니다.", LogLevel.WARN),
+    INVALID_MATCHING_KEY(HttpStatus.BAD_GATEWAY, "응답값과 매칭되는 키가 존재하지 않습니다.", LogLevel.WARN),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 RefreshToken입니다.", LogLevel.DEBUG),
     INVALID_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, "지원하지 않는 provider입니다", LogLevel.DEBUG),
+    DUPLICATE_USER_LOGIN(HttpStatus.UNAUTHORIZED, "중복된 로그인이 감지되었습니다.", LogLevel.DEBUG),
 
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않은 사용자입니다.", LogLevel.DEBUG),
 
     // OpenAPI
-    OPEN_API_CALL_EXCEPTION(HttpStatus.BAD_REQUEST, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
+    OPEN_API_CALL_EXCEPTION(HttpStatus.BAD_GATEWAY, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
 
     // REGION
     NOT_FOUND_REGION(HttpStatus.NOT_FOUND, "존재하지 않는 지역번호입니다.", LogLevel.DEBUG),
+
+    // Redis
+    NOT_FOUND_REDIS_KEY(HttpStatus.BAD_REQUEST, "해당 Key가 존재하지 않습니다.", LogLevel.DEBUG),
 }

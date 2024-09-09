@@ -1,6 +1,6 @@
 package dnd11th.blooming.domain.repository
 
-import dnd11th.blooming.api.dto.myplant.MyPlantIdWithImageUrl
+import dnd11th.blooming.api.dto.myplant.MyPlantWithImageUrl
 import dnd11th.blooming.domain.entity.Image
 import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.entity.user.User
@@ -14,20 +14,23 @@ interface ImageRepository : JpaRepository<Image, Long> {
 
     @Query(
         """
-    SELECT new dnd11th.blooming.api.dto.myplant.MyPlantIdWithImageUrl(i.url, mp.id)
+    SELECT new dnd11th.blooming.api.dto.myplant.MyPlantWithImageUrl(mp, i.url)
     FROM Image i
     JOIN i.myPlant mp
-    WHERE mp IN :myPlants
+	JOIN FETCH mp.location l
+    WHERE mp.user = :user
     AND i.favorite = true
-    AND i.id = (
-        SELECT MIN(i2.id)
+    AND i.updatedDate = (
+        SELECT MAX(i2.updatedDate)
         FROM Image i2
         WHERE i2.myPlant = mp
         AND i2.favorite = true
     )
 	""",
     )
-    fun findFavoriteImagesForMyPlants(myPlants: List<MyPlant>): List<MyPlantIdWithImageUrl>
+    fun findMyPlantAndMostRecentFavoriteImageByUser(
+        @Param("user") user: User,
+    ): List<MyPlantWithImageUrl>
 
     @Modifying
     @Query(

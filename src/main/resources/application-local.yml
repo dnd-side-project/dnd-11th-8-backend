@@ -23,6 +23,11 @@ spring:
     job:
       enabled: false
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 springdoc:
   swagger-ui:
     path: /swagger-ui

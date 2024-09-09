@@ -1,7 +1,7 @@
 package dnd11th.blooming.client.weather
 
-import dnd11th.blooming.common.exception.ClientCallException
 import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.common.exception.ExternalServerException
 
 data class WeatherResponse(
     val response: ResponseData,
@@ -13,7 +13,7 @@ data class WeatherResponse(
 
     private fun validate() {
         if (response.header.resultCode != "00") {
-            throw ClientCallException(ErrorType.OPEN_API_CALL_EXCEPTION)
+            throw ExternalServerException(ErrorType.OPEN_API_CALL_EXCEPTION)
         }
     }
 }

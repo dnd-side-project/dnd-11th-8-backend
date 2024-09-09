@@ -11,6 +11,4 @@ interface LocationRepository : JpaRepository<Location, Long> {
         id: Long,
         user: User,
     ): Location?
-
-    fun countByUser(user: User): Int
 }
