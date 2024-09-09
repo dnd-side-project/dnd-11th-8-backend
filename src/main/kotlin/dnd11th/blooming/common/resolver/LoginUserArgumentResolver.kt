@@ -3,6 +3,7 @@ package dnd11th.blooming.common.resolver
 import dnd11th.blooming.common.annotation.LoginUser
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.common.exception.UnAuthorizedException
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.entity.user.UserClaims
 import dnd11th.blooming.domain.repository.user.UserRepository
@@ -35,7 +36,7 @@ class LoginUserArgumentResolver(
     ): Any? {
         val value =
             webRequest.getAttribute(ATTRIBUTE_KEY, RequestAttributes.SCOPE_REQUEST)
-                ?: throw IllegalArgumentException()
+                ?: throw UnAuthorizedException(ErrorType.UNAUTHORIZED)
         val userClaims: UserClaims = value as UserClaims
         return userRepository.findById(userClaims.id as Long)
             .orElseThrow { NotFoundException(ErrorType.USER_NOT_FOUND) }
