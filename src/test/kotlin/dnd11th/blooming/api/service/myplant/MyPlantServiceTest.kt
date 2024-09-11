@@ -495,7 +495,7 @@ class MyPlantServiceTest : DescribeSpec(
                         healthCheckAlarm = HEALTHCHECK_ALARM,
                     )
                 it("알림 정보가 변경되어야 한다.") {
-                    myPlantService.modifyMyPlantAlarm(MYPLANT_ID, request, USER)
+                    myPlantService.modifyMyPlantAlarm(MYPLANT_ID, request.toAlarmModifyDto(), USER, START_DATE.month)
                 }
             }
             context("존재하지 않는 ID와 요청으로 알림 변경 요청을 하면") {
@@ -510,7 +510,7 @@ class MyPlantServiceTest : DescribeSpec(
                 it("NotFoundException(NOT_FOUND_MYPLANT_ID) 예외가 발생해야 한다.") {
                     val exception =
                         shouldThrow<NotFoundException> {
-                            myPlantService.modifyMyPlantAlarm(MYPLANT_ID2, request, USER)
+                            myPlantService.modifyMyPlantAlarm(MYPLANT_ID2, request.toAlarmModifyDto(), USER, START_DATE.month)
                         }
                     exception.message shouldBe "존재하지 않는 내 식물입니다."
                     exception.errorType shouldBe ErrorType.NOT_FOUND_MYPLANT

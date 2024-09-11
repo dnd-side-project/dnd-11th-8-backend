@@ -1,5 +1,6 @@
 package dnd11th.blooming.domain.entity
 
+import dnd11th.blooming.api.dto.myplant.AlarmModifyDto
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.domain.entity.plant.Plant
 import dnd11th.blooming.domain.entity.user.User
@@ -13,6 +14,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import java.time.LocalDate
+import java.time.Month
 import java.time.Period
 
 @Entity
@@ -79,8 +81,11 @@ class MyPlant(
         lastFertilizerDate?.let { this.lastFertilizerDate = selectLastDate(lastFertilizerDate, now) }
     }
 
-    fun modifyAlarm(alarm: Alarm) {
-        this.alarm = alarm
+    fun modifyAlarm(
+        dto: AlarmModifyDto,
+        month: Month,
+    ) {
+        this.alarm = Alarm.createAlarm(dto, plant, month)
     }
 
     fun doWater(now: LocalDate) {
@@ -112,14 +117,7 @@ class MyPlant(
                 lastWateredDate = selectLastDate(dto.lastWateredDate, now),
                 lastFertilizerDate = selectLastDate(dto.lastFertilizerDate, now),
                 lastHealthCheckDate = LocalDate.now(),
-                alarm =
-                    Alarm(
-                        waterAlarm = dto.waterAlarm,
-                        waterPeriod = dto.waterPeriod,
-                        fertilizerAlarm = dto.fertilizerAlarm,
-                        fertilizerPeriod = dto.fertilizerPeriod,
-                        healthCheckAlarm = dto.healthCheckAlarm,
-                    ),
+                alarm = Alarm.createAlarm(dto, plant, now.month),
             ).also {
                 it.location = location
                 it.plant = plant

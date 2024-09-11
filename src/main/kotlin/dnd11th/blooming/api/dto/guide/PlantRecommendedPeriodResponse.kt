@@ -1,7 +1,6 @@
 package dnd11th.blooming.api.dto.guide
 
 import dnd11th.blooming.domain.entity.plant.Plant
-import dnd11th.blooming.domain.entity.plant.Season
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.Month
 
@@ -19,21 +18,10 @@ data class PlantRecommendedPeriodResponse(
         fun of(
             plant: Plant,
             month: Month,
-        ): PlantRecommendedPeriodResponse {
-            val season = Season.getSeason(month)
-
-            val waterInfo =
-                when (season) {
-                    Season.SPRING -> plant.springWater
-                    Season.SUMMER -> plant.summerWater
-                    Season.FALL -> plant.fallWater
-                    Season.WINTER -> plant.winterWater
-                }
-
-            return PlantRecommendedPeriodResponse(
-                recommendedWaterDay = waterInfo.periodDay,
-                recommendedFertilizerWeek = plant.fertilizer.periodWeek,
+        ): PlantRecommendedPeriodResponse =
+            PlantRecommendedPeriodResponse(
+                recommendedWaterDay = plant.getRecommendWaterDayPeriod(month),
+                recommendedFertilizerWeek = plant.getRecommendFertilizerDayPeriod() / 7,
             )
-        }
     }
 }

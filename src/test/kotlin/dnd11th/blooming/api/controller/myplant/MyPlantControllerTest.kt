@@ -384,8 +384,8 @@ class MyPlantControllerTest : WebMvcDescribeSpec() {
 
         describe("내 식물의 알림 수정") {
             beforeTest {
-                every { myPlantService.modifyMyPlantAlarm(MYPLANT_ID, any(), any()) } just runs
-                every { myPlantService.modifyMyPlantAlarm(not(eq(MYPLANT_ID)), any(), any()) } throws
+                every { myPlantService.modifyMyPlantAlarm(MYPLANT_ID, any(), any(), any()) } just runs
+                every { myPlantService.modifyMyPlantAlarm(not(eq(MYPLANT_ID)), any(), any(), any()) } throws
                     NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
             }
             context("존재하는 ID로 수정하면") {

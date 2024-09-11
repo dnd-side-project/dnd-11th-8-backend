@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.service.myplant
 
-import dnd11th.blooming.api.dto.myplant.AlarmModifyRequest
+import dnd11th.blooming.api.dto.myplant.AlarmModifyDto
 import dnd11th.blooming.api.dto.myplant.HealthCheckResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantCreateDto
 import dnd11th.blooming.api.dto.myplant.MyPlantDetailResponse
@@ -22,6 +22,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import java.time.Month
 
 @Service
 class MyPlantService(
@@ -115,14 +116,15 @@ class MyPlantService(
     @Transactional
     fun modifyMyPlantAlarm(
         myPlantId: Long,
-        request: AlarmModifyRequest,
+        dto: AlarmModifyDto,
         user: User,
+        month: Month,
     ) {
         val myPlant =
             myPlantRepository.findByIdAndUser(myPlantId, user)
                 ?: throw NotFoundException(ErrorType.NOT_FOUND_MYPLANT)
 
-        myPlant.modifyAlarm(request.toAlarm())
+        myPlant.modifyAlarm(dto, month)
     }
 
     @Transactional
