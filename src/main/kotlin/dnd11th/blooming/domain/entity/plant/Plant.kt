@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import java.time.Month
 
 @Entity
 class Plant(
@@ -66,4 +67,17 @@ class Plant(
 
     @Column
     val decomposedKorName: String = korName.toDecomposedHangul()
+
+    fun getRecommendWaterDayPeriod(month: Month): Int {
+        return when (Season.getSeason(month)) {
+            Season.SPRING -> springWater.periodDay
+            Season.SUMMER -> summerWater.periodDay
+            Season.FALL -> fallWater.periodDay
+            Season.WINTER -> winterWater.periodDay
+        }
+    }
+
+    fun getRecommendFertilizerDayPeriod(): Int {
+        return this.fertilizer.periodWeek * 7
+    }
 }
