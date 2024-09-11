@@ -89,5 +89,5 @@ class MyPlantController(
         @PathVariable myPlantId: Long,
         @RequestBody @Valid request: AlarmModifyRequest,
         @LoginUser user: User,
-    ) = myPlantService.modifyMyPlantAlarm(myPlantId, request, user)
+    ) = myPlantService.modifyMyPlantAlarm(myPlantId, request.toAlarmModifyDto(), user, LocalDate.now().month)
 }
