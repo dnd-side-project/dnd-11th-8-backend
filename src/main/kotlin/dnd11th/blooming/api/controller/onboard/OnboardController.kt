@@ -14,5 +14,5 @@ class OnboardController(
 ) : OnboardApi {
     @Secured
     @GetMapping
-    override fun findScripts(): ScriptResponse = onboardService.findScripts()
+    override fun findScripts(): List<ScriptResponse> = onboardService.findScripts()
 }

@@ -9,5 +9,5 @@ import io.swagger.v3.oas.annotations.tags.Tag
 interface OnboardApi {
     @Operation(summary = "질문지를 조회하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "질문지 조회 성공")
-    fun findScripts(): ScriptResponse
+    fun findScripts(): List<ScriptResponse>
 }
