@@ -11,4 +11,6 @@ interface LocationRepository : JpaRepository<Location, Long> {
         id: Long,
         user: User,
     ): Location?
+
+    fun deleteByUser(user: User)
 }

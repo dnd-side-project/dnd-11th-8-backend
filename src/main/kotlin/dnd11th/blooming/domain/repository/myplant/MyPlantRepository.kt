@@ -23,4 +23,6 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
     fun nullifyLocationByLocation(
         @Param("location") location: Location,
     )
+
+    fun deleteAllByUser(user: User)
 }
