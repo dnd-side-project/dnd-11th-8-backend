@@ -2,7 +2,7 @@ package dnd11th.blooming.api.service.onboard
 
 import dnd11th.blooming.api.dto.onboard.OnboardResultRequest
 import dnd11th.blooming.api.dto.onboard.OnboardResultResponse
-import dnd11th.blooming.api.dto.onboard.ScriptResponse
+import dnd11th.blooming.api.dto.onboard.OnboardScriptResponse
 import dnd11th.blooming.domain.repository.onboard.OnboardAnswerRepository
 import dnd11th.blooming.domain.repository.onboard.OnboardQuestionRepository
 import org.springframework.stereotype.Service
@@ -14,12 +14,12 @@ class OnboardService(
     private val onboardAnswerRepository: OnboardAnswerRepository,
 ) {
     @Transactional(readOnly = true)
-    fun findScripts(): List<ScriptResponse> {
+    fun findScripts(): OnboardScriptResponse {
         val latestVersion = onboardQuestionRepository.findLatestVersion()
 
         val onboardingAnswers = onboardAnswerRepository.findAllByVersion(latestVersion)
 
-        return ScriptResponse.from(onboardingAnswers)
+        return OnboardScriptResponse.of(latestVersion, onboardingAnswers)
     }
 
     fun submitScripts(request: List<OnboardResultRequest>): OnboardResultResponse {

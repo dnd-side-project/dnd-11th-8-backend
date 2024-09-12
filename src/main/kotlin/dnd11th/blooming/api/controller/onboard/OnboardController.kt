@@ -2,7 +2,7 @@ package dnd11th.blooming.api.controller.onboard
 
 import dnd11th.blooming.api.dto.onboard.OnboardResultRequest
 import dnd11th.blooming.api.dto.onboard.OnboardResultResponse
-import dnd11th.blooming.api.dto.onboard.ScriptResponse
+import dnd11th.blooming.api.dto.onboard.OnboardScriptResponse
 import dnd11th.blooming.api.service.onboard.OnboardService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,7 +16,7 @@ class OnboardController(
     private val onboardService: OnboardService,
 ) : OnboardApi {
     @GetMapping
-    override fun findScripts(): List<ScriptResponse> = onboardService.findScripts()
+    override fun findScripts(): OnboardScriptResponse = onboardService.findScripts()
 
     @PostMapping
     override fun submitScripts(
