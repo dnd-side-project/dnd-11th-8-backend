@@ -1,5 +1,7 @@
 package dnd11th.blooming.client.fcm
 
 interface FcmService {
-    fun sendNotification(pushNotification: PushNotification)
+    suspend fun send(pushNotification: PushNotification)
+
+    suspend fun mock(pushNotification: PushNotification)
 }

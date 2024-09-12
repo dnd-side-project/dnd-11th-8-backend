@@ -35,8 +35,13 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("com.h2database:h2")
+
+    // Batch
+    implementation("org.springframework.boot:spring-boot-starter-batch")
+    testImplementation("org.springframework.batch:spring-batch-test")
 
     // Validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
