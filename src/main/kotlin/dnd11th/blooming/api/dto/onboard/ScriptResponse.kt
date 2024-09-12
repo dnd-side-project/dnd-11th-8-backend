@@ -1,5 +1,7 @@
 package dnd11th.blooming.api.dto.onboard
 
+import dnd11th.blooming.domain.entity.onboard.OnboardingAnswer
+import dnd11th.blooming.domain.entity.onboard.OnboardingQuestion
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(
@@ -13,4 +15,21 @@ data class ScriptResponse(
     val question: String,
     @field:Schema(description = "선택지 문항")
     val answers: List<ScriptAnswerResponse>,
-)
+) {
+    companion object {
+        fun from(onboardingAnswers: List<OnboardingAnswer>): List<ScriptResponse> {
+            val onboardingQuestions: List<OnboardingQuestion> =
+                onboardingAnswers
+                    .mapNotNull { answer -> answer.onboardingQuestion }
+                    .distinctBy { oq -> oq.questionNumber }
+
+            return onboardingQuestions.map { oq ->
+                ScriptResponse(
+                    questionNumber = oq.questionNumber,
+                    question = oq.question,
+                    answers = ScriptAnswerResponse.from(onboardingAnswers.filter { oa -> oa.onboardingQuestion == oq }),
+                )
+            }
+        }
+    }
+}
