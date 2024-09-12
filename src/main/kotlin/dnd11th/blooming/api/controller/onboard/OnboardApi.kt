@@ -4,6 +4,7 @@ import dnd11th.blooming.api.dto.onboard.OnboardResultRequest
 import dnd11th.blooming.api.dto.onboard.OnboardResultResponse
 import dnd11th.blooming.api.dto.onboard.OnboardScriptResponse
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -17,6 +18,8 @@ interface OnboardApi {
     @Operation(summary = "응답을 제출하는 API 입니다.")
     @ApiResponse(responseCode = "200", description = "응답 제출 성공")
     fun submitScripts(
+        @Parameter(description = "응답 버전", required = true)
+        version: Int,
         @RequestBody(description = "응답 요청", required = true)
         request: List<OnboardResultRequest>,
     ): OnboardResultResponse

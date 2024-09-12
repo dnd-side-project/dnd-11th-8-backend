@@ -24,4 +24,8 @@ class OnboardingAnswer(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     var onboardingQuestion: OnboardingQuestion? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "result_id")
+    var onboardingResult: OnboardingResult? = null
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -20,6 +21,7 @@ class OnboardController(
 
     @PostMapping
     override fun submitScripts(
+        @RequestParam version: Int,
         @RequestBody request: List<OnboardResultRequest>,
-    ): OnboardResultResponse = onboardService.submitScripts(request)
+    ): OnboardResultResponse = onboardService.submitScripts(version, request)
 }
