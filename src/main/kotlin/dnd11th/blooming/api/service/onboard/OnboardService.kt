@@ -1,5 +1,7 @@
 package dnd11th.blooming.api.service.onboard
 
+import dnd11th.blooming.api.dto.onboard.OnboardResultRequest
+import dnd11th.blooming.api.dto.onboard.OnboardResultResponse
 import dnd11th.blooming.api.dto.onboard.ScriptResponse
 import dnd11th.blooming.domain.repository.onboard.OnboardAnswerRepository
 import dnd11th.blooming.domain.repository.onboard.OnboardQuestionRepository
@@ -18,5 +20,9 @@ class OnboardService(
         val onboardingAnswers = onboardAnswerRepository.findAllByVersion(latestVersion)
 
         return ScriptResponse.from(onboardingAnswers)
+    }
+
+    fun submitScripts(request: List<OnboardResultRequest>): OnboardResultResponse {
+        TODO("Not yet implemented")
     }
 }
