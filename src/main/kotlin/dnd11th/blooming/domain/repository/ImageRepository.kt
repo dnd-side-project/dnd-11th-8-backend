@@ -42,7 +42,7 @@ interface ImageRepository : JpaRepository<Image, Long> {
         @Param("myPlant") myPlant: MyPlant,
     )
 
-    fun deleteAllByMyPlant(myPlant: MyPlant)
+    fun deleteAllByMyPlantIn(myPlants: List<MyPlant>)
 
     @Query(
         """

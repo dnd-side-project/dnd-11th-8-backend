@@ -8,8 +8,10 @@ import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
 import dnd11th.blooming.domain.repository.user.UserOauthRepository
 import dnd11th.blooming.domain.repository.user.UserRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class UserWithdrawService(
     private val userRepository: UserRepository,
     private val userOauthRepository: UserOauthRepository,
@@ -19,7 +21,7 @@ class UserWithdrawService(
 ) {
     fun withdraw(loginUser: User) {
         val myPlantByUser: List<MyPlant> = myPlantRepository.findAllByUser(loginUser)
-        myPlantByUser.forEach { myPlant: MyPlant -> imageRepository.deleteAllByMyPlant(myPlant) }
+        imageRepository.deleteAllByMyPlantIn(myPlantByUser)
         myPlantRepository.deleteAllByUser(loginUser)
         locationRepository.deleteByUser(loginUser)
         userOauthRepository.deleteByUser(loginUser)
