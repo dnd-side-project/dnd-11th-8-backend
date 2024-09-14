@@ -1,5 +1,7 @@
 package dnd11th.blooming.api.service.user
 
+import dnd11th.blooming.common.exception.ErrorType
+import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.domain.entity.MyPlant
 import dnd11th.blooming.domain.entity.user.User
 import dnd11th.blooming.domain.repository.ImageRepository
@@ -20,11 +22,15 @@ class UserWithdrawService(
     private val imageRepository: ImageRepository,
 ) {
     fun withdraw(loginUser: User) {
-        val myPlantByUser: List<MyPlant> = myPlantRepository.findAllByUser(loginUser)
+        val user: User =
+            userRepository.findById(loginUser.id!!).orElseThrow {
+                throw NotFoundException(ErrorType.USER_NOT_FOUND)
+            }
+        val myPlantByUser: List<MyPlant> = myPlantRepository.findAllByUser(user)
         imageRepository.deleteAllByMyPlantIn(myPlantByUser)
-        myPlantRepository.deleteAllByUser(loginUser)
-        locationRepository.deleteByUser(loginUser)
-        userOauthRepository.deleteByUser(loginUser)
-        userRepository.delete(loginUser)
+        myPlantRepository.deleteAllByUser(user)
+        locationRepository.deleteAllByUser(user)
+        userOauthRepository.deleteByUser(user)
+        userRepository.delete(user)
     }
 }

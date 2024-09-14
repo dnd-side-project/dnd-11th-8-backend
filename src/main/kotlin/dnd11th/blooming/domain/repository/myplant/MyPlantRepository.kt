@@ -24,5 +24,9 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long> {
         @Param("location") location: Location,
     )
 
-    fun deleteAllByUser(user: User)
+    @Modifying
+    @Query("DELETE FROM MyPlant p WHERE p.user = :user")
+    fun deleteAllByUser(
+        @Param("user") user: User,
+    )
 }
