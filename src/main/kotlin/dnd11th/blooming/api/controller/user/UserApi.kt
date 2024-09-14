@@ -35,7 +35,7 @@ interface UserApi {
     @Operation(summary = "회원 탈퇴 API 입니다.")
     @ApiResponse(responseCode = "204", description = "회원 탈퇴 성공")
     fun withdraw(
-        @Schema(hidden = true) user: User
+        @Schema(hidden = true) user: User,
     )
 
     @Operation(summary = "마이페이지 API 입니다.")
