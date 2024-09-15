@@ -1,7 +1,7 @@
 package dnd11th.blooming.domain.repository.onboard
 
-import dnd11th.blooming.domain.entity.onboard.OnboardingResult
+import dnd11th.blooming.domain.entity.onboard.OnboardingAnswer
 
 interface OnboardAnswerQueryDslRepository {
-    fun findAllOnboardingResultByQuestionNumberAndAnswerNumberIn(resultPairs: List<Pair<Int, Int>>): List<OnboardingResult>
+    fun findAllByQuestionNumberAndAnswerNumberIn(resultPairs: List<Pair<Int, Int>>): List<OnboardingAnswer>
 }

@@ -1,26 +1,24 @@
 package dnd11th.blooming.domain.entity.onboard
 
 import dnd11th.blooming.domain.entity.BaseEntity
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 
 @Entity
-class OnboardingResult(
-    @Column
-    var version: Int,
-    @Column
-    var result: String,
-    @Column
-    var subTitle: String,
-    @Column
-    var illustUrl: String,
-    @Column
-    var description: String,
-) : BaseEntity() {
+class OnboardingAnswerToResult : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+    @ManyToOne
+    @JoinColumn(name = "answer_id")
+    var onboardingAnswer: OnboardingAnswer? = null
+
+    @ManyToOne
+    @JoinColumn(name = "result_id")
+    var onboardingResult: OnboardingResult? = null
 }
