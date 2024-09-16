@@ -44,6 +44,8 @@ class User(
     var ny: Int = ny
         protected set
 
+    var deviceToken: String? = null
+
     companion object {
         fun create(
             email: String,
@@ -66,5 +68,13 @@ class User(
 
     fun updateAlarmTime(alarmTime: AlarmTime) {
         this.alarmTime = alarmTime
+    }
+
+    fun updateDeviceToken(token: String) {
+        this.deviceToken = deviceToken
+    }
+
+    fun invalidDeviceToken() {
+        this.deviceToken = null
     }
 }

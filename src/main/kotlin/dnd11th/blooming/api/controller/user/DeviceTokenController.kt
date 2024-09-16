@@ -25,4 +25,13 @@ class DeviceTokenController(
         deviceTokenService.saveToken(user, deviceTokenRequest.deviceToken)
         return ResponseEntity.noContent().build()
     }
+
+    @Secured
+    @PostMapping("/invalid")
+    override fun invalidDeviceToken(
+        @LoginUser user: User,
+    ): ResponseEntity<Void> {
+        deviceTokenService.invalidToken(user)
+        return ResponseEntity.noContent().build()
+    }
 }
