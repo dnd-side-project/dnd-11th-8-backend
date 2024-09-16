@@ -23,4 +23,10 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantQueryDslRepos
     fun nullifyLocationByLocation(
         @Param("location") location: Location,
     )
+
+    @Modifying
+    @Query("DELETE FROM MyPlant p WHERE p.user = :user")
+    fun deleteAllByUser(
+        @Param("user") user: User,
+    )
 }

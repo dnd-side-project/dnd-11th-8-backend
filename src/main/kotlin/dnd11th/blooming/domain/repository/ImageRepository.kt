@@ -42,6 +42,12 @@ interface ImageRepository : JpaRepository<Image, Long> {
         @Param("myPlant") myPlant: MyPlant,
     )
 
+    @Modifying
+    @Query("DELETE FROM Image i WHERE i.myPlant IN :myPlants")
+    fun deleteAllByMyPlantIn(
+        @Param("myPlants") myPlants: List<MyPlant>,
+    )
+
     @Query(
         """
 	SELECT i from Image i WHERE i.id = :imageId and i.myPlant.user = :user
