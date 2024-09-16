@@ -3,8 +3,8 @@ package dnd11th.blooming.api.dto.myplant
 import dnd11th.blooming.api.dto.image.ImageResponse
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
-import dnd11th.blooming.domain.entity.Image
-import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.core.entity.image.Image
+import dnd11th.blooming.domain.core.entity.myplant.MyPlant
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
 import java.time.Period

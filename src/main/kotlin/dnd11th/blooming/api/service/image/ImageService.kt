@@ -3,10 +3,10 @@ package dnd11th.blooming.api.service.image
 import dnd11th.blooming.api.dto.image.ImageCreateDto
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.domain.entity.Image
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.ImageRepository
-import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
+import dnd11th.blooming.domain.core.entity.image.Image
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.repository.image.ImageRepository
+import dnd11th.blooming.domain.core.repository.myplant.MyPlantRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

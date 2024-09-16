@@ -1,6 +1,8 @@
 package dnd11th.blooming.common.jwt
 
-import dnd11th.blooming.domain.entity.user.UserClaims
+import dnd11th.blooming.api.jwt.JwtProperties
+import dnd11th.blooming.api.jwt.JwtProvider
+import dnd11th.blooming.domain.core.entity.user.UserClaims
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys

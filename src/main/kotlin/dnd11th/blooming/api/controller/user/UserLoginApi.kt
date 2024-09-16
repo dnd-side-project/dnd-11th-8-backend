@@ -3,7 +3,7 @@ package dnd11th.blooming.api.controller.user
 import dnd11th.blooming.api.dto.user.IdTokenRequest
 import dnd11th.blooming.api.dto.user.SocialLoginResponse
 import dnd11th.blooming.api.dto.user.TokenRequest
-import dnd11th.blooming.domain.entity.user.User
+import dnd11th.blooming.domain.core.entity.user.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn

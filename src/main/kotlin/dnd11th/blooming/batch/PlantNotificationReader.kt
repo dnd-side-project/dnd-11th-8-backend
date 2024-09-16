@@ -1,7 +1,7 @@
 package dnd11th.blooming.batch
 
-import dnd11th.blooming.domain.entity.user.AlarmTime
-import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
+import dnd11th.blooming.domain.core.entity.user.AlarmTime
+import dnd11th.blooming.domain.core.repository.myplant.MyPlantRepository
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.item.support.ListItemReader
 import org.springframework.context.annotation.Bean

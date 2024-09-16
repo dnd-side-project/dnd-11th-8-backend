@@ -1,14 +1,14 @@
 package dnd11th.blooming.api.service.onboard
 
 import dnd11th.blooming.api.dto.onboard.OnboardResultRequest
-import dnd11th.blooming.domain.entity.onboard.OnboardingAnswer
-import dnd11th.blooming.domain.entity.onboard.OnboardingAnswerToResult
-import dnd11th.blooming.domain.entity.onboard.OnboardingQuestion
-import dnd11th.blooming.domain.entity.onboard.OnboardingResult
-import dnd11th.blooming.domain.repository.onboard.OnboardAnswerRepository
-import dnd11th.blooming.domain.repository.onboard.OnboardAnswerToResultRepository
-import dnd11th.blooming.domain.repository.onboard.OnboardQuestionRepository
-import dnd11th.blooming.domain.repository.onboard.OnboardResultRepository
+import dnd11th.blooming.domain.core.entity.onboard.OnboardingAnswer
+import dnd11th.blooming.domain.core.entity.onboard.OnboardingAnswerToResult
+import dnd11th.blooming.domain.core.entity.onboard.OnboardingQuestion
+import dnd11th.blooming.domain.core.entity.onboard.OnboardingResult
+import dnd11th.blooming.domain.core.repository.onboard.OnboardAnswerRepository
+import dnd11th.blooming.domain.core.repository.onboard.OnboardAnswerToResultRepository
+import dnd11th.blooming.domain.core.repository.onboard.OnboardQuestionRepository
+import dnd11th.blooming.domain.core.repository.onboard.OnboardResultRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired

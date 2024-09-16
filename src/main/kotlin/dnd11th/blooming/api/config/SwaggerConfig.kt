@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.config
 
-import dnd11th.blooming.common.annotation.ApiErrorResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponses
+import dnd11th.blooming.api.annotation.ApiErrorResponse
+import dnd11th.blooming.api.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorResponse
 import dnd11th.blooming.common.exception.ErrorType
 import io.swagger.v3.oas.models.Components

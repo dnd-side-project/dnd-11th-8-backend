@@ -2,7 +2,7 @@ package dnd11th.blooming.api.service.guide
 
 import dnd11th.blooming.api.dto.guide.PlantGuideDetailViewResponse
 import dnd11th.blooming.api.dto.guide.PlantGuideSimpleViewResponse
-import dnd11th.blooming.domain.entity.plant.Plant
+import dnd11th.blooming.domain.core.entity.plant.Plant
 import java.time.Month
 
 interface PlantMessageFactory {

@@ -2,7 +2,7 @@ package dnd11th.blooming.api.service.guide.provider
 
 import dnd11th.blooming.api.dto.guide.DetailPestsResponse
 import dnd11th.blooming.common.util.getEunOrNun
-import dnd11th.blooming.domain.entity.plant.Plant
+import dnd11th.blooming.domain.core.entity.plant.Plant
 import org.springframework.stereotype.Component
 
 @Component

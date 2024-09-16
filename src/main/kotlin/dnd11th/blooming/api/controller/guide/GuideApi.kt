@@ -1,9 +1,9 @@
 package dnd11th.blooming.api.controller.guide
 
+import dnd11th.blooming.api.annotation.ApiErrorResponse
 import dnd11th.blooming.api.dto.guide.PlantGuideResponse
 import dnd11th.blooming.api.dto.guide.PlantRecommendedPeriodResponse
 import dnd11th.blooming.api.dto.guide.PlantResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponse
 import dnd11th.blooming.common.exception.ErrorType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter

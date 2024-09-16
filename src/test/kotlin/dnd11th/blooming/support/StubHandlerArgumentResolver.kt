@@ -1,7 +1,7 @@
 package dnd11th.blooming.support
 
-import dnd11th.blooming.domain.entity.user.AlarmTime
-import dnd11th.blooming.domain.entity.user.User
+import dnd11th.blooming.domain.core.entity.user.AlarmTime
+import dnd11th.blooming.domain.core.entity.user.User
 import org.springframework.core.MethodParameter
 import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest

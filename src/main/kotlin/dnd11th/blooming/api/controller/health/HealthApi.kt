@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.controller.health
 
-import dnd11th.blooming.common.annotation.ApiErrorResponse
+import dnd11th.blooming.api.annotation.ApiErrorResponse
 import dnd11th.blooming.common.exception.ErrorType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

@@ -1,5 +1,8 @@
 package dnd11th.blooming.api.controller.user
 
+import dnd11th.blooming.api.annotation.LoginUser
+import dnd11th.blooming.api.annotation.PendingUser
+import dnd11th.blooming.api.annotation.Secured
 import dnd11th.blooming.api.dto.user.MyProfileResponse
 import dnd11th.blooming.api.dto.user.MyProfileUpdateRequest
 import dnd11th.blooming.api.dto.user.TokenResponse
@@ -7,13 +10,10 @@ import dnd11th.blooming.api.dto.user.UserRegisterRequest
 import dnd11th.blooming.api.service.user.UserProfileService
 import dnd11th.blooming.api.service.user.UserRegisterService
 import dnd11th.blooming.api.service.user.UserWithdrawService
-import dnd11th.blooming.common.annotation.LoginUser
-import dnd11th.blooming.common.annotation.PendingUser
-import dnd11th.blooming.common.annotation.Secured
-import dnd11th.blooming.domain.entity.user.AlarmTime
-import dnd11th.blooming.domain.entity.user.OauthProvider
-import dnd11th.blooming.domain.entity.user.RegisterClaims
-import dnd11th.blooming.domain.entity.user.User
+import dnd11th.blooming.domain.core.entity.user.AlarmTime
+import dnd11th.blooming.domain.core.entity.user.OauthProvider
+import dnd11th.blooming.domain.core.entity.user.RegisterClaims
+import dnd11th.blooming.domain.core.entity.user.User
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

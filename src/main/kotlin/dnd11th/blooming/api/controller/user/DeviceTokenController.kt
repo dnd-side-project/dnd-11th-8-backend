@@ -1,10 +1,10 @@
 package dnd11th.blooming.api.controller.user
 
+import dnd11th.blooming.api.annotation.LoginUser
+import dnd11th.blooming.api.annotation.Secured
 import dnd11th.blooming.api.dto.user.DeviceTokenRequest
 import dnd11th.blooming.api.service.user.DeviceTokenService
-import dnd11th.blooming.common.annotation.LoginUser
-import dnd11th.blooming.common.annotation.Secured
-import dnd11th.blooming.domain.entity.user.User
+import dnd11th.blooming.domain.core.entity.user.User
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
