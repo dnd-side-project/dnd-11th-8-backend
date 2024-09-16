@@ -70,8 +70,8 @@ class User(
         this.alarmTime = alarmTime
     }
 
-    fun updateDeviceToken(token: String) {
-        this.deviceToken = deviceToken
+    fun updateDeviceToken(newToken: String) {
+        this.deviceToken = newToken
     }
 
     fun invalidDeviceToken() {
