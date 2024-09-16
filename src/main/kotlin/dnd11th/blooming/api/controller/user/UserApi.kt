@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.ResponseEntity
 
 @Tag(name = "2. [유저]")
 interface UserApi {
@@ -36,7 +37,7 @@ interface UserApi {
     @ApiResponse(responseCode = "204", description = "회원 탈퇴 성공")
     fun withdraw(
         @Schema(hidden = true) user: User,
-    )
+    ): ResponseEntity<Void>
 
     @Operation(summary = "마이페이지 API 입니다.")
     @ApiResponse(responseCode = "200", description = "마이페이지 조회 성공")
@@ -49,19 +50,19 @@ interface UserApi {
     fun updateNickname(
         @Schema(hidden = true) user: User,
         updateNickName: MyProfileUpdateRequest.Nickname,
-    )
+    ): ResponseEntity<Void>
 
     @Operation(summary = "알림 설정 수정 API 입니다.")
     @ApiResponse(responseCode = "204", description = "알람 설정 여부 변경 성공")
     fun updateAlarmStatus(
         @Schema(hidden = true) user: User,
         updateAlarmStatus: MyProfileUpdateRequest.AlarmStatus,
-    )
+    ): ResponseEntity<Void>
 
     @Operation(summary = "알림 시간대 수정 API 입니다.")
     @ApiResponse(responseCode = "204", description = "알람 사간대 변경 성공")
     fun updateAlarmTime(
         @Schema(hidden = true) user: User,
         updateAlarmTime: MyProfileUpdateRequest.AlarmTime,
-    )
+    ): ResponseEntity<Void>
 }
