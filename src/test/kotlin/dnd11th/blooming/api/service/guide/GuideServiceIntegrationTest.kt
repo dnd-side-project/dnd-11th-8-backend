@@ -1,16 +1,16 @@
 package dnd11th.blooming.api.service.guide
 
-import dnd11th.blooming.domain.entity.plant.Difficulty
-import dnd11th.blooming.domain.entity.plant.Fertilizer
-import dnd11th.blooming.domain.entity.plant.GrowLocation
-import dnd11th.blooming.domain.entity.plant.GrowTemperature
-import dnd11th.blooming.domain.entity.plant.Humidity
-import dnd11th.blooming.domain.entity.plant.Light
-import dnd11th.blooming.domain.entity.plant.LowestTemperature
-import dnd11th.blooming.domain.entity.plant.Plant
-import dnd11th.blooming.domain.entity.plant.Toxicity
-import dnd11th.blooming.domain.entity.plant.Water
-import dnd11th.blooming.domain.repository.PlantRepository
+import dnd11th.blooming.domain.core.entity.plant.Difficulty
+import dnd11th.blooming.domain.core.entity.plant.Fertilizer
+import dnd11th.blooming.domain.core.entity.plant.GrowLocation
+import dnd11th.blooming.domain.core.entity.plant.GrowTemperature
+import dnd11th.blooming.domain.core.entity.plant.Humidity
+import dnd11th.blooming.domain.core.entity.plant.Light
+import dnd11th.blooming.domain.core.entity.plant.LowestTemperature
+import dnd11th.blooming.domain.core.entity.plant.Plant
+import dnd11th.blooming.domain.core.entity.plant.Toxicity
+import dnd11th.blooming.domain.core.entity.plant.Water
+import dnd11th.blooming.domain.core.repository.plant.PlantRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired

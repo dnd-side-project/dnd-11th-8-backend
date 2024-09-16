@@ -5,7 +5,7 @@ import dnd11th.blooming.client.oauth.KakaoOauthClient
 import dnd11th.blooming.client.oauth.OidcPublicKeys
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.UnAuthorizedException
-import dnd11th.blooming.domain.entity.user.OidcUser
+import dnd11th.blooming.domain.core.entity.user.OidcUser
 import org.springframework.stereotype.Component
 
 @Component

@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.dto.region
 
-import dnd11th.blooming.domain.entity.region.Region
+import dnd11th.blooming.domain.core.entity.region.Region
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(

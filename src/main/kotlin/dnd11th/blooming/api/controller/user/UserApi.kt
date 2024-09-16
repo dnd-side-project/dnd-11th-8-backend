@@ -4,8 +4,8 @@ import dnd11th.blooming.api.dto.user.MyProfileResponse
 import dnd11th.blooming.api.dto.user.MyProfileUpdateRequest
 import dnd11th.blooming.api.dto.user.TokenResponse
 import dnd11th.blooming.api.dto.user.UserRegisterRequest
-import dnd11th.blooming.domain.entity.user.RegisterClaims
-import dnd11th.blooming.domain.entity.user.User
+import dnd11th.blooming.domain.core.entity.user.RegisterClaims
+import dnd11th.blooming.domain.core.entity.user.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn

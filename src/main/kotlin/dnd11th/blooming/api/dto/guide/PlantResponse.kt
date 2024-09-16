@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.dto.guide
 
-import dnd11th.blooming.domain.entity.plant.Plant
+import dnd11th.blooming.domain.core.entity.plant.Plant
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(

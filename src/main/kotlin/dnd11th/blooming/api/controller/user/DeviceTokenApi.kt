@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.controller.user
 
 import dnd11th.blooming.api.dto.user.DeviceTokenRequest
-import dnd11th.blooming.domain.entity.user.User
+import dnd11th.blooming.domain.core.entity.user.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse

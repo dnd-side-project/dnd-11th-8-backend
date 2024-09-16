@@ -1,10 +1,10 @@
 package dnd11th.blooming.api.service.user
 
 import dnd11th.blooming.api.dto.user.MyProfileResponse
-import dnd11th.blooming.domain.entity.user.AlarmTime
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
-import dnd11th.blooming.domain.repository.user.UserRepository
+import dnd11th.blooming.domain.core.entity.user.AlarmTime
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.repository.myplant.MyPlantRepository
+import dnd11th.blooming.domain.core.repository.user.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

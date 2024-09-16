@@ -3,18 +3,15 @@ package dnd11th.blooming.api.service.onboard
 import dnd11th.blooming.api.dto.onboard.OnboardResultRequest
 import dnd11th.blooming.api.dto.onboard.OnboardResultResponse
 import dnd11th.blooming.api.dto.onboard.OnboardScriptResponse
-import dnd11th.blooming.domain.entity.onboard.OnboardingAnswer
-import dnd11th.blooming.domain.repository.onboard.OnboardAnswerRepository
-import dnd11th.blooming.domain.repository.onboard.OnboardAnswerToResultRepository
-import dnd11th.blooming.domain.repository.onboard.OnboardQuestionRepository
+import dnd11th.blooming.domain.core.entity.onboard.OnboardingAnswer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class OnboardService(
-    private val onboardQuestionRepository: OnboardQuestionRepository,
-    private val onboardAnswerToResultRepository: OnboardAnswerToResultRepository,
-    private val onboardAnswerRepository: OnboardAnswerRepository,
+    private val onboardQuestionRepository: dnd11th.blooming.domain.core.repository.onboard.OnboardQuestionRepository,
+    private val onboardAnswerToResultRepository: dnd11th.blooming.domain.core.repository.onboard.OnboardAnswerToResultRepository,
+    private val onboardAnswerRepository: dnd11th.blooming.domain.core.repository.onboard.OnboardAnswerRepository,
 ) {
     @Transactional(readOnly = true)
     fun findScripts(): OnboardScriptResponse {

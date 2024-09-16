@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.dto.user
 
-import dnd11th.blooming.domain.entity.user.AlarmTime
-import dnd11th.blooming.domain.entity.user.UserRegisterInfo
+import dnd11th.blooming.domain.core.entity.user.AlarmTime
+import dnd11th.blooming.domain.core.entity.user.UserRegisterInfo
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(

@@ -1,7 +1,7 @@
 package dnd11th.blooming.api.dto.myplant
 
 import dnd11th.blooming.api.service.myplant.MyPlantMessageFactory
-import dnd11th.blooming.domain.entity.MyPlant
+import dnd11th.blooming.domain.core.entity.myplant.MyPlant
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(

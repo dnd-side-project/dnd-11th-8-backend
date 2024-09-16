@@ -4,8 +4,8 @@ import dnd11th.blooming.client.weather.WeatherInfoClient
 import dnd11th.blooming.client.weather.WeatherItem
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.user.UserRepository
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.repository.user.UserRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

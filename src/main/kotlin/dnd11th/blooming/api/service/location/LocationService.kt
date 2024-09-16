@@ -7,10 +7,10 @@ import dnd11th.blooming.api.dto.location.LocationSaveResponse
 import dnd11th.blooming.common.exception.BadRequestException
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.domain.entity.Location
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.LocationRepository
-import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
+import dnd11th.blooming.domain.core.entity.location.Location
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.repository.location.LocationRepository
+import dnd11th.blooming.domain.core.repository.myplant.MyPlantRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

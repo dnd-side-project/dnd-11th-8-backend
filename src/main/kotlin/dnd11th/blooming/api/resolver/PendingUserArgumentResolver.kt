@@ -2,7 +2,7 @@ package dnd11th.blooming.api.resolver
 
 import dnd11th.blooming.api.annotation.PendingUser
 import dnd11th.blooming.api.jwt.JwtProvider
-import dnd11th.blooming.domain.entity.user.RegisterClaims
+import dnd11th.blooming.domain.core.entity.user.RegisterClaims
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component

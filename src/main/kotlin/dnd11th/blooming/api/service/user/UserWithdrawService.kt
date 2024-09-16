@@ -2,13 +2,13 @@ package dnd11th.blooming.api.service.user
 
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.domain.entity.MyPlant
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.ImageRepository
-import dnd11th.blooming.domain.repository.LocationRepository
-import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
-import dnd11th.blooming.domain.repository.user.UserOauthRepository
-import dnd11th.blooming.domain.repository.user.UserRepository
+import dnd11th.blooming.domain.core.entity.myplant.MyPlant
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.repository.image.ImageRepository
+import dnd11th.blooming.domain.core.repository.location.LocationRepository
+import dnd11th.blooming.domain.core.repository.myplant.MyPlantRepository
+import dnd11th.blooming.domain.core.repository.user.UserOauthRepository
+import dnd11th.blooming.domain.core.repository.user.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

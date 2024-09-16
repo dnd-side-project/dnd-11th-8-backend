@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.dto.onboard
 
-import dnd11th.blooming.domain.entity.onboard.OnboardingResult
+import dnd11th.blooming.domain.core.entity.onboard.OnboardingResult
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(

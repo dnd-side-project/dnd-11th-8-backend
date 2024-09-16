@@ -1,8 +1,8 @@
 package dnd11th.blooming.api.service.region
 
 import dnd11th.blooming.api.dto.region.RegionResponse
-import dnd11th.blooming.domain.entity.region.Region
-import dnd11th.blooming.domain.repository.region.RegionRepository
+import dnd11th.blooming.domain.core.entity.region.Region
+import dnd11th.blooming.domain.core.repository.region.RegionRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

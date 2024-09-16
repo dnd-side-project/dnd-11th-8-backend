@@ -5,11 +5,11 @@ import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.common.exception.BadRequestException
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.domain.entity.Location
-import dnd11th.blooming.domain.entity.user.AlarmTime
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.LocationRepository
-import dnd11th.blooming.domain.repository.myplant.MyPlantRepository
+import dnd11th.blooming.domain.core.entity.location.Location
+import dnd11th.blooming.domain.core.entity.user.AlarmTime
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.repository.location.LocationRepository
+import dnd11th.blooming.domain.core.repository.myplant.MyPlantRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe

@@ -1,12 +1,12 @@
 package dnd11th.blooming.api.service.user
 
 import dnd11th.blooming.api.dto.user.TokenResponse
+import dnd11th.blooming.api.jwt.JwtProvider
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.UnAuthorizedException
-import dnd11th.blooming.api.jwt.JwtProvider
-import dnd11th.blooming.domain.entity.refreshtoken.RefreshToken
-import dnd11th.blooming.domain.entity.user.UserClaims
-import dnd11th.blooming.domain.repository.token.RefreshTokenRepository
+import dnd11th.blooming.domain.core.entity.user.UserClaims
+import dnd11th.blooming.domain.redis.entity.refreshtoken.RefreshToken
+import dnd11th.blooming.domain.redis.repository.token.RefreshTokenRepository
 import org.springframework.stereotype.Service
 
 @Service

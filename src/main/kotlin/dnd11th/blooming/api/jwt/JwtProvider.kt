@@ -2,9 +2,9 @@ package dnd11th.blooming.api.jwt
 
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.UnAuthorizedException
-import dnd11th.blooming.domain.entity.user.OauthProvider
-import dnd11th.blooming.domain.entity.user.RegisterClaims
-import dnd11th.blooming.domain.entity.user.UserClaims
+import dnd11th.blooming.domain.core.entity.user.OauthProvider
+import dnd11th.blooming.domain.core.entity.user.RegisterClaims
+import dnd11th.blooming.domain.core.entity.user.UserClaims
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts

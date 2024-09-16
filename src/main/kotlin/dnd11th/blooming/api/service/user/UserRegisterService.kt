@@ -1,19 +1,19 @@
 package dnd11th.blooming.api.service.user
 
 import dnd11th.blooming.api.dto.user.TokenResponse
+import dnd11th.blooming.api.jwt.JwtProvider
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
-import dnd11th.blooming.api.jwt.JwtProvider
-import dnd11th.blooming.domain.entity.refreshtoken.RefreshToken
-import dnd11th.blooming.domain.entity.region.Region
-import dnd11th.blooming.domain.entity.user.OauthProvider
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.entity.user.UserOauthInfo
-import dnd11th.blooming.domain.entity.user.UserRegisterInfo
-import dnd11th.blooming.domain.repository.region.RegionRepository
-import dnd11th.blooming.domain.repository.token.RefreshTokenRepository
-import dnd11th.blooming.domain.repository.user.UserOauthRepository
-import dnd11th.blooming.domain.repository.user.UserRepository
+import dnd11th.blooming.domain.core.entity.region.Region
+import dnd11th.blooming.domain.core.entity.user.OauthProvider
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.entity.user.UserOauthInfo
+import dnd11th.blooming.domain.core.entity.user.UserRegisterInfo
+import dnd11th.blooming.domain.core.repository.region.RegionRepository
+import dnd11th.blooming.domain.core.repository.user.UserOauthRepository
+import dnd11th.blooming.domain.core.repository.user.UserRepository
+import dnd11th.blooming.domain.redis.entity.refreshtoken.RefreshToken
+import dnd11th.blooming.domain.redis.repository.token.RefreshTokenRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.dto.location
 
-import dnd11th.blooming.domain.entity.Location
+import dnd11th.blooming.domain.core.entity.location.Location
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(

@@ -4,9 +4,9 @@ import dnd11th.blooming.api.annotation.LoginUser
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.exception.UnAuthorizedException
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.entity.user.UserClaims
-import dnd11th.blooming.domain.repository.user.UserRepository
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.entity.user.UserClaims
+import dnd11th.blooming.domain.core.repository.user.UserRepository
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.support.WebDataBinderFactory
@@ -38,7 +38,7 @@ class LoginUserArgumentResolver(
             webRequest.getAttribute(ATTRIBUTE_KEY, RequestAttributes.SCOPE_REQUEST)
                 ?: throw UnAuthorizedException(ErrorType.UNAUTHORIZED)
         val userClaims: UserClaims = value as UserClaims
-        return userRepository.findById(userClaims.id as Long)
+        return userRepository.findById(userClaims.id)
             .orElseThrow { NotFoundException(ErrorType.USER_NOT_FOUND) }
     }
 }

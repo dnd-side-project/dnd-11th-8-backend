@@ -1,14 +1,14 @@
 package dnd11th.blooming.api.service.user
 
 import dnd11th.blooming.api.dto.user.SocialLoginResponse
-import dnd11th.blooming.api.service.user.oauth.OpenIdTokenResolverSelector
 import dnd11th.blooming.api.jwt.JwtProvider
-import dnd11th.blooming.domain.entity.refreshtoken.RefreshToken
-import dnd11th.blooming.domain.entity.user.OauthProvider
-import dnd11th.blooming.domain.entity.user.OidcUser
-import dnd11th.blooming.domain.entity.user.User
-import dnd11th.blooming.domain.repository.token.RefreshTokenRepository
-import dnd11th.blooming.domain.repository.user.UserOauthRepository
+import dnd11th.blooming.api.service.user.oauth.OpenIdTokenResolverSelector
+import dnd11th.blooming.domain.core.entity.user.OauthProvider
+import dnd11th.blooming.domain.core.entity.user.OidcUser
+import dnd11th.blooming.domain.core.entity.user.User
+import dnd11th.blooming.domain.core.repository.user.UserOauthRepository
+import dnd11th.blooming.domain.redis.entity.refreshtoken.RefreshToken
+import dnd11th.blooming.domain.redis.repository.token.RefreshTokenRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
