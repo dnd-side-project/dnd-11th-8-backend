@@ -1,4 +1,4 @@
-package dnd11th.blooming.common.annotation
+package dnd11th.blooming.api.annotation
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)

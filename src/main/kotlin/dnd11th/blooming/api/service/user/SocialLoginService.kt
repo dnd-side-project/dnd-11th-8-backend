@@ -2,7 +2,7 @@ package dnd11th.blooming.api.service.user
 
 import dnd11th.blooming.api.dto.user.SocialLoginResponse
 import dnd11th.blooming.api.service.user.oauth.OpenIdTokenResolverSelector
-import dnd11th.blooming.common.jwt.JwtProvider
+import dnd11th.blooming.api.jwt.JwtProvider
 import dnd11th.blooming.domain.entity.refreshtoken.RefreshToken
 import dnd11th.blooming.domain.entity.user.OauthProvider
 import dnd11th.blooming.domain.entity.user.OidcUser

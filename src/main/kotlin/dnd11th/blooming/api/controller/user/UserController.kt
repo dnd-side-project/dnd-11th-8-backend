@@ -7,9 +7,9 @@ import dnd11th.blooming.api.dto.user.UserRegisterRequest
 import dnd11th.blooming.api.service.user.UserProfileService
 import dnd11th.blooming.api.service.user.UserRegisterService
 import dnd11th.blooming.api.service.user.UserWithdrawService
-import dnd11th.blooming.common.annotation.LoginUser
-import dnd11th.blooming.common.annotation.PendingUser
-import dnd11th.blooming.common.annotation.Secured
+import dnd11th.blooming.api.annotation.LoginUser
+import dnd11th.blooming.api.annotation.PendingUser
+import dnd11th.blooming.api.annotation.Secured
 import dnd11th.blooming.domain.entity.user.AlarmTime
 import dnd11th.blooming.domain.entity.user.OauthProvider
 import dnd11th.blooming.domain.entity.user.RegisterClaims

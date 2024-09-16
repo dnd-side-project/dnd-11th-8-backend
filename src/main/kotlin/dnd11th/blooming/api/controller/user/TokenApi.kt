@@ -2,8 +2,8 @@ package dnd11th.blooming.api.controller.user
 
 import dnd11th.blooming.api.dto.user.TokenRequest
 import dnd11th.blooming.api.dto.user.TokenResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponses
+import dnd11th.blooming.api.annotation.ApiErrorResponse
+import dnd11th.blooming.api.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

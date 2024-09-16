@@ -2,8 +2,8 @@ package dnd11th.blooming.api.controller.image
 
 import dnd11th.blooming.api.dto.image.ImageFavoriteModifyRequest
 import dnd11th.blooming.api.dto.image.ImageSaveRequest
-import dnd11th.blooming.common.annotation.ApiErrorResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponses
+import dnd11th.blooming.api.annotation.ApiErrorResponse
+import dnd11th.blooming.api.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.domain.entity.user.User
 import io.swagger.v3.oas.annotations.Operation

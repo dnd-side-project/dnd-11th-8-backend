@@ -7,8 +7,8 @@ import dnd11th.blooming.api.dto.myplant.MyPlantModifyRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponses
+import dnd11th.blooming.api.annotation.ApiErrorResponse
+import dnd11th.blooming.api.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.domain.entity.user.User
 import io.swagger.v3.oas.annotations.Operation

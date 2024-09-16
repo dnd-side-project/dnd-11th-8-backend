@@ -4,8 +4,8 @@ import dnd11th.blooming.api.dto.location.LocationModifyRequest
 import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponse
-import dnd11th.blooming.common.annotation.ApiErrorResponses
+import dnd11th.blooming.api.annotation.ApiErrorResponse
+import dnd11th.blooming.api.annotation.ApiErrorResponses
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.domain.entity.user.User
 import io.swagger.v3.oas.annotations.Operation

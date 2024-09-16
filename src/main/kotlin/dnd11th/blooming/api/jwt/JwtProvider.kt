@@ -1,4 +1,4 @@
-package dnd11th.blooming.common.jwt
+package dnd11th.blooming.api.jwt
 
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.UnAuthorizedException

@@ -1,6 +1,6 @@
-package dnd11th.blooming.common.resolver
+package dnd11th.blooming.api.resolver
 
-import dnd11th.blooming.common.annotation.LoginUser
+import dnd11th.blooming.api.annotation.LoginUser
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.common.exception.UnAuthorizedException

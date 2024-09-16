@@ -5,8 +5,8 @@ import dnd11th.blooming.api.dto.user.SocialLoginResponse
 import dnd11th.blooming.api.dto.user.TokenRequest
 import dnd11th.blooming.api.service.user.LogoutService
 import dnd11th.blooming.api.service.user.SocialLoginService
-import dnd11th.blooming.common.annotation.LoginUser
-import dnd11th.blooming.common.annotation.Secured
+import dnd11th.blooming.api.annotation.LoginUser
+import dnd11th.blooming.api.annotation.Secured
 import dnd11th.blooming.domain.entity.user.OauthProvider
 import dnd11th.blooming.domain.entity.user.User
 import org.springframework.http.ResponseEntity

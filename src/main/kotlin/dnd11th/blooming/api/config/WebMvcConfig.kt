@@ -1,9 +1,9 @@
 package dnd11th.blooming.api.config
 
 import dnd11th.blooming.api.config.properties.CorsProperties
-import dnd11th.blooming.common.interceptor.AuthInterceptor
-import dnd11th.blooming.common.resolver.LoginUserArgumentResolver
-import dnd11th.blooming.common.resolver.PendingUserArgumentResolver
+import dnd11th.blooming.api.interceptor.AuthInterceptor
+import dnd11th.blooming.api.resolver.LoginUserArgumentResolver
+import dnd11th.blooming.api.resolver.PendingUserArgumentResolver
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.CorsRegistry

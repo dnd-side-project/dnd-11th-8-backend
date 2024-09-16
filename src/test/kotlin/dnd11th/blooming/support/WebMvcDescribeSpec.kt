@@ -11,9 +11,9 @@ import dnd11th.blooming.api.service.home.HomeService
 import dnd11th.blooming.api.service.image.ImageService
 import dnd11th.blooming.api.service.location.LocationService
 import dnd11th.blooming.api.service.myplant.MyPlantService
-import dnd11th.blooming.common.interceptor.AuthInterceptor
-import dnd11th.blooming.common.resolver.LoginUserArgumentResolver
-import dnd11th.blooming.common.resolver.PendingUserArgumentResolver
+import dnd11th.blooming.api.interceptor.AuthInterceptor
+import dnd11th.blooming.api.resolver.LoginUserArgumentResolver
+import dnd11th.blooming.api.resolver.PendingUserArgumentResolver
 import io.kotest.core.spec.style.DescribeSpec
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired

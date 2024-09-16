@@ -1,4 +1,4 @@
-package dnd11th.blooming.common.jwt
+package dnd11th.blooming.api.jwt
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

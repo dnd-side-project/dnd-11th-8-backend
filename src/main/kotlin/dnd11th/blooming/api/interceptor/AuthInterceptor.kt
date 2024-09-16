@@ -1,7 +1,7 @@
-package dnd11th.blooming.common.interceptor
+package dnd11th.blooming.api.interceptor
 
-import dnd11th.blooming.common.annotation.Secured
-import dnd11th.blooming.common.jwt.JwtProvider
+import dnd11th.blooming.api.annotation.Secured
+import dnd11th.blooming.api.jwt.JwtProvider
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component

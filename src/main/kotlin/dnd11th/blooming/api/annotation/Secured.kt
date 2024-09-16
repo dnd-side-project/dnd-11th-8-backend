@@ -1,4 +1,4 @@
-package dnd11th.blooming.common.annotation
+package dnd11th.blooming.api.annotation
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 

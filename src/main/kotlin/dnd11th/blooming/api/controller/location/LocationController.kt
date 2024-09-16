@@ -5,8 +5,8 @@ import dnd11th.blooming.api.dto.location.LocationResponse
 import dnd11th.blooming.api.dto.location.LocationSaveRequest
 import dnd11th.blooming.api.dto.location.LocationSaveResponse
 import dnd11th.blooming.api.service.location.LocationService
-import dnd11th.blooming.common.annotation.LoginUser
-import dnd11th.blooming.common.annotation.Secured
+import dnd11th.blooming.api.annotation.LoginUser
+import dnd11th.blooming.api.annotation.Secured
 import dnd11th.blooming.domain.entity.user.User
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping

@@ -8,8 +8,8 @@ import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveRequest
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.api.service.myplant.MyPlantService
-import dnd11th.blooming.common.annotation.LoginUser
-import dnd11th.blooming.common.annotation.Secured
+import dnd11th.blooming.api.annotation.LoginUser
+import dnd11th.blooming.api.annotation.Secured
 import dnd11th.blooming.domain.entity.user.User
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
