@@ -15,7 +15,7 @@ class RegionService(
 
     fun findRegion(name: String): List<RegionResponse> {
         val searchQuery = createSearchQuery(name)
-        val regions: List<Region> = regionRepository.findByNameContaining2(searchQuery, DEFAULT_PAGE_SIZE)
+        val regions: List<Region> = regionRepository.findByNameContaining(searchQuery, DEFAULT_PAGE_SIZE)
         return regions.stream().map { region -> RegionResponse.from(region) }.toList()
     }
 
