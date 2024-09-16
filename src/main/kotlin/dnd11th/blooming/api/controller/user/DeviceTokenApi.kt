@@ -17,8 +17,8 @@ interface DeviceTokenApi {
         deviceTokenRequest: DeviceTokenRequest,
     ): ResponseEntity<Void>
 
-    @Operation(summary = "Device Token 등록 API")
-    @ApiResponse(responseCode = "204", description = "Device Token 등록 성공")
+    @Operation(summary = "Device Token 삭제 API")
+    @ApiResponse(responseCode = "204", description = "Device Token 삭제 성공")
     fun invalidDeviceToken(
         @Schema(hidden = true) user: User,
     ): ResponseEntity<Void>
