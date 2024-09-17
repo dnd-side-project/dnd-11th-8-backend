@@ -9,6 +9,7 @@ import org.springframework.boot.logging.LogLevel
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.FieldError
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -61,7 +62,20 @@ class GlobalExceptionHandler {
 
         logException(errorType, exception)
 
-        log.info { "Blooming Exception: ${errorType.message}, Exception: $exception" }
+        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
+
+        return ResponseEntity
+            .status(errorType.status)
+            .body(ErrorResponse.from(errorType))
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun handleMethodNotSupportedException(exception: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
+        val errorType = ErrorType.HTTP_METHOD_NOT_SUPPORTED
+
+        logException(errorType, exception)
+
+        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
 
         return ResponseEntity
             .status(errorType.status)
