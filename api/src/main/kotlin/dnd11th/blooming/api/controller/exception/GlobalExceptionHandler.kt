@@ -23,7 +23,7 @@ class GlobalExceptionHandler {
     fun handleMyException(exception: MyException): ResponseEntity<ErrorResponse> {
         val errorType = exception.errorType
 
-        logException(errorType, exception)
+        logException(errorType, exception, ExceptionSource.BLOOMING)
 
         return ResponseEntity
             .status(errorType.status)
@@ -34,7 +34,7 @@ class GlobalExceptionHandler {
     fun handleArgumentValidationException(exception: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.BAD_REQUEST
 
-        logException(errorType, exception)
+        logException(errorType, exception, ExceptionSource.HTTP)
 
         // bindingResult를 순회하며 errorArgumentMap을 채운다.
         val fieldErrorList: List<FieldErrorResponse> =
@@ -63,9 +63,7 @@ class GlobalExceptionHandler {
     fun handleMessageNotReadableException(exception: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.HTTP_MESSAGE_NOT_READABLE
 
-        logException(errorType, exception)
-
-        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
+        logException(errorType, exception, ExceptionSource.HTTP)
 
         return ResponseEntity
             .status(errorType.status)
@@ -76,9 +74,7 @@ class GlobalExceptionHandler {
     fun handleMethodNotSupportedException(exception: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.HTTP_METHOD_NOT_SUPPORTED
 
-        logException(errorType, exception)
-
-        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
+        logException(errorType, exception, ExceptionSource.HTTP)
 
         return ResponseEntity
             .status(errorType.status)
@@ -89,9 +85,7 @@ class GlobalExceptionHandler {
     fun handleMissingPathVariableException(exception: MissingPathVariableException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.PATH_VARIABLE_MISSING
 
-        logException(errorType, exception)
-
-        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
+        logException(errorType, exception, ExceptionSource.HTTP)
 
         return ResponseEntity
             .status(errorType.status)
@@ -102,9 +96,7 @@ class GlobalExceptionHandler {
     fun handleMissingServletRequestParameterException(exception: MissingServletRequestParameterException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.REQUEST_PARAMETER_MISSING
 
-        logException(errorType, exception)
-
-        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
+        logException(errorType, exception, ExceptionSource.HTTP)
 
         return ResponseEntity
             .status(errorType.status)
@@ -115,9 +107,7 @@ class GlobalExceptionHandler {
     fun handleArgumentTypeMismatchException(exception: MethodArgumentTypeMismatchException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.ARUGMENT_TYPE_MISMATCH
 
-        logException(errorType, exception)
-
-        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
+        logException(errorType, exception, ExceptionSource.HTTP)
 
         return ResponseEntity
             .status(errorType.status)
@@ -127,19 +117,17 @@ class GlobalExceptionHandler {
     private fun logException(
         errorType: ErrorType,
         exception: Exception,
+        exceptionSource: ExceptionSource,
     ) {
         when (errorType.logLevel) {
-            LogLevel.ERROR -> {
-                log.error { "Blooming Exception: ${errorType.message}, Exception: $exception" }
-            }
-
-            LogLevel.WARN -> {
-                log.warn { "Blooming Exception: ${errorType.message}, Exception: $exception" }
-            }
-
-            else -> {
-                log.info { "Blooming Exception: ${errorType.message}, Exception: $exception" }
-            }
+            LogLevel.ERROR -> log.error { "$exceptionSource Exception: ${errorType.message}, Exception: $exception" }
+            LogLevel.WARN -> log.warn { "$exceptionSource Exception: ${errorType.message}, Exception: $exception" }
+            else -> log.info { "$exceptionSource Exception: ${errorType.message}, Exception: $exception" }
         }
+    }
+
+    private enum class ExceptionSource {
+        BLOOMING,
+        HTTP,
     }
 }
