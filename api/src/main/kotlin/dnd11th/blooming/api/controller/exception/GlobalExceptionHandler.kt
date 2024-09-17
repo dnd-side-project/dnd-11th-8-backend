@@ -15,6 +15,7 @@ import org.springframework.web.bind.MissingPathVariableException
 import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -100,6 +101,19 @@ class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException::class)
     fun handleMissingServletRequestParameterException(exception: MissingServletRequestParameterException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.REQUEST_PARAMETER_MISSING
+
+        logException(errorType, exception)
+
+        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
+
+        return ResponseEntity
+            .status(errorType.status)
+            .body(ErrorResponse.from(errorType))
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    fun handleArgumentTypeMismatchException(exception: MethodArgumentTypeMismatchException): ResponseEntity<ErrorResponse> {
+        val errorType = ErrorType.ARUGMENT_TYPE_MISMATCH
 
         logException(errorType, exception)
 
