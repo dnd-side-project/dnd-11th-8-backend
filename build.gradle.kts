@@ -21,78 +21,51 @@ repositories {
     mavenCentral()
 }
 
-allOpen {
-    annotation("jakarta.persistence.Entity")
-    annotation("jakarta.persistence.MappedSuperclass")
-    annotation("jakarta.persistence.Embeddable")
-}
+subprojects {
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = "kotlin")
+    apply(plugin = "kotlin-kapt")
+    apply(plugin = "kotlin-jpa")
+    apply(plugin = "kotlin-spring")
 
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    runtimeOnly("com.mysql:mysql-connector-j")
-    testImplementation("com.h2database:h2")
+    repositories {
+        mavenCentral()
+    }
 
-    // Batch
-    implementation("org.springframework.boot:spring-boot-starter-batch")
-    testImplementation("org.springframework.batch:spring-batch-test")
+    dependencies {
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
-    // Validation
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+        kapt("org.springframework.boot:spring-boot-configuration-processor")
 
-    // QueryDSL
-    implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
-    implementation("com.querydsl:querydsl-apt:5.1.0:jakarta")
-    implementation("jakarta.persistence:jakarta.persistence-api")
-    implementation("jakarta.annotation:jakarta.annotation-api")
-    kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
+        // Test
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        testImplementation("com.h2database:h2")
 
-    // Configuration
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+        // Kotest & Mockk
+        testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+        testImplementation("io.kotest:kotest-assertions-core:5.9.1")
+        testImplementation("io.kotest:kotest-property:5.9.1")
+        testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
+        testImplementation("com.ninja-squad:springmockk:4.0.2")
+    }
 
-    // Jwt
-    implementation("io.jsonwebtoken:jjwt-api:0.12.3")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
-    implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 
-    // Client
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.3")
-    implementation("com.google.firebase:firebase-admin:9.2.0")
-
-    // Kotest
-    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
-    testImplementation("io.kotest:kotest-assertions-core:5.9.1")
-    testImplementation("io.kotest:kotest-property:5.9.1")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
-
-    // Mockk
-    testImplementation("com.ninja-squad:springmockk:4.0.2")
-
-    // Test
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+    kotlin {
+        compilerOptions {
+            freeCompilerArgs.addAll("-Xjsr305=strict")
+        }
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
-sourceSets {
-    main {
-        java.srcDir("${layout.buildDirectory}/generated/source/kapt/main")
-    }
-}
+tasks.jar { enabled = true }
+tasks.bootJar { enabled = false }
