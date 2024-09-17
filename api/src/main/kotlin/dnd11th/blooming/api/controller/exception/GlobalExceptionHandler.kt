@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.FieldError
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.MissingPathVariableException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
@@ -72,6 +73,19 @@ class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
     fun handleMethodNotSupportedException(exception: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
         val errorType = ErrorType.HTTP_METHOD_NOT_SUPPORTED
+
+        logException(errorType, exception)
+
+        log.info { "Http Exception: ${errorType.message}, Exception: $exception" }
+
+        return ResponseEntity
+            .status(errorType.status)
+            .body(ErrorResponse.from(errorType))
+    }
+
+    @ExceptionHandler(MissingPathVariableException::class)
+    fun handleMethodNotSupportedException(exception: MissingPathVariableException): ResponseEntity<ErrorResponse> {
+        val errorType = ErrorType.PATH_VARIABLE_MISSING
 
         logException(errorType, exception)
 
