@@ -32,7 +32,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Create firebase directory
-        run: mkdir ./src/main/resources/firebase/
+        run: mkdir .client/src/main/resources/firebase/
 
       - name: Create Firebase Admin SDK JSON file
         id: create-json
