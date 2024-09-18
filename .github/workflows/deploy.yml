@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -32,7 +35,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Create firebase directory
-        run: mkdir .client/src/main/resources/firebase/
+        run: mkdir ./client/src/main/resources/firebase/
 
       - name: Create Firebase Admin SDK JSON file
         id: create-json
@@ -40,7 +43,7 @@ jobs:
         with:
           name: "blooming-firebase-adminsdk.json"
           json: ${{ secrets.FIREBASE_ADMIN_SDK_JSON }}
-          dir: '.client/src/main/resources/firebase/'
+          dir: './client/src/main/resources/firebase/'
 
       - name: Build with Gradle
         run: ./gradlew clean build -x test

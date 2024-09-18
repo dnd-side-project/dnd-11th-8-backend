@@ -10,7 +10,7 @@ ARG APPLE_CLIENT_ID
 ARG ACCESS_SECRET
 ARG REFRESH_SECRET
 
-COPY api/build/libs/blooming-api-0.0.1-SNAPSHOT.jar app.jar
+COPY /api/build/libs/api.jar app.jar
 
 ENV PROFILE=${PROFILE}
 ENV DB_URL_PROD=${DB_URL_PROD}
