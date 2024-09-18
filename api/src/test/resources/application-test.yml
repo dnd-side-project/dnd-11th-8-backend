@@ -1,0 +1,50 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:blooming_test;MODE=MYSQL;
+    username: sa
+    password:
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: true
+      dialect: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+auth:
+  jwt:
+    access:
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+      expiry: 100000000
+    refresh:
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+      expiry: 100000000
+
+oidc:
+  provider:
+    kakao:
+      iss: https://kauth.kakao.com
+      aud: testkakaoclient
+    apple:
+      iss: https://appleid.apple.com
+      aud: testappleclient
+
+weather:
+  serviceKey: serviceKey
+
+cors:
+  allowed-origin:
+    - http://localhost:5173/
+  max-age: 3600

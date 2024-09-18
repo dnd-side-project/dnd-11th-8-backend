@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/blooming
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  session:
+    jdbc:
+      initialize-schema: always
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    open-in-view: false
+    show-sql: true

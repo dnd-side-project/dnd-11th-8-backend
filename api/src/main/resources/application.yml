@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: dnd-11th-8-backend
+  profiles:
+    active: local
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+
+cors:
+  allowed-origin:
+    - https://dnd-11th-8-frontend.vercel.app/
+    - http://localhost:5173/
+  max-age: 3600
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+    import:
+      - client.yml
+      - redis-local.yml
+      - core-local.yml
+
+auth:
+  jwt:
+    access:
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffee
+      expiry: 604800000
+    refresh:
+      secret: coffeecoffeecoffeecoffeecoffeecoffeecoffeevcoffeecoffeecoffeecoffeecoffeecoffeed
+      expiry: 15552000000
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import:
+      - client.yml
+      - redis-prod.yml
+      - core-prod.yml
+
+auth:
+  jwt:
+    access:
+      secret: ${ACCESS_SECRET}
+      expiry: 604800000
+    refresh:
+      secret: ${REFRESH_SECRET}
+      expiry: 15552000000

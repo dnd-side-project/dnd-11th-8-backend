@@ -40,4 +40,4 @@ out/
 .kotlin
 
 ### File ###
-src/main/resources/firebase
+client/src/main/resources/firebase

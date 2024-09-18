@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: ${DB_URL_PROD}
+    username: ${DB_USERNAME_PROD}
+    password: ${DB_PASSWORD_PROD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  session:
+    jdbc:
+      initialize-schema: always
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    open-in-view: false
