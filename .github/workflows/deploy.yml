@@ -46,7 +46,7 @@ jobs:
           dir: './client/src/main/resources/firebase/'
 
       - name: Build with Gradle
-        run: ./gradlew clean build -x test -Dloki.url=${{ secrets.MONITORING_SERVER_URL }}
+        run: ./gradlew clean build -x test
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
