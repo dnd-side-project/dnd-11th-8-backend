@@ -22,11 +22,9 @@
         </format>
     </appender>
 
-    <springProfile name="local">
-        <root level="INFO">
-            <appender-ref ref="CONSOLE" />
-        </root>
-    </springProfile>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
 
     <springProfile name="prod">
         <root level="INFO">
