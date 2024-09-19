@@ -42,6 +42,7 @@ spring:
       - client.yml
       - redis-prod.yml
       - core-prod.yml
+      - monitoring.yml
 
 auth:
   jwt:

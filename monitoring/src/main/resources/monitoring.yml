@@ -1,0 +1,8 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+loki:
+  url: ${MONITORING_SERVER_URL}
