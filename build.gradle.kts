@@ -42,11 +42,6 @@ subprojects {
 
         kapt("org.springframework.boot:spring-boot-configuration-processor")
 
-        // Monitoring
-        runtimeOnly("io.micrometer:micrometer-registry-prometheus")
-        implementation("org.springframework.boot:spring-boot-starter-actuator")
-        implementation("com.github.loki4j:loki-logback-appender:1.5.1")
-
         // Test
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
