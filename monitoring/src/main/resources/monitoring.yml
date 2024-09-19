@@ -5,4 +5,5 @@ management:
         include: prometheus
 
 loki:
+  name: blooming-server
   url: ${MONITORING_SERVER_URL}

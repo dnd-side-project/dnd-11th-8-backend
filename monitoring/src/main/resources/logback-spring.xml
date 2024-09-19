@@ -11,7 +11,7 @@
         </http>
         <format>
             <label>
-                <pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
+                <pattern>app=${loki.name},host=${HOSTNAME},level=%level</pattern>
                 <readMarkers>true</readMarkers>
             </label>
             <message>
@@ -29,6 +29,7 @@
     <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="LOKI" />
+            <appender-ref ref="CONSOLE" />
         </root>
     </springProfile>
 </configuration>
