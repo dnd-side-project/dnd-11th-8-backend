@@ -6,6 +6,7 @@ dependencies {
     implementation(project(":client"))
     implementation(project(":domain:core"))
     implementation(project(":domain:redis"))
+    implementation(project(":monitoring"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
