@@ -57,4 +57,14 @@ interface ImageRepository : JpaRepository<Image, Long> {
         @Param("imageId") imageId: Long,
         @Param("user") user: User,
     ): Image?
+
+    @Query(
+        """
+	SELECT i from Image i WHERE i.id In :imageIds and i.myPlant.user = :user
+	""",
+    )
+    fun findByUserAndIdsIn(
+        @Param("imageIds") imageIds: List<Long>,
+        @Param("user") user: User,
+    ): List<Image>
 }

@@ -47,13 +47,11 @@ class ImageService(
 
     @Transactional
     fun deleteImage(
-        imageId: Long,
+        imageIds: List<Long>,
         user: User,
     ) {
-        val image =
-            imageRepository.findByIdAndUser(imageId, user)
-                ?: throw NotFoundException(ErrorType.NOT_FOUND_IMAGE)
+        val images = imageRepository.findByUserAndIdsIn(imageIds, user)
 
-        imageRepository.delete(image)
+        imageRepository.deleteAllInBatch(images)
     }
 }

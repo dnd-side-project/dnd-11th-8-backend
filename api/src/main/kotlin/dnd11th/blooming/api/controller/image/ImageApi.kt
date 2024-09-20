@@ -2,6 +2,7 @@ package dnd11th.blooming.api.controller.image
 
 import dnd11th.blooming.api.annotation.ApiErrorResponse
 import dnd11th.blooming.api.annotation.ApiErrorResponses
+import dnd11th.blooming.api.dto.image.ImageDeleteRequest
 import dnd11th.blooming.api.dto.image.ImageFavoriteModifyRequest
 import dnd11th.blooming.api.dto.image.ImageSaveRequest
 import dnd11th.blooming.common.exception.ErrorType
@@ -48,8 +49,8 @@ interface ImageApi {
     @ApiResponse(responseCode = "200", description = "이미지 삭제 성공")
     @ApiErrorResponse(errorType = ErrorType.NOT_FOUND_IMAGE, description = "id에 해당하는 이미지를 찾지 못했을 때 에러입니다.")
     fun deleteImage(
-        @Parameter(description = "이미지 ID", required = true)
-        imageId: Long,
+        @RequestBody(description = "이미지 삭제 요청", required = true)
+        request: ImageDeleteRequest,
         @Schema(hidden = true)
         user: User,
     )
