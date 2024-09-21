@@ -74,6 +74,7 @@ jobs:
             APPLE_CLIENT_ID=${{ secrets.APPLE_CLIENT_ID }}
             ACCESS_SECRET=${{ secrets.ACCESS_SECRET }}
             REFRESH_SECRET=${{ secrets.REFRESH_SECRET }}
+            REDIS_HOST=${{ REDIS_HOST }}
 
       - name: Docker Deploy executing remote ssh commands using ssh_key
         uses: appleboy/ssh-action@v0.1.6
