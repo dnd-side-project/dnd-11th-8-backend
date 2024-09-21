@@ -2,6 +2,7 @@ package dnd11th.blooming.api.controller.image
 
 import dnd11th.blooming.api.annotation.LoginUser
 import dnd11th.blooming.api.annotation.Secured
+import dnd11th.blooming.api.dto.image.ImageDeleteRequest
 import dnd11th.blooming.api.dto.image.ImageFavoriteModifyRequest
 import dnd11th.blooming.api.dto.image.ImageSaveRequest
 import dnd11th.blooming.api.service.image.ImageService
@@ -37,9 +38,11 @@ class ImageController(
     ) = imageService.modifyFavorite(imageId, request.favorite!!, user)
 
     @Secured
-    @DeleteMapping("/image/{imageId}")
+    @DeleteMapping("/image")
     override fun deleteImage(
-        @PathVariable imageId: Long,
+        @RequestBody request: ImageDeleteRequest,
         @LoginUser user: User,
-    ) = imageService.deleteImage(imageId, user)
+    ) {
+        imageService.deleteImage(request.imageIds!!, user)
+    }
 }
