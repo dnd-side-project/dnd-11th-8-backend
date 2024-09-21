@@ -1,5 +1,5 @@
 spring:
   data:
     redis:
-      host: blooming-redis
+      host: ${REDIS_HOST}
       port: 6379
