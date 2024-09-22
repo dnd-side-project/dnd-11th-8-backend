@@ -1,7 +1,7 @@
-package dnd11th.blooming.batch
+package dnd11th.blooming.batch.weather
 
-import dnd11th.blooming.client.fcm.PushNotification
-import dnd11th.blooming.core.entity.myplant.UserPlantDto
+import dnd11th.blooming.core.entity.region.Region
+import dnd11th.blooming.redis.entity.weather.WeatherCareMessage
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobScope
@@ -14,41 +14,39 @@ import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.ItemWriter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Primary
 import org.springframework.transaction.PlatformTransactionManager
 
 @Configuration
-class PlantNotificationJobConfig {
+class WeatherCareMessageJobConfig {
     companion object {
-        const val CHUNK_SIZE: Int = 100
+        const val CHUNK_SIZE: Int = 1000
     }
 
     @Bean
-    @Primary
-    fun notificationJob(
+    fun weatherCareMessageBatchJob(
         jobRepository: JobRepository,
-        waterNotificationStep: Step,
+        weatherCareMessageBatchStep: Step,
     ): Job {
-        return JobBuilder("notificationJob", jobRepository)
+        return JobBuilder("weatherBatchJob", jobRepository)
             .incrementer(RunIdIncrementer())
-            .start(waterNotificationStep)
+            .start(weatherCareMessageBatchStep)
             .build()
     }
 
     @Bean
     @JobScope
-    fun waterNotificationStep(
+    fun weatherCareMessageBatchStep(
         jobRepository: JobRepository,
         transactionManager: PlatformTransactionManager,
-        waterNotificationItemReader: ItemReader<UserPlantDto>,
-        waterNotificationItemProcessor: ItemProcessor<UserPlantDto, PushNotification>,
-        waterNotificationItemWriter: ItemWriter<PushNotification>,
+        weatherCareMessageItemReader: ItemReader<Region>,
+        weatherCareMessageItemProcessor: ItemProcessor<Region, WeatherCareMessage>,
+        weatherCareMessageItemWriter: ItemWriter<WeatherCareMessage>,
     ): Step {
-        return StepBuilder("waterNotificationStep", jobRepository)
-            .chunk<UserPlantDto, PushNotification>(CHUNK_SIZE, transactionManager)
-            .reader(waterNotificationItemReader)
-            .processor(waterNotificationItemProcessor)
-            .writer(waterNotificationItemWriter)
+        return StepBuilder("weatherBatchStep", jobRepository)
+            .chunk<Region, WeatherCareMessage>(CHUNK_SIZE, transactionManager)
+            .reader(weatherCareMessageItemReader)
+            .processor(weatherCareMessageItemProcessor)
+            .writer(weatherCareMessageItemWriter)
             .build()
     }
 }

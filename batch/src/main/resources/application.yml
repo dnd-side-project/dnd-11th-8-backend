@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: batch application
+  profiles:
+    active: local
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+    import:
+      - client.yml
+      - redis-local.yml
+      - core-local.yml
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
+server:
+  port: 8081
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import:
+      - client.yml
+      - redis-local.yml
+      - core-local.yml
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
+server:
+  port: 8080
