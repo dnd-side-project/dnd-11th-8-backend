@@ -1,6 +1,6 @@
 package dnd11th.blooming.api.dto.weather
 
-import dnd11th.blooming.api.service.weather.WeatherMessage
+import dnd11th.blooming.redis.entity.WeatherCareMessageType
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(
@@ -16,11 +16,13 @@ data class WeatherMessageResponse(
     val message: List<String>,
 ) {
     companion object {
-        fun from(weatherMessages: WeatherMessage): WeatherMessageResponse {
+        fun from(weatherCareMessagesType: WeatherCareMessageType): WeatherMessageResponse {
+            val splitMessage = weatherCareMessagesType.message.split("\n")
+
             return WeatherMessageResponse(
-                status = weatherMessages.name,
-                title = weatherMessages.title,
-                message = weatherMessages.message,
+                status = weatherCareMessagesType.name,
+                title = weatherCareMessagesType.title,
+                message = splitMessage,
             )
         }
     }

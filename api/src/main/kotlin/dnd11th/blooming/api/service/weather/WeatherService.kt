@@ -7,6 +7,7 @@ import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.core.entity.user.User
 import dnd11th.blooming.core.repository.user.UserRepository
+import dnd11th.blooming.redis.entity.WeatherCareMessageType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -37,7 +38,7 @@ class WeatherService(
     fun createWeatherMessage(
         loginUser: User,
         now: LocalDateTime,
-    ): List<WeatherMessage> {
+    ): List<WeatherCareMessageType> {
         val user: User =
             userRepository.findById(loginUser.id!!).orElseThrow {
                 throw NotFoundException(ErrorType.USER_NOT_FOUND)
@@ -60,7 +61,7 @@ class WeatherService(
      * 한파 -> 최저 온도가 5도 이하로 내려가면 COLD
      * 더위 -> 최고 온도가 30도 이상 올라가는 날 있으면 HOT
      */
-    private fun determineWeatherMessages(items: List<WeatherItem>): List<WeatherMessage> {
+    private fun determineWeatherMessages(items: List<WeatherItem>): List<WeatherCareMessageType> {
         var maxHumidity = MIN_HUMIDITY
         var minHumidity = MAX_HUMIDITY
         var maxTemperature = MIN_TEMPERATURE
@@ -81,11 +82,11 @@ class WeatherService(
             }
         }
 
-        return mutableListOf<WeatherMessage>().apply {
-            if (maxHumidity >= HIGH_HUMIDITY_THRESHOLD) add(WeatherMessage.HUMIDITY)
-            if (minHumidity <= LOW_HUMIDITY_THRESHOLD) add(WeatherMessage.DRY)
-            if (minTemperature <= LOW_TEMPERATURE_THRESHOLD) add(WeatherMessage.COLD)
-            if (maxTemperature >= HIGH_TEMPERATURE_THRESHOLD) add(WeatherMessage.HOT)
+        return mutableListOf<WeatherCareMessageType>().apply {
+            if (maxHumidity >= HIGH_HUMIDITY_THRESHOLD) add(WeatherCareMessageType.HUMIDITY)
+            if (minHumidity <= LOW_HUMIDITY_THRESHOLD) add(WeatherCareMessageType.DRY)
+            if (minTemperature <= LOW_TEMPERATURE_THRESHOLD) add(WeatherCareMessageType.COLD)
+            if (maxTemperature >= HIGH_TEMPERATURE_THRESHOLD) add(WeatherCareMessageType.HOT)
         }
     }
 
