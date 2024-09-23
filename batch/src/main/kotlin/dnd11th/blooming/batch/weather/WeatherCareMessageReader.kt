@@ -14,7 +14,7 @@ class WeatherCareMessageReader(
     @Bean
     @StepScope
     fun weatherCareMessageItemReader(): ListItemReader<Region> {
-        val regions: List<Region> = regionRepository.findAll().take(100)
+        val regions: List<Region> = regionRepository.findAll()
         return ListItemReader(regions)
     }
 }
