@@ -1,27 +1,29 @@
 package dnd11th.blooming.redis.entity.weather
 
-import dnd11th.blooming.redis.entity.WeatherCareMessageType
-import org.springframework.data.annotation.Id
-import org.springframework.data.redis.core.RedisHash
 import java.io.Serializable
 
-@RedisHash("weatherCareMessage")
 data class WeatherCareMessage(
-    @Id
-    val regionId: Int,
+    val regionKey: String,
     val messages: List<Message>,
-){
+) : Serializable {
     companion object {
-        fun create(regionId: Int, types: List<WeatherCareMessageType>): WeatherCareMessage {
-            val messages = types.map { type ->
-                Message(type.title, type.message)
-            }
-            return WeatherCareMessage(regionId, messages)
+        fun create(
+            nx: Int,
+            ny: Int,
+            types: List<WeatherCareMessageType>,
+        ): WeatherCareMessage {
+            val regionKey = "nx${nx}ny$ny"
+            val messages =
+                types.map { type ->
+                    Message(type.name, type.title, type.message)
+                }
+            return WeatherCareMessage(regionKey, messages)
         }
     }
 }
 
 data class Message(
+    val status: String,
     val title: String,
-    val message: String
-)
+    val message: String,
+): Serializable
