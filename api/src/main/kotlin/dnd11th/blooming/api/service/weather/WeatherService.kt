@@ -7,7 +7,9 @@ import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.core.entity.user.User
 import dnd11th.blooming.core.repository.user.UserRepository
-import dnd11th.blooming.redis.entity.WeatherCareMessageType
+import dnd11th.blooming.redis.entity.weather.WeatherCareMessage
+import dnd11th.blooming.redis.entity.weather.WeatherCareMessageType
+import dnd11th.blooming.redis.repository.weather.WeatherCareMessageRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -21,6 +23,7 @@ class WeatherService(
     private val openApiProperty: OpenApiProperty,
     private val weatherInfoClient: WeatherInfoClient,
     private val userRepository: UserRepository,
+    private val weatherCareMessageRepository: WeatherCareMessageRepository,
 ) {
     companion object {
         private const val HUMIDITY_KEY = "REH"
@@ -38,21 +41,54 @@ class WeatherService(
     fun createWeatherMessage(
         loginUser: User,
         now: LocalDateTime,
-    ): List<WeatherCareMessageType> {
-        val user: User =
-            userRepository.findById(loginUser.id!!).orElseThrow {
-                throw NotFoundException(ErrorType.USER_NOT_FOUND)
-            }
+    ): WeatherCareMessage {
+        val user = getUser(loginUser.id!!)
+        val regionKey = generateRegionKey(user.nx, user.ny)
 
-        val weatherItems: List<WeatherItem> =
-            weatherInfoClient.getWeatherInfo(
-                serviceKey = openApiProperty.serviceKey,
-                base_date = getBaseDate(now),
-                nx = user.nx,
-                ny = user.ny,
-            ).toWeatherItems()
+        return findWeatherMessageInCache(regionKey) ?: createAndCacheWeatherMessage(user, now)
+    }
 
-        return determineWeatherMessages(weatherItems)
+    private fun getUser(userId: Long): User {
+        return userRepository.findById(userId).orElseThrow {
+            throw NotFoundException(ErrorType.USER_NOT_FOUND)
+        }
+    }
+
+    private fun generateRegionKey(
+        nx: Int,
+        ny: Int,
+    ): String {
+        return "nx${nx}ny$ny"
+    }
+
+    private fun findWeatherMessageInCache(regionKey: String): WeatherCareMessage? {
+        return weatherCareMessageRepository.findByRegion(regionKey)
+    }
+
+    private fun createAndCacheWeatherMessage(
+        user: User,
+        now: LocalDateTime,
+    ): WeatherCareMessage {
+        val weatherItems = fetchWeatherItems(user, now)
+        val weatherCareMessageTypes = determineWeatherMessages(weatherItems)
+
+        val newWeatherMessage = WeatherCareMessage.create(user.nx, user.ny, weatherCareMessageTypes)
+
+        weatherCareMessageRepository.save(newWeatherMessage)
+
+        return newWeatherMessage
+    }
+
+    private fun fetchWeatherItems(
+        user: User,
+        now: LocalDateTime,
+    ): List<WeatherItem> {
+        return weatherInfoClient.getWeatherInfo(
+            serviceKey = openApiProperty.serviceKey,
+            base_date = getBaseDate(now),
+            nx = user.nx,
+            ny = user.ny,
+        ).toWeatherItems()
     }
 
     /**
