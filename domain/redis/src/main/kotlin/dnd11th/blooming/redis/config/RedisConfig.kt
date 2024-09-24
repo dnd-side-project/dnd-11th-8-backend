@@ -1,5 +1,6 @@
 package dnd11th.blooming.redis.config
 
+import dnd11th.blooming.redis.entity.weather.WeatherCareMessage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -22,11 +23,21 @@ class RedisConfig(
     }
 
     @Bean
-    fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
+    fun refreshTokenRedisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
         val template = RedisTemplate<String, Any>()
         template.connectionFactory = connectionFactory
         template.keySerializer = StringRedisSerializer()
         template.valueSerializer = GenericJackson2JsonRedisSerializer()
+        return template
+    }
+
+    @Bean
+    fun weatherCareMessageRedisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, WeatherCareMessage> {
+        val template = RedisTemplate<String, WeatherCareMessage>()
+        template.connectionFactory = connectionFactory
+        template.keySerializer = StringRedisSerializer()
+        template.valueSerializer = GenericJackson2JsonRedisSerializer()
+
         return template
     }
 }

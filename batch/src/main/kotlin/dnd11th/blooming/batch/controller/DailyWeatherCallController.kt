@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class DailyWeatherCallController(
-    private val weatherCareMessageScheduler: WeatherCareMessageScheduler
+    private val weatherCareMessageScheduler: WeatherCareMessageScheduler,
 ) {
     @GetMapping("/daily-weather-call")
     fun runWeatherCareMessageJob(): ResponseEntity<Void> {

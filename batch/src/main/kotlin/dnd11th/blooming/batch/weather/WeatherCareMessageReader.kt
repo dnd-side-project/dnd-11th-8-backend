@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class WeatherCareMessageReader(
-    private val regionRepository: RegionRepository
+    private val regionRepository: RegionRepository,
 ) {
     @Bean
     @StepScope

@@ -5,8 +5,8 @@ import dnd11th.blooming.client.weather.WeatherInfoClient
 import dnd11th.blooming.client.weather.WeatherItem
 import dnd11th.blooming.common.util.Logger.Companion.log
 import dnd11th.blooming.core.entity.region.Region
-import dnd11th.blooming.redis.entity.WeatherCareMessageType
 import dnd11th.blooming.redis.entity.weather.WeatherCareMessage
+import dnd11th.blooming.redis.entity.weather.WeatherCareMessageType
 import dnd11th.blooming.redis.repository.weather.WeatherCareMessageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -16,8 +16,11 @@ import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.item.ItemWriter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.util.StopWatch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Collections
+import java.util.concurrent.TimeUnit
 
 @Configuration
 class WeatherCareMessageWriter(
@@ -43,26 +46,39 @@ class WeatherCareMessageWriter(
     fun weatherCareMessageItemWriter(): ItemWriter<Region> {
         return ItemWriter { regions ->
             val now: LocalDate = LocalDate.now()
+            val weatherCareMessages = Collections.synchronizedList(mutableListOf<WeatherCareMessage>())
+
+            val runBlockingStopWatch = StopWatch()
+            runBlockingStopWatch.start()
             runBlocking {
-                val weatherCareMessages: List<WeatherCareMessage?> = regions.map { region ->
-                    async(Dispatchers.IO) {
-                        try {
-                            val weatherItems: List<WeatherItem> =
-                                weatherInfoClient.getWeatherInfo(
-                                    serviceKey = openApiProperty.serviceKey,
-                                    base_date = formatDate(now),
-                                    nx = region.nx,
-                                    ny = region.ny
-                                ).toWeatherItems()
-                            val weatherCareMessageTypes: List<WeatherCareMessageType> = determineWeatherMessages(weatherItems)
-                            WeatherCareMessage.create(region.id, weatherCareMessageTypes)
-                        } catch (e: Exception) {
-                            log.error(e) { "Failed to fetch weather data for region: ${region.id}" }
-                            null
+                val jobs =
+                    regions.map { region ->
+                        async(Dispatchers.IO) {
+                            try {
+                                val weatherItems: List<WeatherItem> =
+                                    weatherInfoClient.getWeatherInfo(
+                                        serviceKey = openApiProperty.serviceKey,
+                                        base_date = formatDate(now),
+                                        nx = region.nx,
+                                        ny = region.ny,
+                                    ).toWeatherItems()
+                                val weatherCareMessageTypes: List<WeatherCareMessageType> = determineWeatherMessages(weatherItems)
+                                val weatherCareMessage: WeatherCareMessage = WeatherCareMessage.create(region.nx, region.ny, weatherCareMessageTypes)
+                                weatherCareMessages.add(weatherCareMessage)
+                            } catch (e: Exception) {
+                                log.error(e) { "날씨 데이터를 불러오는데 실패했습니다: ${region.id}" }
+                            }
                         }
                     }
-                }.awaitAll()
-                println(weatherCareMessages.size)
+                jobs.awaitAll()
+                runBlockingStopWatch.stop()
+                log.info { runBlockingStopWatch.getTotalTime(TimeUnit.MILLISECONDS) }
+
+                val saveStopWatch = StopWatch()
+                saveStopWatch.start()
+                weatherCareMessageRepository.saveAll(weatherCareMessages)
+                saveStopWatch.stop()
+                log.info { saveStopWatch.getTotalTime(TimeUnit.MILLISECONDS) }
             }
         }
     }

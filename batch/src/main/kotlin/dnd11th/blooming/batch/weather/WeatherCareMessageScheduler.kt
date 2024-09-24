@@ -16,7 +16,6 @@ class WeatherCareMessageScheduler(
     @Qualifier("weatherCareMessageBatchJob")
     private val weatherCareMessageJob: Job,
 ) {
-
     fun run() {
         val jobParameters: JobParameters =
             JobParametersBuilder()

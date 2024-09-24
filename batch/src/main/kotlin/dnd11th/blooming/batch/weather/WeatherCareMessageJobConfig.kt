@@ -1,7 +1,6 @@
 package dnd11th.blooming.batch.weather
 
 import dnd11th.blooming.core.entity.region.Region
-import dnd11th.blooming.redis.entity.weather.WeatherCareMessage
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobScope
