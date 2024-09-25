@@ -26,4 +26,4 @@ data class Message(
     val status: String,
     val title: String,
     val message: String,
-): Serializable
+) : Serializable
