@@ -1,5 +1,5 @@
 tasks.jar { enabled = true }
-tasks.bootJar { enabled = false }
+tasks.bootJar { enabled = true }
 
 dependencies {
     implementation(project(":common"))

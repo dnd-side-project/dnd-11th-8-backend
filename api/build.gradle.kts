@@ -2,7 +2,6 @@ tasks.jar { enabled = true }
 tasks.bootJar { enabled = true }
 
 dependencies {
-    implementation(project(":batch"))
     implementation(project(":common"))
     implementation(project(":client"))
     implementation(project(":domain:core"))
