@@ -1,7 +1,8 @@
-# 블루밍 <img src="https://github.com/user-attachments/assets/842c64ed-d4fb-430c-a223-5269a893bebd" align=left width=100>
+# 블루밍 <img src="https://github.com/user-attachments/assets/66d439a8-4bbf-4ea9-b7ac-f4bd09dc23e9" align=left width=100>
 
-> 초보 식집사를 위한 반려 식물 가이드 &nbsp;&nbsp;
+> 초보 식집사를 위한 반려 식물 가이드🌱 &nbsp;&nbsp;
 ---
+
 ## ☘️ Introduce
 ![1](https://github.com/user-attachments/assets/7e750aef-a88f-41d4-8b73-a8a4734a36e6)
 ![1](https://github.com/user-attachments/assets/5f27239b-c761-47b1-8694-87a7f55ddaa4)
