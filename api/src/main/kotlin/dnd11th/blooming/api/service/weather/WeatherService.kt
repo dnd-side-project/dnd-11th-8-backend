@@ -7,6 +7,9 @@ import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
 import dnd11th.blooming.core.entity.user.User
 import dnd11th.blooming.core.repository.user.UserRepository
+import dnd11th.blooming.redis.entity.weather.WeatherCareMessage
+import dnd11th.blooming.redis.entity.weather.WeatherCareMessageType
+import dnd11th.blooming.redis.repository.weather.WeatherCareMessageRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -20,6 +23,7 @@ class WeatherService(
     private val openApiProperty: OpenApiProperty,
     private val weatherInfoClient: WeatherInfoClient,
     private val userRepository: UserRepository,
+    private val weatherCareMessageRepository: WeatherCareMessageRepository,
 ) {
     companion object {
         private const val HUMIDITY_KEY = "REH"
@@ -37,21 +41,54 @@ class WeatherService(
     fun createWeatherMessage(
         loginUser: User,
         now: LocalDateTime,
-    ): List<WeatherMessage> {
-        val user: User =
-            userRepository.findById(loginUser.id!!).orElseThrow {
-                throw NotFoundException(ErrorType.USER_NOT_FOUND)
-            }
+    ): WeatherCareMessage {
+        val user = getUser(loginUser.id!!)
+        val regionKey = generateRegionKey(user.nx, user.ny)
 
-        val weatherItems: List<WeatherItem> =
-            weatherInfoClient.getWeatherInfo(
-                serviceKey = openApiProperty.serviceKey,
-                base_date = getBaseDate(now),
-                nx = user.nx,
-                ny = user.ny,
-            ).toWeatherItems()
+        return findWeatherMessageInCache(regionKey) ?: createAndCacheWeatherMessage(user, now)
+    }
 
-        return determineWeatherMessages(weatherItems)
+    private fun getUser(userId: Long): User {
+        return userRepository.findById(userId).orElseThrow {
+            throw NotFoundException(ErrorType.USER_NOT_FOUND)
+        }
+    }
+
+    private fun generateRegionKey(
+        nx: Int,
+        ny: Int,
+    ): String {
+        return "nx${nx}ny$ny"
+    }
+
+    private fun findWeatherMessageInCache(regionKey: String): WeatherCareMessage? {
+        return weatherCareMessageRepository.findByRegion(regionKey)
+    }
+
+    private fun createAndCacheWeatherMessage(
+        user: User,
+        now: LocalDateTime,
+    ): WeatherCareMessage {
+        val weatherItems = fetchWeatherItems(user, now)
+        val weatherCareMessageTypes = determineWeatherMessages(weatherItems)
+
+        val newWeatherMessage = WeatherCareMessage.create(user.nx, user.ny, weatherCareMessageTypes)
+
+        weatherCareMessageRepository.save(newWeatherMessage)
+
+        return newWeatherMessage
+    }
+
+    private fun fetchWeatherItems(
+        user: User,
+        now: LocalDateTime,
+    ): List<WeatherItem> {
+        return weatherInfoClient.getWeatherInfo(
+            serviceKey = openApiProperty.serviceKey,
+            base_date = getBaseDate(now),
+            nx = user.nx,
+            ny = user.ny,
+        ).toWeatherItems()
     }
 
     /**
@@ -60,7 +97,7 @@ class WeatherService(
      * 한파 -> 최저 온도가 5도 이하로 내려가면 COLD
      * 더위 -> 최고 온도가 30도 이상 올라가는 날 있으면 HOT
      */
-    private fun determineWeatherMessages(items: List<WeatherItem>): List<WeatherMessage> {
+    private fun determineWeatherMessages(items: List<WeatherItem>): List<WeatherCareMessageType> {
         var maxHumidity = MIN_HUMIDITY
         var minHumidity = MAX_HUMIDITY
         var maxTemperature = MIN_TEMPERATURE
@@ -81,11 +118,11 @@ class WeatherService(
             }
         }
 
-        return mutableListOf<WeatherMessage>().apply {
-            if (maxHumidity >= HIGH_HUMIDITY_THRESHOLD) add(WeatherMessage.HUMIDITY)
-            if (minHumidity <= LOW_HUMIDITY_THRESHOLD) add(WeatherMessage.DRY)
-            if (minTemperature <= LOW_TEMPERATURE_THRESHOLD) add(WeatherMessage.COLD)
-            if (maxTemperature >= HIGH_TEMPERATURE_THRESHOLD) add(WeatherMessage.HOT)
+        return mutableListOf<WeatherCareMessageType>().apply {
+            if (maxHumidity >= HIGH_HUMIDITY_THRESHOLD) add(WeatherCareMessageType.HUMIDITY)
+            if (minHumidity <= LOW_HUMIDITY_THRESHOLD) add(WeatherCareMessageType.DRY)
+            if (minTemperature <= LOW_TEMPERATURE_THRESHOLD) add(WeatherCareMessageType.COLD)
+            if (maxTemperature >= HIGH_TEMPERATURE_THRESHOLD) add(WeatherCareMessageType.HOT)
         }
     }
 
