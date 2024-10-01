@@ -5,6 +5,7 @@ import java.time.LocalDate
 data class UserPlantDto(
     val userId: Long,
     val userEmail: String,
+    val deviceToken: String,
     val myPlantId: Long,
     val plantNickname: String,
     val lastWateredDate: LocalDate,

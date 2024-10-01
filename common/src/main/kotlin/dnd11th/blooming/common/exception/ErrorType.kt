@@ -11,7 +11,7 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
     HTTP_METHOD_NOT_SUPPORTED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP METHOD 입니다.", LogLevel.DEBUG),
     PATH_VARIABLE_MISSING(HttpStatus.BAD_REQUEST, "경로 변수가 누락되었습니다.", LogLevel.DEBUG),
     REQUEST_PARAMETER_MISSING(HttpStatus.BAD_REQUEST, "요청 파라미터가 누락되었습니다.", LogLevel.DEBUG),
-    ARUGMENT_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "경로 변수 혹은 요청 파라미터 타입이 올바르지 않습니다.", LogLevel.DEBUG),
+    ARGUMENT_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "경로 변수 혹은 요청 파라미터 타입이 올바르지 않습니다.", LogLevel.DEBUG),
 
     // MyPlant
     NOT_FOUND_MYPLANT(HttpStatus.NOT_FOUND, "존재하지 않는 내 식물입니다.", LogLevel.DEBUG),
@@ -40,8 +40,9 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않은 사용자입니다.", LogLevel.DEBUG),
 
-    // OpenAPI
+    // CLIENT
     OPEN_API_CALL_EXCEPTION(HttpStatus.BAD_GATEWAY, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
+    FIREBASE_API_CALL_EXCEPTION(HttpStatus.BAD_GATEWAY, "FCM 호출에 실패했습니다", LogLevel.WARN),
 
     // REGION
     NOT_FOUND_REGION(HttpStatus.NOT_FOUND, "존재하지 않는 지역번호입니다.", LogLevel.DEBUG),
