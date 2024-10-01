@@ -8,7 +8,10 @@ import dnd11th.blooming.core.entity.region.Region
 import dnd11th.blooming.redis.entity.weather.WeatherCareMessage
 import dnd11th.blooming.redis.entity.weather.WeatherCareMessageType
 import dnd11th.blooming.redis.repository.weather.WeatherCareMessageRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.item.ItemWriter
 import org.springframework.context.annotation.Bean

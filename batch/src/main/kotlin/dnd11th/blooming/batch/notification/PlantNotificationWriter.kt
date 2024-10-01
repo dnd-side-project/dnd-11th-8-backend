@@ -3,7 +3,6 @@ package dnd11th.blooming.batch.notification
 import dnd11th.blooming.client.fcm.FcmService
 import dnd11th.blooming.client.fcm.PushNotification
 import dnd11th.blooming.common.util.Logger.Companion.log
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -20,6 +19,7 @@ class PlantNotificationWriter(
 ) {
     private var counter = AtomicInteger(0)
     private val customDispatcher = Executors.newFixedThreadPool(3).asCoroutineDispatcher()
+
     @Bean
     @StepScope
     fun waterNotificationItemWriter(): ItemWriter<PushNotification> {

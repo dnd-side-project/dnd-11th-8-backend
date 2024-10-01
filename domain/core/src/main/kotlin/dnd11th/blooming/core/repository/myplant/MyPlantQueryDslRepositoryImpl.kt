@@ -13,10 +13,10 @@ import org.springframework.stereotype.Repository
 class MyPlantQueryDslRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : MyPlantQueryDslRepository {
-
     companion object {
         const val HEALTH_CHECK_PERIOD_DAYS = 14
     }
+
     private val myPlant = QMyPlant.myPlant
     private val user = QUser.user
 

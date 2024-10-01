@@ -17,7 +17,7 @@ class PlantNotificationReader(
     @StepScope
     fun waterNotificationItemReader(): ListItemReader<UserPlantDto> {
         val now: LocalTime = LocalTime.now()
-        //val alarmTime = AlarmTime.fromHour(now)
+        // val alarmTime = AlarmTime.fromHour(now)
         val alarmTime = AlarmTime.TIME_10_11
 
         val userPlantByAlarmTime: List<UserPlantDto> =

@@ -9,5 +9,4 @@ interface MyPlantQueryDslRepository {
     fun findNeedFertilizerPlantsByAlarmTimeInBatch(alarmTime: AlarmTime): List<UserPlantDto>
 
     fun findNeedHealthCheckPlantsByAlarmTimeInBatch(alarmTime: AlarmTime): List<UserPlantDto>
-
 }
