@@ -18,6 +18,12 @@ spring:
       dialect: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
 
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
   data:
     redis:
       host: localhost
