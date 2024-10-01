@@ -1,4 +1,4 @@
-package dnd11th.blooming.batch
+package dnd11th.blooming.batch.notification
 
 import dnd11th.blooming.common.util.Logger.Companion.log
 import org.springframework.batch.core.Job

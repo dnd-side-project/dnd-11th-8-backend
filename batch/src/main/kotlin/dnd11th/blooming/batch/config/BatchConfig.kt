@@ -1,4 +1,4 @@
-package dnd11th.blooming.batch
+package dnd11th.blooming.batch.config
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor

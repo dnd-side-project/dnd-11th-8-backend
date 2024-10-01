@@ -1,4 +1,4 @@
-package dnd11th.blooming.batch
+package dnd11th.blooming.batch.notification
 
 import dnd11th.blooming.client.fcm.PushNotification
 import dnd11th.blooming.core.entity.myplant.UserPlantDto
@@ -20,7 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager
 @Configuration
 class PlantNotificationJobConfig {
     companion object {
-        const val CHUNK_SIZE: Int = 100
+        const val CHUNK_SIZE: Int = 1000
     }
 
     @Bean
@@ -28,10 +28,14 @@ class PlantNotificationJobConfig {
     fun notificationJob(
         jobRepository: JobRepository,
         waterNotificationStep: Step,
+        fertilizerNotificationStep: Step,
+        healthCheckNotificationStep: Step,
     ): Job {
         return JobBuilder("notificationJob", jobRepository)
             .incrementer(RunIdIncrementer())
             .start(waterNotificationStep)
+            .next(fertilizerNotificationStep)
+            .next(healthCheckNotificationStep)
             .build()
     }
 
@@ -47,6 +51,40 @@ class PlantNotificationJobConfig {
         return StepBuilder("waterNotificationStep", jobRepository)
             .chunk<UserPlantDto, PushNotification>(CHUNK_SIZE, transactionManager)
             .reader(waterNotificationItemReader)
+            .processor(waterNotificationItemProcessor)
+            .writer(waterNotificationItemWriter)
+            .build()
+    }
+
+    @Bean
+    @JobScope
+    fun fertilizerNotificationStep(
+        jobRepository: JobRepository,
+        transactionManager: PlatformTransactionManager,
+        fertilizerNotificationItemReader: ItemReader<UserPlantDto>,
+        waterNotificationItemProcessor: ItemProcessor<UserPlantDto, PushNotification>,
+        waterNotificationItemWriter: ItemWriter<PushNotification>,
+    ): Step {
+        return StepBuilder("fertilizerNotificationStep", jobRepository)
+            .chunk<UserPlantDto, PushNotification>(CHUNK_SIZE, transactionManager)
+            .reader(fertilizerNotificationItemReader)
+            .processor(waterNotificationItemProcessor)
+            .writer(waterNotificationItemWriter)
+            .build()
+    }
+
+    @Bean
+    @JobScope
+    fun healthCheckNotificationStep(
+        jobRepository: JobRepository,
+        transactionManager: PlatformTransactionManager,
+        healthCheckNotificationItemReader: ItemReader<UserPlantDto>,
+        waterNotificationItemProcessor: ItemProcessor<UserPlantDto, PushNotification>,
+        waterNotificationItemWriter: ItemWriter<PushNotification>,
+    ): Step {
+        return StepBuilder("healthCheckNotificationStep", jobRepository)
+            .chunk<UserPlantDto, PushNotification>(CHUNK_SIZE, transactionManager)
+            .reader(healthCheckNotificationItemReader)
             .processor(waterNotificationItemProcessor)
             .writer(waterNotificationItemWriter)
             .build()
