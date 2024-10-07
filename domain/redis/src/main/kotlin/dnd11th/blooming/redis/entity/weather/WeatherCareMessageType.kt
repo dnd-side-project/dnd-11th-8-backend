@@ -3,7 +3,7 @@ package dnd11th.blooming.redis.entity.weather
 enum class WeatherCareMessageType(val title: String, val message: String) {
     HUMIDITY(
         "과유불습",
-        "비가 계속 내려서 과습 위험이 있어요!\n" +
+        "습도가 높아서 과습 위험이 있어요!\n" +
             "물 주기 전에 흙이 촉촉한지 먼저 확인하고,\n" +
             "식물 친구들이 물에 잠기지 않도록 조심해주세요",
     ),
