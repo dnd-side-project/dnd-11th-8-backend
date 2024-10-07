@@ -8,7 +8,7 @@ import dnd11th.blooming.core.entity.region.Region
 import dnd11th.blooming.redis.entity.weather.WeatherCareMessage
 import dnd11th.blooming.redis.entity.weather.WeatherCareMessageType
 import dnd11th.blooming.redis.repository.weather.WeatherCareMessageRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -20,7 +20,9 @@ import org.springframework.util.StopWatch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Collections
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 
 @Configuration
 class WeatherCareMessageWriter(
@@ -41,6 +43,9 @@ class WeatherCareMessageWriter(
         private const val HIGH_TEMPERATURE_THRESHOLD = 30
     }
 
+    private var counter = AtomicInteger(0)
+    private val customDispatcher = Executors.newFixedThreadPool(3).asCoroutineDispatcher()
+
     @Bean
     @StepScope
     fun weatherCareMessageItemWriter(): ItemWriter<Region> {
@@ -53,7 +58,9 @@ class WeatherCareMessageWriter(
             runBlocking {
                 val jobs =
                     regions.map { region ->
-                        async(Dispatchers.IO) {
+                        async(customDispatcher) {
+                            val currentCount = counter.incrementAndGet()
+                            val threadName = Thread.currentThread().name
                             try {
                                 val weatherItems: List<WeatherItem> =
                                     weatherInfoClient.getWeatherInfo(
@@ -68,18 +75,18 @@ class WeatherCareMessageWriter(
                             } catch (e: Exception) {
                                 log.error(e) { "날씨 데이터를 불러오는데 실패했습니다: ${region.id}" }
                             }
+                            log.info { "Thread: $threadName, Count: $currentCount" }
                         }
                     }
                 jobs.awaitAll()
                 runBlockingStopWatch.stop()
                 log.info { runBlockingStopWatch.getTotalTime(TimeUnit.MILLISECONDS) }
-
-                val saveStopWatch = StopWatch()
-                saveStopWatch.start()
-                weatherCareMessageRepository.saveAll(weatherCareMessages)
-                saveStopWatch.stop()
-                log.info { saveStopWatch.getTotalTime(TimeUnit.MILLISECONDS) }
             }
+            val saveStopWatch = StopWatch()
+            saveStopWatch.start()
+            weatherCareMessageRepository.saveAll(weatherCareMessages)
+            saveStopWatch.stop()
+            log.info { saveStopWatch.getTotalTime(TimeUnit.MILLISECONDS) }
         }
     }
 

@@ -105,7 +105,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException::class)
     fun handleArgumentTypeMismatchException(exception: MethodArgumentTypeMismatchException): ResponseEntity<ErrorResponse> {
-        val errorType = ErrorType.ARUGMENT_TYPE_MISMATCH
+        val errorType = ErrorType.ARGUMENT_TYPE_MISMATCH
 
         logException(errorType, exception, ExceptionSource.HTTP)
 

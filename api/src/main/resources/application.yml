@@ -20,6 +20,7 @@ spring:
     activate:
       on-profile: local
     import:
+      - batch-local.yml
       - client.yml
       - redis-local.yml
       - core-local.yml
@@ -39,6 +40,7 @@ spring:
     activate:
       on-profile: prod
     import:
+      - batch-prod.yml
       - client.yml
       - redis-prod.yml
       - core-prod.yml

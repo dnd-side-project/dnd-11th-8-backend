@@ -13,15 +13,21 @@ import org.springframework.stereotype.Repository
 class MyPlantQueryDslRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : MyPlantQueryDslRepository {
-    override fun findPlantsByAlarmTimeInBatch(alarmTime: AlarmTime): List<UserPlantDto> {
-        val myPlant = QMyPlant.myPlant
-        val user = QUser.user
+    companion object {
+        const val HEALTH_CHECK_PERIOD_DAYS = 14
+    }
+
+    private val myPlant = QMyPlant.myPlant
+    private val user = QUser.user
+
+    override fun findNeedWaterPlantsByAlarmTimeInBatch(alarmTime: AlarmTime): List<UserPlantDto> {
         return queryFactory
             .select(
                 Projections.constructor(
                     UserPlantDto::class.java,
                     user.id,
                     user.email,
+                    user.deviceToken,
                     myPlant.id,
                     myPlant.nickname,
                     myPlant.lastWateredDate,
@@ -33,6 +39,7 @@ class MyPlantQueryDslRepositoryImpl(
             .where(
                 user.alarmStatus.isTrue,
                 user.alarmTime.eq(alarmTime),
+                user.deviceToken.isNotNull,
                 myPlant.alarm.waterAlarm.isTrue,
                 Expressions.numberTemplate(
                     Int::class.java,
@@ -40,6 +47,68 @@ class MyPlantQueryDslRepositoryImpl(
                     myPlant.lastWateredDate,
                 )
                     .eq(myPlant.alarm.waterPeriod),
+            )
+            .fetch()
+    }
+
+    override fun findNeedFertilizerPlantsByAlarmTimeInBatch(alarmTime: AlarmTime): List<UserPlantDto> {
+        return queryFactory
+            .select(
+                Projections.constructor(
+                    UserPlantDto::class.java,
+                    user.id,
+                    user.email,
+                    user.deviceToken,
+                    myPlant.id,
+                    myPlant.nickname,
+                    myPlant.lastWateredDate,
+                    myPlant.alarm.waterPeriod,
+                ),
+            )
+            .from(myPlant)
+            .join(myPlant.user, user)
+            .where(
+                user.alarmStatus.isTrue,
+                user.alarmTime.eq(alarmTime),
+                user.deviceToken.isNotNull,
+                myPlant.alarm.fertilizerAlarm.isTrue,
+                Expressions.numberTemplate(
+                    Int::class.java,
+                    "DATEDIFF(CURRENT_DATE, {0})",
+                    myPlant.lastFertilizerDate,
+                )
+                    .eq(myPlant.alarm.fertilizerPeriod),
+            )
+            .fetch()
+    }
+
+    override fun findNeedHealthCheckPlantsByAlarmTimeInBatch(alarmTime: AlarmTime): List<UserPlantDto> {
+        return queryFactory
+            .select(
+                Projections.constructor(
+                    UserPlantDto::class.java,
+                    user.id,
+                    user.email,
+                    user.deviceToken,
+                    myPlant.id,
+                    myPlant.nickname,
+                    myPlant.lastWateredDate,
+                    myPlant.alarm.waterPeriod,
+                ),
+            )
+            .from(myPlant)
+            .join(myPlant.user, user)
+            .where(
+                user.alarmStatus.isTrue,
+                user.alarmTime.eq(alarmTime),
+                user.deviceToken.isNotNull,
+                myPlant.alarm.healthCheckAlarm.isTrue,
+                Expressions.numberTemplate(
+                    Int::class.java,
+                    "DATEDIFF(CURRENT_DATE, {0})",
+                    myPlant.lastHealthCheckDate,
+                )
+                    .eq(HEALTH_CHECK_PERIOD_DAYS),
             )
             .fetch()
     }

@@ -1,4 +1,4 @@
-package dnd11th.blooming.batch
+package dnd11th.blooming.batch.notification
 
 import dnd11th.blooming.client.fcm.PushNotification
 import dnd11th.blooming.core.entity.myplant.UserPlantDto
@@ -13,7 +13,7 @@ class PlantNotificationProcessor {
     @StepScope
     fun waterNotificationItemProcessor(): ItemProcessor<UserPlantDto, PushNotification> {
         return ItemProcessor { userPlantDto ->
-            PushNotification.create(userPlantDto.myPlantId, "token", userPlantDto.plantNickname)
+            PushNotification.create(userPlantDto.myPlantId, userPlantDto.deviceToken, userPlantDto.plantNickname)
         }
     }
 }
