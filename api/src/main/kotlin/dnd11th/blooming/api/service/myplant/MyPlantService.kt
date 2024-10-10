@@ -53,7 +53,7 @@ class MyPlantService(
         now: LocalDate,
         user: User,
     ): List<MyPlantResponse> {
-        val myPlantsWithImageUrl: List<MyPlantWithImageUrl> = imageRepository.findMyPlantAndMostRecentFavoriteImageByUser(user)
+        val myPlantsWithImageUrl: List<MyPlantWithImageUrl> = myPlantRepository.findMyPlantAndMostRecentFavoriteImageByUser(user)
 
         return MyPlantResponse.fromMyPlantWithImageUrlList(myPlantsWithImageUrl, now)
     }
