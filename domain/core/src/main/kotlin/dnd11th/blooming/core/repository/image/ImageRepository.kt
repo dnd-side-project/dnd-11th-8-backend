@@ -2,7 +2,6 @@ package dnd11th.blooming.core.repository.image
 
 import dnd11th.blooming.core.entity.image.Image
 import dnd11th.blooming.core.entity.myplant.MyPlant
-import dnd11th.blooming.core.entity.myplant.MyPlantWithImageUrl
 import dnd11th.blooming.core.entity.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying

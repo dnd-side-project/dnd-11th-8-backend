@@ -31,7 +31,6 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantQueryDslRepos
         @Param("user") user: User,
     )
 
-
     @Query(
         """
     SELECT new dnd11th.blooming.core.entity.myplant.MyPlantWithImageUrl(
