@@ -39,7 +39,7 @@ class MyPlant(
     var id: Long? = null
 
     @Column
-    var plantImageUrl: String = "블루밍 대표 이미지"
+    var plantImageUrl: String? = null
     // TODO : 블루밍 대표 이미지 넣기
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -39,14 +39,14 @@ import java.time.LocalDate
 
 class MyPlantServiceTest : DescribeSpec(
     {
-        val myPlantRepsitory = mockk<MyPlantRepository>()
+        val myPlantRepository = mockk<MyPlantRepository>()
         val plantRepository = mockk<PlantRepository>()
         val locationRepository = mockk<LocationRepository>()
         val imageRepository = mockk<ImageRepository>()
         val myPlantMessageFactory = mockk<MyPlantMessageFactory>()
         val myPlantService =
             MyPlantService(
-                myPlantRepsitory,
+                myPlantRepository,
                 plantRepository,
                 locationRepository,
                 myPlantMessageFactory,
@@ -58,7 +58,7 @@ class MyPlantServiceTest : DescribeSpec(
                 "등록 되었습니다."
             every { plantRepository.findByIdOrNull(PLANT_ID) } returns
                 PLANT
-            every { myPlantRepsitory.save(any()) } returns
+            every { myPlantRepository.save(any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -137,9 +137,9 @@ class MyPlantServiceTest : DescribeSpec(
                     id = 3
                     location = null
                 }
-            every { myPlantRepsitory.findAllByUser(any()) } returns
+            every { myPlantRepository.findAllByUser(any()) } returns
                 listOf(myPlant1, myPlant2, myPlant3)
-            every { imageRepository.findMyPlantAndMostRecentFavoriteImageByUser(any()) } returns
+            every { myPlantRepository.findMyPlantAndMostRecentFavoriteImageByUser(any()) } returns
                 listOf(
                     MyPlantWithImageUrl(myPlant1, "url1"),
                     MyPlantWithImageUrl(myPlant2, "url2"),
@@ -190,7 +190,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 상세 조회") {
-            every { myPlantRepsitory.findByIdAndUser(MYPLANT_ID, any()) } returns
+            every { myPlantRepository.findByIdAndUser(MYPLANT_ID, any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -202,7 +202,7 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = MYPLANT_ID
                 }
-            every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
+            every { myPlantRepository.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
             every { imageRepository.findAllByMyPlant(any()) } returns
                 listOf(
@@ -224,7 +224,7 @@ class MyPlantServiceTest : DescribeSpec(
                 FERTILIZER_TITLE
             every { myPlantMessageFactory.createFertilizerInfo(any(), any()) } returns
                 FERTILIZER_INFO
-            every { myPlantRepsitory.findByIdOrNull(not(eq(MYPLANT_ID))) } returns
+            every { myPlantRepository.findByIdOrNull(not(eq(MYPLANT_ID))) } returns
                 null
             context("존재하는 ID로 상세 조회하면") {
                 it("내 식물의 상세 정보가 조회되어야 한다.") {
@@ -254,7 +254,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 수정") {
-            every { myPlantRepsitory.findByIdAndUser(any(), any()) } returns
+            every { myPlantRepository.findByIdAndUser(any(), any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -264,7 +264,7 @@ class MyPlantServiceTest : DescribeSpec(
                     lastHealthCheckDate = LAST_HEALTHCHECK_DATE,
                     alarm = ALARM,
                 )
-            every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
+            every { myPlantRepository.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
             every { locationRepository.findByIdAndUser(LOCATION_ID, any()) } returns
                 Location(
@@ -334,7 +334,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 삭제") {
-            every { myPlantRepsitory.findByIdAndUser(MYPLANT_ID, any()) } returns
+            every { myPlantRepository.findByIdAndUser(MYPLANT_ID, any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -346,9 +346,9 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = MYPLANT_ID
                 }
-            every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
+            every { myPlantRepository.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
-            every { myPlantRepsitory.delete(any()) } just runs
+            every { myPlantRepository.delete(any()) } just runs
             every { imageRepository.deleteAllInBatchByMyPlant(any()) } just runs
 
             context("정상 요청으로 삭제하면") {
@@ -367,7 +367,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 물주기") {
-            every { myPlantRepsitory.findByIdAndUser(MYPLANT_ID, any()) } returns
+            every { myPlantRepository.findByIdAndUser(MYPLANT_ID, any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -379,7 +379,7 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = MYPLANT_ID
                 }
-            every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
+            every { myPlantRepository.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
             context("존재하는 내 식물 ID로 내 식물 물주기 요청하면") {
                 it("정상 흐름이 반환된다.") {
@@ -401,7 +401,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 비료주기") {
-            every { myPlantRepsitory.findByIdAndUser(MYPLANT_ID, any()) } returns
+            every { myPlantRepository.findByIdAndUser(MYPLANT_ID, any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -413,7 +413,7 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = MYPLANT_ID
                 }
-            every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
+            every { myPlantRepository.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
             context("존재하는 내 식물 ID로 내 식물 비료주기 요청하면") {
                 it("정상 흐름이 반환된다.") {
@@ -435,7 +435,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("내 식물 눈길주기") {
-            every { myPlantRepsitory.findByIdAndUser(MYPLANT_ID, any()) } returns
+            every { myPlantRepository.findByIdAndUser(MYPLANT_ID, any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -447,7 +447,7 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = MYPLANT_ID
                 }
-            every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
+            every { myPlantRepository.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
             every { myPlantMessageFactory.createHealthCheckMessage() } returns
                 "팁"
@@ -471,7 +471,7 @@ class MyPlantServiceTest : DescribeSpec(
         }
 
         describe("알림 변경") {
-            every { myPlantRepsitory.findByIdAndUser(MYPLANT_ID, any()) } returns
+            every { myPlantRepository.findByIdAndUser(MYPLANT_ID, any()) } returns
                 MyPlant(
                     scientificName = SCIENTIFIC_NAME,
                     nickname = NICKNAME,
@@ -483,7 +483,7 @@ class MyPlantServiceTest : DescribeSpec(
                 ).apply {
                     id = MYPLANT_ID
                 }
-            every { myPlantRepsitory.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
+            every { myPlantRepository.findByIdAndUser(not(eq(MYPLANT_ID)), any()) } returns
                 null
             context("존재하는 ID와 요청으로 알림 변경 요청을 하면") {
                 val request =
