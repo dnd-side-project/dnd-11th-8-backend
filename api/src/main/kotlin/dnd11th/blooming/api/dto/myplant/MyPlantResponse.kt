@@ -20,7 +20,7 @@ data class MyPlantResponse(
     @field:Schema(description = "등록 일자", example = "2024-09-03T14:30:45")
     val registeredDateTime: LocalDateTime,
     @field:Schema(description = "이미지 URL", example = "image.com/7")
-    val imageUrl: String,
+    val imageUrl: String?,
     @field:Schema(description = "내 식물 학명", example = "몬스테라 델리오사")
     val scientificName: String,
     @field:Schema(description = "마지막 물주기로부터 지난 날짜", example = "2")
