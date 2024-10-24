@@ -42,7 +42,7 @@ enum class ErrorType(val status: HttpStatus, var message: String, val logLevel: 
 
     // CLIENT
     OPEN_API_CALL_EXCEPTION(HttpStatus.BAD_GATEWAY, "OpenAPI 호출에 실패했습니다", LogLevel.WARN),
-    FIREBASE_API_CALL_EXCEPTION(HttpStatus.BAD_GATEWAY, "FCM 호출에 실패했습니다", LogLevel.WARN),
+    PUSH_API_CALL_EXCEPTION(HttpStatus.BAD_GATEWAY, "Push Message 전송에 실패했습니다", LogLevel.WARN),
 
     // REGION
     NOT_FOUND_REGION(HttpStatus.NOT_FOUND, "존재하지 않는 지역번호입니다.", LogLevel.DEBUG),

@@ -18,7 +18,6 @@ class PlantNotificationReader(
     fun waterNotificationItemReader(): ListItemReader<UserPlantDto> {
         val now: LocalTime = LocalTime.now()
         val alarmTime = AlarmTime.fromHour(now)
-
         val userPlantByAlarmTime: List<UserPlantDto> =
             myPlantRepository.findNeedWaterPlantsByAlarmTimeInBatch(alarmTime)
         return ListItemReader(userPlantByAlarmTime)

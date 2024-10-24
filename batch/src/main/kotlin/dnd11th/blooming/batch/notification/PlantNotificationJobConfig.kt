@@ -1,6 +1,6 @@
 package dnd11th.blooming.batch.notification
 
-import dnd11th.blooming.client.fcm.PushNotification
+import dnd11th.blooming.client.expo.PushNotification
 import dnd11th.blooming.core.entity.myplant.UserPlantDto
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
@@ -20,7 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager
 @Configuration
 class PlantNotificationJobConfig {
     companion object {
-        const val CHUNK_SIZE: Int = 1000
+        const val CHUNK_SIZE: Int = 100
     }
 
     @Bean
