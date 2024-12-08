@@ -7,6 +7,7 @@ import dnd11th.blooming.api.dto.myplant.MyPlantResponse
 import dnd11th.blooming.api.dto.myplant.MyPlantSaveResponse
 import dnd11th.blooming.common.exception.ErrorType
 import dnd11th.blooming.common.exception.NotFoundException
+import dnd11th.blooming.common.util.Logger.Companion.log
 import dnd11th.blooming.core.entity.location.Location
 import dnd11th.blooming.core.entity.myplant.AlarmModifyDto
 import dnd11th.blooming.core.entity.myplant.MyPlant
@@ -42,6 +43,7 @@ class MyPlantService(
         val plant: Plant? = dto.plantId?.let { plantRepository.findByIdOrNull(it) }
 
         val myPlant = MyPlant.create(dto, location, plant, user, now)
+        log.info { myPlant.toString() }
 
         val savedPlant = myPlantRepository.save(myPlant)
 

@@ -151,4 +151,20 @@ class MyPlant(
             else -> null
         }
     }
+
+    override fun toString(): String {
+        return "MyPlant(" +
+            "id=$id, " +
+            "scientificName='$scientificName', " +
+            "nickname='$nickname', " +
+            "startDate=$startDate, " +
+            "lastWateredDate=$lastWateredDate, " +
+            "lastFertilizerDate=$lastFertilizerDate, " +
+            "lastHealthCheckDate=$lastHealthCheckDate, " +
+            "plantImageUrl='$plantImageUrl', " +
+            "user=${user?.id}, " +
+            "plant=${plant?.id}, " +
+            "location=${location?.id}" +
+            ")"
+    }
 }
