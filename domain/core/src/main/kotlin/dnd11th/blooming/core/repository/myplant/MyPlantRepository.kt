@@ -50,7 +50,7 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantQueryDslRepos
     FROM MyPlant mp
     LEFT JOIN FETCH mp.location l
     WHERE mp.user = :user
-    """
+    """,
     )
     fun findMyPlantAndMostRecentFavoriteImageByUser(
         @Param("user") user: User,
