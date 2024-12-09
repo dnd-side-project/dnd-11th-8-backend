@@ -103,7 +103,7 @@ class StaticPlantSimpleMessageProvider {
                 Season.WINTER -> plant.winterWater
             }
 
-        return "${water.waterPerWeek},\n${water.description}할 것"
+        return "${water.waterPerWeek}일 간격 (${month.value}월 기준) \n${water.description}할 것"
     }
 
     private fun makeSimplePestsDescription(plant: Plant): String {

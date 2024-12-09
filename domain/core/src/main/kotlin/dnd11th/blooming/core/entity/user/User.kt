@@ -16,7 +16,7 @@ class User(
     @Column
     val email: String,
     nickname: String,
-    alarmTime: dnd11th.blooming.core.entity.user.AlarmTime,
+    alarmTime: AlarmTime,
     nx: Int,
     ny: Int,
     @Id
@@ -33,7 +33,7 @@ class User(
 
     @Column
     @Enumerated(EnumType.STRING)
-    var alarmTime: dnd11th.blooming.core.entity.user.AlarmTime = alarmTime
+    var alarmTime: AlarmTime = alarmTime
         protected set
 
     @Column
@@ -50,11 +50,11 @@ class User(
         fun create(
             email: String,
             nickname: String,
-            alarmTime: dnd11th.blooming.core.entity.user.AlarmTime,
+            alarmTime: AlarmTime,
             nx: Int,
             ny: Int,
-        ): dnd11th.blooming.core.entity.user.User {
-            return dnd11th.blooming.core.entity.user.User(email, nickname, alarmTime, nx, ny)
+        ): User {
+            return User(email, nickname, alarmTime, nx, ny)
         }
     }
 
@@ -66,7 +66,7 @@ class User(
         this.alarmStatus = status
     }
 
-    fun updateAlarmTime(alarmTime: dnd11th.blooming.core.entity.user.AlarmTime) {
+    fun updateAlarmTime(alarmTime: AlarmTime) {
         this.alarmTime = alarmTime
     }
 

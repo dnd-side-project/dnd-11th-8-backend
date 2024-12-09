@@ -35,16 +35,22 @@ interface MyPlantRepository : JpaRepository<MyPlant, Long>, MyPlantQueryDslRepos
         """
     SELECT new dnd11th.blooming.core.entity.myplant.MyPlantWithImageUrl(
         mp,
-        (SELECT i.url
+        (
+        SELECT i.url
         FROM Image i
-        WHERE i.myPlant = mp AND i.favorite = true
-        ORDER BY i.updatedDate
-        DESC LIMIT 1)
+        WHERE i.myPlant = mp
+        ORDER BY
+            CASE
+                WHEN i.favorite = TRUE THEN 1
+                ELSE 2
+            END,
+            i.updatedDate DESC
+        LIMIT 1)
     )
     FROM MyPlant mp
-	JOIN FETCH mp.location l
+    LEFT JOIN FETCH mp.location l
     WHERE mp.user = :user
-	""",
+    """
     )
     fun findMyPlantAndMostRecentFavoriteImageByUser(
         @Param("user") user: User,

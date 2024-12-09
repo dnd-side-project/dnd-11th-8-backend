@@ -107,14 +107,14 @@ class MyPlant(
     }
 
     companion object {
-        fun createMyPlant(
+        fun create(
             dto: MyPlantCreateDto,
             location: Location?,
             plant: Plant?,
             user: User,
             now: LocalDate,
-        ): dnd11th.blooming.core.entity.myplant.MyPlant =
-            dnd11th.blooming.core.entity.myplant.MyPlant(
+        ): MyPlant =
+            MyPlant(
                 // plant가 없으면 scientificName 사용
                 scientificName = plant?.korName ?: dto.scientificName,
                 // nickname이 없으면 scientificName 사용
@@ -150,5 +150,21 @@ class MyPlant(
             5 -> now.minusDays(14)
             else -> null
         }
+    }
+
+    override fun toString(): String {
+        return "MyPlant(" +
+            "id=$id, " +
+            "scientificName='$scientificName', " +
+            "nickname='$nickname', " +
+            "startDate=$startDate, " +
+            "lastWateredDate=$lastWateredDate, " +
+            "lastFertilizerDate=$lastFertilizerDate, " +
+            "lastHealthCheckDate=$lastHealthCheckDate, " +
+            "plantImageUrl='$plantImageUrl', " +
+            "user=${user?.id}, " +
+            "plant=${plant?.id}, " +
+            "location=${location?.id}" +
+            ")"
     }
 }
